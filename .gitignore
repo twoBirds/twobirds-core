@@ -1,1 +1,4 @@
 node_modules
+src/tb/min
+src/tb/tb.js
+src/tb/tb.min.js
