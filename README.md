@@ -1,3 +1,4 @@
+caution: this is from the old repo, this repo only contains the lib: WORK IN PROGRESS
 # twoBirds v7.0.0a
 
 Welcome Birdies ;-)
@@ -321,13 +322,13 @@ twoBirds was created 2004 to be able to build a complex web application for an i
 It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) ).
 It was constantly under development. 
 
-# I dont want to read a lot - give me a kick-start
+## I dont want to read a lot - give me a kick-start
 
 ### On console do...
 
 git clone this repository
 
-goto /httpdocs
+goto /dist
 
 php -S 0.0.0.0:3000 &
 

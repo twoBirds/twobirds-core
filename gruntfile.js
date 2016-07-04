@@ -50,7 +50,7 @@ module.exports = function(grunt) {
 
         concat: {
             options: {
-                separator: ';',
+                separator: ';'
             },
             dist: {
                 src: [
