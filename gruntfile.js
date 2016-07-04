@@ -3,40 +3,10 @@ module.exports = function(grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
-        // Permission problem try to exec command "npm cache clean"
-        watch: {
-            scss: {
-                files: [
-                    'src/app/app/scss//{,*/}*.scss',
-                    '/{,*/}*.js'
-                ],
-                tasks: [
-                    'clean',
-                    'scss'
-                ]
-            }
-        },
-
         clean: {
             clean: [
                 "dist"
             ]
-        },
-
-        scss: {
-            production: {
-                options: {
-                    //relativeUrls: true,
-                    paths: ["src/app/app/scss"],
-                    cleancss: true,
-                    modifyVars: {
-                        //imgPath: '"http://"'
-                    }
-                },
-                files: {
-                    "dist/app/app/GrandParent.css": "src/app/app/scss/GrandParent.scss"
-                }
-            }
         },
 
         copy: {
@@ -45,15 +15,8 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'src/tb',
-                        src: '**/*.js',
+                        src: '*.js',
                         dest: 'dist/tb'
-                    },
-                    {
-                        expand: true,
-                        //dot: true,
-                        cwd: 'src',
-                        src: '**/*.scss',
-                        dest: 'dist'
                     }
                 ]
             }
@@ -72,12 +35,14 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'src/tb',
-                        src: '**/*.js',
-                        dest: 'dist/tb'
+                        cwd: 'src/tb/tb',
+                        src: '*.js',
+                        dest: 'src/tb/min'
                     },
                     {
-                        'dist/tb/tb.min.js': ['dist/tb/tb.min.js']
+                        'src/tb/tb.min.js': [
+                            'src/tb/min/tb.core.js'
+                        ]
                     }
                 ]
             }
@@ -89,9 +54,9 @@ module.exports = function(grunt) {
             },
             dist: {
                 src: [
-                    'src/tb/tb.min.js'
+                    'src/tb/tb//**.*.js'
                 ],
-                dest: 'dist/tb/tb.min.js'
+                dest: 'src/tb/tb.js'
             }
         },
 
@@ -99,22 +64,30 @@ module.exports = function(grunt) {
             options: {
                 curly: true,
                 eqeqeq: true,
+                immed: true,
+                latedef: true,
+                newcap: true,
+                noarg: true,
+                sub: true,
+                undef: true,
+                boss: true,
                 eqnull: true,
-                browser: true,
-                maxparams: 4,
-                notypeof: true
+                node: true
             },
-            all: ['src/tb/**/*.js']
+            globals: {
+                exports: true,
+                module: false
+            }
         },
 
         yuidoc: {
             compile: {
-                name: '<%= pkg.name %>',
-                description: '<%= pkg.description %>',
-                version: '<%= pkg.version %>',
-                url: '<%= pkg.homepage %>',
+                name: 'twoBirds',
+                description: 'twoBirds WebComponent Framework',
+                version: '7.0.3',
+                url: 'http://www.tb-core.org',
                 options: {
-                    paths: 'src/',
+                    paths: 'dist/',
                     outdir: 'dist/docs/'
                 }
             }
@@ -123,7 +96,6 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-compress');
@@ -132,14 +104,18 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
+    grunt.loadNpmTasks('grunt-min');
+
     // Default task(s).
-    grunt.registerTask('default', [
-        //'jshint',
-        'clean',
-        'scss',
-        'concat',
-        'copy',
-        'uglify'
-    ]);
+    grunt.registerTask(
+        'default', [
+            'jshint',
+            'clean',
+            'concat',
+            'uglify',
+            'copy',
+            'yuidoc'
+        ]
+    );
 
 };

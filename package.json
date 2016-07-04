@@ -1,7 +1,7 @@
 {
   "name": "twobirds-core",
   "description": "twoBirds Web Component Framework",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "license": "GPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",
@@ -23,7 +23,8 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-contrib-yuidoc": "^1.0.0"
+    "grunt-contrib-yuidoc": "^1.0.0",
+    "grunt-min": "^0.1.0"
   },
   "repository": {
     "type": "git",
