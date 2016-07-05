@@ -171,7 +171,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 48,
+            "line": 47,
             "description": "tb.dom() function\njquery like selector engine",
             "itemtype": "method",
             "name": "dom",
@@ -985,7 +985,7 @@
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:48"
+            "line": " dist/tb/tb.js:47"
         },
         {
             "message": "unknown tag: ignore",
