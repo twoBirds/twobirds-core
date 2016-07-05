@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.4
+ * @version         v7.0.5
  *
  */
 
@@ -45,15 +45,15 @@ tb = (function(){
         regExHtml = /^<>$/g;
 
     /**
-     * tb.dom() function
-     *jquery like selector engine
-     *
-     * @function DOM
-     * @namespace tb
-     * @static
-     *
-     * @param {string|domNode|array} a selector string, a dom node or an array of dom nodes
-     * @return {string} - result string
+     tb.dom() function
+     jquery like selector engine
+
+     @function dom
+     @namespace tb
+     @static
+
+     @param {string|domNode|array} a selector string, a dom node or an array of dom nodes
+     @return {string} - result string
      */
     var dom;
 
@@ -61,6 +61,16 @@ tb = (function(){
         return function (pSelector, pDomNode) {
 
             var dom;
+
+            function _mapArrayMethod( pMethodName ){
+                var method = [][pMethodName];
+
+                return function(){
+                    var ret = method.apply( this.toArray(), [].splice( arguments ) );
+                    console.log( 'pMethodName', pMethodName, method, this.toArray(), ret );
+                    return new dom( ret );
+                };
+            };
 
             // dom constructor
             dom = function tbDom(pSelector, pDomNode) {
@@ -142,22 +152,22 @@ tb = (function(){
                 length: 0,
 
                 // from Array prototype
-                concat: [].concat,
-                every: [].every,
-                forEach: [].forEach,
-                indexOf: [].indexOf,
-                keys: [].keys,
-                lastIndexOf: [].lastIndexOf,
-                map: [].map,
-                pop: [].pop,
-                reduce: [].reduce,
-                reduceRight: [].reduceRight,
-                reverse: [].reverse,
-                shift: [].shift,
-                slice: [].slice,
-                some: [].some,
-                splice: [].splice,
-                unshift: [].unshift,
+                concat: _mapArrayMethod( 'concat' ),
+                every: _mapArrayMethod( 'every' ),
+                forEach: _mapArrayMethod( 'forEach' ),
+                indexOf: _mapArrayMethod( 'indexOf' ),
+                keys: _mapArrayMethod( 'keys' ),
+                lastIndexOf: _mapArrayMethod( 'lastIndexOf' ),
+                map: _mapArrayMethod( 'map' ),
+                pop: _mapArrayMethod( 'pop' ),
+                reduce: _mapArrayMethod( 'reduce' ),
+                reduceRight: _mapArrayMethod( 'reduceRight' ),
+                reverse: _mapArrayMethod( 'reverse' ),
+                shift: _mapArrayMethod( 'shift' ),
+                slice: _mapArrayMethod( 'slice' ),
+                some: _mapArrayMethod( 'some' ),
+                splice: _mapArrayMethod( 'splice' ),
+                unshift: _mapArrayMethod( 'unshift' ),
 
                 //own functions
                 add: add,
@@ -2306,8 +2316,6 @@ tb = (function(){
     for ( var i in tb.prototype ) if ( tb.prototype.hasOwnProperty(i)){
         TbSelector.prototype[i] = tb.prototype[i];
     }
-
-    //Tb = tb; // to have an uppercase constructor name @todo: rethink this
 
     return tb;
 
