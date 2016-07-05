@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.8
+ * @version         v7.0.10
  *
  */
 
@@ -69,7 +69,7 @@ tb = (function(){
                     var arr = this.toArray(),
                         ret = method.apply( arr, arguments );
 
-                    return new dom( ret );
+                    return new dom( ret ).unique();
                 };
             }
 
