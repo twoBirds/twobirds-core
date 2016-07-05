@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.11
+ * @version         v7.0.12
  *
  */
 
@@ -516,13 +516,16 @@ tb = (function(){
                 var that = this,
                     result = [];
 
-                result = that.filter(
-                    function (pElement) {
-                        return result.indexOf(pElement) === -1;
+                [].forEach.call(
+                    that,
+                    function ( pElement ) {
+                        if ( result.indexOf( pElement ) === -1 ){
+                            result.push( pElement );
+                        }
                     }
                 );
 
-                return dom(result);
+                return new dom( result );
             }
 
             function not(pSelector) {
@@ -754,26 +757,27 @@ tb = (function(){
 
             }
 
-            function filter(pSelector) {
+            function filter( pSelector ) {
 
                 var that = this,
-                    compare = new dom(pSelector),// functions and undefined will be ignored, so empty result then
+                    compare = new dom( pSelector ),// functions and undefined will be ignored, so empty result then
                     result;
 
-                if (pSelector === 'undefined') return that;    // unchanged
+                if ( pSelector === 'undefined' ) return that;    // unchanged
 
-                if (typeof pSelector === 'string') { // DOM selector given
+                if ( typeof pSelector === 'string' ) { // DOM selector given
                     result = [].filter.call(
                         that,
                         function (pElement) {
                             return -1 < compare.indexOf(pElement);
                         }
                     );
-                } else if (typeof pSelector === 'function') { // function given
+                } else if ( typeof pSelector === 'function' ) { // function given
                     result = [].filter.call(
                         that,
                         pSelector
                     );
+                    return result;
                 }
 
                 return new dom(result);
