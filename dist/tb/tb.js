@@ -68,10 +68,10 @@ tb = (function(){
                 return function(){
                     var arr = this.toArray(),
                         ret = method.apply( arr, arguments );
-                    console.log( 'pMethodName', pMethodName, method, arr, arguments, ret );
+
                     return new dom( ret );
                 };
-            };
+            }
 
             // dom constructor
             dom = function tbDom(pSelector, pDomNode) {
@@ -2469,30 +2469,32 @@ tb.namespace = function( pNamespace, pForceCreation, pObject ){
  *
  * @return {void}
  */
-tb.bind = function( pSelector ){
+tb.bind = function( pSelector, pTarget ){
 
-    var rootElement,
+    var rootNode,
         selected = [],
-        elements = document.querySelectorAll(pSelector);
+        foundElements;
 
     // get root node
-    if ( typeof pSelector === 'string' ) {
-        rootElement = document.querySelectorAll(pSelector)['0'] || false;
-    } else if ( pSelector instanceof HTMLElement ){
-        rootElement = pSelector;
+    if ( !!pTarget && !!pTarget['nodeName'] ) {
+        rootNode = pTarget;
+    } else if ( !pTarget && !!pSelector['nodeName'] ){
+        rootNode = pSelector;
     } else {
-        return;
+        rootNode = document.body;
     }
 
+    foundElements = rootNode.querySelectorAll( '[data-tb]' );
+
     // add self if data-tb attribute present
-    if ( rootElement && rootElement.getAttribute('data-tb') ){
+    if ( rootNode && rootNode.getAttribute('data-tb') ){
         selected.push( rootElement );
     }
 
     // add other elements
-    if ( !!elements['length'] ){
+    if ( !!foundElements['length'] ){
         [].map.call(
-            elements,
+            foundElements,
             function( element ){
                 selected.push( element );
             }
@@ -2507,7 +2509,11 @@ tb.bind = function( pSelector ){
             namespaces.forEach(
                 function( namespace ){
                     if ( !selectedElement[namespace] ){
-                        selectedElement[namespace] = new tb( namespace, null, selectedElement );        // create tb object
+                        selectedElement[namespace] = new tb(
+                            namespace,
+                            null,
+                            selectedElement
+                        );        // create tb object
                     }
                 }
             );
