@@ -67,8 +67,9 @@ tb = (function(){
 
                 return function(){
                     var arr = this.toArray(),
-                        ret = method.apply( arr, [].splice( arguments ) );
-                    console.log( 'pMethodName', pMethodName, method, arr, ret );
+                        args = [].splice.call( arguments ),
+                        ret = method.apply( arr, args );
+                    console.log( 'pMethodName', pMethodName, method, arr, args, ret );
                     return new dom( ret );
                 };
             };
