@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.28 - 2016-07-06 */
+/*! twobirds-core - v7.0.32 - 2016-07-06 */
 
 // POLYFILLS
 
@@ -2749,6 +2749,7 @@ tb.dom = (function () {
             appendTo: appendTo,
             attr: attr,
             children: children,
+            descendants: descendants,
             empty: empty,
             hide: hide,
             html: html,
@@ -3051,7 +3052,7 @@ tb.dom = (function () {
             }
 
             that.forEach(function (pElement) {
-                if ( check && -1 === [].indexOf.call( check, pElement) ) {
+                if ( -1 === [].indexOf.call( check, pElement) ) {
                     result.add(pElement);
                 }
             });
@@ -3097,7 +3098,7 @@ tb.dom = (function () {
                         ){
                         nextNode = domNode.parentNode;
                         if ([].indexOf.call(result, domNode) === -1
-                            && ( !check && -1 < [].indexOf.call( check, domNode ) )
+                            && ( !check || -1 < [].indexOf.call( check, domNode ) )
                         ) {
                             result.push(domNode);
                         }
@@ -3119,7 +3120,7 @@ tb.dom = (function () {
                     var domNode = pDomNode.parentNode;
 
                     if ( -1 === [].indexOf.call( result, domNode )
-                        && ( !check && -1 < [].indexOf.call( check, domNode ) )
+                        && ( !check ||  -1 < [].indexOf.call( check, domNode ) )
                     ){
                         [].push.call( result, domNode);
                     }
@@ -3142,7 +3143,7 @@ tb.dom = (function () {
                         pDomNode.children,
                         function( pChildNode ){
                             if ( -1 === [].indexOf.call( result, pChildNode )
-                                && ( !check && -1 < [].indexOf.call( check, pChildNode ) )
+                                && ( !check || -1 < [].indexOf.call( check, pChildNode ) )
                             ){
                                 result.push( pChildNode );
                             }
@@ -3157,8 +3158,7 @@ tb.dom = (function () {
         function descendants(pSelector) {
 
             var that = this,
-                result = new tb.dom(),
-                check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
+                result = new tb.dom();
 
             that.forEach(
                 function (pDomNode) {
@@ -3168,7 +3168,7 @@ tb.dom = (function () {
                         pDomNode.querySelectorAll( pSelector || '*' ),
                         function( pDescendantNode ){
                             if ( -1 === [].indexOf.call( result, pDescendantNode )
-                                && ( !check && -1 < [].indexOf.call( check, pDescendantNode ) )
+                                && ( !check || -1 < [].indexOf.call( check, pDescendantNode ) )
                                 ){
                                 result.push( pDescendantNode );
                             }
