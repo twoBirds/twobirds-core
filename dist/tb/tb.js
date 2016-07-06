@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.21
+ * @version         v7.0.22
  *
  */
 
@@ -3426,7 +3426,7 @@ tb.request = (function () {
 
         xmlreq = getConnection(uid);
         if (xmlreq) {
-            if ( method === 'GET' && params !== '') {
+            if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
                 url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
             }
             xmlreq.src=url;
