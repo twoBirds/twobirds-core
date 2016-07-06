@@ -1,11 +1,11 @@
 /**
- * twoBirds V7 core functionality
- *
- * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
- * @copyright       copyright (c) 2006- Frank Thürigen
- * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.22
- *
+ twoBirds V7 core functionality
+
+ @author          frank.thuerigen <frank_thuerigen@yahoo.de>
+ @copyright       copyright (c) 2006- Frank Thürigen
+ @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
+ @version         v7.0.22
+
  */
 
 // POLYFILLS
@@ -69,7 +69,7 @@ tb = (function(){
                     var arr = this.toArray(),
                         ret = method.apply( arr, arguments );
 
-                    return (new dom( ret )).unique();
+                    return (new tb.dom( ret )).unique();
                 };
             }
 
@@ -140,7 +140,7 @@ tb = (function(){
 
                     } else { // it is an HTML string
 
-                        return new dom( DOM );
+                        return new tb.dom( DOM );
 
                     }
                 }
@@ -188,6 +188,7 @@ tb = (function(){
                 off: off,
                 on: on,
                 one: one,
+                parent: parent,
                 parents: parents,
                 push: push,
                 removeAttr: removeAttr,
@@ -198,7 +199,7 @@ tb = (function(){
                 val: val
             };
 
-            return new dom( pSelector, pDomNode );
+            return new tb.dom( pSelector, pDomNode );
 
             // INTERNAL ONLY Private Functions
             function _addEvent( pDomNode, pEventName, pHandler ) {
@@ -308,6 +309,8 @@ tb = (function(){
                                     }
                                 }
                             );
+                        } else if ( typeof pElement === 'string' && regExHtml.match(pElement) ){
+                            tb.dom( pDomNode ).append( tb.dom( pElement ) );
                         }
                     }
                 );
@@ -335,23 +338,23 @@ tb = (function(){
                 return that;
             }
 
-            function insertAfter( pElement ){
+            function insertAfter( pTarget ){
                 var that = this,
-                    nextDomNode = pElement.nextSibling || false;
+                    nextDomNode = pTarget.nextSibling || false;
 
                 that.forEach(
                     function( pDomNode ){
                         if ( !!pDomNode.nodeType ){
 
                             if ( nextDomNode ){
-                                pElement
+                                pTarget
                                     .parentElement
                                     .insertBefore(
                                         pDomNode.cloneNode( true ),
                                         nextDomNode
                                     );
                             } else {
-                                pElement
+                                pTarget
                                     .parentElement
                                     .appendChild(
                                         pDomNode.cloneNode( true )
@@ -472,12 +475,14 @@ tb = (function(){
             function html( pHtml ) {
                 var that = this;
 
-                if ( typeof pHtml === 'string' ){
-                    that.forEach(
-                        function( pNode ){
-                            pNode.innerHTML = pHtml;
-                        }
-                    )
+                if ( !!pHtml ){
+                    if ( typeof pHtml === 'string' ) {
+                        that.forEach(
+                            function (pNode) {
+                                pNode.innerHTML = pHtml;
+                            }
+                        )
+                    }
                 } else {
                     return !!that[0] ? that[0].innerHTML : '';
                 }
@@ -525,16 +530,20 @@ tb = (function(){
                     }
                 );
 
-                return new dom( result );
+                return new tb.dom( result );
             }
 
             function not(pSelector) {
                 var that = this,
-                    result = new dom(),
-                    compare = new dom(pSelector);
+                    result = new tb.dom(),
+                    check = pSelector ? document.querySelectorAll( pSelector ) : false;
+
+                if ( !check ){
+                    return that;
+                }
 
                 that.forEach(function (pElement) {
-                    if (-1 === compare.indexOf(pElement)) {
+                    if (-1 === check.indexOf(pElement) ) {
                         result.add(pElement);
                     }
                 });
@@ -555,7 +564,7 @@ tb = (function(){
                 } else if (!!pElements['nodeType']) { // if DOM node given add it
                     that.push(pElements);
                 } else if (typeof pElements === 'string') { // DOM selector given add its results
-                    that.add(new dom(pElements).toArray());
+                    that.add(new tb.dom(pElements).toArray());
                 }
 
                 result = that.unique();
@@ -566,7 +575,8 @@ tb = (function(){
             function parents(pSelector) {
 
                 var that = this,
-                    result = new dom(),
+                    result = new tb.dom(),
+                    check = pSelector ? document.querySelectorAll( pSelector ) : false,
                     nextNode;
 
                 that.forEach(
@@ -574,11 +584,13 @@ tb = (function(){
                         var domNode = pDomNode.parentNode;
 
                         while (!!domNode
-                        && !!domNode['tagName']
-                        && domNode['tagName'] !== 'html'
-                            ) {
+                            && !!domNode['tagName']
+                            && domNode['tagName'] !== 'html'
+                        ){
                             nextNode = domNode.parentNode;
-                            if ([].indexOf.call(result, domNode) === -1) {
+                            if ([].indexOf.call(result, domNode) === -1
+                                && ( !!check && -1 < [].indexOf.call( check, domNode ) )
+                            ) {
                                 result.push(domNode);
                             }
                             domNode = nextNode;
@@ -586,9 +598,25 @@ tb = (function(){
                     }
                 );
 
-                if (!!pSelector) {
-                    result = result.filter(pSelector);
-                }
+                return result;
+            }
+
+            function parent(pSelector){
+                var that = this,
+                    result = new tb.dom(),
+                    check = pSelector ? document.querySelectorAll( pSelector ) : false;
+
+                that.forEach(
+                    function (pDomNode) {
+                        var domNode = pDomNode.parentNode;
+
+                        if ( -1 === [].indexOf.call( result, domNode )
+                            && ( !!check && -1 < [].indexOf.call( check, domNode ) )
+                        ){
+                            [].push.call( result, domNode);
+                        }
+                    }
+                );
 
                 return result;
             }
@@ -596,22 +624,50 @@ tb = (function(){
             function children(pSelector) {
 
                 var that = this,
-                    result = new dom();
+                    result = new tb.dom();
 
                 that.forEach(
                     function (pDomNode) {
+                        var check = pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
+
                         [].forEach.call(
                             pDomNode.children,
-                            function( pDomNode ){
-                                result.push( pDomNode );
+                            function( pChildNode ){
+                                if ( -1 === [].indexOf.call( result, pChildNode )
+                                    && ( !!check && -1 < [].indexOf.call( check, pChildNode ) )
+                                ){
+                                    result.push( pChildNode );
+                                }
                             }
                         );
                     }
                 );
 
-                if (!!pSelector) {
-                    result = result.filter( pSelector );
-                }
+                return result;
+            }
+
+            function descendants(pSelector) {
+
+                var that = this,
+                    result = new tb.dom(),
+                    check = pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
+
+                that.forEach(
+                    function (pDomNode) {
+                        var check = pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
+
+                        [].forEach.call(
+                            pDomNode.querySelectorAll( pSelector || '*' ),
+                            function( pDescendantNode ){
+                                if ( -1 === [].indexOf.call( result, pDescendantNode )
+                                    && ( !!check && -1 < [].indexOf.call( check, pDescendantNode )
+                                    ){
+                                    result.push( pDescendantNode );
+                                }
+                            }
+                        );
+                    }
+                );
 
                 return result;
             }
@@ -760,7 +816,7 @@ tb = (function(){
             function filter( pSelector ) {
 
                 var that = this,
-                    compare = new dom( pSelector ),// functions and undefined will be ignored, so empty result then
+                    compare = new tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
                     result;
 
                 if ( pSelector === 'undefined' ) return that;    // unchanged
@@ -780,7 +836,7 @@ tb = (function(){
                     return result;
                 }
 
-                return new dom(result);
+                return new tb.dom(result);
 
             }
 
@@ -800,7 +856,7 @@ tb = (function(){
                 } else if (!!pSelector['nodeType']) { // if DOM node given add it
                     [].push.call(that, pSelector);
                 } else if (typeof pSelector === 'string') { // DOM selector given add its results
-                    that.push(new dom(pSelector).toArray());
+                    that.push(new tb.dom(pSelector).toArray());
                 }
 
                 result = that.unique();
