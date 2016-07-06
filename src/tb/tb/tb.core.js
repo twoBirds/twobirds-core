@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.12
+ * @version         v7.0.13
  *
  */
 
