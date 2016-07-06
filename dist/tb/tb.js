@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.17
+ * @version         v7.0.19
  *
  */
 
@@ -2647,7 +2647,7 @@ tb.Model = function ( pConfig ) {
         {   // default settings, reference only
             'create': {
                 url: '',
-                method: 'PUT',
+                method: 'POST',
                 success: function( pResult ){
                     that.data( pResult );
                 }
@@ -2661,7 +2661,7 @@ tb.Model = function ( pConfig ) {
             },
             'update': {
                 url: '',
-                method: 'POST',
+                method: 'PUT',
                 success: function( pResult ){
                     that.data( pResult );
                 }
