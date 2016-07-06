@@ -166,7 +166,7 @@
             "author": "frank.thuerigen <frank_thuerigen@yahoo.de>",
             "copyright": "copyright (c) 2006- Frank Thürigen",
             "license": "http://www.gnu.org/copyleft/gpl.html GNU GPL v3",
-            "version": "v7.0.16",
+            "version": "v7.0.17",
             "class": "tb.TbEvent"
         },
         {
@@ -917,7 +917,7 @@
                             "description": "(string, omitted) the URL to call"
                         },
                         {
-                            "name": "parms:",
+                            "name": "params:",
                             "description": "(object, optional) a hash object containing the parameters to post"
                         },
                         {

@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.16
+ * @version         v7.0.17
  *
  */
 
@@ -3436,7 +3436,7 @@ tb.request = (function () {
      * @returns a twoBirds request object
      *
      * @param pOptions.url: (string, omitted) the URL to call
-     * @param pOptions.parms: (object, optional) a hash object containing the parameters to post
+     * @param pOptions.params: (object, optional) a hash object containing the parameters to post
      * @param pOptions.method: (string, optional, defaults to 'POST') the XHR method
      * @param pOptions.headers: (object, optional) a hash object containing additional XHR headers
      * @param pOptions.success: (function, optional) the function to call with the request result
@@ -3453,7 +3453,7 @@ tb.request = (function () {
             xmlreq = false,
             method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
             url = pOptions.url,
-            parms = '',
+            params = '',
             successHandler = pOptions.success || tb.nop,
             errorHandler = pOptions.error || tb.nop,
             stateHandler = pOptions.statechange || tb.nop,
@@ -3461,18 +3461,18 @@ tb.request = (function () {
             timeout = pOptions.timeout || false,
             isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
 
-        if (typeof pOptions.parms != 'undefined') {
+        if (typeof pOptions.params != 'undefined') {
             var ct = ( pOptions.headers && pOptions.headers['Content-Type']
                 ? pOptions.headers['Content-Type']
                 : 'application/x-www-form-urlencoded' );
 
             switch ( ct ){
                 case 'application/json':
-                    parms = JSON.stringify( pOptions.parms );
+                    params = JSON.stringify( pOptions.params );
                     break;
                 default:
-                    for (var i in pOptions.parms) { // concat parameter string
-                        parms += ((parms.length > 0 ? '&' : '') + i + '=' + pOptions.parms[i]);
+                    for (var i in pOptions.params) { // concat parameter string
+                        params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
                     }
                     break;
             }
@@ -3488,8 +3488,8 @@ tb.request = (function () {
 
         xmlreq = getConnection(uid);
         if (xmlreq) {
-            if ( method === 'GET' && parms !== '') {
-                url = url + (url.indexOf('?') < 0 ? '?' : '&') + parms;
+            if ( method === 'GET' && params !== '') {
+                url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
             }
             xmlreq.src=url;
 
@@ -3535,9 +3535,9 @@ tb.request = (function () {
 
             // send
             if (method === 'POST' || method === 'PUT') {
-                if (parms !== '') {
+                if (params !== '') {
                     xmlreq.connection.setRequestHeader('Content-Type', ct);
-                    xmlreq.connection.send(parms);
+                    xmlreq.connection.send(params);
                 }
                 else {
                     xmlreq.connection.send(null);
