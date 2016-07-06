@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.14
+ * @version         v7.0.16
  *
  */
 
@@ -3382,7 +3382,7 @@ tb.request = (function () {
         }
         else {
             var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
-            pFailure.call( pFailure, pReq );
+            pFailure.call( pFailure, responseObject );
         }
         release(pReq);
     }
