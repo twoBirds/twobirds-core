@@ -2492,7 +2492,7 @@ tb.bind = function( pSelector, pTarget ){
 
     // add self if data-tb attribute present
     if ( rootNode && rootNode.getAttribute('data-tb') ){
-        selected.push( rootElement );
+        selected.push( rootNode );
     }
 
     // add other elements
