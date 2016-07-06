@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.27 - 2016-07-06 */
+/*! twobirds-core - v7.0.28 - 2016-07-06 */
 
 // POLYFILLS
 
@@ -3097,7 +3097,7 @@ tb.dom = (function () {
                         ){
                         nextNode = domNode.parentNode;
                         if ([].indexOf.call(result, domNode) === -1
-                            && ( !!check && -1 < [].indexOf.call( check, domNode ) )
+                            && ( !check && -1 < [].indexOf.call( check, domNode ) )
                         ) {
                             result.push(domNode);
                         }
@@ -3119,7 +3119,7 @@ tb.dom = (function () {
                     var domNode = pDomNode.parentNode;
 
                     if ( -1 === [].indexOf.call( result, domNode )
-                        && ( !!check && -1 < [].indexOf.call( check, domNode ) )
+                        && ( !check && -1 < [].indexOf.call( check, domNode ) )
                     ){
                         [].push.call( result, domNode);
                     }
@@ -3142,7 +3142,7 @@ tb.dom = (function () {
                         pDomNode.children,
                         function( pChildNode ){
                             if ( -1 === [].indexOf.call( result, pChildNode )
-                                && ( !!check && -1 < [].indexOf.call( check, pChildNode ) )
+                                && ( !check && -1 < [].indexOf.call( check, pChildNode ) )
                             ){
                                 result.push( pChildNode );
                             }
@@ -3168,7 +3168,7 @@ tb.dom = (function () {
                         pDomNode.querySelectorAll( pSelector || '*' ),
                         function( pDescendantNode ){
                             if ( -1 === [].indexOf.call( result, pDescendantNode )
-                                && ( !!check && -1 < [].indexOf.call( check, pDescendantNode ) )
+                                && ( !check && -1 < [].indexOf.call( check, pDescendantNode ) )
                                 ){
                                 result.push( pDescendantNode );
                             }
