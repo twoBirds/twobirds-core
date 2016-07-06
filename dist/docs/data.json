@@ -166,7 +166,7 @@
             "author": "frank.thuerigen <frank_thuerigen@yahoo.de>",
             "copyright": "copyright (c) 2006- Frank Thürigen",
             "license": "http://www.gnu.org/copyleft/gpl.html GNU GPL v3",
-            "version": "v7.0.19",
+            "version": "v7.0.21",
             "class": "tb.TbEvent"
         },
         {
@@ -799,7 +799,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2860,
+            "line": 2798,
             "description": "tb.extend() function\nextend an object by another objects properties, always a deep copy",
             "itemtype": "method",
             "name": "extend",
@@ -825,7 +825,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2900,
+            "line": 2838,
             "description": "tb.parse() function\nfor each key/value in pObject, check string for {key}\nreplace occurence with <value>",
             "itemtype": "method",
             "name": "parse",
@@ -851,14 +851,14 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2958,
+            "line": 2896,
             "description": "requirement handling",
             "class": "tb.Model",
             "namespace": "tb"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3275,
+            "line": 3213,
             "memberof": "tb",
             "field": "",
             "description": "the twoBirds request object",
@@ -867,43 +867,43 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3282,
+            "line": 3220,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3326,
+            "line": 3264,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3343,
+            "line": 3281,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3365,
+            "line": 3303,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3390,
+            "line": 3328,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3404,
+            "line": 3342,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3432,
+            "line": 3370,
             "name": "",
             "itemtype": "method",
             "params": [
@@ -964,7 +964,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 3572,
+            "line": 3510,
             "description": "document.ready bootstrap",
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
@@ -1017,31 +1017,31 @@
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2860"
+            "line": " dist/tb/tb.js:2798"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2900"
+            "line": " dist/tb/tb.js:2838"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " dist/tb/tb.js:3275"
+            "line": " dist/tb/tb.js:3213"
         },
         {
             "message": "unknown tag: field",
-            "line": " dist/tb/tb.js:3275"
+            "line": " dist/tb/tb.js:3213"
         },
         {
             "message": "unknown tag: name",
-            "line": " dist/tb/tb.js:3432"
+            "line": " dist/tb/tb.js:3370"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:3432"
+            "line": " dist/tb/tb.js:3370"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " dist/tb/tb.js:3432"
+            "line": " dist/tb/tb.js:3370"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1049,39 +1049,39 @@
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " dist/tb/tb.js:2958"
+            "line": " dist/tb/tb.js:2896"
         },
         {
             "message": "Missing item type\nthe twoBirds request object",
-            "line": " dist/tb/tb.js:3275"
+            "line": " dist/tb/tb.js:3213"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:3282"
+            "line": " dist/tb/tb.js:3220"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:3326"
+            "line": " dist/tb/tb.js:3264"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:3343"
+            "line": " dist/tb/tb.js:3281"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:3365"
+            "line": " dist/tb/tb.js:3303"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:3390"
+            "line": " dist/tb/tb.js:3328"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:3404"
+            "line": " dist/tb/tb.js:3342"
         },
         {
             "message": "Missing item type\ndocument.ready bootstrap",
-            "line": " dist/tb/tb.js:3572"
+            "line": " dist/tb/tb.js:3510"
         }
     ]
 }

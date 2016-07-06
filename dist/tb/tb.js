@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.19
+ * @version         v7.0.21
  *
  */
 
@@ -2698,68 +2698,24 @@ tb.Model.prototype = (function(){
         return result;
     }
 
-    // check parameters for any call
-    function parmCheck( pCompare, pAgainst ){ // compare = parameters handed over in call
-
-        var regEx = /^\{.*\}$/, // rexEx to detect parameter mapping
-            isMapVar,
-            against;
-
-        // make a deep copy of target object
-        against = ( JSON.parse( JSON.stringify( pAgainst ) ) );
-
-        Object
-            .keys( against )
-            .forEach(
-                function( key ){
-                    var value = against[ key ];
-
-                    // determine whether there is a mapped variable
-                    isMapVar = !!regEx.exec( value ) && !!regEx.exec( value )[0];
-
-                    // replace mapped value by actual value
-                    if ( isMapVar ){
-                        against[ key ] = tb.parse( value, pCompare );
-                        if ( !!regEx.exec( against[ key ] ) && !!regEx.exec( against[ key ] )[0] ){
-                            console.error( 'mapped variable not found in data:', value, !!regEx.exec( value )[0] );
-                        }
-                    } else {
-                        if ( pCompare.hasOwnProperty( key ) ) {
-                            against[ key ] = pCompare[ key ];
-                        } else {
-                            console.error( 'variable not found in data:', key, 'in', pCompare );
-                        }
-                    }
-                }
-            );
-
-        return pAgainst;
-    }
-
     return {
 
         'create': function( pParams ){
-            var o = tb.extend( {}, this.config.create ),
-                p = {},
-                params = pParams || {}; // parameter object
+            var o = tb.extend( {}, this.config.create );
 
             if ( !o.url ){
                 console.error( 'no create url given!');
                 return;
             }
 
-            if ( o.params ){ // this indicates get or post parameters are expected
-                p = parmCheck( params, o.params );
-            }
-
             tb.request(
                 tb.extend(
                     o,
                     { // if params given, use microparse to fill them in url
-                        url: p ? tb.parse( this.config.create.url, p ) : this.config.create.url
+                        url: pParams ? tb.parse( this.config.create.url, pParams ) : this.config.create.url
                     },
                     {
-                        data: p ? p : {}
+                        params: pParams
                     }
                 )
             );
@@ -2768,27 +2724,21 @@ tb.Model.prototype = (function(){
 
         'read': function( pParams ){
 
-            var o = tb.extend( {}, this.config.read ),
-                p = {},
-                params = pParams || {}; // parameter object
+            var o = tb.extend( {}, this.config.read );
 
             if ( !o.url ){
                 console.error( 'no read url given!');
                 return;
             }
 
-            if ( o.params ){ // this indicates get or post parameters are expected
-                p = parmCheck( pParams, o.params );
-            }
-
             tb.request(
                 tb.extend(
                     o,
                     { // if params given, use microparse to fill them in url
-                        url: p ? tb.parse( this.config.read.url, p ) : this.config.read.url
+                        url: pParams ? tb.parse( this.config.read.url, pParams ) : this.config.read.url
                     },
                     {
-                        data: p ? p : {}
+                        params: pParams
                     }
                 )
             );
@@ -2796,27 +2746,21 @@ tb.Model.prototype = (function(){
         },
 
         'update': function( pParams ){
-            var o = tb.extend( true, {}, this.config.update ),
-                p = {},
-                params = pParams || {}; // parameter object
+            var o = tb.extend( {}, this.config.update );
 
             if ( !o.url ){
                 console.error( 'no update url given!');
                 return;
             }
 
-            if ( o.params ){ // this indicates get or post parameters are expected
-                p = parmCheck( params, o.params );
-            }
-
             tb.request(
                 tb.extend(
                     o,
                     { // if params given, use microparse to fill them in url
-                        url: p ? tb.parse( this.config.update.url, p ) : this.config.update.url
+                        url: pParams ? tb.parse( this.config.update.url, pParams ) : this.config.update.url
                     },
                     {
-                        data: p ? p : {}
+                        params: pParams
                     }
                 )
             );
@@ -2824,27 +2768,21 @@ tb.Model.prototype = (function(){
         },
 
         'delete': function( pParams ){
-            var o = tb.extend( true, {}, this.config['delete'] ),
-                p = {},
-                params = pParams || {}; // parameter object
+            var o = tb.extend( {}, this.config['delete'] );
 
             if ( !o.url ){
                 console.error( 'no delete url given!');
                 return;
             }
 
-            if ( o.params ){ // this indicates get or post parameters are expected
-                p = parmCheck( params, o.params );
-            }
-
             tb.request(
                 tb.extend(
                     o,
                     { // if params given, use microparse to fill them in url
-                        url: p ? tb.parse( this.config.delete.url, p ) : this.config.delete.url
+                        url: pParams ? tb.parse( this.config.delete.url, pParams ) : this.config.delete.url
                     },
                     {
-                        data: p ? p : {}
+                        params: pParams
                     }
                 )
             );
