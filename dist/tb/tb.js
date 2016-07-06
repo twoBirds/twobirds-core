@@ -1,4 +1,13 @@
-/*! twobirds-core - v7.0.32 - 2016-07-06 */
+/*! twobirds-core - v7.0.32 - 2016-07-07 */
+
+/**
+ twoBirds V7 core functionality
+
+ @author          frank.thuerigen <frank_thuerigen@yahoo.de>
+ @copyright       copyright (c) 2006- Frank Thürigen
+ @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
+
+ */
 
 // POLYFILLS
 
@@ -2598,6 +2607,17 @@ tb.request = (function () {
 })();
 
 ;
+/**
+ tb.dom() function
+ jquery like selector engine
+
+ @function dom
+ @namespace tb
+ @static
+
+ @param {string|domNode|array} a selector string, a dom node or an array of dom nodes
+ @return {string} - result string
+ */
 tb.dom = (function () {
 
     // Variables

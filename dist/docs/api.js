@@ -4,7 +4,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "TbSelector",
         "tb",
         "tb.Event",
-        "tb.request.tb.Model"
+        "tb.tb.Model"
     ],
     "modules": [],
     "allModules": [],
