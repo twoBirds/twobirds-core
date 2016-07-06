@@ -455,7 +455,7 @@ tb.dom = (function () {
         function not(pSelector) {
             var that = this,
                 result = new tb.dom(),
-                check = pSelector ? document.querySelectorAll( pSelector ) : false;
+                check = !!pSelector ? document.querySelectorAll( pSelector ) : false;
 
             if ( !check ){
                 return that;
@@ -495,7 +495,7 @@ tb.dom = (function () {
 
             var that = this,
                 result = new tb.dom(),
-                check = pSelector ? document.querySelectorAll( pSelector ) : false,
+                check = !!pSelector ? document.querySelectorAll( pSelector ) : false,
                 nextNode;
 
             that.forEach(
@@ -523,7 +523,7 @@ tb.dom = (function () {
         function parent(pSelector){
             var that = this,
                 result = new tb.dom(),
-                check = pSelector ? document.querySelectorAll( pSelector ) : false;
+                check = !!pSelector ? document.querySelectorAll( pSelector ) : false;
 
             that.forEach(
                 function (pDomNode) {
@@ -547,7 +547,7 @@ tb.dom = (function () {
 
             that.forEach(
                 function (pDomNode) {
-                    var check = pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
+                    var check = !!pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
 
                     [].forEach.call(
                         pDomNode.children,
@@ -569,11 +569,11 @@ tb.dom = (function () {
 
             var that = this,
                 result = new tb.dom(),
-                check = pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
+                check = !!pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
 
             that.forEach(
                 function (pDomNode) {
-                    var check = pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
+                    var check = !!pSelector ? pDomNode.querySelectorAll( pSelector ) : false;
 
                     [].forEach.call(
                         pDomNode.querySelectorAll( pSelector || '*' ),
