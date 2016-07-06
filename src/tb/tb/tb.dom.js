@@ -462,7 +462,7 @@ tb.dom = (function () {
             }
 
             that.forEach(function (pElement) {
-                if (-1 === check.indexOf(pElement) ) {
+                if ( check && -1 === check.indexOf(pElement) ) {
                     result.add(pElement);
                 }
             });
