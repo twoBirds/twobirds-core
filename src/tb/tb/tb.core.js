@@ -4,7 +4,7 @@
  * @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  * @copyright       copyright (c) 2006- Frank Thürigen
  * @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
- * @version         v7.0.19
+ * @version         v7.0.20
  *
  */
 
@@ -2733,7 +2733,7 @@ tb.Model.prototype = (function(){
                 }
             );
 
-        return pAgainst;
+        return pCompare;
     }
 
     return {
@@ -2759,7 +2759,7 @@ tb.Model.prototype = (function(){
                         url: p ? tb.parse( this.config.create.url, p ) : this.config.create.url
                     },
                     {
-                        data: p ? p : {}
+                        params: p ? p : {}
                     }
                 )
             );
@@ -2788,7 +2788,7 @@ tb.Model.prototype = (function(){
                         url: p ? tb.parse( this.config.read.url, p ) : this.config.read.url
                     },
                     {
-                        data: p ? p : {}
+                        params: p ? p : {}
                     }
                 )
             );
@@ -2796,7 +2796,7 @@ tb.Model.prototype = (function(){
         },
 
         'update': function( pParams ){
-            var o = tb.extend( true, {}, this.config.update ),
+            var o = tb.extend( {}, this.config.update ),
                 p = {},
                 params = pParams || {}; // parameter object
 
@@ -2816,7 +2816,7 @@ tb.Model.prototype = (function(){
                         url: p ? tb.parse( this.config.update.url, p ) : this.config.update.url
                     },
                     {
-                        data: p ? p : {}
+                        params: p ? p : {}
                     }
                 )
             );
@@ -2824,7 +2824,7 @@ tb.Model.prototype = (function(){
         },
 
         'delete': function( pParams ){
-            var o = tb.extend( true, {}, this.config['delete'] ),
+            var o = tb.extend( {}, this.config['delete'] ),
                 p = {},
                 params = pParams || {}; // parameter object
 
@@ -2844,7 +2844,7 @@ tb.Model.prototype = (function(){
                         url: p ? tb.parse( this.config.delete.url, p ) : this.config.delete.url
                     },
                     {
-                        data: p ? p : {}
+                        params: p ? p : {}
                     }
                 )
             );
