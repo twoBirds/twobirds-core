@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.25 - 2016-07-06 */
+/*! twobirds-core - v7.0.27 - 2016-07-06 */
 
 // POLYFILLS
 
@@ -3051,7 +3051,7 @@ tb.dom = (function () {
             }
 
             that.forEach(function (pElement) {
-                if (-1 === check.indexOf(pElement) ) {
+                if ( check && -1 === [].indexOf.call( check, pElement) ) {
                     result.add(pElement);
                 }
             });
