@@ -5,7 +5,9 @@ module.exports = function(grunt) {
 
         clean: {
             clean: [
-                "dist"
+                "dist",
+                "src/tb/min",
+                "src/tb/tb.min.js"
             ]
         },
 
@@ -16,6 +18,12 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: 'src/tb',
                         src: '*.js',
+                        dest: 'dist/tb'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/tb',
+                        src: '*.js.map',
                         dest: 'dist/tb'
                     },
                     {
@@ -47,7 +55,8 @@ module.exports = function(grunt) {
                     },
                     {
                         'src/tb/tb.min.js': [
-                            'src/tb/min/tb.core.js'
+                            'src/tb/min/tb.core.js',
+                            'src/tb/min/tb.dom.js'
                         ]
                     }
                 ]
@@ -56,13 +65,18 @@ module.exports = function(grunt) {
 
         concat: {
             options: {
-                separator: ';'
+                separator: '\n;\n',
+                stripBanners: true,
+                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+                '<%= grunt.template.today("yyyy-mm-dd") %> */\n\n'
             },
             dist: {
                 src: [
-                    'src/tb/tb//**.*.js'
+                    'src/tb/tb/tb.core.js',
+                    'src/tb/tb/tb.dom.js'
                 ],
-                dest: 'src/tb/tb.js'
+                dest: 'src/tb/tb.js',
+                nonull: true
             }
         },
 
@@ -90,7 +104,7 @@ module.exports = function(grunt) {
             compile: {
                 name: 'twoBirds',
                 description: 'twoBirds WebComponent Framework',
-                version: '7.0.3',
+                version: 'v<%= pkg.version%>',
                 url: 'http://www.tb-core.org',
                 options: {
                     paths: 'dist/',
