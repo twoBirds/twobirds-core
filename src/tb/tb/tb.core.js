@@ -1344,6 +1344,11 @@ tb = (function(){
 
     })();
 
+    TbSelector.prototype = {};
+    for ( var i in tb.prototype ) if ( tb.prototype.hasOwnProperty(i)){
+        TbSelector.prototype[i] = tb.prototype[i];
+    }
+    
     return tb;
 
 })();

@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.38 - 2016-07-07 */
+/*! twobirds-core - v7.0.41 - 2016-07-07 */
 
 /**
  twoBirds V7 core functionality
@@ -107,20 +107,20 @@ tb = (function(){
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
 
-                    console.log( pSelector );
+                    //console.log( pSelector );
                     tb.dom( '[data-tb]' )
                         .forEach(
                             function ( pDomNode ) {
-                                console.log( pDomNode );
+                                //console.log( pDomNode );
                                 for ( var i in pDomNode )
                                     if ( pDomNode.hasOwnProperty( i ) ){
                                         var propVal = pDomNode[i];
-                                        console.log( propVal, pDomNode.hasOwnProperty( i ), propVal instanceof tb, !!propVal['namespace']);
+                                        //console.log( propVal, pDomNode.hasOwnProperty( i ), propVal instanceof tb, !!propVal['namespace']);
                                         if ( propVal instanceof tb
                                             && !!propVal['namespace']
                                             && !!propVal.namespace.match(pSelector)
                                         ){
-                                            tbElements.push(node);
+                                            tbElements.push(propVal);
                                         }
                                     }
 
@@ -1346,6 +1346,11 @@ tb = (function(){
 
     })();
 
+    TbSelector.prototype = {};
+    for ( var i in tb.prototype ) if ( tb.prototype.hasOwnProperty(i)){
+        TbSelector.prototype[i] = tb.prototype[i];
+    }
+    
     return tb;
 
 })();

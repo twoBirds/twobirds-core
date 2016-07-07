@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.0.38",
+        "version": "v7.0.41",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -98,7 +98,7 @@
             "extension_for": [],
             "namespace": "tb",
             "file": "dist/tb/tb.js",
-            "line": 1353,
+            "line": 1358,
             "description": "standard twobirds event, internal use only",
             "is_constructor": 1,
             "access": "private",
@@ -139,7 +139,7 @@
             "extension_for": [],
             "namespace": "tb",
             "file": "dist/tb/tb.js",
-            "line": 1701,
+            "line": 1706,
             "description": "tb.Model constructor\ncreate and return a simple CRUD model",
             "is_constructor": 1,
             "params": [
@@ -619,7 +619,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1377,
+            "line": 1382,
             "description": "stop propagation after all handlers on this object have run",
             "itemtype": "method",
             "name": "stopPropagation",
@@ -631,7 +631,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1389,
+            "line": 1394,
             "description": "stop propagation immediately after this handler has run",
             "itemtype": "method",
             "name": "stopImmediatePropagation",
@@ -643,7 +643,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1431,
+            "line": 1436,
             "description": "stops event handling",
             "itemtype": "method",
             "name": "stop",
@@ -664,7 +664,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1451,
+            "line": 1456,
             "description": "returns a unique id",
             "itemtype": "method",
             "name": "getId",
@@ -678,7 +678,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1466,
+            "line": 1471,
             "description": "tb.namespace() function\n\nsample calls:\ntb.namespace( 'app.Dashboard' ) gets the constructor for dashboard\n\nand in the dashboard constructor:\n\ntb.namespace( 'app', true ).Dashboard = function(){ ...",
             "itemtype": "method",
             "name": "namespace",
@@ -711,7 +711,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1524,
+            "line": 1529,
             "description": "tb.bind() function\n\nsample calls:\n\ntb.bind( document.body )\n\n- scans the given element and all of its descendants\n  in the DOM and looks for attributes \"data-tb\" in the nodes.\n- resulting list will be scanned for those nodes that do not already\n  have an tb object inside.\n- creates a new tb object based on the class namespace given\n  in the \"data-tb\" attribute\n- stores it in the DOM element\n\ntb.bind( document.body, 'n1.n2.<className>' [ , <config data> ] )\n\n- creates a new tb object based on the 2nd parameter, giving 3rd as constructor parameter\n- stores it in the DOM element\nTHIS VARIANT WILL overwrite ANY tbo OBJECT THAT ALREADY RESIDES IN THE DOM NODE!",
             "itemtype": "method",
             "name": "bind",
@@ -732,7 +732,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1607,
+            "line": 1612,
             "description": "function tb.observable()\n\n- creates a function\n- initializes a value to observe\n- returns this function\n\nsample calls:\n\no = tb.observable( {} );\no( { newData: 'newData' } ); // change observable value\no.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once",
             "itemtype": "method",
             "name": "observable",
@@ -753,7 +753,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1874,
+            "line": 1879,
             "description": "tb.extend() function\nextend an object by another objects properties, always a deep copy",
             "itemtype": "method",
             "name": "extend",
@@ -779,7 +779,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1914,
+            "line": 1919,
             "description": "tb.parse() function\nfor each key/value in pObject, check string for {key}\nreplace occurence with <value>",
             "itemtype": "method",
             "name": "parse",
@@ -805,14 +805,14 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1972,
+            "line": 1977,
             "description": "requirement handling",
             "class": "tb.Model",
             "namespace": "tb"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2289,
+            "line": 2294,
             "memberof": "tb",
             "field": "",
             "description": "the twoBirds request object",
@@ -821,43 +821,43 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2296,
+            "line": 2301,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2340,
+            "line": 2345,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2357,
+            "line": 2362,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2379,
+            "line": 2384,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2404,
+            "line": 2409,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2418,
+            "line": 2423,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2446,
+            "line": 2451,
             "name": "",
             "itemtype": "method",
             "params": [
@@ -918,14 +918,14 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2586,
+            "line": 2591,
             "description": "document.ready bootstrap",
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2616,
+            "line": 2621,
             "description": "tb.dom() function\njquery like selector engine",
             "itemtype": "method",
             "name": "dom",
@@ -960,59 +960,59 @@
         },
         {
             "message": "unknown tag: ignore",
-            "line": " dist/tb/tb.js:1353"
+            "line": " dist/tb/tb.js:1358"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1431"
+            "line": " dist/tb/tb.js:1436"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1451"
+            "line": " dist/tb/tb.js:1456"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1466"
+            "line": " dist/tb/tb.js:1471"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1524"
+            "line": " dist/tb/tb.js:1529"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1607"
+            "line": " dist/tb/tb.js:1612"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1874"
+            "line": " dist/tb/tb.js:1879"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1914"
+            "line": " dist/tb/tb.js:1919"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " dist/tb/tb.js:2289"
+            "line": " dist/tb/tb.js:2294"
         },
         {
             "message": "unknown tag: field",
-            "line": " dist/tb/tb.js:2289"
+            "line": " dist/tb/tb.js:2294"
         },
         {
             "message": "unknown tag: name",
-            "line": " dist/tb/tb.js:2446"
+            "line": " dist/tb/tb.js:2451"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2446"
+            "line": " dist/tb/tb.js:2451"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " dist/tb/tb.js:2446"
+            "line": " dist/tb/tb.js:2451"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2616"
+            "line": " dist/tb/tb.js:2621"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1020,39 +1020,39 @@
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " dist/tb/tb.js:1972"
+            "line": " dist/tb/tb.js:1977"
         },
         {
             "message": "Missing item type\nthe twoBirds request object",
-            "line": " dist/tb/tb.js:2289"
+            "line": " dist/tb/tb.js:2294"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2296"
+            "line": " dist/tb/tb.js:2301"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2340"
+            "line": " dist/tb/tb.js:2345"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2357"
+            "line": " dist/tb/tb.js:2362"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2379"
+            "line": " dist/tb/tb.js:2384"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2404"
+            "line": " dist/tb/tb.js:2409"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2418"
+            "line": " dist/tb/tb.js:2423"
         },
         {
             "message": "Missing item type\ndocument.ready bootstrap",
-            "line": " dist/tb/tb.js:2586"
+            "line": " dist/tb/tb.js:2591"
         }
     ]
 }
