@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.32 - 2016-07-07 */
+/*! twobirds-core - v7.0.33 - 2016-07-07 */
 
 /**
  twoBirds V7 core functionality
@@ -112,10 +112,12 @@ tb = (function(){
                             function ( pDomNode ) {
                                 for ( var i in pDomNode )
                                     if ( pDomNode.hasOwnProperty( i ) ){
-                                        if ( pDomNode[i] instanceof tb
-                                            && !!pNamespace.match(pSelector)
+                                        var node = pDomNode[i];
+                                        if ( node instanceof tb
+                                            && node['namespace']
+                                            && !!node.namespace.match(pSelector)
                                         ){
-                                            tbElements.push(pDomNode[i]);
+                                            tbElements.push(node);
                                         }
                                     }
 

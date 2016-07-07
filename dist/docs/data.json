@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.0.32",
+        "version": "v7.0.33",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -60,7 +60,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "dist/tb/tb.js",
-            "line": 184,
+            "line": 186,
             "description": "tb() / new tb()\ncan be used as SELECTOR and CONSTRUCTOR\n\nsample call CONSTRUCTOR:\nvar a = new tb( 'tb_repo_object_namespace' )\n\nsample call SELECTOR:\nvar result = tb( 'div#app' )\n\nfor selector functionality see TbSelector object",
             "is_constructor": 1,
             "extends": "TbSelector",
@@ -98,7 +98,7 @@
             "extension_for": [],
             "namespace": "tb",
             "file": "dist/tb/tb.js",
-            "line": 1347,
+            "line": 1349,
             "description": "standard twobirds event, internal use only",
             "is_constructor": 1,
             "access": "private",
@@ -139,7 +139,7 @@
             "extension_for": [],
             "namespace": "tb",
             "file": "dist/tb/tb.js",
-            "line": 1695,
+            "line": 1697,
             "description": "tb.Model constructor\ncreate and return a simple CRUD model",
             "is_constructor": 1,
             "params": [
@@ -168,7 +168,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 401,
+            "line": 403,
             "description": "walk all pSelector tb objects, call pMethodName on them\nreturn a UNIQUE TbSelector result set containing all single results",
             "itemtype": "method",
             "name": "walkSelector",
@@ -200,7 +200,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 461,
+            "line": 463,
             "description": "set() method\n\nset an instance property",
             "itemtype": "method",
             "name": "set",
@@ -225,7 +225,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 497,
+            "line": 499,
             "description": "get() method\n\nget an instance property",
             "itemtype": "method",
             "name": "get",
@@ -245,7 +245,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 525,
+            "line": 527,
             "description": "trigger an event, optionally with data and bubble indicator",
             "itemtype": "method",
             "name": "trigger",
@@ -277,7 +277,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 674,
+            "line": 676,
             "description": "on() method\n\nfor each this[0...n] or this as tb() instance,\n- add handler to handler array\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "",
@@ -308,7 +308,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 716,
+            "line": 718,
             "description": "one() method\n\nfor each this[0...n] or this as tb() instance,\n- add handler to handler array\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "",
@@ -332,7 +332,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 740,
+            "line": 742,
             "description": "off() method\n\nfor each this[0...n] or this as tb() instance,\n- delete handler from handler array\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "",
@@ -356,7 +356,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 781,
+            "line": 783,
             "description": "parents() method\nfor each this[0...n] or this as tb() instance,\n- get all parent tb objects\n- check them against the filter param pSelector\n- return them as a TbSelector result set (unique)",
             "itemtype": "method",
             "name": "parents",
@@ -376,7 +376,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 847,
+            "line": 849,
             "description": "parent() method\n\nfor each this[0...n] or this as tb() instance,\n- get closest parent tb object\n\n- check all of them against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "parent",
@@ -396,7 +396,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 901,
+            "line": 903,
             "description": "descendants() method\n\nfor each this[0...n] or this as tb() instance,\n- get all descendants of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "descendants",
@@ -422,7 +422,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 962,
+            "line": 964,
             "description": "children() method\n\nfor each this[0...n] or this as tb() instance,\n- get all direct children of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "children",
@@ -447,7 +447,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1018,
+            "line": 1020,
             "description": "next() method\n\nfor each this[0...n] or this as tb() instance,\n- get the direct following sibling of tb object\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "next",
@@ -467,7 +467,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1057,
+            "line": 1059,
             "description": "prev() method\n\nfor each this[0...n] or this as tb() instance,\n- get the previous sibling of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "prev",
@@ -487,7 +487,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1096,
+            "line": 1098,
             "description": "first() method\n\nfor each this[0...n] or this as tb() instance,\n- get the first child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "first",
@@ -507,7 +507,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1131,
+            "line": 1133,
             "description": "last() method\n\nfor each this[0...n] or this as tb() instance,\n- get the last child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "last",
@@ -527,7 +527,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1159,
+            "line": 1161,
             "description": "toArray() method",
             "itemtype": "method",
             "name": "toArray",
@@ -539,7 +539,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1173,
+            "line": 1175,
             "description": "filter() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "filter",
@@ -559,7 +559,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1214,
+            "line": 1216,
             "description": "not() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against pSelector and remove all fits\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "not",
@@ -579,7 +579,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1256,
+            "line": 1258,
             "description": "is() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against pSelector and remove all that do not fit\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "is",
@@ -599,7 +599,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1297,
+            "line": 1299,
             "description": "add() method\n\nadd elements to current result set\n- return TbSelector result set (unique)",
             "itemtype": "method",
             "name": "add",
@@ -619,7 +619,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1371,
+            "line": 1373,
             "description": "stop propagation after all handlers on this object have run",
             "itemtype": "method",
             "name": "stopPropagation",
@@ -631,7 +631,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1383,
+            "line": 1385,
             "description": "stop propagation immediately after this handler has run",
             "itemtype": "method",
             "name": "stopImmediatePropagation",
@@ -643,7 +643,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1425,
+            "line": 1427,
             "description": "stops event handling",
             "itemtype": "method",
             "name": "stop",
@@ -664,7 +664,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1445,
+            "line": 1447,
             "description": "returns a unique id",
             "itemtype": "method",
             "name": "getId",
@@ -678,7 +678,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1460,
+            "line": 1462,
             "description": "tb.namespace() function\n\nsample calls:\ntb.namespace( 'app.Dashboard' ) gets the constructor for dashboard\n\nand in the dashboard constructor:\n\ntb.namespace( 'app', true ).Dashboard = function(){ ...",
             "itemtype": "method",
             "name": "namespace",
@@ -711,7 +711,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1518,
+            "line": 1520,
             "description": "tb.bind() function\n\nsample calls:\n\ntb.bind( document.body )\n\n- scans the given element and all of its descendants\n  in the DOM and looks for attributes \"data-tb\" in the nodes.\n- resulting list will be scanned for those nodes that do not already\n  have an tb object inside.\n- creates a new tb object based on the class namespace given\n  in the \"data-tb\" attribute\n- stores it in the DOM element\n\ntb.bind( document.body, 'n1.n2.<className>' [ , <config data> ] )\n\n- creates a new tb object based on the 2nd parameter, giving 3rd as constructor parameter\n- stores it in the DOM element\nTHIS VARIANT WILL overwrite ANY tbo OBJECT THAT ALREADY RESIDES IN THE DOM NODE!",
             "itemtype": "method",
             "name": "bind",
@@ -732,7 +732,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1601,
+            "line": 1603,
             "description": "function tb.observable()\n\n- creates a function\n- initializes a value to observe\n- returns this function\n\nsample calls:\n\no = tb.observable( {} );\no( { newData: 'newData' } ); // change observable value\no.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once",
             "itemtype": "method",
             "name": "observable",
@@ -753,7 +753,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1868,
+            "line": 1870,
             "description": "tb.extend() function\nextend an object by another objects properties, always a deep copy",
             "itemtype": "method",
             "name": "extend",
@@ -779,7 +779,7 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1908,
+            "line": 1910,
             "description": "tb.parse() function\nfor each key/value in pObject, check string for {key}\nreplace occurence with <value>",
             "itemtype": "method",
             "name": "parse",
@@ -805,14 +805,14 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 1966,
+            "line": 1968,
             "description": "requirement handling",
             "class": "tb.Model",
             "namespace": "tb"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2283,
+            "line": 2285,
             "memberof": "tb",
             "field": "",
             "description": "the twoBirds request object",
@@ -821,43 +821,43 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2290,
+            "line": 2292,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2334,
+            "line": 2336,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2351,
+            "line": 2353,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2373,
+            "line": 2375,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2398,
+            "line": 2400,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2412,
+            "line": 2414,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2440,
+            "line": 2442,
             "name": "",
             "itemtype": "method",
             "params": [
@@ -918,14 +918,14 @@
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2580,
+            "line": 2582,
             "description": "document.ready bootstrap",
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
             "file": "dist/tb/tb.js",
-            "line": 2610,
+            "line": 2612,
             "description": "tb.dom() function\njquery like selector engine",
             "itemtype": "method",
             "name": "dom",
@@ -956,63 +956,63 @@
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:401"
+            "line": " dist/tb/tb.js:403"
         },
         {
             "message": "unknown tag: ignore",
-            "line": " dist/tb/tb.js:1347"
+            "line": " dist/tb/tb.js:1349"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1425"
+            "line": " dist/tb/tb.js:1427"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1445"
+            "line": " dist/tb/tb.js:1447"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1460"
+            "line": " dist/tb/tb.js:1462"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1518"
+            "line": " dist/tb/tb.js:1520"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1601"
+            "line": " dist/tb/tb.js:1603"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1868"
+            "line": " dist/tb/tb.js:1870"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1908"
+            "line": " dist/tb/tb.js:1910"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " dist/tb/tb.js:2283"
+            "line": " dist/tb/tb.js:2285"
         },
         {
             "message": "unknown tag: field",
-            "line": " dist/tb/tb.js:2283"
+            "line": " dist/tb/tb.js:2285"
         },
         {
             "message": "unknown tag: name",
-            "line": " dist/tb/tb.js:2440"
+            "line": " dist/tb/tb.js:2442"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2440"
+            "line": " dist/tb/tb.js:2442"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " dist/tb/tb.js:2440"
+            "line": " dist/tb/tb.js:2442"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2610"
+            "line": " dist/tb/tb.js:2612"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1020,39 +1020,39 @@
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " dist/tb/tb.js:1966"
+            "line": " dist/tb/tb.js:1968"
         },
         {
             "message": "Missing item type\nthe twoBirds request object",
-            "line": " dist/tb/tb.js:2283"
+            "line": " dist/tb/tb.js:2285"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2290"
+            "line": " dist/tb/tb.js:2292"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2334"
+            "line": " dist/tb/tb.js:2336"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2351"
+            "line": " dist/tb/tb.js:2353"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2373"
+            "line": " dist/tb/tb.js:2375"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2398"
+            "line": " dist/tb/tb.js:2400"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2412"
+            "line": " dist/tb/tb.js:2414"
         },
         {
             "message": "Missing item type\ndocument.ready bootstrap",
-            "line": " dist/tb/tb.js:2580"
+            "line": " dist/tb/tb.js:2582"
         }
     ]
 }
