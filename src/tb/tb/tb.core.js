@@ -111,12 +111,12 @@ tb = (function(){
                             function ( pDomNode ) {
                                 console.log( pDomNode );
                                 for ( var i in pDomNode )
-                                    var node = pDomNode[i];
-                                    console.log( node, node instanceof tb, !!node['namespace']);
+                                    var propVal = pDomNode[i];
+                                    console.log( propVal, propVal instanceof tb, !!propVal['namespace']);
                                     if ( pDomNode.hasOwnProperty( i ) ){
-                                        if ( node instanceof tb
-                                            && !!node['namespace']
-                                            && !!node.namespace.match(pSelector)
+                                        if ( propVal instanceof tb
+                                            && !!propVal['namespace']
+                                            && !!propVal.namespace.match(pSelector)
                                         ){
                                             tbElements.push(node);
                                         }
