@@ -112,10 +112,10 @@ tb = (function(){
                                 console.log( pDomNode );
                                 for ( var i in pDomNode )
                                     var node = pDomNode[i];
-                                    console.log( node, node instanceof tb, node['namespace'], !!node.namespace.match(pSelector));
+                                    console.log( node, node instanceof tb, !!node['namespace']);
                                     if ( pDomNode.hasOwnProperty( i ) ){
                                         if ( node instanceof tb
-                                            && node['namespace']
+                                            && !!node['namespace']
                                             && !!node.namespace.match(pSelector)
                                         ){
                                             tbElements.push(node);
@@ -174,7 +174,7 @@ tb = (function(){
             }
         );
         that.length = tbElements.length;
-        
+
         return that;
 
     }
