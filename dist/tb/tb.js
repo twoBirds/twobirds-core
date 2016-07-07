@@ -107,12 +107,15 @@ tb = (function(){
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
 
+                    console.log( pSelector );
                     tb.dom( '[data-tb]' )
                         .forEach(
                             function ( pDomNode ) {
+                                console.log( pDomNode );
                                 for ( var i in pDomNode )
+                                    var node = pDomNode[i];
+                                    console.log( node, node instanceof tb, node['namespace'], !!node.namespace.match(pSelector));
                                     if ( pDomNode.hasOwnProperty( i ) ){
-                                        var node = pDomNode[i];
                                         if ( node instanceof tb
                                             && node['namespace']
                                             && !!node.namespace.match(pSelector)
@@ -168,11 +171,12 @@ tb = (function(){
 
         // add all tb instances from dom into selector
         tbElements.forEach(
-            function ( pTbObject ) {
-                [].push.call( that, pTbObject );
+            function ( pTbObject, pIndex ) {
+                that[pIndex] = pTbObject;
             }
         );
-
+        that.length = tbElements.length;
+        
         return that;
 
     }
