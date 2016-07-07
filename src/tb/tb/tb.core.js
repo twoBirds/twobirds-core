@@ -111,9 +111,9 @@ tb = (function(){
                             function ( pDomNode ) {
                                 console.log( pDomNode );
                                 for ( var i in pDomNode )
-                                    var propVal = pDomNode[i];
-                                    console.log( propVal, propVal instanceof tb, !!propVal['namespace']);
                                     if ( pDomNode.hasOwnProperty( i ) ){
+                                        var propVal = pDomNode[i];
+                                        console.log( propVal, pDomNode.hasOwnProperty( i ), propVal instanceof tb, !!propVal['namespace']);
                                         if ( propVal instanceof tb
                                             && !!propVal['namespace']
                                             && !!propVal.namespace.match(pSelector)

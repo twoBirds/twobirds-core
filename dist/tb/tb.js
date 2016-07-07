@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.37 - 2016-07-07 */
+/*! twobirds-core - v7.0.38 - 2016-07-07 */
 
 /**
  twoBirds V7 core functionality
@@ -113,9 +113,9 @@ tb = (function(){
                             function ( pDomNode ) {
                                 console.log( pDomNode );
                                 for ( var i in pDomNode )
-                                    var propVal = pDomNode[i];
-                                    console.log( propVal, propVal instanceof tb, !!propVal['namespace']);
                                     if ( pDomNode.hasOwnProperty( i ) ){
+                                        var propVal = pDomNode[i];
+                                        console.log( propVal, pDomNode.hasOwnProperty( i ), propVal instanceof tb, !!propVal['namespace']);
                                         if ( propVal instanceof tb
                                             && !!propVal['namespace']
                                             && !!propVal.namespace.match(pSelector)
