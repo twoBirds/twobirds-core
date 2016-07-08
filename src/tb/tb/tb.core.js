@@ -698,26 +698,34 @@ tb = (function(){
              */
             on: function( pEventName, pHandler, pOnce ){
 
-                var that = this;
+                var that = this,
+                    eventNames;
 
+                if ( -1 < pEventName.indexOf(' ') ){
+                    eventNames = pEventName.split(' ');
+                } else {
+                    eventNames = [ pEventName ];
+                }
                 pHandler.once = !!pHandler.once || !!pOnce;
 
-                if ( that instanceof TbSelector ) {
+                eventNames.forEach(function(pEventName){
+                    if ( that instanceof TbSelector ) {
 
-                    walkSelector( that, 'on', arguments );
+                        walkSelector( that, 'on', arguments );
 
-                } else if ( that instanceof tb) {
+                    } else if ( that instanceof tb) {
 
-                    if ( !that.handlers ){
-                        that.handlers = {};
+                        if ( !that.handlers ){
+                            that.handlers = {};
+                        }
+
+                        if ( !that.handlers[ pEventName ] ){
+                            that.handlers[ pEventName ] = [];
+                        }
+
+                        that.handlers[ pEventName ].push( pHandler );
                     }
-
-                    if ( !that.handlers[ pEventName ] ){
-                        that.handlers[ pEventName ] = [];
-                    }
-
-                    that.handlers[ pEventName ].push( pHandler );
-                }
+                });
 
                 return that;
 
@@ -764,25 +772,35 @@ tb = (function(){
             off: function( pEventName, pHandler ){
 
                 var that = this,
-                    index;
+                    index,
+                    eventNames;
 
-                if ( that instanceof TbSelector ) {
-
-                    walkSelector( that, 'off', arguments );
-
-                } else if ( that instanceof tb ) { // either a toplevel or an internal tb object
-
-                    if ( !that.handlers[ pEventName ] ){
-                        return;
-                    }
-
-                    index = that.handlers[ pEventName].indexOf( pHandler );
-
-                    if ( index > -1 ){
-                        that.handlers[ pEventName ].splice( index, 1 );
-                    }
-
+                if ( -1 < pEventName.indexOf(' ') ){
+                    eventNames = pEventName.split(' ');
+                } else {
+                    eventNames = [ pEventName ];
                 }
+                pHandler.once = !!pHandler.once || !!pOnce;
+
+                eventNames.forEach(function(pEventName){
+                    if ( that instanceof TbSelector ) {
+
+                        walkSelector( that, 'off', arguments );
+
+                    } else if ( that instanceof tb ) { // either a toplevel or an internal tb object
+
+                        if ( !that.handlers[ pEventName ] ){
+                            return;
+                        }
+
+                        index = that.handlers[ pEventName].indexOf( pHandler );
+
+                        if ( index > -1 ){
+                            that.handlers[ pEventName ].splice( index, 1 );
+                        }
+
+                    }
+                });
 
                 return that;
 
