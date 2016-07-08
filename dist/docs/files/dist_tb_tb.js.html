@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.0.43</em>
+            <em>API Docs for: v7.0.44</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -83,7 +83,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.0.43 - 2016-07-08 */
+/*! twobirds-core - v7.0.44 - 2016-07-08 */
 
 /**
  twoBirds V7 core functionality
@@ -785,26 +785,34 @@ tb = (function(){
              */
             on: function( pEventName, pHandler, pOnce ){
 
-                var that = this;
+                var that = this,
+                    eventNames;
 
+                if ( -1 &lt; pEventName.indexOf(&#x27; &#x27;) ){
+                    eventNames = pEventName.split(&#x27; &#x27;);
+                } else {
+                    eventNames = [ pEventName ];
+                }
                 pHandler.once = !!pHandler.once || !!pOnce;
 
-                if ( that instanceof TbSelector ) {
+                eventNames.forEach(function(pEventName){
+                    if ( that instanceof TbSelector ) {
 
-                    walkSelector( that, &#x27;on&#x27;, arguments );
+                        walkSelector( that, &#x27;on&#x27;, arguments );
 
-                } else if ( that instanceof tb) {
+                    } else if ( that instanceof tb) {
 
-                    if ( !that.handlers ){
-                        that.handlers = {};
+                        if ( !that.handlers ){
+                            that.handlers = {};
+                        }
+
+                        if ( !that.handlers[ pEventName ] ){
+                            that.handlers[ pEventName ] = [];
+                        }
+
+                        that.handlers[ pEventName ].push( pHandler );
                     }
-
-                    if ( !that.handlers[ pEventName ] ){
-                        that.handlers[ pEventName ] = [];
-                    }
-
-                    that.handlers[ pEventName ].push( pHandler );
-                }
+                });
 
                 return that;
 
@@ -851,25 +859,35 @@ tb = (function(){
             off: function( pEventName, pHandler ){
 
                 var that = this,
-                    index;
+                    index,
+                    eventNames;
 
-                if ( that instanceof TbSelector ) {
-
-                    walkSelector( that, &#x27;off&#x27;, arguments );
-
-                } else if ( that instanceof tb ) { // either a toplevel or an internal tb object
-
-                    if ( !that.handlers[ pEventName ] ){
-                        return;
-                    }
-
-                    index = that.handlers[ pEventName].indexOf( pHandler );
-
-                    if ( index &gt; -1 ){
-                        that.handlers[ pEventName ].splice( index, 1 );
-                    }
-
+                if ( -1 &lt; pEventName.indexOf(&#x27; &#x27;) ){
+                    eventNames = pEventName.split(&#x27; &#x27;);
+                } else {
+                    eventNames = [ pEventName ];
                 }
+                pHandler.once = !!pHandler.once || !!pOnce;
+
+                eventNames.forEach(function(pEventName){
+                    if ( that instanceof TbSelector ) {
+
+                        walkSelector( that, &#x27;off&#x27;, arguments );
+
+                    } else if ( that instanceof tb ) { // either a toplevel or an internal tb object
+
+                        if ( !that.handlers[ pEventName ] ){
+                            return;
+                        }
+
+                        index = that.handlers[ pEventName].indexOf( pHandler );
+
+                        if ( index &gt; -1 ){
+                            that.handlers[ pEventName ].splice( index, 1 );
+                        }
+
+                    }
+                });
 
                 return that;
 
@@ -1001,7 +1019,6 @@ tb = (function(){
              *
              * @return {object} - TbSelector instance
              */
-            
             descendants: function( pSelector, pLocalOnly ){
 
                 var that = this,
