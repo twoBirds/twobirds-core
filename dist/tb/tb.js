@@ -81,9 +81,17 @@ tb = (function(){
 
             // selection by dom selector string
             case 'string':
-                console.log( 'select by string' );
-                tb.dom( pSelector )
-                    .filter('[data-tb]')
+                // HINT: must be a tb element for every selector of a css selector string
+                var selector = pSelector.split(' '),
+                    selector = selector.map(function(s){
+                        if (1 < s.length){
+                            return s+':not([data-tb=""])';
+                        }
+                        return s;
+                    }),
+                    selector = selector.join(' ');
+
+                tb.dom( selector )
                     .forEach(
                         function ( pDomNode ) {
                             pDomNode.tb
@@ -98,38 +106,54 @@ tb = (function(){
 
             case 'object':  // either regEx or nodeType
 
-                if ( pSelector instanceof RegExp ){ // it is a regular expression
+                if ( pSelector instanceof tb ){ // it is a twoBirds object
 
-                    tb.dom( '[data-tb]' )
-                        .forEach(
-                            function ( pDomNode ) {
-                                pDomNode.tb
-                                    .forEach(
-                                        function( pTbElement ){
-                                            if ( pTbElement instanceof tb
-                                                && !!pTbElement['namespace']
-                                                && !!pTbElement.namespace.match(pSelector)
-                                            ){
-                                                [].push.call( that, pTbElement );
-                                            }
-                                        }
-                                    )
-                            }
-                        );
+                    [].push.call( that, pSelector );
+                    return that;
 
-                } else if ( !!pSelector['nodeType'] ){ // it is a dom node
-                    tb.dom( pSelector )
-                        .forEach(
-                            function ( pDomNode ) {
-                                pDomNode.tb
-                                    .forEach(
-                                        function( pTbElement ){
+                } if ( pSelector instanceof RegExp ){ // it is a regular expression
+
+                tb.dom( '[data-tb]' )
+                    .forEach(
+                        function ( pDomNode ) {
+                            pDomNode.tb
+                                .forEach(
+                                    function( pTbElement ){
+                                        if ( pTbElement instanceof tb
+                                            && !!pTbElement['namespace']
+                                            && !!pTbElement.namespace.match(pSelector)
+                                        ){
                                             [].push.call( that, pTbElement );
                                         }
-                                    )
-                            }
-                        );
+                                    }
+                                )
+                        }
+                    );
 
+            } else if ( !!pSelector['nodeType'] && !!pSelector['tb'] ){ // it is a dom node containing tb elements
+                    pSelector.tb
+                        .forEach(
+                            function( pTbElement ){
+                                [].push.call( that, pTbElement );
+                            }
+                        )
+
+                } else if ( pSelector.constructor === Array || !!pSelector['length'] && !!pSelector['0'] && !(pSelector instanceof Array) ){
+                    // it is an array || array like object
+                    [].forEach.call(
+                        pSelector,
+                        function( pThisSelector ){
+                            var thisResult = tb( pThisSelector );
+                            [].forEach.call(
+                                thisResult,
+                                function( pTbElement ){
+                                    if ( -1 === [].indexOf.call( that, pTbElement ) ){
+                                        [].push.call( that, pTbElement );
+                                    }
+                                }
+                            );
+                        }
+                    );
                 }
 
                 break;
@@ -377,7 +401,7 @@ tb = (function(){
 
         } else { // arguments[0] is string or regex, return selector result
 
-            //console.log( 'tbselector string or regex' );
+            //console.log( 'tbSelector not constructor' );
             return new TbSelector( !!arguments[0] ? arguments[0] : undefined );
 
         }
