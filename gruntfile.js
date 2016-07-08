@@ -7,6 +7,7 @@ module.exports = function(grunt) {
             clean: [
                 "dist",
                 "src/tb/min",
+                "src/tb/tb.js",
                 "src/tb/tb.min.js"
             ]
         },
@@ -67,8 +68,7 @@ module.exports = function(grunt) {
             options: {
                 separator: '\n;\n',
                 //stripBanners: true,
-                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-                '<%= grunt.template.today("yyyy-mm-dd") %> */\n\n'
+                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n\n'
             },
             dist: {
                 src: [
@@ -123,8 +123,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-
-    grunt.loadNpmTasks('grunt-min');
 
     // Default task(s).
     grunt.registerTask(

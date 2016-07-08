@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.41 - 2016-07-07 */
+/*! twobirds-core - v7.0.42 - 2016-07-08 */
 
 /**
  twoBirds V7 core functionality
@@ -71,59 +71,49 @@ tb = (function(){
      * @return {object} TbSelector instance, array-like object
      */
     function TbSelector( pSelector ){
-
-        var that = this,
-            tbElements = [];
+        var that = this;
 
         that.length = 0;
+
+        if ( !pSelector ) return that;
 
         switch (typeof pSelector) {
 
             // selection by dom selector string
             case 'string':
-
-                pSelector
-                    .split(',')
+                console.log( 'select by string' );
+                tb.dom( pSelector )
+                    .filter('[data-tb]')
                     .forEach(
-                        function( pThisSelector ){
-                            tb.dom( pThisSelector )
-                                .filter('[data-tb]')
+                        function ( pDomNode ) {
+                            pDomNode.tb
                                 .forEach(
-                                    function ( pDomNode ) {
-                                        for ( var i in pDomNode )
-                                            if ( pDomNode.hasOwnProperty( i ) ){
-                                                if ( pDomNode[i] instanceof tb ){
-                                                    tbElements.push(pDomNode[i]);
-                                                }
-                                            }
+                                    function( pTbElement ){
+                                        [].push.call( that, pTbElement ); // push dom object to tb selector content
                                     }
-                                );
+                                )
                         }
-                    )
-
+                    );
                 break;
 
             case 'object':  // either regEx or nodeType
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
 
-                    //console.log( pSelector );
                     tb.dom( '[data-tb]' )
                         .forEach(
                             function ( pDomNode ) {
-                                //console.log( pDomNode );
-                                for ( var i in pDomNode )
-                                    if ( pDomNode.hasOwnProperty( i ) ){
-                                        var propVal = pDomNode[i];
-                                        //console.log( propVal, pDomNode.hasOwnProperty( i ), propVal instanceof tb, !!propVal['namespace']);
-                                        if ( propVal instanceof tb
-                                            && !!propVal['namespace']
-                                            && !!propVal.namespace.match(pSelector)
-                                        ){
-                                            tbElements.push(propVal);
+                                pDomNode.tb
+                                    .forEach(
+                                        function( pTbElement ){
+                                            if ( pTbElement instanceof tb
+                                                && !!pTbElement['namespace']
+                                                && !!pTbElement.namespace.match(pSelector)
+                                            ){
+                                                [].push.call( that, pTbElement );
+                                            }
                                         }
-                                    }
-
+                                    )
                             }
                         );
 
@@ -131,16 +121,12 @@ tb = (function(){
                     tb.dom( pSelector )
                         .forEach(
                             function ( pDomNode ) {
-                                for ( var i in pDomNode ) {
-                                    //console.log('tb property', i, pDomNode.hasOwnProperty(i) );
-                                    if (pDomNode.hasOwnProperty(i)) {
-                                        //console.log('tb own property', i, pDomNode[i] instanceof tb, pDomNode[i]);
-                                        if ( pDomNode[i] instanceof tb
-                                        ) {
-                                            tbElements.push(pDomNode[i]);
+                                pDomNode.tb
+                                    .forEach(
+                                        function( pTbElement ){
+                                            [].push.call( that, pTbElement );
                                         }
-                                    }
-                                }
+                                    )
                             }
                         );
 
@@ -155,27 +141,21 @@ tb = (function(){
                 tb.dom( '[data-tb]' )
                     .map(
                         function ( pDomNode ) {
-                            for ( var i in pDomNode )
-                                if ( pDomNode.hasOwnProperty( i ) ){
-                                    if ( pDomNode[i] instanceof tb
-                                        && pDomNode[i] instanceof pSelector
-                                    ){
-                                        tbElements.push(pDomNode[i]);
+                            pDomNode.tb
+                                .forEach(
+                                    function( pTbElement ){
+                                        if ( pTbElement instanceof tb
+                                            && pTbElement instanceof pSelector
+                                        ){
+                                            [].push.call( that, pTbElement );
+                                        }
                                     }
-                                }
+                                )
                         }
                     );
 
                 break;
         }
-
-        // add all tb instances from dom into selector
-        tbElements.forEach(
-            function ( pTbObject, pIndex ) {
-                that[pIndex] = pTbObject;
-            }
-        );
-        that.length = tbElements.length;
 
         return that;
 
@@ -333,7 +313,8 @@ tb = (function(){
                 if ( tbInstance.target && tbInstance.target.nodeType && !( tbInstance instanceof Nop ) ){
 
                     // put tb instance in dom node
-                    tbInstance.target[ tbInstance.namespace ] = tbInstance;
+                    tbInstance.target.tb = !!tbInstance.target['tb'] ? tbInstance.target.tb : [];
+                    tbInstance.target.tb.push(tbInstance);
 
                     // if element does not reside in the DOM <head> add class
                     var dom = tb.dom( tbInstance.target );
@@ -396,7 +377,8 @@ tb = (function(){
 
         } else { // arguments[0] is string or regex, return selector result
 
-            return new TbSelector( !!arguments[0] ? arguments[0] : '' );
+            //console.log( 'tbselector string or regex' );
+            return new TbSelector( !!arguments[0] ? arguments[0] : undefined );
 
         }
 
@@ -817,16 +799,10 @@ tb = (function(){
                             .toArray()
                             .forEach(
                                 function( pElement ){
-                                    pElement
-                                        .getAttribute('data-tb')
-                                        .split( ' ' )
+                                    pElement.tb
                                         .forEach(
-                                            function( pNamespace ){
-                                                var tbElement = pElement[ pNamespace ] || null;
-
-                                                if ( tbElement ){
-                                                    [].push.call( ret, tbElement ); // push dom object to tb selector content
-                                                }
+                                            function( pTbElement ){
+                                                [].push.call( ret, pTbElement ); // push dom object to tb selector content
                                             }
                                         )
                                 }
@@ -880,18 +856,15 @@ tb = (function(){
 
                     if ( !!that.target['nodeType'] ) { // tb object resides in DOM
 
-                        var tbParent = that.parents()[0] || false;
+                        var tbParents = that.parents().toArray(),
+                            tbParent = !!tbParents['0'] ? tbParents[0] : false;
 
-                        if ( !tbParent ){
+                        if ( !tbParent ) return ret; // no parent -> empty result set
 
-                            return ret; // no parent -> empty result set
-                        }
-
-                        for (var i in tbParent.target ){
-                            if ( tbParent.target[i] instanceof tb ){
-                                [].push.call( ret, tbParent.target[ i ] ); // push dom object to tb selector content
-                            }
-                        }
+                        tbParent.target.tb
+                            .forEach(function( tbElement ){
+                                [].push.call( ret, tbElement ); // push dom object to tb selector content
+                            });
 
                     } else if ( that.target instanceof tb ){ // it is an embedded object, local target is another (parent) tb object
 
@@ -928,37 +901,34 @@ tb = (function(){
 
                     ret = walkSelector( this, 'descendants', arguments );
 
-                } else if ( that instanceof tb && !!that.target.nodeType && !pLocalOnly ) { // it must be a native tb object
+                } else if ( that instanceof tb && !!that.target['nodeType'] && !pLocalOnly ) { // it must be a native tb object
 
                     tb.dom( '[data-tb]', that.target )
                         .forEach(
                             function( pDomElement ) {
-                                for (var i in pDomElement ) {
-                                    if ( pDomelement.hasOwnProperty[i] && pDomElement[i] instanceof tb) {
-                                        [].push.call(ret, pDomElement[i]); // push tb object to tb selector content
-                                    }
-                                }
+                                pDomElement.tb
+                                    .forEach(function( tbElement ){
+                                        [].push.call( ret, tbElement ); // push dom object to tb selector content
+                                    });
                             }
                         );
 
                 } else if ( that instanceof tb && !!pLocalOnly ){ // walk descendants
+                    // HINT: if tbInstances are stacked inside each other, only props in "this" will be copied
+                    //       ...not those defined in the constructor.prototype ( like 'tb.require' )
+                    Object
+                        .keys( that )
+                        .forEach(function( pKey ){
+                            if ( pKey !== 'target' && that[pKey] instanceof tb ) {
+                                [].push.call( ret, that[pKey]); // push tb object to tb selector content
 
-                    for (var i in that ) if (that.hasOwnProperty(i)){
+                                var desc = tb.dom().toArray.call( that[pKey].descendants( '', true ) );
 
-                        if ( i !== 'target' && that[i] instanceof tb ) {
-                            [].push.call( ret, that[i]); // push tb object to tb selector content
-
-                            var desc = tb.dom().toArray.call( that[i].descendants( '', true ) );
-
-                            for ( var j=0, l=desc.length; j<l; j++ ){
-                                [].push.call( ret, desc[j]); // push tb object to tb selector content
+                                for ( var j=0, l=desc.length; j<l; j++ ){
+                                    [].push.call( ret, desc[j]); // push tb object to tb selector content
+                                }
                             }
-
-                        }
-
-                    }
-
-
+                        });
                 }
 
                 return !!pSelector ? ret.filter( pSelector ) : ret;
@@ -983,26 +953,24 @@ tb = (function(){
             children: function( pSelector, pLocalOnly ){
 
                 var that = this,
-                    ret = tb(''),
-                    compare = !!pSelector ? tb( pSelector ) : true;
+                    ret = tb();
 
                 if ( that instanceof TbSelector ) {
 
                     ret = walkSelector( that, 'children', arguments );
 
                 } else if ( that instanceof tb && !!that.target['nodeType'] && !pLocalOnly ) { // it must be a native tb object
-
+                    //console.log( 'children of ', that.target, tb.dom( '[data-tb]', that.target ) );
                     tb.dom( '[data-tb]', that.target )
                         .forEach(
                             function( pDomNode ) {
-                                if ( ( compare || -1 < compare.indexOf( pDomNode ) )
-                                    && tb( pDomNode ).parent()[0].target === that.target
-                                ){
-                                    for ( var i in pDomNode ){
-                                        if ( pDomNode.hasOwnProperty(i) && pDomNode[i] instanceof tb ){
-                                            [].push.call( ret, pDomNode[i] ); // push tb object to tb selector content
-                                        }
-                                    }
+                                //console.log( pDomNode, tb.dom( pDomNode ).parents('[data-tb]')[0] === that.target );
+
+                                if ( tb.dom( pDomNode ).parents('[data-tb]')[0] === that.target ){
+                                    pDomNode.tb
+                                        .forEach(function( tbElement ){
+                                            [].push.call( ret, tbElement ); // push dom object to tb selector content
+                                        });
                                 }
                             }
                         );
@@ -1350,7 +1318,7 @@ tb = (function(){
     for ( var i in tb.prototype ) if ( tb.prototype.hasOwnProperty(i)){
         TbSelector.prototype[i] = tb.prototype[i];
     }
-    
+
     return tb;
 
 })();
