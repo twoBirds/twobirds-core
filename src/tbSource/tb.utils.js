@@ -216,6 +216,7 @@ tb.bind = function( pSelector, pTarget ){
 
             namespaces.forEach(
                 function( namespace ){
+                    selectedElement['tb'] = selectedElement['tb'] || {};
                     if ( !selectedElement['tb'][namespace] ){
                         new tb(
                             namespace,

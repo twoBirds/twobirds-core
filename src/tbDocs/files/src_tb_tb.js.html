@@ -446,7 +446,7 @@ tb = (function(){
 
                     // put tb instance in dom node
                     tbInstance.target.tb = !!tbInstance.target[&#x27;tb&#x27;] ? tbInstance.target.tb : [];
-                    tbInstance.target.tb.push(tbInstance);
+                    tbInstance.target.tb[tbInstance.namespace] = tbInstance;
 
                     // if element does not reside in the DOM &lt;head&gt; add class
                     var dom = tb.dom( tbInstance.target );
@@ -967,10 +967,12 @@ tb = (function(){
                             .toArray()
                             .forEach(
                                 function( pElement ){
-                                    pElement.tb
+                                    Object
+                                        .keys( pElement.tb )
                                         .forEach(
-                                            function( pTbElement ){
-                                                [].push.call( ret, pTbElement ); // push dom object to tb selector content
+                                            function( pKey ){
+                                                // push dom object to tb selector content
+                                                [].push.call( ret, pElement.tb[pKey] );
                                             }
                                         )
                                 }
@@ -3122,6 +3124,7 @@ tb.bind = function( pSelector, pTarget ){
 
             namespaces.forEach(
                 function( namespace ){
+                    selectedElement[&#x27;tb&#x27;] = selectedElement[&#x27;tb&#x27;] || {};
                     if ( !selectedElement[&#x27;tb&#x27;][namespace] ){
                         new tb(
                             namespace,
