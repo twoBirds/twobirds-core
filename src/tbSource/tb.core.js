@@ -222,20 +222,21 @@ tb = (function(){
          new tb(
              app.myConstructor,            // any constructor you want to have an instance of
              { ... },                      // the config object you hand over to the constructor
-             anotherTbInstance           // any other object you want to put the tb instance in
+             anotherTbInstance             // any other object you want to put the tb instance in
          );
 
          // if a namespace STRING is given, requirement loading is done in case the class isnt present yet
-             new tb(
+         new tb(
              'app.myConstructor',          // namespace string for the constructor you want to have an instance of
              { ... },                      // the config object you hand over to the constructor
-             anotherTbInstance          // any other object you want to put the tb instance in
+             anotherTbInstance             // any other object you want to put the tb instance in
          );
 
      */
     function tb() {
         var that = this;
 
+        // setup prototype chain of twoBirds instance
         function makePrototype( pPrototype ){
 
             // make custom class constructor
@@ -266,6 +267,7 @@ tb = (function(){
             }
         }
 
+        // instanciate tb instance OR return tb.Selector result set
         if ( that instanceof tb ) {    // called as constructor, create and return tb object instance
             var isNamespace = typeof arguments[0] === 'string',
                 tbClass =  isNamespace ? tb.namespace( arguments[0] ) : arguments[0],
@@ -273,6 +275,9 @@ tb = (function(){
                 fileName,
                 tempInstance; // empty tb object, used as handler store
 
+            // namespace is a string and corresponding class doesnt exist in repo
+            // -> do requirement loading
+            // -> return temporary instance ( = instanceof Nop )
             if ( isNamespace && !tbClass ){
                 fileName = arguments[0].replace( /\./g, '/' ) + '.js';
                 tempInstance = new tb( Nop, arguments[1] || {}, arguments[2] || false ); // construct temp tb instance from empty constructor -> temp handler store
@@ -414,7 +419,6 @@ tb = (function(){
 
         } else { // arguments[0] is string or regex, return selector result
 
-            //console.log( 'tbSelector not constructor' );
             return new TbSelector( !!arguments[0] ? arguments[0] : undefined );
 
         }
