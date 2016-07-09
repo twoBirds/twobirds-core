@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.5 - 2016-07-09 */
+/*! twobirds-core - v7.1.7 - 2016-07-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1459,7 +1459,7 @@ tb.Event.prototype = {
 (function(){
 
     function domReady () {
-        tb.bind( 'body' ); // find all tb dom nodes and add tb objects if not yet done
+        tb.bind( document.body ); // find all tb dom nodes and add tb objects if not yet done
     }
 
     // Mozilla, Opera, Webkit
@@ -2974,7 +2974,7 @@ tb.namespace = function( pNamespace, pForceCreation, pObject ){
 /**
  @method tb.bind
 
- @param   {object} pSelector - DOM node to start binding in
+ @param   {object} pRootNode - DOM node to start binding in
 
  @return {void}
 
@@ -2985,67 +2985,42 @@ tb.namespace = function( pNamespace, pForceCreation, pObject ){
      tb.bind( document.body );
      // scans the given element and all of its descendants
      // in the DOM and looks for attributes "data-tb" in the nodes.
-     // resulting list will be scanned for those nodes that do not already
-     // have an tb object inside.
-     // creates a new tb object based on the class namespace given
-     // in the "data-tb" attribute
-     // stores it in the DOM element
+
+     // Resulting list will be scanned for those nodes that do not already
+     // have a tb object inside which is given as a namespace in the data-tb attribute.
+
+     // Creates missing tb object based on the class namespace given
+     // in the "data-tb" attribute and stores it in the DOM element
     
-     tb.bind( document.body, 'n1.n2.<className>' [ , <config data> ] )
-     //creates a new tb object based on the 2nd parameter, giving 3rd as constructor parameter
-     //stores it in the DOM element
-     //THIS VARIANT WILL overwrite ANY MATCHING INSTANCE THAT ALREADY RESIDES IN THE DOM NODE(S)!
-
  */
-tb.bind = function( pSelector, pTarget ){
+tb.bind = function( pRootNode ){
 
-    var rootNode,
-        selected = [],
-        foundElements;
-
-    // get root node
-    if ( !!pTarget && !!pTarget['nodeName'] ) {
-        rootNode = pTarget;
-    } else if ( !pTarget && !!pSelector['nodeName'] ){
-        rootNode = pSelector;
-    } else {
-        rootNode = document.body;
-    }
-
-    foundElements = rootNode.querySelectorAll( '[data-tb]' );
+    var rootNode = pRootNode || document.body,
+        foundElements = rootNode.querySelectorAll( '[data-tb]' );
 
     // add self if data-tb attribute present
-    if ( rootNode && rootNode.getAttribute('data-tb') ){
-        selected.push( rootNode );
-    }
-
-    // add other elements
-    if ( !!foundElements['length'] ){
-        [].map.call(
-            foundElements,
-            function( element ){
-                selected.push( element );
-            }
-        );
+    if ( rootNode.getAttribute('data-tb') ){
+        foundElements = [].concat.call( [ rootNode ], tb.dom().toArray.call( foundElements ) );
     }
 
     // instanciate tb instances for given elements
-    selected.forEach(
-        function( selectedElement ){
-            var namespaces = selectedElement.getAttribute('data-tb').split(' ');
+    foundElements.forEach(
+        function( pElement ){
+            var namespaces = pElement.getAttribute('data-tb').split(' ');
 
             namespaces.forEach(
-                function( namespace ){
-                    selectedElement['tb'] = selectedElement['tb'] || {};
-                    if ( !selectedElement['tb'][namespace] ){
-                        new tb(
-                            namespace,
+                function( pNamespace ){
+                    pElement['tb'] = pElement['tb'] || {};
+                    if ( !pElement['tb'][pNamespace] ){
+                        new tb(        // create tb object
+                            pNamespace,
                             null,
-                            selectedElement
-                        );        // create tb object
+                            pElement
+                        );
                     }
                 }
             );
+
         }
     );
 
@@ -3824,7 +3799,7 @@ tb.Model.prototype = (function(){
 
         // ...
 
-    })();
+     })();
  
  */
 tb.Require = function( pConfig ){

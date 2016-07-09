@@ -1457,7 +1457,7 @@ tb.Event.prototype = {
 (function(){
 
     function domReady () {
-        tb.bind( 'body' ); // find all tb dom nodes and add tb objects if not yet done
+        tb.bind( document.body ); // find all tb dom nodes and add tb objects if not yet done
     }
 
     // Mozilla, Opera, Webkit
