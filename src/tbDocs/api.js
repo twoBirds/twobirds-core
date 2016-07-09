@@ -6,7 +6,8 @@ YUI.add("yuidoc-meta", function(Y) {
         "tb.Model",
         "tb.Require",
         "tb.Selector",
-        "tb.Util"
+        "tb.Util",
+        "tb.dom"
     ],
     "modules": [],
     "allModules": [],

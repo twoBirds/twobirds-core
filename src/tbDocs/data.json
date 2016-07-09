@@ -13,14 +13,13 @@
                 "tb.Selector": 1,
                 "tb": 1,
                 "tb.Event": 1,
+                "tb.dom": 1,
                 "tb.Util": 1,
                 "tb.Model": 1,
                 "tb.Require": 1
             },
             "fors": {},
-            "namespaces": {
-                "tb": 1
-            }
+            "namespaces": {}
         }
     },
     "modules": {},
@@ -103,7 +102,6 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "tb",
             "file": "src/tb/tb.js",
             "line": 1403,
             "is_constructor": 1,
@@ -131,6 +129,34 @@
                 "type": "Object"
             }
         },
+        "tb.dom": {
+            "name": "tb.dom",
+            "shortname": "tb.dom",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/tb/tb.js",
+            "line": 1527,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "a .querySelectorAll() selector string, a dom node or an array of dom nodes",
+                    "optional": true
+                },
+                {
+                    "name": "pDomNode",
+                    "description": "- DOM node to start search in",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ntb.dom() function\n\njquery like selector engine",
+                "type": "Object"
+            }
+        },
         "tb.Util": {
             "name": "tb.Util",
             "shortname": "tb.Util",
@@ -139,9 +165,8 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "tb",
             "file": "src/tb/tb.js",
-            "line": 2423,
+            "line": 2820,
             "is_constructor": 1,
             "params": [
                 {
@@ -166,9 +191,8 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "tb",
             "file": "src/tb/tb.js",
-            "line": 3104,
+            "line": 3501,
             "is_constructor": 1,
             "params": [
                 {
@@ -194,9 +218,8 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "namespace": "tb",
             "file": "src/tb/tb.js",
-            "line": 3375,
+            "line": 3772,
             "is_constructor": 1,
             "params": [
                 {
@@ -663,28 +686,656 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1480,
-            "description": "tb.dom() function\njquery like selector engine",
+            "line": 1621,
             "itemtype": "method",
-            "name": "dom",
-            "static": 1,
-            "params": [
-                {
-                    "name": "a",
-                    "description": "selector string, a dom node or an array of dom nodes",
-                    "type": "String|domNode|array"
-                }
-            ],
+            "name": "concat",
+            "chainable": 1,
             "return": {
-                "description": "- result string",
-                "type": "String"
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat\">concat</a>",
+                "type": "Object"
             },
-            "class": "tb.Event",
-            "namespace": "tb"
+            "class": "tb.dom"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2441,
+            "line": 1631,
+            "itemtype": "method",
+            "name": "every",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/every\">every</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1641,
+            "itemtype": "method",
+            "name": "forEach",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach\">forEach</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1651,
+            "itemtype": "method",
+            "name": "indexOf",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf\">indexOf</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1660,
+            "itemtype": "method",
+            "name": "lastIndexOf",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf\">lastIndexOf</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1669,
+            "itemtype": "method",
+            "name": "map",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map\">map</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1678,
+            "itemtype": "method",
+            "name": "pop",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop\">pop</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1687,
+            "itemtype": "method",
+            "name": "reduce",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce\">reduce</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1696,
+            "itemtype": "method",
+            "name": "reduce",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight\">reduceRight</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1705,
+            "itemtype": "method",
+            "name": "reverse",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse\">reverse</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1714,
+            "itemtype": "method",
+            "name": "shift",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/shift\">shift</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1723,
+            "itemtype": "method",
+            "name": "slice",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice\">slice</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1732,
+            "itemtype": "method",
+            "name": "some",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some\">some</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1741,
+            "itemtype": "method",
+            "name": "splice",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice\">splice</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1750,
+            "itemtype": "method",
+            "name": "some",
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift\">unshift</a>",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1793,
+            "itemtype": "method",
+            "name": "appendTo",
+            "params": [
+                {
+                    "name": "pElement",
+                    "description": "a .querySelectorAll() selector string, a dom node or an array of dom nodes\n\nappends all elements in tb.dom() result set to given DOM nodes",
+                    "optional": true
+                }
+            ],
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1825,
+            "itemtype": "method",
+            "name": "append",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pElement",
+                    "description": "an array like set of DOM nodes, or a single DOM node",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nappends given DOM nodes to every node in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1862,
+            "itemtype": "method",
+            "name": "insertBefore",
+            "params": [
+                {
+                    "name": "pElement",
+                    "description": "- a single DOM node\n\nprepends all elements in tb.dom() result set to given DOM node",
+                    "optional": true
+                }
+            ],
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1889,
+            "itemtype": "method",
+            "name": "insertAfter",
+            "params": [
+                {
+                    "name": "pElement",
+                    "description": "- a single DOM node\n\ninserts all elements in tb.dom() result set after given DOM node",
+                    "optional": true
+                }
+            ],
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1926,
+            "itemtype": "method",
+            "name": "trigger",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pEventName",
+                    "description": "- name of the event",
+                    "type": "String"
+                },
+                {
+                    "name": "pData",
+                    "description": "- optional data",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event for each element in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1966,
+            "itemtype": "method",
+            "name": "on",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pEventName(s)",
+                    "description": "- name(s) of the event separated by ' '",
+                    "type": "String"
+                },
+                {
+                    "name": "pHandler",
+                    "description": "- callback far event",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event handler for each element in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2007,
+            "itemtype": "method",
+            "name": "one",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pEventName(s)",
+                    "description": "- name(s) of the event separated by ' '",
+                    "type": "String"
+                },
+                {
+                    "name": "pHandler",
+                    "description": "- callback far event",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event handler for each element in tb.dom() result set (to be called only once)",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2028,
+            "itemtype": "method",
+            "name": "off",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pEventName(s)",
+                    "description": "- name(s) of the event separated by ' '",
+                    "type": "String"
+                },
+                {
+                    "name": "pHandler",
+                    "description": "- callback far event",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nremoves one or all DOM event handlers from each element in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2062,
+            "itemtype": "method",
+            "name": "empty",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nremoves one or all DOM event handlers from each element in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2082,
+            "itemtype": "method",
+            "name": "html",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pHtml",
+                    "description": "- html string or empty string",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreplace all nodes .innerHTML with pHtml",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2110,
+            "itemtype": "method",
+            "name": "hide",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nhide all nodes in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2133,
+            "itemtype": "method",
+            "name": "show",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nshow all nodes in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2153,
+            "itemtype": "method",
+            "name": "unique",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nforce this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,\nand we would like to hear about it... )\n\nmethod is called internally though to force result set uniqueness",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2180,
+            "itemtype": "method",
+            "name": "not",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nremove all nodes from this tb.dom() result set, that are in tb.dom( pSelector ) result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2208,
+            "itemtype": "method",
+            "name": "add",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nadd all nodes in tb.dom( pSelector ) result set to tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2239,
+            "itemtype": "method",
+            "name": "parents",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreturn all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2278,
+            "itemtype": "method",
+            "name": "parent",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreturn closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2308,
+            "itemtype": "method",
+            "name": "children",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreturn child nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2343,
+            "itemtype": "method",
+            "name": "descendants",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreturn all descendant nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2378,
+            "itemtype": "method",
+            "name": "addClass",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pClassName",
+                    "description": "- class name(s) to add, separated by ' '",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nadd class name to each of tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2408,
+            "itemtype": "method",
+            "name": "removeClass",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pClassName",
+                    "description": "- class name(s) to remove, separated by ' '",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nremove class name from each of tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2455,
+            "itemtype": "method",
+            "name": "attr",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pKey",
+                    "description": "- if string: DOM node attribute name; if object: hash of attributeName: attributeValue"
+                },
+                {
+                    "name": "pValue",
+                    "description": "- value to set in DOM node(s)",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nset of get attribute values to each DOM node in give tb.dom() result set\n\nHINT:\nif pKey is a string and pValue is not given its a GET\nif pKey is an object or pKey(string) and pValue(string) are given, it is a SET. ONLY THEN this is CHAINABLE.",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2516,
+            "itemtype": "method",
+            "name": "removeAttr",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pKeys",
+                    "description": "- attribute name(s) separated by ' '",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nremove attribute(s) completely from tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2547,
+            "itemtype": "method",
+            "name": "toArray",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set converted to a plain array of DOM nodes\n\nconvert tb.dom() result set converted to a plain array of DOM nodes",
+                "type": "Array"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2573,
+            "itemtype": "method",
+            "name": "filter",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- tb.dom() selector to match against or [].filter.call( this, function() )",
+                    "type": "..."
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set\n\nmatch tb.dom() result set against pSelector filter",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2610,
+            "itemtype": "method",
+            "name": "push",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- tb.dom() selector or DOM node"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set\n\nadd given pSelector result set to tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2646,
+            "itemtype": "method",
+            "name": "val",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pValue",
+                    "description": "- value to set to DOM input type element",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "[pValue] - value from input element [0] in tb.dom() result set\n\nif pValue given, it is a SET and the method is chainable\nif no pValue given, it is a GET and the method will return the value"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2838,
             "itemtype": "method",
             "name": "tb.observable",
             "params": [
@@ -700,12 +1351,11 @@
             "example": [
                 "\n\n    o = tb.observable( {} );\n\n    o(\n       { newData: 'newData' }\n    ); // change observable value\n\n    o.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once\n"
             ],
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2511,
+            "line": 2908,
             "itemtype": "method",
             "name": "tb.namespace",
             "params": [
@@ -734,12 +1384,11 @@
             "example": [
                 "\n\n    // lookup [window] namespace:\n    tb.namespace( 'app.Dashboard' ); // gets the constructor for dashboard\n\n    // in a constructor force namespace creation:\n    tb.namespace( 'app', true )     // force creation of 'app' if it is not there yet\n    .Dashboard = function(){ ... }\n\n    // lookup namespace in any object and return value:\n    tb.namespace( 'x.y', null, { x: { y: 42 } } );     // 42\n"
             ],
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2571,
+            "line": 2968,
             "itemtype": "method",
             "name": "tb.bind",
             "params": [
@@ -756,24 +1405,22 @@
             "example": [
                 "\n\n    tb.bind( document.body );\n    // scans the given element and all of its descendants\n    // in the DOM and looks for attributes \"data-tb\" in the nodes.\n    // resulting list will be scanned for those nodes that do not already\n    // have an tb object inside.\n    // creates a new tb object based on the class namespace given\n    // in the \"data-tb\" attribute\n    // stores it in the DOM element\n   \n    tb.bind( document.body, 'n1.n2.<className>' [ , <config data> ] )\n    //creates a new tb object based on the 2nd parameter, giving 3rd as constructor parameter\n    //stores it in the DOM element\n    //THIS VARIANT WILL overwrite ANY MATCHING INSTANCE THAT ALREADY RESIDES IN THE DOM NODE(S)!\n"
             ],
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2680,
+            "line": 3077,
             "itemtype": "method",
             "name": "tb.getId",
             "return": {
                 "description": "- unique id\n\nreturns a unique id",
                 "type": "String"
             },
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2693,
+            "line": 3090,
             "itemtype": "method",
             "name": "tb.extend",
             "params": [
@@ -792,12 +1439,11 @@
                 "description": "- other object\n\ntb.extend() function\nextend an object by another objects properties, always a deep copy",
                 "type": "Object"
             },
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2732,
+            "line": 3129,
             "itemtype": "method",
             "name": "tb.parse",
             "params": [
@@ -816,12 +1462,11 @@
                 "description": "- result string\n\ntb.parse() function\nfor each key/value in pObject, check string for {key}\nreplace occurence with <value>",
                 "type": "String"
             },
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2787,
+            "line": 3184,
             "itemtype": "method",
             "name": "tb.request",
             "params": [
@@ -894,56 +1539,48 @@
             "return": {
                 "description": "a twoBirds request object"
             },
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2809,
-            "class": "tb.Util",
-            "namespace": "tb"
+            "line": 3206,
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2853,
-            "class": "tb.Util",
-            "namespace": "tb"
+            "line": 3250,
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2870,
-            "class": "tb.Util",
-            "namespace": "tb"
+            "line": 3267,
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2892,
-            "class": "tb.Util",
-            "namespace": "tb"
+            "line": 3289,
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2917,
-            "class": "tb.Util",
-            "namespace": "tb"
+            "line": 3314,
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2931,
-            "class": "tb.Util",
-            "namespace": "tb"
+            "line": 3328,
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2959,
+            "line": 3356,
             "name": "",
             "itemtype": "method",
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3084,
+            "line": 3481,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -957,12 +1594,11 @@
                 "description": "- true if event handling stopped, else false\n\nstops event handling",
                 "type": "Boolean"
             },
-            "class": "tb.Util",
-            "namespace": "tb"
+            "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3249,
+            "line": 3646,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -973,12 +1609,11 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model",
-            "namespace": "tb"
+            "class": "tb.Model"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3279,
+            "line": 3676,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -989,12 +1624,11 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model",
-            "namespace": "tb"
+            "class": "tb.Model"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3310,
+            "line": 3707,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1005,12 +1639,11 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model",
-            "namespace": "tb"
+            "class": "tb.Model"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3340,
+            "line": 3737,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1021,15 +1654,13 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model",
-            "namespace": "tb"
+            "class": "tb.Model"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3447,
+            "line": 3844,
             "description": "requirement handling",
-            "class": "tb.Require",
-            "namespace": "tb"
+            "class": "tb.Require"
         }
     ],
     "warnings": [
@@ -1054,24 +1685,20 @@
             "line": " src/tb/tb.js:428"
         },
         {
-            "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:1480"
-        },
-        {
             "message": "param name missing: {void}",
-            "line": " src/tb/tb.js:2423"
+            "line": " src/tb/tb.js:2820"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/tb/tb.js:2787"
+            "line": " src/tb/tb.js:3184"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:2959"
+            "line": " src/tb/tb.js:3356"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:2959"
+            "line": " src/tb/tb.js:3356"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1083,31 +1710,31 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:2809"
+            "line": " src/tb/tb.js:3206"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:2853"
+            "line": " src/tb/tb.js:3250"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:2870"
+            "line": " src/tb/tb.js:3267"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:2892"
+            "line": " src/tb/tb.js:3289"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:2917"
+            "line": " src/tb/tb.js:3314"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:2931"
+            "line": " src/tb/tb.js:3328"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:3447"
+            "line": " src/tb/tb.js:3844"
         }
     ]
 }

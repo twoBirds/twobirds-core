@@ -1,3 +1,8 @@
+/*
+YOU MUST KEEP THE ORDER IN THIS FILE!
+-functions depend on sequence of appearence partly
+*/
+
 /**
  @class tb.Util
  @constructor

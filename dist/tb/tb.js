@@ -1477,17 +1477,6 @@ tb.Event.prototype = {
 })();
 
 ;
-/**
- tb.dom() function
- jquery like selector engine
-
- @function dom
- @namespace tb
- @static
-
- @param {string|domNode|array} a selector string, a dom node or an array of dom nodes
- @return {string} - result string
- */
 tb.dom = (function () {
 
     // Variables
@@ -1535,7 +1524,21 @@ tb.dom = (function () {
             };
         }
 
-        // dom constructor
+        /**
+         @class tb.dom
+         @constructor
+
+         @param [pSelector] a .querySelectorAll() selector string, a dom node or an array of dom nodes
+         @param [pDomNode] - DOM node to start search in
+
+         @return {object} - tb.dom() result set, may be empty
+
+         tb.dom() function
+
+         jquery like selector engine
+
+         */
+
         dom = function tbDom(pSelector, pDomNode) {
 
             var that = this,
@@ -1615,24 +1618,145 @@ tb.dom = (function () {
             length: 0,
 
             // from Array prototype
+            /**
+             @method concat
+             @chainable
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat">concat</a>
+             */
             concat: _mapArrayMethod( 'concat' ),
+
+            /**
+             @method every
+             @chainable
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/every">every</a>
+             */
             every: _mapArrayMethod( 'every' ),
+
+            /**
+             @method forEach
+             @chainable
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">forEach</a>
+             */
             forEach: _mapArrayMethod( 'forEach' ),
+
+            /**
+             @method indexOf
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a>
+             */
             indexOf: _mapArrayMethod( 'indexOf' ),
-            keys: _mapArrayMethod( 'keys' ),
+
+            /**
+             @method lastIndexOf
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf">lastIndexOf</a>
+             */
             lastIndexOf: _mapArrayMethod( 'lastIndexOf' ),
+
+            /**
+             @method map
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map">map</a>
+             */
             map: _mapArrayMethod( 'map' ),
+
+            /**
+             @method pop
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
+             */
             pop: _mapArrayMethod( 'pop' ),
+
+            /**
+             @method reduce
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce">reduce</a>
+             */
             reduce: _mapArrayMethod( 'reduce' ),
+
+            /**
+             @method reduce
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight">reduceRight</a>
+             */
             reduceRight: _mapArrayMethod( 'reduceRight' ),
+
+            /**
+             @method reverse
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse">reverse</a>
+             */
             reverse: _mapArrayMethod( 'reverse' ),
+
+            /**
+             @method shift
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">shift</a>
+             */
             shift: _mapArrayMethod( 'shift' ),
+
+            /**
+             @method slice
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">slice</a>
+             */
             slice: _mapArrayMethod( 'slice' ),
+
+            /**
+             @method some
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some">some</a>
+             */
             some: _mapArrayMethod( 'some' ),
+
+            /**
+             @method splice
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">splice</a>
+             */
             splice: _mapArrayMethod( 'splice' ),
+
+            /**
+             @method some
+
+             @return {object} - tb.dom() result set, may be empty
+
+             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift">unshift</a>
+             */
             unshift: _mapArrayMethod( 'unshift' ),
 
-            //own functions
+            //own functions, documented in code below
             add: add,
             addClass: addClass,
             append: append,
@@ -1665,12 +1789,20 @@ tb.dom = (function () {
         return new dom( pSelector, pDomNode );
 
         // Private Functions, exposed
+
+        /**
+         @method appendTo
+
+         @param [pElement] a .querySelectorAll() selector string, a dom node or an array of dom nodes
+
+         appends all elements in tb.dom() result set to given DOM nodes
+         */
         function appendTo( pElement ){
             var that = this;
 
             that.forEach(
                 function( pDomNode ){
-                    if ( !!pDomNode.nodeType ){
+                    if ( !!pDomNode['nodeType'] ){
                         if ( !pElement.length ){
                             pElement= [ pElement ];
                         }
@@ -1690,6 +1822,16 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method append
+         @chainable
+
+         @param [pElement] an array like set of DOM nodes, or a single DOM node
+
+         @return {object} - tb.dom() result set, may be empty
+
+         appends given DOM nodes to every node in tb.dom() result set
+         */
         function append( pElement ){
             var that = this;
 
@@ -1717,6 +1859,13 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method insertBefore
+
+         @param [pElement] - a single DOM node
+
+         prepends all elements in tb.dom() result set to given DOM node
+         */
         function insertBefore( pTarget ){
             var that = this;
 
@@ -1737,6 +1886,13 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method insertAfter
+
+         @param [pElement] - a single DOM node
+
+         inserts all elements in tb.dom() result set after given DOM node
+         */
         function insertAfter( pTarget ){
             var that = this,
                 nextDomNode = pTarget.nextSibling || false;
@@ -1767,6 +1923,17 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method trigger
+         @chainable
+
+         @param {string} pEventName - name of the event
+         @param [pData] - optional data
+
+         @return {object} - tb.dom() result set, may be empty
+
+         creates a DOM event for each element in tb.dom() result set
+         */
         function trigger( pEventName, pData ){
             var that = this,
                 eventNames = pEventName.split(' ');
@@ -1796,6 +1963,17 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method on
+         @chainable
+
+         @param {string} pEventName(s) - name(s) of the event separated by ' '
+         @param {function} pHandler - callback far event
+
+         @return {object} - tb.dom() result set, may be empty
+
+         creates a DOM event handler for each element in tb.dom() result set
+         */
         function on( pEventName, pHandler ){
             var that = this,
                 eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ],
@@ -1826,6 +2004,17 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method one
+         @chainable
+
+         @param {string} pEventName(s) - name(s) of the event separated by ' '
+         @param {function} pHandler - callback far event
+
+         @return {object} - tb.dom() result set, may be empty
+
+         creates a DOM event handler for each element in tb.dom() result set (to be called only once)
+         */
         function one( pEventName, pHandler ){
             var that = this;
 
@@ -1836,6 +2025,17 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method off
+         @chainable
+
+         @param {string} pEventName(s) - name(s) of the event separated by ' '
+         @param {function} pHandler - callback far event
+
+         @return {object} - tb.dom() result set, may be empty
+
+         removes one or all DOM event handlers from each element in tb.dom() result set
+         */
         function off( pEventName, pHandler ){
             var that = this,
                 eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ];
@@ -1850,7 +2050,7 @@ tb.dom = (function () {
                                 }
                             );
                         } else {
-                            // @todo: remove all event handlers
+                            // todo: remove all event handlers
                         }
                     }
                 }
@@ -1859,6 +2059,14 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method empty
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         removes one or all DOM event handlers from each element in tb.dom() result set
+         */
         function empty() {
             var that = this;
 
@@ -1871,6 +2079,16 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method html
+         @chainable
+
+         @param {string} pHtml - html string or empty string
+
+         @return {object} - tb.dom() result set, may be empty
+
+         replace all nodes .innerHTML with pHtml
+         */
         function html( pHtml ) {
             var that = this;
 
@@ -1889,6 +2107,14 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method hide
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         hide all nodes in tb.dom() result set
+         */
         function hide() {
             var that = this;
 
@@ -1904,6 +2130,14 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method show
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         show all nodes in tb.dom() result set
+         */
         function show() {
             var that = this;
 
@@ -1916,6 +2150,17 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method unique
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         force this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,
+         and we would like to hear about it... )
+
+         method is called internally though to force result set uniqueness
+         */
         function unique() {
             var that = this,
                 result = [];
@@ -1932,6 +2177,16 @@ tb.dom = (function () {
             return new tb.dom( result );
         }
 
+        /**
+         @method not
+         @chainable
+
+         @param  pSelector - any valid tb.dom() constructor parameter
+
+         @return {object} - tb.dom() result set, may be empty
+
+         remove all nodes from this tb.dom() result set, that are in tb.dom( pSelector ) result set
+         */
         function not(pSelector) {
             var that = this,
                 result = new tb.dom(),
@@ -1950,6 +2205,16 @@ tb.dom = (function () {
             return result;
         }
 
+        /**
+         @method add
+         @chainable
+
+         @param  pSelector - any valid tb.dom() constructor parameter
+
+         @return {object} - tb.dom() result set, may be empty
+
+         add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
+         */
         function add(pElements) {
             var that = this,
                 result;
@@ -1971,6 +2236,16 @@ tb.dom = (function () {
             return result;
         }
 
+        /**
+         @method parents
+         @chainable
+
+         @param  pSelector - any valid tb.dom() constructor parameter
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+         */
         function parents(pSelector) {
 
             var that = this,
@@ -2000,6 +2275,16 @@ tb.dom = (function () {
             return result;
         }
 
+        /**
+         @method parent
+         @chainable
+
+         @param  pSelector - any valid tb.dom() constructor parameter
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+         */
         function parent(pSelector){
             var that = this,
                 result = new tb.dom(),
@@ -2020,6 +2305,16 @@ tb.dom = (function () {
             return result;
         }
 
+        /**
+         @method children
+         @chainable
+
+         @param  pSelector - any valid tb.dom() constructor parameter
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return child nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+         */
         function children(pSelector) {
 
             var that = this,
@@ -2045,6 +2340,16 @@ tb.dom = (function () {
             return result;
         }
 
+        /**
+         @method descendants
+         @chainable
+
+         @param  pSelector - any valid tb.dom() constructor parameter
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return all descendant nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+         */
         function descendants(pSelector) {
 
             var that = this,
@@ -2070,6 +2375,16 @@ tb.dom = (function () {
             return result;
         }
 
+        /**
+         @method addClass
+         @chainable
+
+         @param  {string} pClassName - class name(s) to add, separated by ' '
+
+         @return {object} - tb.dom() result set, may be empty
+
+         add class name to each of tb.dom() result set
+         */
         function addClass(pClassName) {
 
             var that = this;
@@ -2090,6 +2405,16 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method removeClass
+         @chainable
+
+         @param  {string} pClassName - class name(s) to remove, separated by ' '
+
+         @return {object} - tb.dom() result set, may be empty
+
+         remove class name from each of tb.dom() result set
+         */
         function removeClass(pClassName) {
 
             var that = this;
@@ -2127,6 +2452,21 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method attr
+         @chainable
+
+         @param pKey - if string: DOM node attribute name; if object: hash of attributeName: attributeValue
+         @param {string} [pValue] - value to set in DOM node(s)
+
+         @return {object} - tb.dom() result set, may be empty
+
+         set of get attribute values to each DOM node in give tb.dom() result set
+
+         HINT:
+         if pKey is a string and pValue is not given its a GET
+         if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. ONLY THEN this is CHAINABLE.
+         */
         function attr(pKey, pValue) {
 
             var that = this,
@@ -2173,6 +2513,16 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method removeAttr
+         @chainable
+
+         @param {string} pKeys - attribute name(s) separated by ' '
+
+         @return {object} - tb.dom() result set, may be empty
+
+         remove attribute(s) completely from tb.dom() result set
+         */
         function removeAttr(pKeys) {
 
             var that = this,
@@ -2182,6 +2532,7 @@ tb.dom = (function () {
 
             that.forEach(
                 function (pDomNode) {
+                    i = 0;
                     if (attrNames && !!pDomNode['nodeType'] && pDomNode.nodeType === 1) {
                         while ((name = attrNames[i++])) {
                             pDomNode.removeAttribute(name);
@@ -2193,6 +2544,14 @@ tb.dom = (function () {
             return that;
         }
 
+        /**
+         @method toArray
+         @chainable
+
+         @return {array} - tb.dom() result set converted to a plain array of DOM nodes
+
+         convert tb.dom() result set converted to a plain array of DOM nodes
+         */
         function toArray() {
 
             var that = this,
@@ -2211,6 +2570,16 @@ tb.dom = (function () {
 
         }
 
+        /**
+         @method filter
+         @chainable
+
+         @param pSelector - tb.dom() selector to match against or [].filter.call( this, function(){ ... } )
+
+         @return {object} - tb.dom() result set
+
+         match tb.dom() result set against pSelector filter
+         */
         function filter( pSelector ) {
 
             var that = this,
@@ -2238,10 +2607,22 @@ tb.dom = (function () {
 
         }
 
+        /**
+         @method push
+         @chainable
+
+         @param pSelector - tb.dom() selector or DOM node
+
+         @return {object} - tb.dom() result set
+
+         add given pSelector result set to tb.dom() result set
+         */
         function push(pSelector) {
 
             var that = this,
                 result = [];
+
+            // todo: is this necessary? see .add()
 
             if (typeof pSelector === 'undefined') return that;    // unchanged
 
@@ -2262,6 +2643,17 @@ tb.dom = (function () {
             return result;
         }
 
+        /**
+         @method val
+         @chainable
+
+         @param {string} [pValue] - value to set to DOM input type element
+
+         @return [pValue] - value from input element [0] in tb.dom() result set
+
+         if pValue given, it is a SET and the method is chainable
+         if no pValue given, it is a GET and the method will return the value
+         */
         function val( pValue ){
 
             var that = this,
@@ -2420,6 +2812,11 @@ tb.dom = (function () {
 })();
 
 ;
+/*
+YOU MUST KEEP THE ORDER IN THIS FILE!
+-functions depend on sequence of appearence partly
+*/
+
 /**
  @class tb.Util
  @constructor
