@@ -216,8 +216,8 @@ tb.bind = function( pSelector, pTarget ){
 
             namespaces.forEach(
                 function( namespace ){
-                    if ( !selectedElement[namespace] ){
-                        selectedElement[namespace] = new tb(
+                    if ( !selectedElement[tb][namespace] ){
+                        new tb(
                             namespace,
                             null,
                             selectedElement
@@ -277,13 +277,15 @@ tb.getId = function(){
  @method tb.extend
 
  @param {object} pObj - object to extend
- @param {object} pSrc - other object
+ @param {object} [pObj] - other object
 
  @return {object} - other object
 
  tb.extend() function
- extend an object by another objects properties, always a deep copy
 
+ takes any number of objects as parameters
+ merges content into the first parameter object
+ always a deep copy
  */
 tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
@@ -315,14 +317,15 @@ tb.extend = function( pObj ){ // any number of arguments may be given
 /**
  @method tb.parse
   
- @param {string} pText - the text to parse
- @param {object} pParse - hash object containing replacement key/<value>
-  //@todo: missing parm description
- @return {string} - result string
+ @param pWhat - text, object or array to parse
+ @param {object} pParse - hash object containing replacement key/value pairs
+
+ @return result, = pWhat parsed
 
  tb.parse() function
- for each key/value in pObject, check string for {key}
- replace occurence with <value>
+
+ will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object
+ if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned
  */
 tb.parse = function( pWhat, pParse ){
 
@@ -379,9 +382,9 @@ tb.parse = function( pWhat, pParse ){
  @param {function} [pOptions.success] - the function to call with the request result
  @param {function} [pOptions.error] - the function to call if request status not in 200...299
  @param {function} [pOptions.statechange] - the function to call when readyState changes
- @param {number} [pOptions.timeout] - structure sample: { cb: myFunction, ms:10000 }<br>
- cb: callback to run when timeout occurs
- ms: number of milliseconds the request will run before being terminated
+ @param {number} [pOptions.timeout] - structure sample: { cb: myFunction, ms:10000 }
+    cb: callback to run when timeout occurs
+    ms: number of milliseconds the request will run before being terminated
  @param {boolean} [pOptions.cachable] - defaults to true, indicates whether or not to include a unique id in URL
  @param {boolean} [pOptions.async] - whether or not to make an asynchronous request
 
