@@ -43,7 +43,7 @@
 
         // ...
 
-    })();
+     })();
  
  */
 tb.Require = function( pConfig ){
