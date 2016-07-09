@@ -40,7 +40,7 @@ tb.namespace( 'app', true ).GrandParent = (function(){
     function test( e ){
         var that = this;
 
-        console.info( 'Handler "test" in: ', that.target, 'sender: ', e );
+        //console.info( ' grandParent ::test()' );
     }
 
 })();

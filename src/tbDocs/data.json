@@ -2,15 +2,15 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.0.44",
+        "version": "v7.0.46",
         "url": "http://www.tb-core.org"
     },
     "files": {
-        "dist/tb/tb.js": {
-            "name": "dist/tb/tb.js",
+        "src/tb/tb.js": {
+            "name": "src/tb/tb.js",
             "modules": {},
             "classes": {
-                "TbSelector": 1,
+                "tb.Selector": 1,
                 "tb": 1,
                 "tb.Event": 1,
                 "tb.tb.Model": 1
@@ -24,32 +24,32 @@
     },
     "modules": {},
     "classes": {
-        "TbSelector": {
-            "name": "TbSelector",
-            "shortname": "TbSelector",
+        "tb.Selector": {
+            "name": "tb.Selector",
+            "shortname": "tb.Selector",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "dist/tb/tb.js",
+            "file": "src/tb/tb.js",
             "line": 42,
-            "description": "TbSelector constructor, internal use only\n\ncreates an array-like object containing the tb objects defined by pSelector parameter\n\nsample calls:\nnew TbSelector( '' )\n- create an empty result set\nnew TbSelector( 'div.myClass' )\n- returns all tb objects that were in the selected DOM elements.\n- uses jQuery to find DOM elements, so parameter equals jQuery selector string.\nnew TbSelector( /ns1.ns2.myClassName/ )\n- returns all tb elements (e.g. namespace ns1.ns2.myClassName) in current DOM,\n- matches namespace property with regex.\nnew TbSelector( '*' )\nnew TbSelector( /./ )\n- all tb elements in DOM\nnew TbSelector( document.body )\n- selection by DOM node\nnew TbSelector( ns1.ns2.<className> )\n- all tb elements in current DOM that are instances of the given class",
             "is_constructor": 1,
-            "chainable": 1,
-            "access": "private",
-            "tagname": "",
             "params": [
                 {
                     "name": "pSelector",
-                    "description": "- multiple selector types",
-                    "type": "String | regEx | constructor"
+                    "description": "",
+                    "type": "Function|string|object|array"
                 }
             ],
             "return": {
-                "description": "TbSelector instance, array-like object",
+                "description": "- the twoBirds instance you just created\n\ntwoBirds selector constructor\n\nCAUTION: you may use this class directly if you know what you are doing,\nbut the correct syntax for call is simply:",
                 "type": "Object"
-            }
+            },
+            "example": [
+                "\n\n    tb( pSelector )\n       .whateverChainedMethod(); // etc.\n\nHINT: tb() works as a selector, new tb() instanciates a twoBirds instance from a class.",
+                "\n\n    // get tB instances from DOM by css query selector\n    tb( 'div' )            // any tbInstance that sits in a div dom node\n\n    // get tB instances from DOM by constructor\n    tb( app.sampleConstructor )     // any tbInstance in DOM that is instanceof sampleConstructor\n\n    // get tB instances from DOM by regEx\n    tb( /myRegEx/ )    // any tbInstance in DOM that has a namespace property that fits the regEx\n\n    // get tB instances from DOM by array of selectors\n    tb( [ 'body', /myRegEx/ ] )     // any combination of selectors in an array, result is additive, flat and unique\n"
+            ]
         },
         "tb": {
             "name": "tb",
@@ -59,34 +59,39 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "dist/tb/tb.js",
-            "line": 194,
-            "description": "tb() / new tb()\ncan be used as SELECTOR and CONSTRUCTOR\n\nsample call CONSTRUCTOR:\nvar a = new tb( 'tb_repo_object_namespace' )\n\nsample call SELECTOR:\nvar result = tb( 'div#app' )\n\nfor selector functionality see TbSelector object",
+            "file": "src/tb/tb.js",
+            "line": 200,
             "is_constructor": 1,
-            "extends": "TbSelector",
             "params": [
                 {
-                    "name": "arguments[0]",
-                    "description": "- namespace of class | TbSelector parameter",
-                    "type": "String"
-                },
-                {
-                    "name": "arguments[1]",
-                    "description": "- config data ( if called as constructor )",
-                    "type": "*",
-                    "optional": true
-                },
-                {
-                    "name": "arguments[2]",
-                    "description": "- DOM target or parent tb instance",
-                    "type": "*",
-                    "optional": true
+                    "name": "pOptions",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "pClass",
+                            "description": "- class Namespace as string or class"
+                        },
+                        {
+                            "name": "pConfig",
+                            "description": "- optional configuration, any type, preferrably object",
+                            "optional": true
+                        },
+                        {
+                            "name": "pTarget",
+                            "description": "- target to put object in, DOM node or any other object",
+                            "optional": true
+                        }
+                    ]
                 }
             ],
             "return": {
-                "description": "- twoBirds Object or TbSelector instance /w results",
+                "description": "- the twoBirds instance you just created\n\ntwoBirds constructor",
                 "type": "Object"
-            }
+            },
+            "example": [
+                "\n\n    // put Instance into DOM node\n    new tb(\n        app.myConstructor,                                     // any constructor you want to have an instance of\n        { ... },                                               // the config object you hand over to the constructor\n        target.appendChild( document.createElement( 'span' ) ) // DOM node to insert the object item\n    );\n\n    // put Instance anywhere\n    new tb(\n        app.myConstructor,            // any constructor you want to have an instance of\n        { ... },                      // the config object you hand over to the constructor\n        anotherTbInstance           // any other object you want to put the tb instance in\n    );\n\n    // if a namespace STRING is given, requirement loading is done in case the class isnt present yet\n        new tb(\n        'app.myConstructor',          // namespace string for the constructor you want to have an instance of\n        { ... },                      // the config object you hand over to the constructor\n        anotherTbInstance          // any other object you want to put the tb instance in\n    );\n"
+            ]
         },
         "tb.Event": {
             "name": "tb.Event",
@@ -97,8 +102,8 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "tb",
-            "file": "dist/tb/tb.js",
-            "line": 1368,
+            "file": "src/tb/tb.js",
+            "line": 1385,
             "description": "standard twobirds event, internal use only",
             "is_constructor": 1,
             "access": "private",
@@ -138,8 +143,8 @@
             "plugin_for": [],
             "extension_for": [],
             "namespace": "tb",
-            "file": "dist/tb/tb.js",
-            "line": 1716,
+            "file": "src/tb/tb.js",
+            "line": 1733,
             "description": "tb.Model constructor\ncreate and return a simple CRUD model",
             "is_constructor": 1,
             "params": [
@@ -158,17 +163,17 @@
     "elements": {},
     "classitems": [
         {
-            "file": "dist/tb/tb.js",
+            "file": "src/tb/tb.js",
             "line": 3,
             "description": "twoBirds V7 core functionality",
             "author": "frank.thuerigen <frank_thuerigen@yahoo.de>",
             "copyright": "copyright (c) 2006- Frank Thürigen",
             "license": "http://www.gnu.org/copyleft/gpl.html GNU GPL v3",
-            "class": "TbSelector"
+            "class": "tb.Selector"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 413,
+            "file": "src/tb/tb.js",
+            "line": 427,
             "description": "walk all pSelector tb objects, call pMethodName on them\nreturn a UNIQUE TbSelector result set containing all single results",
             "itemtype": "method",
             "name": "walkSelector",
@@ -199,9 +204,8 @@
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 473,
-            "description": "set() method\n\nset an instance property",
+            "file": "src/tb/tb.js",
+            "line": 487,
             "itemtype": "method",
             "name": "set",
             "params": [
@@ -218,15 +222,17 @@
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance or tB instance - for chaining\n\nset() method\n\nsets an instance property",
                 "type": "Object"
             },
+            "example": [
+                "\n\n   var a = new tb(...); // create a tB instance\n   a.set( 'x': 42 );\n"
+            ],
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 509,
-            "description": "get() method\n\nget an instance property",
+            "file": "src/tb/tb.js",
+            "line": 529,
             "itemtype": "method",
             "name": "get",
             "params": [
@@ -238,49 +244,48 @@
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
-                "type": "Object"
+                "description": "any value stored in property, or undefined\n\nget() method\n\nget an instance property"
             },
+            "example": [
+                "\n\n    var a = new tb(...); // create a tB instance\n    a.get( 'x' );\n"
+            ],
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 537,
-            "description": "trigger an event, optionally with data and bubble indicator",
+            "file": "src/tb/tb.js",
+            "line": 563,
             "itemtype": "method",
             "name": "trigger",
             "params": [
                 {
                     "name": "pEvent",
-                    "description": "- name of event or tb.Event instance or tb.Event instance",
-                    "type": "String|object"
+                    "description": "- name of event OR tb.Event instance (in this case the only parameter)",
+                    "type": "String"
                 },
                 {
                     "name": "pEventData",
                     "description": "- event data, usally an object",
-                    "type": "*",
                     "optional": true
                 },
                 {
                     "name": "pBubble",
-                    "description": "- bubbling indicator : 'l' = local, 'u' = up, 'd' = down or any combination",
+                    "description": "- bubbling indicator : 'l' = local, 'u' = up, 'd' = down - or any combination",
                     "type": "String",
                     "optional": true,
                     "optdefault": "l"
                 }
             ],
             "return": {
-                "description": "- (this) -> TbSelector instance or tb object",
+                "description": "- tb.Selector instance or tB instance - for chaining\n\ntrigger method\n\ntriggers an asynchronous twoBirds event, optionally with data and bubble indicator",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 686,
-            "description": "on() method\n\nfor each this[0...n] or this as tb() instance,\n- add handler to handler array\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 715,
             "itemtype": "method",
-            "name": "",
+            "name": "on",
             "params": [
                 {
                     "name": "pEventName",
@@ -301,17 +306,16 @@
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance or tB instance - for chaining\n\n.on() method\n\nadds a handler to a twoBirds instance or a tb.Selector result set",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 736,
-            "description": "one() method\n\nfor each this[0...n] or this as tb() instance,\n- add handler to handler array\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 763,
             "itemtype": "method",
-            "name": "",
+            "name": "one",
             "params": [
                 {
                     "name": "pEventName",
@@ -325,17 +329,16 @@
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance or tB instance - for chaining\n\n.one() method\n\nadds a handler to a twoBirds instance or a tb.Selector result set,\nto be called only once when the event fires\nafterwards the handler is deleted from the event handler list",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 760,
-            "description": "off() method\n\nfor each this[0...n] or this as tb() instance,\n- delete handler from handler array\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 787,
             "itemtype": "method",
-            "name": "",
+            "name": "off",
             "params": [
                 {
                     "name": "pEventName",
@@ -349,280 +352,222 @@
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance or tB instance - for chaining\n\n.off() method\n\nremoves a handler from a twoBirds instance or a tb.Selector result set\nafterwards the handler is deleted from the event handler list",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 811,
-            "description": "parents() method\nfor each this[0...n] or this as tb() instance,\n- get all parent tb objects\n- check them against the filter param pSelector\n- return them as a TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 837,
             "itemtype": "method",
             "name": "parents",
             "params": [
                 {
                     "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
-                    "type": "*",
+                    "description": "- any type of tb.Selector parameter",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance - for chaining\n\n.parents() method\n\nfor each this[0...n] or this as tb() instance,\n- get all parent tb objects\n- check them against the filter param pSelector\n- return them as a TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 871,
-            "description": "parent() method\n\nfor each this[0...n] or this as tb() instance,\n- get closest parent tb object\n\n- check all of them against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 898,
             "itemtype": "method",
             "name": "parent",
             "params": [
                 {
                     "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
-                    "type": "*",
+                    "description": "- any type of tb.Selector parameter",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance - for chaining\n\n.parent() method\n\nfor each this[0...n] or this as tb() instance,\n- get closest parent tb object\n- check all of them against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 922,
-            "description": "descendants() method\n\nfor each this[0...n] or this as tb() instance,\n- get all descendants of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 948,
             "itemtype": "method",
             "name": "descendants",
             "params": [
                 {
                     "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
-                    "type": "Variant",
-                    "optional": true
-                },
-                {
-                    "name": "pLocalOnly",
-                    "description": "- only local descendants of given tb instance",
-                    "type": "Boolean",
+                    "description": "- any type of tb.Selector parameter",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance - for chaining\n\n.descendants() method\n\nfor each this[0...n] or this as tb() instance,\n- get all descendants of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 980,
-            "description": "children() method\n\nfor each this[0...n] or this as tb() instance,\n- get all direct children of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1005,
             "itemtype": "method",
             "name": "children",
             "params": [
                 {
                     "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
+                    "description": "- any type of tb.Selector parameter",
                     "optional": true
                 },
                 {
                     "name": "pLocalOnly",
-                    "description": "- only local children of given tb instance",
+                    "description": "- only local children of given tb instance(s)",
                     "type": "Boolean",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance - for chaining\n\n.children() method\n\nfor each this[0...n] or this as tb() instance,\n- get all direct children of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1034,
-            "description": "next() method\n\nfor each this[0...n] or this as tb() instance,\n- get the direct following sibling of tb object\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1059,
             "itemtype": "method",
             "name": "next",
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
-                    "type": "Variant",
-                    "optional": true
-                }
-            ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nnext() method\n\nfor each this[0...n] or this as tb() instance,\n- get the direct following sibling of tb instance\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1073,
-            "description": "prev() method\n\nfor each this[0...n] or this as tb() instance,\n- get the previous sibling of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1096,
             "itemtype": "method",
             "name": "prev",
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
-                    "type": "Variant",
-                    "optional": true
-                }
-            ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nprev() method\n\nfor each this[0...n] or this as tb() instance,\n- get the direct previous sibling of tb instance\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1112,
-            "description": "first() method\n\nfor each this[0...n] or this as tb() instance,\n- get the first child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1133,
             "itemtype": "method",
             "name": "first",
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
-                    "type": "Variant",
-                    "optional": true
-                }
-            ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nfirst() method\n\nfor each this[0...n] or this as tb() instance,\n- get the first child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1147,
-            "description": "last() method\n\nfor each this[0...n] or this as tb() instance,\n- get the last child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1166,
             "itemtype": "method",
             "name": "last",
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any kind of TbSelector parameter",
-                    "type": "Variant",
-                    "optional": true
-                }
-            ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nlast() method\n\nfor each this[0...n] or this as tb() instance,\n- get the last child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1175,
-            "description": "toArray() method",
+            "file": "src/tb/tb.js",
+            "line": 1192,
             "itemtype": "method",
             "name": "toArray",
             "return": {
-                "description": "- TbSelector elements in an array",
+                "description": "- TbSelector elements in a plain array\n\ntoArray() method",
                 "type": "Array"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1189,
-            "description": "filter() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1206,
             "itemtype": "method",
             "name": "filter",
             "params": [
                 {
-                    "name": "pSelector",
+                    "name": "pParam",
                     "description": "- any kind of TbSelector parameter",
-                    "type": "*",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nfilter() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against the filter param pParam\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1230,
-            "description": "not() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against pSelector and remove all fits\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1247,
             "itemtype": "method",
             "name": "not",
             "params": [
                 {
-                    "name": "pSelector",
+                    "name": "pParam",
                     "description": "- any kind of TbSelector parameter",
-                    "type": "*",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nnot() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against pSelector and remove all that match\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1272,
-            "description": "is() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against pSelector and remove all that do not fit\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1289,
             "itemtype": "method",
             "name": "is",
             "params": [
                 {
-                    "name": "pSelector",
+                    "name": "pParam",
                     "description": "- any kind of TbSelector parameter",
-                    "type": "*",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nis() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against tbSelector( pParam ) and remove all that DO NOT match\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1313,
-            "description": "add() method\n\nadd elements to current result set\n- return TbSelector result set (unique)",
+            "file": "src/tb/tb.js",
+            "line": 1330,
             "itemtype": "method",
             "name": "add",
             "params": [
                 {
-                    "name": "pSelector",
+                    "name": "pParam",
                     "description": "- any kind of TbSelector parameter",
-                    "type": "*",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- TbSelector instance",
+                "description": "- tb.Selector instance (maybe empty) - for chaining\n\nadd() method\n\nadd elements to current result set\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
             "class": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1392,
-            "description": "stop propagation after all handlers on this object have run",
+            "file": "src/tb/tb.js",
+            "line": 1409,
+            "description": "stop propagation after all handlers on this object have run\n     *",
             "itemtype": "method",
-            "name": "stopPropagation",
+            "name": "stopPropagation\n     *",
             "return": {
                 "description": "tb.Event object",
                 "type": "Object"
@@ -630,11 +575,11 @@
             "class": "tb.Event"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1404,
-            "description": "stop propagation immediately after this handler has run",
+            "file": "src/tb/tb.js",
+            "line": 1421,
+            "description": "stop propagation immediately after this handler has run\n     *",
             "itemtype": "method",
-            "name": "stopImmediatePropagation",
+            "name": "stopImmediatePropagation\n     *",
             "return": {
                 "description": "tb.Event object",
                 "type": "Object"
@@ -642,8 +587,8 @@
             "class": "tb.Event"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1446,
+            "file": "src/tb/tb.js",
+            "line": 1463,
             "description": "stops event handling",
             "itemtype": "method",
             "name": "stop",
@@ -663,8 +608,8 @@
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1466,
+            "file": "src/tb/tb.js",
+            "line": 1483,
             "description": "returns a unique id",
             "itemtype": "method",
             "name": "getId",
@@ -677,8 +622,8 @@
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1481,
+            "file": "src/tb/tb.js",
+            "line": 1498,
             "description": "tb.namespace() function\n\nsample calls:\ntb.namespace( 'app.Dashboard' ) gets the constructor for dashboard\n\nand in the dashboard constructor:\n\ntb.namespace( 'app', true ).Dashboard = function(){ ...",
             "itemtype": "method",
             "name": "namespace",
@@ -710,8 +655,8 @@
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1539,
+            "file": "src/tb/tb.js",
+            "line": 1556,
             "description": "tb.bind() function\n\nsample calls:\n\ntb.bind( document.body )\n\n- scans the given element and all of its descendants\n  in the DOM and looks for attributes \"data-tb\" in the nodes.\n- resulting list will be scanned for those nodes that do not already\n  have an tb object inside.\n- creates a new tb object based on the class namespace given\n  in the \"data-tb\" attribute\n- stores it in the DOM element\n\ntb.bind( document.body, 'n1.n2.<className>' [ , <config data> ] )\n\n- creates a new tb object based on the 2nd parameter, giving 3rd as constructor parameter\n- stores it in the DOM element\nTHIS VARIANT WILL overwrite ANY tbo OBJECT THAT ALREADY RESIDES IN THE DOM NODE!",
             "itemtype": "method",
             "name": "bind",
@@ -731,8 +676,8 @@
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1622,
+            "file": "src/tb/tb.js",
+            "line": 1639,
             "description": "function tb.observable()\n\n- creates a function\n- initializes a value to observe\n- returns this function\n\nsample calls:\n\no = tb.observable( {} );\no( { newData: 'newData' } ); // change observable value\no.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once",
             "itemtype": "method",
             "name": "observable",
@@ -752,8 +697,8 @@
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1889,
+            "file": "src/tb/tb.js",
+            "line": 1906,
             "description": "tb.extend() function\nextend an object by another objects properties, always a deep copy",
             "itemtype": "method",
             "name": "extend",
@@ -778,8 +723,8 @@
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1929,
+            "file": "src/tb/tb.js",
+            "line": 1946,
             "description": "tb.parse() function\nfor each key/value in pObject, check string for {key}\nreplace occurence with <value>",
             "itemtype": "method",
             "name": "parse",
@@ -804,15 +749,15 @@
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 1987,
+            "file": "src/tb/tb.js",
+            "line": 2004,
             "description": "requirement handling",
             "class": "tb.Model",
             "namespace": "tb"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2304,
+            "file": "src/tb/tb.js",
+            "line": 2321,
             "memberof": "tb",
             "field": "",
             "description": "the twoBirds request object",
@@ -820,44 +765,44 @@
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2311,
+            "file": "src/tb/tb.js",
+            "line": 2328,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2355,
-            "class": "tb.request.tb.Model",
-            "namespace": "tb.request"
-        },
-        {
-            "file": "dist/tb/tb.js",
+            "file": "src/tb/tb.js",
             "line": 2372,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2394,
+            "file": "src/tb/tb.js",
+            "line": 2389,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2419,
+            "file": "src/tb/tb.js",
+            "line": 2411,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2433,
+            "file": "src/tb/tb.js",
+            "line": 2436,
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2461,
+            "file": "src/tb/tb.js",
+            "line": 2450,
+            "class": "tb.request.tb.Model",
+            "namespace": "tb.request"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2478,
             "name": "",
             "itemtype": "method",
             "params": [
@@ -911,21 +856,21 @@
                 }
             ],
             "return": {
-                "description": "a twoBirds request object"
+                "description": "a twoBirds request object\n     *"
             },
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2601,
+            "file": "src/tb/tb.js",
+            "line": 2618,
             "description": "document.ready bootstrap",
             "class": "tb.request.tb.Model",
             "namespace": "tb.request"
         },
         {
-            "file": "dist/tb/tb.js",
-            "line": 2631,
+            "file": "src/tb/tb.js",
+            "line": 2648,
             "description": "tb.dom() function\njquery like selector engine",
             "itemtype": "method",
             "name": "dom",
@@ -948,111 +893,119 @@
     "warnings": [
         {
             "message": "unknown tag: copyright",
-            "line": " dist/tb/tb.js:3"
+            "line": " src/tb/tb.js:3"
         },
         {
             "message": "unknown tag: license",
-            "line": " dist/tb/tb.js:3"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:413"
-        },
-        {
-            "message": "unknown tag: ignore",
-            "line": " dist/tb/tb.js:1368"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1446"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1466"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1481"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1539"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1622"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1889"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:1929"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " dist/tb/tb.js:2304"
-        },
-        {
-            "message": "unknown tag: field",
-            "line": " dist/tb/tb.js:2304"
-        },
-        {
-            "message": "unknown tag: name",
-            "line": " dist/tb/tb.js:2461"
-        },
-        {
-            "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2461"
+            "line": " src/tb/tb.js:3"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " dist/tb/tb.js:2461"
+            "line": " src/tb/tb.js:42"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/tb/tb.js:200"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " dist/tb/tb.js:2631"
+            "line": " src/tb/tb.js:427"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " src/tb/tb.js:1385"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:1463"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:1483"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:1498"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:1556"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:1639"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:1906"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:1946"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:2321"
+        },
+        {
+            "message": "unknown tag: field",
+            "line": " src/tb/tb.js:2321"
+        },
+        {
+            "message": "unknown tag: name",
+            "line": " src/tb/tb.js:2478"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:2478"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " src/tb/tb.js:2478"
+        },
+        {
+            "message": "replacing incorrect tag: function with method",
+            "line": " src/tb/tb.js:2648"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
-            "line": " dist/tb/tb.js:3"
+            "line": " src/tb/tb.js:3"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " dist/tb/tb.js:1987"
+            "line": " src/tb/tb.js:2004"
         },
         {
             "message": "Missing item type\nthe twoBirds request object",
-            "line": " dist/tb/tb.js:2304"
+            "line": " src/tb/tb.js:2321"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2311"
+            "line": " src/tb/tb.js:2328"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2355"
+            "line": " src/tb/tb.js:2372"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2372"
+            "line": " src/tb/tb.js:2389"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2394"
+            "line": " src/tb/tb.js:2411"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2419"
+            "line": " src/tb/tb.js:2436"
         },
         {
             "message": "Missing item type",
-            "line": " dist/tb/tb.js:2433"
+            "line": " src/tb/tb.js:2450"
         },
         {
             "message": "Missing item type\ndocument.ready bootstrap",
-            "line": " dist/tb/tb.js:2601"
+            "line": " src/tb/tb.js:2618"
         }
     ]
 }

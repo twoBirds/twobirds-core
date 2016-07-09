@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>tb.tb.Model - twoBirds</title>
+    <title>tb.Selector - twoBirds</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.0.44</em>
+            <em>API Docs for: v7.0.46</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,8 +40,8 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/tb.html">tb</a></li>
                                 <li><a href="../classes/tb.Event.html">tb.Event</a></li>
+                                <li><a href="../classes/tb.Selector.html">tb.Selector</a></li>
                                 <li><a href="../classes/tb.tb.Model.html">tb.tb.Model</a></li>
-                                <li><a href="../classes/TbSelector.html">TbSelector</a></li>
                             </ul>
                 
                 
@@ -79,12 +79,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>tb.tb.Model Class</h1>
+<h1>tb.Selector Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/dist_tb_tb.js.html#l1716"><code>dist&#x2F;tb&#x2F;tb.js:1716</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l42"><code>src&#x2F;tb&#x2F;tb.js:42</code></a>
         </div>
 
 
@@ -92,26 +92,24 @@
 
 
 <div class="box intro">
-    <p>tb.Model constructor
-create and return a simple CRUD model</p>
-
+    
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_tb.tb.Model" class="method item">
-    <h3 class="name"><code>tb.tb.Model</code></h3>
+<div id="method_tb.Selector" class="method item">
+    <h3 class="name"><code>tb.Selector</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>pConfig</code>
+                        <code>pSelector</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type">Object</span>
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
         </span>
 
 
@@ -123,7 +121,7 @@ create and return a simple CRUD model</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/dist_tb_tb.js.html#l1716"><code>dist&#x2F;tb&#x2F;tb.js:1716</code></a>
+        <a href="../files/src_tb_tb.js.html#l42"><code>src&#x2F;tb&#x2F;tb.js:42</code></a>
         </p>
 
 
@@ -139,15 +137,12 @@ create and return a simple CRUD model</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">pConfig</code>
-                        <span class="type">Object</span>
+                        <code class="param-name">pSelector</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
 
 
                     <div class="param-description">
-                        <ul>
-<li>config parameter, usually an object @todo: variant is no valid data type</li>
-</ul>
-
+                         
                     </div>
 
                 </li>
@@ -158,15 +153,41 @@ create and return a simple CRUD model</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Object</span>:
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
                     <ul>
-<li>the model instance</li>
+<li>the twoBirds instance you just created</li>
 </ul>
+<p>twoBirds selector constructor</p>
+<p>CAUTION: you may use this class directly if you know what you are doing,
+but the correct syntax for call is simply:</p>
 
             </div>
         </div>
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>tb( pSelector )
+   .whateverChainedMethod(); // etc.
+</code></pre>
+<p>HINT: tb() works as a selector, new tb() instanciates a twoBirds instance from a class.</p>
+<pre class="code prettyprint"><code>// get tB instances from DOM by css query selector
+tb( 'div' )            // any tbInstance that sits in a div dom node
+
+// get tB instances from DOM by constructor
+tb( app.sampleConstructor )     // any tbInstance in DOM that is instanceof sampleConstructor
+
+// get tB instances from DOM by regEx
+tb( /myRegEx/ )    // any tbInstance in DOM that has a namespace property that fits the regEx
+
+// get tB instances from DOM by array of selectors
+tb( [ 'body', /myRegEx/ ] )     // any combination of selectors in an array, result is additive, flat and unique
+</code></pre>
+
+            </div>
+        </div>
 </div>
     </div>
 
@@ -174,103 +195,17 @@ create and return a simple CRUD model</p>
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
     </ul>
 
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_dom">dom</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                    </ul>
-                </div>
 
 
 
         </div>
 
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_dom" class="method item">
-    <h3 class="name"><code>dom</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>a</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">String</span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/dist_tb_tb.js.html#l2631"><code>dist&#x2F;tb&#x2F;tb.js:2631</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>tb.dom() function
-jquery like selector engine</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type">String | DomNode | Array</span>
-
-
-                    <div class="param-description">
-                        <p>selector string, a dom node or an array of dom nodes</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">String</span>:
-                    <ul>
-<li>result string</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-            </div>
 
 
 

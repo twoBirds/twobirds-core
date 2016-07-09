@@ -62,7 +62,7 @@ tb.namespace( 'app', true ).Child = (function(){
         if ( e.data.namespace === 'app.EmbeddedObject2' ){
             e.stopPropagation();
         }
-        console.info( 'Handler "test" in:', that.target, 'sender: ', e );
+        //console.info( 'child ::test()' );
     }
 
 })();

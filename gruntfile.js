@@ -6,13 +6,22 @@ module.exports = function(grunt) {
         clean: {
             clean: [
                 "dist",
-                "src/tb/min",
-                "src/tb/tb.js",
-                "src/tb/tb.min.js"
+                "src/tbMin",
+                "src/tb"
             ]
         },
 
         copy: {
+            before: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: 'src/tb',
+                        src: '*.js',
+                        dest: 'dist/tb'
+                    }
+                ]
+            },
             main: {
                 files: [
                     {
@@ -23,17 +32,33 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: 'src/tb',
-                        src: '*.js.map',
+                        cwd: 'src/tbMin',
+                        src: '*.js',
                         dest: 'dist/tb'
                     },
                     {
                         expand: true,
-                        cwd: 'src',
-                        src: 'index.html',
-                        dest: 'dist'
+                        cwd: 'src/tbMin',
+                        src: '*.js.map',
+                        dest: 'dist/tb'
                     }
                 ]
+            }
+        },
+
+        concat: {
+            options: {
+                separator: '\n;\n',
+                //stripBanners: true,
+                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n\n'
+            },
+            dist: {
+                src: [
+                    'src/tbSource/tb.core.js',
+                    'src/tbSource/tb.dom.js'
+                ],
+                dest: 'src/tb/tb.js',
+                nonull: true
             }
         },
 
@@ -49,34 +74,11 @@ module.exports = function(grunt) {
                 },
                 files: [
                     {
-                        expand: true,
-                        cwd: 'src/tb/tb',
-                        src: '*.js',
-                        dest: 'src/tb/min'
-                    },
-                    {
-                        'src/tb/tb.min.js': [
-                            'src/tb/min/tb.core.js',
-                            'src/tb/min/tb.dom.js'
+                        'src/tbMin/tb.min.js': [
+                            'src/tb/tb.js'
                         ]
                     }
                 ]
-            }
-        },
-
-        concat: {
-            options: {
-                separator: '\n;\n',
-                //stripBanners: true,
-                banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n\n'
-            },
-            dist: {
-                src: [
-                    'src/tb/tb/tb.core.js',
-                    'src/tb/tb/tb.dom.js'
-                ],
-                dest: 'src/tb/tb.js',
-                nonull: true
             }
         },
 
@@ -107,8 +109,9 @@ module.exports = function(grunt) {
                 version: 'v<%= pkg.version%>',
                 url: 'http://www.tb-core.org',
                 options: {
-                    paths: 'dist/',
-                    outdir: 'dist/docs/'
+                    linkNatives: "true",
+                    paths: 'src/tb',
+                    outdir: 'src/tbDocs/'
                 }
             }
         }
@@ -129,9 +132,10 @@ module.exports = function(grunt) {
         'default', [
             'jshint',
             'clean',
+            'copy:before',
             'concat',
             'uglify',
-            'copy',
+            'copy:main',
             'yuidoc'
         ]
     );

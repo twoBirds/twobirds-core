@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>dist/tb/tb.js - twoBirds</title>
+    <title>src/tb/tb.js - twoBirds</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.0.44</em>
+            <em>API Docs for: v7.0.46</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,8 +40,8 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/tb.html">tb</a></li>
                                 <li><a href="../classes/tb.Event.html">tb.Event</a></li>
+                                <li><a href="../classes/tb.Selector.html">tb.Selector</a></li>
                                 <li><a href="../classes/tb.tb.Model.html">tb.tb.Model</a></li>
-                                <li><a href="../classes/TbSelector.html">TbSelector</a></li>
                             </ul>
                 
                 
@@ -79,11 +79,11 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: dist/tb/tb.js</h1>
+<h1 class="file-heading">File: src/tb/tb.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.0.44 - 2016-07-08 */
+/*! twobirds-core - v7.0.46 - 2016-07-09 */
 
 /**
  twoBirds V7 core functionality
@@ -125,35 +125,39 @@ this.Element &amp;&amp; function(ElementPrototype) {
 tb = (function(){
 
     /**
-     * TbSelector constructor, internal use only
-     *
-     * creates an array-like object containing the tb objects defined by pSelector parameter
-     *
-     * sample calls:
-     * new TbSelector( &#x27;&#x27; )
-     * - create an empty result set
-     * new TbSelector( &#x27;div.myClass&#x27; )
-     * - returns all tb objects that were in the selected DOM elements.
-     * - uses jQuery to find DOM elements, so parameter equals jQuery selector string.
-     * new TbSelector( /ns1.ns2.myClassName/ )
-     * - returns all tb elements (e.g. namespace ns1.ns2.myClassName) in current DOM,
-     * - matches namespace property with regex.
-     * new TbSelector( &#x27;*&#x27; )
-     * new TbSelector( /./ )
-     * - all tb elements in DOM
-     * new TbSelector( document.body )
-     * - selection by DOM node
-     * new TbSelector( ns1.ns2.&lt;className&gt; )
-     * - all tb elements in current DOM that are instances of the given class
-     *
-     * @class TbSelector
-     * @constructor
-     * @chainable
-     * @private
-     *
-     * @param {string | regEx | constructor} pSelector - multiple selector types
-     *
-     * @return {object} TbSelector instance, array-like object
+     @class tb.Selector
+     @constructor
+
+     @param {function|string|object|array} pSelector
+
+     @returns {object} - the twoBirds instance you just created
+
+     twoBirds selector constructor
+
+     CAUTION: you may use this class directly if you know what you are doing,
+     but the correct syntax for call is simply:
+
+     @example
+
+         tb( pSelector )
+            .whateverChainedMethod(); // etc.
+
+     HINT: tb() works as a selector, new tb() instanciates a twoBirds instance from a class.
+
+     @example
+
+         // get tB instances from DOM by css query selector
+         tb( &#x27;div&#x27; )            // any tbInstance that sits in a div dom node
+
+         // get tB instances from DOM by constructor
+         tb( app.sampleConstructor )     // any tbInstance in DOM that is instanceof sampleConstructor
+
+         // get tB instances from DOM by regEx
+         tb( /myRegEx/ )    // any tbInstance in DOM that has a namespace property that fits the regEx
+
+         // get tB instances from DOM by array of selectors
+         tb( [ &#x27;body&#x27;, /myRegEx/ ] )     // any combination of selectors in an array, result is additive, flat and unique
+
      */
     function TbSelector( pSelector ){
         var that = this;
@@ -196,32 +200,34 @@ tb = (function(){
                     [].push.call( that, pSelector );
                     return that;
 
-                } if ( pSelector instanceof RegExp ){ // it is a regular expression
+                }
 
-                tb.dom( &#x27;[data-tb]&#x27; )
-                    .forEach(
-                        function ( pDomNode ) {
-                            pDomNode.tb
-                                .forEach(
-                                    function( pTbElement ){
-                                        if ( pTbElement instanceof tb
-                                            &amp;&amp; !!pTbElement[&#x27;namespace&#x27;]
-                                            &amp;&amp; !!pTbElement.namespace.match(pSelector)
-                                        ){
-                                            [].push.call( that, pTbElement );
-                                        }
-                                    }
-                                )
-                        }
-                    );
+                if ( pSelector instanceof RegExp ){ // it is a regular expression
 
-            } else if ( !!pSelector[&#x27;nodeType&#x27;] &amp;&amp; !!pSelector[&#x27;tb&#x27;] ){ // it is a dom node containing tb elements
-                    pSelector.tb
+                    tb.dom( &#x27;[data-tb]&#x27; )
                         .forEach(
-                            function( pTbElement ){
-                                [].push.call( that, pTbElement );
+                            function ( pDomNode ) {
+                                pDomNode.tb
+                                    .forEach(
+                                        function( pTbElement ){
+                                            if ( pTbElement instanceof tb
+                                                &amp;&amp; !!pTbElement[&#x27;namespace&#x27;]
+                                                &amp;&amp; !!pTbElement.namespace.match(pSelector)
+                                            ){
+                                                [].push.call( that, pTbElement );
+                                            }
+                                        }
+                                    )
                             }
-                        )
+                        );
+
+                } else if ( !!pSelector[&#x27;nodeType&#x27;] &amp;&amp; !!pSelector[&#x27;tb&#x27;] ){ // it is a dom node containing tb elements
+                        pSelector.tb
+                            .forEach(
+                                function( pTbElement ){
+                                    [].push.call( that, pTbElement );
+                                }
+                            )
 
                 } else if ( pSelector.constructor === Array || !!pSelector[&#x27;length&#x27;] &amp;&amp; !!pSelector[&#x27;0&#x27;] &amp;&amp; !(pSelector instanceof Array) ){
                     // it is an array || array like object
@@ -277,36 +283,44 @@ tb = (function(){
     // HINT: TbSelector (class) prototype definition after Tb prototype definition
 
     /**
-     * tb() / new tb()
-     * can be used as SELECTOR and CONSTRUCTOR
-     *
-     * sample call CONSTRUCTOR:
-     * var a = new tb( &#x27;tb_repo_object_namespace&#x27; )
-     *
-     * sample call SELECTOR:
-     * var result = tb( &#x27;div#app&#x27; )
-     *
-     * for selector functionality see TbSelector object
-     *
-     * @class tb
-     * @constructor
-     * @extends TbSelector
-     *
-     * @param {string}     arguments[0]   - namespace of class | TbSelector parameter
-     * @param {*}  [ arguments[1] ] - config data ( if called as constructor )
-     * @param {*}  [ arguments[2] ] - DOM target or parent tb instance
-     *
-     * @return {object} - twoBirds Object or TbSelector instance /w results
-     *
+     @class tb
+     @constructor
+
+     @param {object} pOptions
+     @param pOptions.pClass - class Namespace as string or class
+     @param [pOptions.pConfig] - optional configuration, any type, preferrably object
+     @param [pOptions.pTarget] - target to put object in, DOM node or any other object
+
+     @returns {object} - the twoBirds instance you just created
+
+     twoBirds constructor
+
+     @example
+
+         // put Instance into DOM node
+         new tb(
+             app.myConstructor,                                     // any constructor you want to have an instance of
+             { ... },                                               // the config object you hand over to the constructor
+             target.appendChild( document.createElement( &#x27;span&#x27; ) ) // DOM node to insert the object item
+         );
+
+         // put Instance anywhere
+         new tb(
+             app.myConstructor,            // any constructor you want to have an instance of
+             { ... },                      // the config object you hand over to the constructor
+             anotherTbInstance           // any other object you want to put the tb instance in
+         );
+
+         // if a namespace STRING is given, requirement loading is done in case the class isnt present yet
+             new tb(
+             &#x27;app.myConstructor&#x27;,          // namespace string for the constructor you want to have an instance of
+             { ... },                      // the config object you hand over to the constructor
+             anotherTbInstance          // any other object you want to put the tb instance in
+         );
+
      */
     function tb() {
         var that = this;
-
-        /*
-         arguments[0]: string, regEx or constructor function
-         arguments[1]: optional object, parameter hash object if arguments[0] is constructor function
-         arguments[2]: optional DOM node or parent tb object
-         */
 
         function makePrototype( pPrototype ){
 
@@ -496,17 +510,17 @@ tb = (function(){
     tb.Selector = TbSelector; // make official, e.g. for events
 
     /**
-     * walk all pSelector tb objects, call pMethodName on them
-     * return a UNIQUE TbSelector result set containing all single results
-     *
-     * @function walkSelector
-     * @private
-     *
-     * @param {object} pSelectorObject - instanceOf TbSelector
-     * @param {string} pMethodName - name of method to call
-     * @param {*} [pArguments] - arguments
-     *
-     * @return {object} instance of TbSelector
+      walk all pSelector tb objects, call pMethodName on them
+      return a UNIQUE TbSelector result set containing all single results
+
+      @function walkSelector
+      @private
+
+      @param {object} pSelectorObject - instanceOf TbSelector
+      @param {string} pMethodName - name of method to call
+      @param {*} [pArguments] - arguments
+
+      @return {object} instance of TbSelector
      */
     function walkSelector( pSelectorObject, pMethodName, pArguments ){
         var that = this,
@@ -556,16 +570,22 @@ tb = (function(){
             // public methods and properties
 
             /**
-             * set() method
-             *
-             * set an instance property
-             *
-             * @method set
-             *
-             * @param {string} [pKey] - name of the property
-             * @param [pValue] - any kind of value associated with the key
-             *
-             * @return {object} - TbSelector instance
+             @method set
+
+             @param {string} [pKey] - name of the property
+             @param [pValue] - any kind of value associated with the key
+
+             @return {object} - tb.Selector instance or tB instance - for chaining
+
+             set() method
+
+             sets an instance property
+
+             @example
+
+                var a = new tb(...); // create a tB instance
+                a.set( &#x27;x&#x27;: 42 );
+
              */
             set: function( pKey, pValue ){
 
@@ -592,15 +612,21 @@ tb = (function(){
             },
 
             /**
-             * get() method
-             *
-             * get an instance property
-             *
-             * @method get
-             *
-             * @param {string} [pKey] - name of the property
-             *
-             * @return {object} - TbSelector instance
+             @method get
+
+             @param {string} [pKey] - name of the property
+
+             @return any value stored in property, or undefined
+
+             get() method
+
+             get an instance property
+
+             @example
+
+                 var a = new tb(...); // create a tB instance
+                 a.get( &#x27;x&#x27; );
+
              */
             get: function( pKey, undefined ){
 
@@ -620,15 +646,18 @@ tb = (function(){
             },
 
             /**
-             * trigger an event, optionally with data and bubble indicator
-             *
-             * @method trigger
-             *
-             * @param {string|object} pEvent - name of event or tb.Event instance or tb.Event instance
-             * @param {*} [pEventData] - event data, usally an object
-             * @param {string} [pBubble=l] - bubbling indicator : &#x27;l&#x27; = local, &#x27;u&#x27; = up, &#x27;d&#x27; = down or any combination
-             *
-             * @return {object} - (this) -&gt; TbSelector instance or tb object
+              @method trigger
+
+              @param {string} pEvent - name of event OR tb.Event instance (in this case the only parameter)
+              @param [pEventData] - event data, usally an object
+              @param {string} [pBubble=l] - bubbling indicator : &#x27;l&#x27; = local, &#x27;u&#x27; = up, &#x27;d&#x27; = down - or any combination
+
+              @return {object} - tb.Selector instance or tB instance - for chaining
+
+              trigger method
+
+              triggers an asynchronous twoBirds event, optionally with data and bubble indicator
+
              */
             trigger: function( pEvent, pEventData, pBubble ){
                 var that = this,
@@ -769,19 +798,17 @@ tb = (function(){
             },
 
             /**
-             * on() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - add handler to handler array
-             * - return TbSelector result set (unique)
-             *
-             * @method
-             *
-             * @param {string} pEventName - name of the handler function
-             * @param {function} pHandler - the function to be added to the handler array
-             * @param {boolean} [pOnce=false] - true = remove handler after first call, false = keep handler
-             *
-             * @return {object} - TbSelector instance
+             @method on
+
+             @param {string} pEventName - name of the handler function
+             @param {function} pHandler - the function to be added to the handler array
+             @param {boolean} [pOnce=false] - true = remove handler after first call, false = keep handler
+
+             @return {object} - tb.Selector instance or tB instance - for chaining
+
+             .on() method
+
+             adds a handler to a twoBirds instance or a tb.Selector result set
              */
             on: function( pEventName, pHandler, pOnce ){
 
@@ -819,18 +846,18 @@ tb = (function(){
             },
 
             /**
-             * one() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - add handler to handler array
-             * - return TbSelector result set (unique)
-             *
-             * @method
-             *
-             * @param {string} pEventName - name of the handler function
-             * @param {function} pHandler - the function to be added to the handler array
-             *
-             * @return {object} - TbSelector instance
+             @method one
+
+             @param {string} pEventName - name of the handler function
+             @param {function} pHandler - the function to be added to the handler array
+
+             @return {object} - tb.Selector instance or tB instance - for chaining
+
+             .one() method
+
+             adds a handler to a twoBirds instance or a tb.Selector result set,
+             to be called only once when the event fires
+             afterwards the handler is deleted from the event handler list
              */
             one: function( pEventName, pHandler ){
 
@@ -843,18 +870,17 @@ tb = (function(){
             },
 
             /**
-             * off() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - delete handler from handler array
-             * - return TbSelector result set (unique)
-             *
-             * @method
-             *
-             * @param {string} pEventName - name of the handler function
-             * @param {function} pHandler - the function to be added to the handler array
-             *
-             * @return {object} - TbSelector instance
+             @method off
+
+             @param {string} pEventName - name of the handler function
+             @param {function} pHandler - the function to be added to the handler array
+
+             @return {object} - tb.Selector instance or tB instance - for chaining
+
+             .off() method
+
+             removes a handler from a twoBirds instance or a tb.Selector result set
+             afterwards the handler is deleted from the event handler list
              */
             off: function( pEventName, pHandler ){
 
@@ -894,17 +920,18 @@ tb = (function(){
             },
 
             /**
-             * parents() method
-             * for each this[0...n] or this as tb() instance,
-             * - get all parent tb objects
-             * - check them against the filter param pSelector
-             * - return them as a TbSelector result set (unique)
-             *
-             * @method parents
-             *
-             * @param {*} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method parents
+
+             @param [pSelector] - any type of tb.Selector parameter
+
+             @return {object} - tb.Selector instance - for chaining
+
+             .parents() method
+
+             for each this[0...n] or this as tb() instance,
+             - get all parent tb objects
+             - check them against the filter param pSelector
+             - return them as a TbSelector result set (unique)
              */
             parents: function( pSelector ){
                 var that = this,
@@ -954,19 +981,18 @@ tb = (function(){
             },
 
             /**
-             * parent() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - get closest parent tb object
-             *
-             * - check all of them against the filter param pSelector
-             * - return TbSelector result set (unique)
-             *
-             * @method parent
-             *
-             * @param {*} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method parent
+
+             @param [pSelector] - any type of tb.Selector parameter
+
+             @return {object} - tb.Selector instance - for chaining
+
+             .parent() method
+
+             for each this[0...n] or this as tb() instance,
+             - get closest parent tb object
+             - check all of them against the filter param pSelector
+             - return TbSelector result set (unique)
              */
             parent: function( pSelector ){
 
@@ -1005,19 +1031,18 @@ tb = (function(){
             },
 
             /**
-             * descendants() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - get all descendants of tb object
-             * - check them against the filter param pSelector
-             * - return TbSelector result set (unique)
-             *
-             * @method descendants
-             *
-             * @param {variant} [pSelector] - any kind of TbSelector parameter
-             * @param {boolean} [pLocalOnly] - only local descendants of given tb instance
-             *
-             * @return {object} - TbSelector instance
+             @method descendants
+
+             @param [pSelector] - any type of tb.Selector parameter
+
+             @return {object} - tb.Selector instance - for chaining
+
+             .descendants() method
+
+             for each this[0...n] or this as tb() instance,
+             - get all descendants of tb object
+             - check them against the filter param pSelector
+             - return TbSelector result set (unique)
              */
             descendants: function( pSelector, pLocalOnly ){
 
@@ -1063,19 +1088,19 @@ tb = (function(){
             },
 
             /**
-             * children() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - get all direct children of tb object
-             * - check them against the filter param pSelector
-             * - return TbSelector result set (unique)
+             @method children
 
-             * @method children
-             *
-             * @param           [pSelector] - any kind of TbSelector parameter
-             * @param {boolean} [pLocalOnly] - only local children of given tb instance
-             *
-             * @return {object} - TbSelector instance
+             @param [pSelector] - any type of tb.Selector parameter
+             @param {boolean} [pLocalOnly] - only local children of given tb instance(s)
+
+             @return {object} - tb.Selector instance - for chaining
+
+             .children() method
+
+             for each this[0...n] or this as tb() instance,
+             - get all direct children of tb object
+             - check them against the filter param pSelector
+             - return TbSelector result set (unique)
              */
             children: function( pSelector, pLocalOnly ){
 
@@ -1117,18 +1142,16 @@ tb = (function(){
             },
 
             /**
-             * next() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - get the direct following sibling of tb object
-             * - check it against the filter param pSelector
-             * - return TbSelector result set (unique)
-             *
-             * @method next
-             *
-             * @param {variant} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method next
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             next() method
+
+             for each this[0...n] or this as tb() instance,
+             - get the direct following sibling of tb instance
+             - check it against the filter param pSelector
+             - return TbSelector result set (unique)
              */
             next: function( pSelector ){
 
@@ -1156,18 +1179,16 @@ tb = (function(){
             },
 
             /**
-             * prev() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - get the previous sibling of tb object
-             * - check them against the filter param pSelector
-             * - return TbSelector result set (unique)
-             *
-             * @method prev
-             *
-             * @param {variant} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method prev
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             prev() method
+
+             for each this[0...n] or this as tb() instance,
+             - get the direct previous sibling of tb instance
+             - check it against the filter param pSelector
+             - return TbSelector result set (unique)
              */
             prev: function( pSelector ){
 
@@ -1195,18 +1216,16 @@ tb = (function(){
             },
 
             /**
-             * first() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - get the first child of the tb object parent
-             * - check it against the filter param pSelector
-             * - return TbSelector result set (unique)
-             *
-             * @method first
-             *
-             * @param {variant} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method first
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             first() method
+
+             for each this[0...n] or this as tb() instance,
+             - get the first child of the tb object parent
+             - check it against the filter param pSelector
+             - return TbSelector result set (unique)
              */
             first: function( pSelector ){
 
@@ -1230,18 +1249,16 @@ tb = (function(){
             },
 
             /**
-             * last() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - get the last child of the tb object parent
-             * - check it against the filter param pSelector
-             * - return TbSelector result set (unique)
-             *
-             * @method last
-             *
-             * @param {variant} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method last
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             last() method
+
+             for each this[0...n] or this as tb() instance,
+             - get the last child of the tb object parent
+             - check it against the filter param pSelector
+             - return TbSelector result set (unique)
              */
             last: function( pSelector ){
                 var that = this,
@@ -1258,11 +1275,11 @@ tb = (function(){
             },
 
             /**
-             * toArray() method
-             *
-             * @method toArray
-             *
-             * @return {array} - TbSelector elements in an array
+             @method toArray
+
+             @return {array} - TbSelector elements in a plain array
+
+             toArray() method
              */
             toArray: function(){
                 var that = this,
@@ -1272,17 +1289,17 @@ tb = (function(){
             },
 
             /**
-             * filter() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - check them against the filter param pSelector
-             * - return TbSelector result set (unique)
-             *
-             * @method filter
-             *
-             * @param {*} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method filter
+
+             @param [pParam] - any kind of TbSelector parameter
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             filter() method
+
+             for each this[0...n] or this as tb() instance,
+             - check them against the filter param pParam
+             - return TbSelector result set (unique)
              */
             filter: function( pSelector ){
 
@@ -1313,17 +1330,17 @@ tb = (function(){
             },
 
             /**
-             * not() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - check them against pSelector and remove all fits
-             * - return TbSelector result set (unique)
-             *
-             * @method not
-             *
-             * @param {*} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method not
+
+             @param [pParam] - any kind of TbSelector parameter
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             not() method
+
+             for each this[0...n] or this as tb() instance,
+             - check them against pSelector and remove all that match
+             - return TbSelector result set (unique)
              */
             not: function( pSelector ){
 
@@ -1355,17 +1372,17 @@ tb = (function(){
             },
 
             /**
-             * is() method
-             *
-             * for each this[0...n] or this as tb() instance,
-             * - check them against pSelector and remove all that do not fit
-             * - return TbSelector result set (unique)
-             *
-             * @method is
-             *
-             * @param {*} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method is
+
+             @param [pParam] - any kind of TbSelector parameter
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             is() method
+
+             for each this[0...n] or this as tb() instance,
+             - check them against tbSelector( pParam ) and remove all that DO NOT match
+             - return TbSelector result set (unique)
              */
             is: function( pSelector ){
 
@@ -1396,16 +1413,16 @@ tb = (function(){
             },
 
             /**
-             * add() method
-             *
-             * add elements to current result set
-             * - return TbSelector result set (unique)
-             *
-             * @method add
-             *
-             * @param {*} [pSelector] - any kind of TbSelector parameter
-             *
-             * @return {object} - TbSelector instance
+             @method add
+
+             @param [pParam] - any kind of TbSelector parameter
+
+             @return {object} - tb.Selector instance (maybe empty) - for chaining
+
+             add() method
+
+             add elements to current result set
+             - return TbSelector result set (unique)
              */
             add: function( pSelector ){
 
@@ -1475,11 +1492,11 @@ tb.Event = function( pEventName, pEventData, pBubble ){
 tb.Event.prototype = {
 
     /**
-     * stop propagation after all handlers on this object have run
+      stop propagation after all handlers on this object have run
      *
-     * @method stopPropagation
+      @method stopPropagation
      *
-     * @return {object} tb.Event object
+      @return {object} tb.Event object
      */
     stopPropagation: function(){
         this.__stopped__ = true;
@@ -1487,11 +1504,11 @@ tb.Event.prototype = {
     },
 
     /**
-     * stop propagation immediately after this handler has run
+      stop propagation immediately after this handler has run
      *
-     * @method stopImmediatePropagation
+      @method stopImmediatePropagation
      *
-     * @return {object} tb.Event object
+      @return {object} tb.Event object
      */
     stopImmediatePropagation: function(){
         this.stopPropagation(); // also stop normal propagation
@@ -2544,23 +2561,23 @@ tb.request = (function () {
 
 
     /**
-     * @name tb.request
-     * @function
-     * @param pOptions { object } a hash object containing these options:&lt;br&gt;&lt;br&gt;&lt;br&gt;
-     * @returns a twoBirds request object
+      @name tb.request
+      @function
+      @param pOptions { object } a hash object containing these options:&lt;br&gt;&lt;br&gt;&lt;br&gt;
+      @returns a twoBirds request object
      *
-     * @param pOptions.url: (string, omitted) the URL to call
-     * @param pOptions.params: (object, optional) a hash object containing the parameters to post
-     * @param pOptions.method: (string, optional, defaults to &#x27;POST&#x27;) the XHR method
-     * @param pOptions.headers: (object, optional) a hash object containing additional XHR headers
-     * @param pOptions.success: (function, optional) the function to call with the request result
-     * @param pOptions.error: (function, optional) the function to call if request status not in 200...299
-     * @param pOptions.statechange: (function, deprecated, optional) the function to call when readyState changes
-     * @param pOptions.timeout: (object, optional ) structure sample: { cb: myFunction, ms:10000 }&lt;br&gt;
-     * cb: callback to run when timeout occurs&lt;br&gt;
-     * ms: number of milliseconds the request will run before being terminated
-     * @param pOptions.cachable: (boolean, deprecated, optional) defaults to true, indicates whether or not to include a unique id in URL
-     * @param pOptions.async: (boolean, optional, defaults to true) whether or not to make an asynchronous request
+      @param pOptions.url: (string, omitted) the URL to call
+      @param pOptions.params: (object, optional) a hash object containing the parameters to post
+      @param pOptions.method: (string, optional, defaults to &#x27;POST&#x27;) the XHR method
+      @param pOptions.headers: (object, optional) a hash object containing additional XHR headers
+      @param pOptions.success: (function, optional) the function to call with the request result
+      @param pOptions.error: (function, optional) the function to call if request status not in 200...299
+      @param pOptions.statechange: (function, deprecated, optional) the function to call when readyState changes
+      @param pOptions.timeout: (object, optional ) structure sample: { cb: myFunction, ms:10000 }&lt;br&gt;
+      cb: callback to run when timeout occurs&lt;br&gt;
+      ms: number of milliseconds the request will run before being terminated
+      @param pOptions.cachable: (boolean, deprecated, optional) defaults to true, indicates whether or not to include a unique id in URL
+      @param pOptions.async: (boolean, optional, defaults to true) whether or not to make an asynchronous request
      */
     return function (pOptions) {
         var uid = &#x27;tb&#x27; + tb.getId(),
