@@ -55,7 +55,10 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     'src/tbSource/tb.core.js',
-                    'src/tbSource/tb.dom.js'
+                    'src/tbSource/tb.dom.js',
+                    'src/tbSource/tb.utils.js',
+                    'src/tbSource/tb.Model.js',
+                    'src/tbSource/tb.Require.js'
                 ],
                 dest: 'src/tb/tb.js',
                 nonull: true

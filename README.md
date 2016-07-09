@@ -149,7 +149,7 @@ tb.namespace('demoapp', true).Body = (function(){
 
 		namespace: 'demoapp.Body',
 
-		'tb.require': [
+		'tb.Require': [
 			'/demoapp/body.css'
 		]
 

@@ -3,8 +3,10 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [
         "tb",
         "tb.Event",
+        "tb.Model",
+        "tb.Require",
         "tb.Selector",
-        "tb.tb.Model"
+        "tb.Util"
     ],
     "modules": [],
     "allModules": [],

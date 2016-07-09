@@ -14,7 +14,7 @@ tb.namespace( 'app', true ).GrandChild = (function(){
     GrandChild.prototype = {
         namespace: 'app.GrandChild',
 
-        'tb.require': [
+        'tb.Require': [
             '/app/GreatGrandChild.js'
         ]
     };

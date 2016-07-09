@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.0.46 - 2016-07-09 */
+/*! twobirds-core - v7.0.48 - 2016-07-09 */
 
 /**
  twoBirds V7 core functionality
@@ -42,6 +42,7 @@ tb = (function(){
     /**
      @class tb.Selector
      @constructor
+     @extends tb
 
      @param {function|string|object|array} pSelector
 
@@ -394,7 +395,7 @@ tb = (function(){
                 if ( !( tbInstance instanceof Nop ) ){
                     
                     // trigger init directly if no requirement array
-                    if ( !tbInstance['tb.require'] ) {
+                    if ( !tbInstance['tb.Require'] ) {
                         tbInstance.trigger( 'init' );
                     } // otherwise tb.require will trigger 'init'
 
@@ -486,6 +487,7 @@ tb = (function(){
 
             /**
              @method set
+             @chainable
 
              @param {string} [pKey] - name of the property
              @param [pValue] - any kind of value associated with the key
@@ -562,6 +564,7 @@ tb = (function(){
 
             /**
               @method trigger
+              @chainable
 
               @param {string} pEvent - name of event OR tb.Event instance (in this case the only parameter)
               @param [pEventData] - event data, usally an object
@@ -714,6 +717,7 @@ tb = (function(){
 
             /**
              @method on
+             @chainable
 
              @param {string} pEventName - name of the handler function
              @param {function} pHandler - the function to be added to the handler array
@@ -762,6 +766,7 @@ tb = (function(){
 
             /**
              @method one
+             @chainable
 
              @param {string} pEventName - name of the handler function
              @param {function} pHandler - the function to be added to the handler array
@@ -786,6 +791,7 @@ tb = (function(){
 
             /**
              @method off
+             @chainable
 
              @param {string} pEventName - name of the handler function
              @param {function} pHandler - the function to be added to the handler array
@@ -836,6 +842,7 @@ tb = (function(){
 
             /**
              @method parents
+             @chainable
 
              @param [pSelector] - any type of tb.Selector parameter
 
@@ -897,6 +904,7 @@ tb = (function(){
 
             /**
              @method parent
+             @chainable
 
              @param [pSelector] - any type of tb.Selector parameter
 
@@ -947,6 +955,7 @@ tb = (function(){
 
             /**
              @method descendants
+             @chainable
 
              @param [pSelector] - any type of tb.Selector parameter
 
@@ -982,7 +991,7 @@ tb = (function(){
 
                 } else if ( that instanceof tb && !!pLocalOnly ){ // walk descendants
                     // HINT: if tbInstances are stacked inside each other, only props in "this" will be copied
-                    //       ...not those defined in the constructor.prototype ( like 'tb.require' )
+                    //       ...not those defined in the constructor.prototype ( like 'tb.Require' )
                     Object
                         .keys( that )
                         .forEach(function( pKey ){
@@ -1004,6 +1013,7 @@ tb = (function(){
 
             /**
              @method children
+             @chainable
 
              @param [pSelector] - any type of tb.Selector parameter
              @param {boolean} [pLocalOnly] - only local children of given tb instance(s)
@@ -1058,6 +1068,7 @@ tb = (function(){
 
             /**
              @method next
+             @chainable
 
              @return {object} - tb.Selector instance (maybe empty) - for chaining
 
@@ -1095,6 +1106,7 @@ tb = (function(){
 
             /**
              @method prev
+             @chainable
 
              @return {object} - tb.Selector instance (maybe empty) - for chaining
 
@@ -1132,6 +1144,7 @@ tb = (function(){
 
             /**
              @method first
+             @chainable
 
              @return {object} - tb.Selector instance (maybe empty) - for chaining
 
@@ -1165,6 +1178,7 @@ tb = (function(){
 
             /**
              @method last
+             @chainable
 
              @return {object} - tb.Selector instance (maybe empty) - for chaining
 
@@ -1205,6 +1219,7 @@ tb = (function(){
 
             /**
              @method filter
+             @chainable
 
              @param [pParam] - any kind of TbSelector parameter
 
@@ -1246,6 +1261,7 @@ tb = (function(){
 
             /**
              @method not
+             @chainable
 
              @param [pParam] - any kind of TbSelector parameter
 
@@ -1288,6 +1304,7 @@ tb = (function(){
 
             /**
              @method is
+             @chainable
 
              @param [pParam] - any kind of TbSelector parameter
 
@@ -1329,6 +1346,7 @@ tb = (function(){
 
             /**
              @method add
+             @chainable
 
              @param [pParam] - any kind of TbSelector parameter
 
@@ -1383,18 +1401,14 @@ tb = (function(){
 })();
 
 /**
- * standard twobirds event, internal use only
- *
- * @class tb.Event
- * @constructor
- * @private
- * @ignore
- *
- * @param {string} pEventName - name of event
- * @param {*} [pEventData] - data to be appended to this event
- * @param {string} [pBubble=l] - bubbling indicator, 'l' = local, 'u' = up, 'd' = down or any combination
- *
- * @return {object} tb.Event instance
+ @class tb.Event
+ @constructor
+
+ @param {string} pEventName - name of event
+ @param [pEventData] - data to be appended to this event
+ @param {string} [pBubble=l] - bubbling indicator, 'l' = local, 'u' = up, 'd' = down or any combination
+
+ @return {object} tb.Event instance
  */
 tb.Event = function( pEventName, pEventData, pBubble ){
     var that = this;
@@ -1407,11 +1421,11 @@ tb.Event = function( pEventName, pEventData, pBubble ){
 tb.Event.prototype = {
 
     /**
-      stop propagation after all handlers on this object have run
-     *
-      @method stopPropagation
-     *
-      @return {object} tb.Event object
+     @method stopPropagation
+     
+     @return {object} tb.Event object
+
+     stop propagation after all handlers on this object have run
      */
     stopPropagation: function(){
         this.__stopped__ = true;
@@ -1419,11 +1433,11 @@ tb.Event.prototype = {
     },
 
     /**
-      stop propagation immediately after this handler has run
-     *
       @method stopImmediatePropagation
-     *
+     
       @return {object} tb.Event object
+
+      stop propagation immediately after this handler has run
      */
     stopImmediatePropagation: function(){
         this.stopPropagation(); // also stop normal propagation
@@ -1432,1188 +1446,6 @@ tb.Event.prototype = {
     }
 
 };
-
-
-// requirement loading class
-tb.require = function( pConfig ){
-
-    var that = this,
-        tbTarget = that.target;
-
-    if ( !pConfig ) return;
-
-    that.requirements = pConfig;
-
-    // add requirement loading
-    tb.loader.load(
-        that.requirements,
-        function(){
-            that.target.trigger('init');
-        }
-    );
-
-};
-
-tb.require.prototype = {
-    ready: function(){
-        // do we need this???
-    }
-};
-
-/**
- * stops event handling
- *
- * @function stop
- * @namespace tb
- * @static
- *
- * @param {boolean} pStopit - indicating whether to stop event handling
- *
- * @return {boolean} - true if event handling stopped, else false
- */
-tb.stop = (function(pStopIt){
-    var stopIt = pStopIt;
-    return function( pStopIt ){
-        return (stopIt = ( !!pStopIt ? pStopIt : stopIt ) );
-    };
-})( false );
-
-
-
-/**
- * returns a unique id
- *
- * @function getId
- * @namespace tb
- * @static
- *
- * @return {string} - unique id
- */
-tb.getId = function(){
-    return 'id-' + (new Date()).getTime() + '-' + Math.random().toString().replace(/\./, '');
-};
-
-
-
-/**
- * tb.namespace() function
- *
- * sample calls:
- * tb.namespace( 'app.Dashboard' ) gets the constructor for dashboard
- *
- * and in the dashboard constructor:
- *
- * tb.namespace( 'app', true ).Dashboard = function(){ ...
- *
- *
- * @function namespace
- * @namespace tb
- * @static
- *
- * @param {string} pNamespace
- * @param {boolean} [pForceCreation] - true => force creation of namespace object if it didnt exist before
- * @param {object} [pObject] - object to scan
- *
- * @return {Object}        namespaceObject
- */
-tb.namespace = function( pNamespace, pForceCreation, pObject ){
-
-    if ( typeof pNamespace !== 'string' ){
-        return false;
-    }
-
-    var namespaceArray = pNamespace.split('.');
-
-    var walk = function( o, namespaceArray ) {
-
-        if ( !o[ namespaceArray[0] ] && !!pForceCreation ) {
-            o[ namespaceArray[0] ] = {};
-        }
-
-        if ( namespaceArray.length < 2 ){
-
-            return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : false;
-
-        } else {
-
-            if ( o.hasOwnProperty( namespaceArray[0] ) ) {
-                o = o[ namespaceArray[0] ];
-                namespaceArray.shift();
-                return walk( o, namespaceArray );
-            } else {
-                return false;
-            }
-
-        }
-    };
-
-    return walk( !pObject ? window : pObject, namespaceArray );
-
-};
-
-
-
-/**
- * tb.bind() function
- *
- * sample calls:
- *
- * tb.bind( document.body )
- *
- * - scans the given element and all of its descendants
- *   in the DOM and looks for attributes "data-tb" in the nodes.
- * - resulting list will be scanned for those nodes that do not already
- *   have an tb object inside.
- * - creates a new tb object based on the class namespace given
- *   in the "data-tb" attribute
- * - stores it in the DOM element
- *
- * tb.bind( document.body, 'n1.n2.<className>' [ , <config data> ] )
- *
- * - creates a new tb object based on the 2nd parameter, giving 3rd as constructor parameter
- * - stores it in the DOM element
- * THIS VARIANT WILL overwrite ANY tbo OBJECT THAT ALREADY RESIDES IN THE DOM NODE!
- * @function bind
- * @namespace tb
- * @static
- *
- * @param   {object}     pSelector      DOM node
- *
- * @return {void}
- */
-tb.bind = function( pSelector, pTarget ){
-
-    var rootNode,
-        selected = [],
-        foundElements;
-
-    // get root node
-    if ( !!pTarget && !!pTarget['nodeName'] ) {
-        rootNode = pTarget;
-    } else if ( !pTarget && !!pSelector['nodeName'] ){
-        rootNode = pSelector;
-    } else {
-        rootNode = document.body;
-    }
-
-    foundElements = rootNode.querySelectorAll( '[data-tb]' );
-
-    // add self if data-tb attribute present
-    if ( rootNode && rootNode.getAttribute('data-tb') ){
-        selected.push( rootNode );
-    }
-
-    // add other elements
-    if ( !!foundElements['length'] ){
-        [].map.call(
-            foundElements,
-            function( element ){
-                selected.push( element );
-            }
-        );
-    }
-
-    // instanciate tb instances for given elements
-    selected.forEach(
-        function( selectedElement ){
-            var namespaces = selectedElement.getAttribute('data-tb').split(' ');
-
-            namespaces.forEach(
-                function( namespace ){
-                    if ( !selectedElement[namespace] ){
-                        selectedElement[namespace] = new tb(
-                            namespace,
-                            null,
-                            selectedElement
-                        );        // create tb object
-                    }
-                }
-            );
-        }
-    );
-
-};
-
-
-
-/**
- * function tb.observable()
- *
- * - creates a function
- * - initializes a value to observe
- * - returns this function
- *
- * sample calls:
- *
- * o = tb.observable( {} );
- * o( { newData: 'newData' } ); // change observable value
- * o.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once
- *
- * @function observable
- * @namespace tb
- * @static
- *
- * @param {*} pStartValue - initial content of observable
- *
- * @return {function}  observableFunction
- */
-tb.observable = function( pStartValue ){
-
-    var observedValue = pStartValue;
-
-    // make observable function to return in the end
-    var observableFunction = function( pValue ){
-
-        if ( pValue !== undefined ){ // value has changed
-            observedValue = pValue;
-            observableFunction.notify();
-        }
-        return observedValue;
-    };
-
-    // list of all callbacks to trigger on observedValue change
-    observableFunction.list = [];
-
-    // function used to execute all callbacks
-    observableFunction.notify = function(){
-
-        // execute all callbacks
-        observableFunction.list.forEach(
-            function( func, key ){
-                if ( typeof func === 'function' ){
-                    func( observedValue );
-                    if ( func.once ){
-                        observableFunction.list.splice(key,1);
-                    }
-                } else {
-                    observableFunction.list.splice(key,1);
-                }
-            }
-        );
-
-    };
-
-    // function used to add a callbacks
-    observableFunction.observe = function( pFunction, pOnce ){
-        pFunction.once = pOnce || false;
-        observableFunction.list.push( pFunction );
-    };
-
-    return observableFunction;
-};
-
-// twoBirds system status
-tb.status = {
-    loadCount: tb.observable(0)
-};
-
-/*
-// debugging...
-tb.status.loadCount.observe(function(){
-    console.log( 'loadCount:', tb.status.loadCount() );
-});
-*/
-
-tb.idle = function( pCallback ){
-
-    var f = function(){
-        if ( tb.status.loadCount() === 0 ){
-            pCallback();
-        } else {
-            // if idle not yet reached, re-atttach function for ONE execution
-            tb.status.loadCount.observe( f, true );
-        }
-    };
-
-    tb.status.loadCount.observe( f, true );
-
-};
-
-
-/**
- * tb.Model constructor
- * create and return a simple CRUD model
- *
- * @class Model
- * @constructor
- * @namespace tb
- *
- * @param {object} pConfig - config parameter, usually an object @todo: variant is no valid data type
- *
- * @return {object} - the model instance
- */
-tb.Model = function ( pConfig ) {
-    var that = this;
-
-    // result element
-    that.data = tb.observable( {} );
-    that.config = {};
-
-    // default config mixin -> result will be in that.config
-    tb.extend(
-        that.config,
-        {   // default settings, reference only
-            'create': {
-                url: '',
-                method: 'POST',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            },
-            'read': {
-                url: '',
-                method: 'GET',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            },
-            'update': {
-                url: '',
-                method: 'PUT',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            },
-            'delete': {
-                url: '',
-                method: 'DELETE',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            }
-        },
-        pConfig
-    );
-
-};
-
-tb.Model.prototype = (function(){
-    // private
-
-    // create get parameter string
-    function makeGetParameterString( pParameterObject ){
-
-        var result='';
-
-        Object
-            .keys( pParameterObject )
-            .forEach(
-                function( key ) {
-                    result += ( !!result ? '&' : '' ) + key + '=' + pParameterObject[key];
-                }
-            );
-
-        return result;
-    }
-
-    return {
-
-        'create': function( pParams ){
-            var o = tb.extend( {}, this.config.create );
-
-            if ( !o.url ){
-                console.error( 'no create url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.create.url, pParams ) : this.config.create.url
-                    },
-                    {
-                        params: pParams
-                    }
-                )
-            );
-
-        },
-
-        'read': function( pParams ){
-
-            var o = tb.extend( {}, this.config.read );
-
-            if ( !o.url ){
-                console.error( 'no read url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.read.url, pParams ) : this.config.read.url
-                    },
-                    {
-                        params: pParams
-                    }
-                )
-            );
-
-        },
-
-        'update': function( pParams ){
-            var o = tb.extend( {}, this.config.update );
-
-            if ( !o.url ){
-                console.error( 'no update url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.update.url, pParams ) : this.config.update.url
-                    },
-                    {
-                        params: pParams
-                    }
-                )
-            );
-
-        },
-
-        'delete': function( pParams ){
-            var o = tb.extend( {}, this.config['delete'] );
-
-            if ( !o.url ){
-                console.error( 'no delete url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.delete.url, pParams ) : this.config.delete.url
-                    },
-                    {
-                        params: pParams
-                    }
-                )
-            );
-
-        }
-
-    };
-
-})();
-
-
-
-/**
- * tb.extend() function
- * extend an object by another objects properties, always a deep copy
- *
- * @function extend
- * @namespace tb
- * @static
- *
- * @param {object} pObj - object to extend
- * @param {object} pSrc - other object
- *
- * @return {object} - other object
- */
-tb.extend = function( pObj ){ // any number of arguments may be given
-    var cp;
-
-    while ( arguments[1] ){
-        cp = arguments[1];
-        Object
-            .keys(cp)
-            .forEach(
-                function(key) {
-                    if ( cp[key] !== null
-                        && !!cp[key][constructor]
-                        && (cp[key]).constructor === Object
-                    ){
-                        pObj[key] = tb.extend( pObj[key] || {}, cp[key] );
-                    } else {
-                        pObj[key] = cp[key];
-                    }
-                }
-            );
-        [].splice.call( arguments, 1, 1 ); // remove object that is done
-    }
-
-    return pObj;
-};
-
-
-
-/**
- * tb.parse() function
- * for each key/value in pObject, check string for {key}
- * replace occurence with <value>
- *
- * @function parse
- * @namespace tb
- * @static
- *
- * @param {string} pText - the text to parse
- * @param {object} pParse - hash object containing replacement key/<value>
- *  //@todo: missing parm description
- * @return {string} - result string
- */
-tb.parse = function( pWhat, pParse ){
-
-    if ( typeof pWhat === 'string' ){
-        var vars = pWhat.match( /\{[^\{\}]*\}/g );
-
-        if ( !!vars ) {
-            vars
-                .forEach(
-                    function (pPropname) {
-                        var propname = pPropname.substr(1, pPropname.length - 2),
-                            propValue = tb.namespace(propname, false, pParse) || propname + ' not found!';
-
-                        pWhat = pWhat.replace( pPropname, propValue );
-                    }
-                );
-        }
-    } else if ( !!pWhat.constructor ){
-        switch ( pWhat.constructor ){
-            case Object:
-                Object
-                    .keys( pWhat )
-                    .forEach(
-                        function( pKey ){
-                            if ( pWhat.hasOwnProperty( pKey ) ){
-                                pWhat[ pKey ] = tb.parse( pWhat[ pKey ], pParse );
-                            }
-                        }
-                    );
-                break;
-            case Array:
-                pWhat
-                    .forEach(
-                        function( pValue, pKey ){
-                            pWhat[ pKey ] = tb.parse( pWhat[ pKey ], pParse );
-                        }
-                    );
-                break;
-        }
-    }
-
-    return pWhat;
-};
-
-
-/**
- * requirement handling
- */
-(function(){
-    // private
-
-    function getTypeFromSrc( pSrc ){
-        return pSrc.split('?')[0].split('.').pop();
-    }
-
-    // requirement constructor
-    function _Requirement( pConfig ){
-
-        var that = this,
-            type = getTypeFromSrc( pConfig.src ), // filename extension
-            typeConfigs = { // standard configuration types
-                'css': {
-                    tag: 'link',
-                    attributes: {
-                        type: 'text/css',
-                        rel: 'stylesheet',
-                        href: '{src}'
-                    }
-                },
-                'js': {
-                    tag: 'script',
-                    attributes: {
-                        type: 'text/javascript',
-                        src: '{src}'
-                    }
-                }
-            },
-            typeConfig, // a single type configuration
-            element,
-            isTyped = !!typeConfigs[type];
-
-        if ( !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]]
-            &&  !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]].done ){ // already loaded
-
-            that.trigger( 'requirementLoaded', src.split('?')[0], 'u' );
-
-            return;
-        }
-
-        pConfig.type = type; // add type
-
-        that.config = pConfig;
-
-        // cache busting
-        if ( !!that.config.src ){
-            that.config.src = that.config.src + ( that.config.src.indexOf( '?' ) > -1 ? '&' : '?' ) + tb.getId();
-        }
-
-        //that.target = pConfig.target;
-        that.src = pConfig.src;
-        that.type = that.config.type = type;
-        that.done = false;
-        that.cb = that.config.cb || function(){};
-        that.data = tb.observable( {} );
-
-        // element 'load' callback
-        function onLoad( e ){
-
-            if ( !!e && e.data ){
-                that.data( e.data );
-            }
-
-            that.done = true;
-
-            if ( that.type === 'js' ) {
-                setTimeout(
-                    function(){
-                        // that.element.parent.removeChild( that.element );     // remove js script tag from head
-                    }
-                    ,200
-                );
-            }
-
-            that.trigger( 'requirementLoaded', that.src, 'u' );
-
-        }
-
-        // execute onLoad only once
-        onLoad.once = true;
-
-        // handlers
-        that.handlers = {
-            'onLoad': onLoad
-        };
-
-
-        if ( isTyped ) { // either *.css or *.js file
-
-            // get default config for type
-            typeConfig = typeConfigs[type];
-
-            // create DOM element
-            element = document.createElement( typeConfig.tag );
-            element.async = true;
-            element.onreadystatechange = element.onload = function() {
-                var state = element.readyState;
-                if (!that.done && (!state || /loaded|complete/.test(state))) {
-                    tb.status.loadCount( tb.status.loadCount() - 1 ); // decrease loadCount
-                    that.trigger( 'onLoad', element );
-                }
-            };
-
-            // add attributes to DOM element
-            for ( var i in typeConfig.attributes ) if ( typeConfig.attributes.hasOwnProperty(i) ){
-                element.setAttribute( i, tb.parse( typeConfig.attributes[i], that.config ) );
-            }
-
-            tb.status.loadCount( tb.status.loadCount() + 1 ); // increase loadCount
-
-            // append node to head
-            document.getElementsByTagName('head')[0].appendChild( element );
-
-            that.element = element;
-
-        } else { // load via request if unknown type, trigger callback with text or JSON
-
-            var f = function( data ){
-
-                if ( that.type === 'json' && !!data['text'] ){
-                    try {
-                        data = JSON.parse( data.text );
-                    } catch( e ){
-                        console.log( 'error parsing, JSON expected in:', data );
-                    }
-                } else {
-                    data = data.text;
-                }
-
-                that.trigger( 'onLoad', data );
-            };
-
-            var options = {
-                url: that.src,
-                success: f,
-                error: f
-            };
-
-            tb.request( options );
-
-        }
-
-    }
-
-    _Requirement.prototype = {
-        namespace: '_Requirement'
-    };
-
-
-
-
-    // requirement group constructor
-    function _RequirementGroup( pConfig ){
-
-        var that = this;
-
-        that.type = pConfig.type;
-        that.target = pConfig.target;
-
-        that.requirements = {};
-
-    };
-
-    _RequirementGroup.prototype = {
-
-        namespace: '_RequirementGroup',
-
-        load: function( pSrc ){
-
-            var that = this,
-                rq = !!that.requirements[ pSrc ];
-
-            if ( !rq ){ // not loading or loaded: add a new requirement
-
-                rq = that.requirements[ pSrc ] = new tb(
-                    _Requirement,
-                    {
-                        src: pSrc,
-                        target: that.target
-                    },
-                    that.requirements
-                );
-
-                that.requirements[ pSrc ].target = tb.loader; // needed for event bubbling
-
-            } else { // already loading or loaded
-
-                rq = that.requirements[ pSrc ];
-
-            }
-
-            if ( !!rq.done ){ // already loaded
-                rq.trigger( 'onLoad' );
-
-            }
-
-        }
-
-    };
-
-
-
-
-    function Loader( pConfig ){
-        var that = this;
-
-        that.config = pConfig;
-        that.requirementGroups = {}; // will later contain requirement groups ( grouped by file extension )
-        that.rqSets = []; // requirement sets, may contain various file types
-
-        that.handlers = {
-            requirementLoaded: requirementLoaded
-        }
-    };
-
-    Loader.prototype = {
-
-        namespace: '_Head',
-
-        load: function( pSrc, pCallback ){
-
-            var that = this,
-                pCallback = pCallback || function( e ){ console.log( 'onLoad dummy handler on', e ); },
-                type,
-                rg,
-                groupCallback,
-                pSrc = typeof pSrc === 'string' ? [ pSrc ] : pSrc, // convert to array if string
-                pSrc = ([]).concat( pSrc ); // make an array copy
-
-
-            // will trigger loading if necessary ( async callback even if already loaded )
-            pSrc
-                .forEach(
-                    function( filename ){
-                        type = getTypeFromSrc( filename );
-                        rg = !!that.requirementGroups[type];
-
-                        if ( !rg ){ // add a new requirement group
-
-                            that.requirementGroups[ type ] = new tb(
-                                _RequirementGroup,
-                                {
-                                    type: type
-                                },
-                                that.requirementGroups
-                            );
-
-                            that.requirementGroups[ type ].target = tb.loader; // needed for event bubbling
-                        }
-
-                        rg = that.requirementGroups[ type ];
-
-                        rg.load( filename );
-                    }
-
-                );
-
-            pSrc.callback = pCallback;
-
-            pSrc.done = function( pFilename ){ // will be called when each file 'requirementLoaded' was triggered
-                if ( pSrc.indexOf( pFilename ) > -1 ){
-                    pSrc.splice( pSrc.indexOf( pFilename ), 1 );
-                }
-            };
-
-            that.rqSets.push( pSrc );
-
-        },
-
-        get: function( pFileName ){
-
-            var that = this,
-                type = getTypeFromSrc( pFileName),
-                rg = that.requirementGroups[type] ? that.requirementGroups[type] : false,
-                rq = rg ? ( rg.requirements[pFileName] ? rg.requirements[pFileName] : false ) : false;
-
-            return rq ? rq.data() : 'data missing for: ' + pFileName;
-        }
-
-    };
-
-    // bind _Head instance
-    tb.loader = new tb( Loader );
-
-    function requirementLoaded( e ){
-
-        var that = this,
-            filename  = e.data.split('?')[0];
-
-        that
-            .rqSets
-            .forEach(
-                function( pRqSet ){
-                    pRqSet.done( filename );
-                    if ( pRqSet.length === 0 ){ // every file loaded
-                        pRqSet.callback();
-                    }
-                }
-            );
-
-        that.rqSets = that
-            .rqSets
-            .filter(
-                function( pElement ){
-                    return pElement.length > 0;
-                }
-            );
-
-        e.stopPropagation();
-    }
-
-})();
-
-/**
- * @memberOf tb
- * @namespace tb.request
- * @field
- * @description the twoBirds request object
- */
-tb.request = (function () {
-    /** @private */
-    var loadlist = [],
-        readyState = 'complete',
-        cachable = false,
-        log = false,
-        count = 0,
-        interval = 30,
-        msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
-
-    function getConnection(pId) {
-        var obj = {},
-            xhr,
-            getConnection;
-
-        if (typeof ActiveXObject !== 'undefined'){
-            for (var i = 0; i < msoft.length; ++i) {
-                try {
-                    xhr = new ActiveXObject(msoft[i]);
-                    obj = {
-                        connection: xhr,
-                        identifier: pId
-                    };
-
-                    getConnection = (function (pType) {
-                        return function (pId) {
-                            var http = new ActiveXObject(pType);
-                            obj = {
-                                connection: xhr,
-                                identifier: pId
-                            };
-                            return obj;
-                        };
-                    })(msoft[i]);
-                } catch (e) {
-                }
-            }
-        }
-
-        try {
-            xhr = new XMLHttpRequest();
-            obj = {
-                connection: xhr,
-                identifier: pId
-            };
-            /** @ignore */
-            getConnection = function (pId) {
-                var xhr = new XMLHttpRequest();
-                obj = {
-                    connection: xhr,
-                    identifier: pId
-                };
-                return obj;
-            };
-        }
-        catch (e) {
-        }
-        finally {
-            return obj;
-        }
-    }
-
-    /** @private */
-    function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
-        var connection = this;
-        var poll = window.setInterval((function (pReadyState) {
-            return function () {
-                if (pReq.connection.readyState !== pReadyState) {
-                    pReadyState = pReq.connection.readyState;
-                    //pStateChange();
-                }
-                if (pReadyState === 4) {
-                    if (pReq.aborttimer) {
-                        window.clearTimeout(pReq.aborttimer);
-                    }
-                    window.clearInterval(poll);
-                    handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
-                }
-            };
-        })(0), interval);
-
-        return poll;
-    }
-
-    /** @private */
-    function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
-
-        try {
-            var httpStatus = pReq.connection.status;
-        }
-        catch (e) {
-            var httpStatus = 13030;
-        }
-        if (httpStatus >= 200 && httpStatus < 300) {
-            var responseObject = createResponseObject(pReq, pOptions);
-            try {
-                pCallback.call(pCallback, responseObject);
-            }
-            catch (e) {
-                if (tb.debug) debugger;
-            }
-        }
-        else {
-            var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
-            pFailure.call( pFailure, responseObject );
-        }
-        release(pReq);
-    }
-
-    /** @private */
-    function createResponseObject(pObj, pOptions) {
-        var obj = {
-            tId: pObj.identifier,
-            status: pObj.connection.status,
-            statusText: pObj.connection.statusText,
-            allResponseHeaders: pObj.connection.getAllResponseHeaders(),
-            text: pObj.connection.responseText,
-            xml: pObj.connection.responseXML,
-            options: pOptions
-        };
-        return obj;
-    }
-
-    /** @private */
-    function release(pReq) {
-        dec( pReq );
-        if (pReq.connection){
-            pReq.connection = null;
-        }
-        delete pReq.connection;
-        pReq = null;
-        delete pReq;
-    }
-
-    function inc( pReq ) {
-        loadlist.push( pReq );
-        count++;
-        readyState = 'loading';
-    }
-
-    function dec( pReq ) {
-        if ( loadlist.indexOf( pReq ) ){
-            count--;
-            loadlist.splice( loadlist.indexOf( pReq ) );
-            if ( count === 0 ){
-                readyState = 'complete';
-            }
-        }
-    }
-
-
-    /**
-      @name tb.request
-      @function
-      @param pOptions { object } a hash object containing these options:<br><br><br>
-      @returns a twoBirds request object
-     *
-      @param pOptions.url: (string, omitted) the URL to call
-      @param pOptions.params: (object, optional) a hash object containing the parameters to post
-      @param pOptions.method: (string, optional, defaults to 'POST') the XHR method
-      @param pOptions.headers: (object, optional) a hash object containing additional XHR headers
-      @param pOptions.success: (function, optional) the function to call with the request result
-      @param pOptions.error: (function, optional) the function to call if request status not in 200...299
-      @param pOptions.statechange: (function, deprecated, optional) the function to call when readyState changes
-      @param pOptions.timeout: (object, optional ) structure sample: { cb: myFunction, ms:10000 }<br>
-      cb: callback to run when timeout occurs<br>
-      ms: number of milliseconds the request will run before being terminated
-      @param pOptions.cachable: (boolean, deprecated, optional) defaults to true, indicates whether or not to include a unique id in URL
-      @param pOptions.async: (boolean, optional, defaults to true) whether or not to make an asynchronous request
-     */
-    return function (pOptions) {
-        var uid = 'tb' + tb.getId(),
-            xmlreq = false,
-            method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
-            url = pOptions.url,
-            params = '',
-            successHandler = pOptions.success || tb.nop,
-            errorHandler = pOptions.error || tb.nop,
-            stateHandler = pOptions.statechange || tb.nop,
-            isCachable = pOptions.cachable || false,
-            timeout = pOptions.timeout || false,
-            isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
-
-        if (typeof pOptions.params != 'undefined') {
-            var ct = ( pOptions.headers && pOptions.headers['Content-Type']
-                ? pOptions.headers['Content-Type']
-                : 'application/x-www-form-urlencoded' );
-
-            switch ( ct ){
-                case 'application/json':
-                    params = JSON.stringify( pOptions.params );
-                    break;
-                default:
-                    for (var i in pOptions.params) { // concat parameter string
-                        params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
-                    }
-                    break;
-            }
-        }
-
-        inc();
-
-        /*
-        if (isCachable === false) { // proxy disable - cache busting
-            url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
-        }
-        */
-
-        xmlreq = getConnection(uid);
-        if (xmlreq) {
-            if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
-                url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
-            }
-            xmlreq.src=url;
-
-            xmlreq.connection.open(method, url, isAsync);
-
-            if (isAsync === true) {
-                xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
-            }
-
-            // set request headers
-            if (pOptions.headers) {
-                for (var i in pOptions.headers) {
-                    if (i !== 'Content-Type') {
-                        xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
-                    }
-                }
-            }
-
-            // abort functionality
-            if (timeout) {
-                xmlreq.timeoutTimer = window.setTimeout(
-
-                    function (pT, pR) {
-                        var f = typeof pT.cb === 'function' ? pT.cb : false;
-                        return function () {
-                            //if ( !myR && myR.connection.status == 4 ) return;
-                            if (typeof f == 'function') {
-                                f( /*createResponseObject(myR)*/ );
-                            }
-                            pR.connection.abort();
-                            window.clearInterval(pR.poll);
-                        };
-                    }(timeout, xmlreq), timeout.ms);
-            }
-
-            xmlreq.abort = ( function(xmlreq) {
-                return function () {
-                    window.clearInterval(xmlreq.poll);
-                    if (xmlreq.connection) xmlreq.connection.abort();
-                    release(xmlreq);
-                };
-            })( xmlreq );
-
-            // send
-            if (method === 'POST' || method === 'PUT') {
-                if (params !== '') {
-                    xmlreq.connection.setRequestHeader('Content-Type', ct);
-                    xmlreq.connection.send(params);
-                }
-                else {
-                    xmlreq.connection.send(null);
-                }
-            }
-            else {
-                xmlreq.connection.send(null);
-            }
-            // if sync request direct handler call
-            if (isAsync === false) {
-                tb.request.dec();
-                if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
-                    successHandler( xmlreq );
-                }
-                else {
-                    errorHandler( xmlreq );
-                }
-            }
-            else {
-                return xmlreq;
-            }
-            return;
-        }
-        else {
-            return false;
-        }
-    };
-
-})();
-
 
 /**
  * document.ready bootstrap
@@ -2631,7 +1463,7 @@ tb.request = (function () {
             domReady();
         }, false );
 
-    // If IE event model is used
+        // If IE event model is used
     } else if ( document.attachEvent ) {
         // ensure firing before onload
         document.attachEvent("onreadystatechange", function(){
@@ -3586,3 +2418,1346 @@ tb.dom = (function () {
 
     };
 })();
+
+;
+/**
+ @class tb.Util
+ @constructor
+ 
+ @param {void}
+
+ @return {void}
+
+ THIS IS A PLACEHOLDER CLASS!
+
+ - all methods and properties documented here are curry properties of the tb constructor.
+ - Refer to specific documentation for usage.
+
+ @example
+    // see methods
+ 
+ */
+
+/**
+ @method tb.observable
+
+ @param pStartValue - initial content of observable
+
+ @return {function} - observableFunction
+
+ function tb.observable()
+
+ - creates a function
+ - initializes a value to observe
+ - returns this function
+
+ @example
+
+     o = tb.observable( {} );
+
+     o(
+        { newData: 'newData' }
+     ); // change observable value
+
+     o.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once
+
+ */
+tb.observable = function( pStartValue ){
+
+    var observedValue = pStartValue;
+
+    // make observable function to return in the end
+    var observableFunction = function( pValue ){
+
+        if ( pValue !== undefined ){ // value has changed
+            observedValue = pValue;
+            observableFunction.notify();
+        }
+        return observedValue;
+    };
+
+    // list of all callbacks to trigger on observedValue change
+    observableFunction.list = [];
+
+    // function used to execute all callbacks
+    observableFunction.notify = function(){
+
+        // execute all callbacks
+        observableFunction.list.forEach(
+            function( func, key ){
+                if ( typeof func === 'function' ){
+                    func( observedValue );
+                    if ( func.once ){
+                        observableFunction.list.splice(key,1);
+                    }
+                } else {
+                    observableFunction.list.splice(key,1);
+                }
+            }
+        );
+
+    };
+
+    // function used to add a callbacks
+    observableFunction.observe = function( pFunction, pOnce ){
+        pFunction.once = pOnce || false;
+        observableFunction.list.push( pFunction );
+    };
+
+    return observableFunction;
+};
+
+
+/**
+ @method  tb.namespace
+
+ @param {string} pNamespace
+ @param {boolean} [pForceCreation] - true => force creation of namespace object if it didnt exist before
+ @param {object} [pObject] - object to scan
+
+ @return {Object}        namespaceObject
+
+ tb.namespace() function
+
+ @example
+
+     // lookup [window] namespace:
+     tb.namespace( 'app.Dashboard' ); // gets the constructor for dashboard
+
+     // in a constructor force namespace creation:
+     tb.namespace( 'app', true )     // force creation of 'app' if it is not there yet
+     .Dashboard = function(){ ... }
+
+     // lookup namespace in any object and return value:
+     tb.namespace( 'x.y', null, { x: { y: 42 } } );     // 42
+ 
+ */
+tb.namespace = function( pNamespace, pForceCreation, pObject ){
+
+    if ( typeof pNamespace !== 'string' ){
+        return false;
+    }
+
+    var namespaceArray = pNamespace.split('.');
+
+    var walk = function( o, namespaceArray ) {
+
+        if ( !o[ namespaceArray[0] ] && !!pForceCreation ) {
+            o[ namespaceArray[0] ] = {};
+        }
+
+        if ( namespaceArray.length < 2 ){
+
+            return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : false;
+
+        } else {
+
+            if ( o.hasOwnProperty( namespaceArray[0] ) ) {
+                o = o[ namespaceArray[0] ];
+                namespaceArray.shift();
+                return walk( o, namespaceArray );
+            } else {
+                return false;
+            }
+
+        }
+    };
+
+    return walk( !pObject ? window : pObject, namespaceArray );
+
+};
+
+
+/**
+ @method tb.bind
+
+ @param   {object} pSelector - DOM node to start binding in
+
+ @return {void}
+
+ tb.bind() function
+
+ @example
+
+     tb.bind( document.body );
+     // scans the given element and all of its descendants
+     // in the DOM and looks for attributes "data-tb" in the nodes.
+     // resulting list will be scanned for those nodes that do not already
+     // have an tb object inside.
+     // creates a new tb object based on the class namespace given
+     // in the "data-tb" attribute
+     // stores it in the DOM element
+    
+     tb.bind( document.body, 'n1.n2.<className>' [ , <config data> ] )
+     //creates a new tb object based on the 2nd parameter, giving 3rd as constructor parameter
+     //stores it in the DOM element
+     //THIS VARIANT WILL overwrite ANY MATCHING INSTANCE THAT ALREADY RESIDES IN THE DOM NODE(S)!
+
+ */
+tb.bind = function( pSelector, pTarget ){
+
+    var rootNode,
+        selected = [],
+        foundElements;
+
+    // get root node
+    if ( !!pTarget && !!pTarget['nodeName'] ) {
+        rootNode = pTarget;
+    } else if ( !pTarget && !!pSelector['nodeName'] ){
+        rootNode = pSelector;
+    } else {
+        rootNode = document.body;
+    }
+
+    foundElements = rootNode.querySelectorAll( '[data-tb]' );
+
+    // add self if data-tb attribute present
+    if ( rootNode && rootNode.getAttribute('data-tb') ){
+        selected.push( rootNode );
+    }
+
+    // add other elements
+    if ( !!foundElements['length'] ){
+        [].map.call(
+            foundElements,
+            function( element ){
+                selected.push( element );
+            }
+        );
+    }
+
+    // instanciate tb instances for given elements
+    selected.forEach(
+        function( selectedElement ){
+            var namespaces = selectedElement.getAttribute('data-tb').split(' ');
+
+            namespaces.forEach(
+                function( namespace ){
+                    if ( !selectedElement[namespace] ){
+                        selectedElement[namespace] = new tb(
+                            namespace,
+                            null,
+                            selectedElement
+                        );        // create tb object
+                    }
+                }
+            );
+        }
+    );
+
+};
+
+
+
+// twoBirds system status
+tb.status = {
+    loadCount: tb.observable(0)
+};
+
+/*
+ // debugging...
+ tb.status.loadCount.observe(function(){
+ console.log( 'loadCount:', tb.status.loadCount() );
+ });
+ */
+
+tb.idle = function( pCallback ){
+
+    var f = function(){
+        if ( tb.status.loadCount() === 0 ){
+            pCallback();
+        } else {
+            // if idle not yet reached, re-atttach function for ONE execution
+            tb.status.loadCount.observe( f, true );
+        }
+    };
+
+    tb.status.loadCount.observe( f, true );
+
+};
+
+
+/**
+ @method tb.getId
+
+ @return {string} - unique id
+
+ returns a unique id
+ */
+tb.getId = function(){
+    return 'id-' + (new Date()).getTime() + '-' + Math.random().toString().replace(/\./, '');
+};
+
+
+
+/**
+ @method tb.extend
+
+ @param {object} pObj - object to extend
+ @param {object} pSrc - other object
+
+ @return {object} - other object
+
+ tb.extend() function
+ extend an object by another objects properties, always a deep copy
+
+ */
+tb.extend = function( pObj ){ // any number of arguments may be given
+    var cp;
+
+    while ( arguments[1] ){
+        cp = arguments[1];
+        Object
+            .keys(cp)
+            .forEach(
+                function(key) {
+                    if ( cp[key] !== null
+                        && !!cp[key][constructor]
+                        && (cp[key]).constructor === Object
+                    ){
+                        pObj[key] = tb.extend( pObj[key] || {}, cp[key] );
+                    } else {
+                        pObj[key] = cp[key];
+                    }
+                }
+            );
+        [].splice.call( arguments, 1, 1 ); // remove object that is done
+    }
+
+    return pObj;
+};
+
+
+
+/**
+ @method tb.parse
+  
+ @param {string} pText - the text to parse
+ @param {object} pParse - hash object containing replacement key/<value>
+  //@todo: missing parm description
+ @return {string} - result string
+
+ tb.parse() function
+ for each key/value in pObject, check string for {key}
+ replace occurence with <value>
+ */
+tb.parse = function( pWhat, pParse ){
+
+    if ( typeof pWhat === 'string' ){
+        var vars = pWhat.match( /\{[^\{\}]*\}/g );
+
+        if ( !!vars ) {
+            vars
+                .forEach(
+                    function (pPropname) {
+                        var propname = pPropname.substr(1, pPropname.length - 2),
+                            propValue = tb.namespace(propname, false, pParse) || propname + ' not found!';
+
+                        pWhat = pWhat.replace( pPropname, propValue );
+                    }
+                );
+        }
+    } else if ( !!pWhat.constructor ){
+        switch ( pWhat.constructor ){
+            case Object:
+                Object
+                    .keys( pWhat )
+                    .forEach(
+                        function( pKey ){
+                            if ( pWhat.hasOwnProperty( pKey ) ){
+                                pWhat[ pKey ] = tb.parse( pWhat[ pKey ], pParse );
+                            }
+                        }
+                    );
+                break;
+            case Array:
+                pWhat
+                    .forEach(
+                        function( pValue, pKey ){
+                            pWhat[ pKey ] = tb.parse( pWhat[ pKey ], pParse );
+                        }
+                    );
+                break;
+        }
+    }
+
+    return pWhat;
+};
+
+/**
+ @method tb.request
+
+ @param pOptions { object } a hash object containing these options:<br><br><br>
+
+ @param pOptions.url: (string, omitted) the URL to call
+ @param {object} [pOptions.params] - a hash object containing the parameters to post
+ @param {string} [pOptions.method] - (string, optional, defaults to 'POST') the XHR method
+ @param {object} [pOptions.headers] - a hash object containing additional XHR headers
+ @param {function} [pOptions.success] - the function to call with the request result
+ @param {function} [pOptions.error] - the function to call if request status not in 200...299
+ @param {function} [pOptions.statechange] - the function to call when readyState changes
+ @param {number} [pOptions.timeout] - structure sample: { cb: myFunction, ms:10000 }<br>
+ cb: callback to run when timeout occurs
+ ms: number of milliseconds the request will run before being terminated
+ @param {boolean} [pOptions.cachable] - defaults to true, indicates whether or not to include a unique id in URL
+ @param {boolean} [pOptions.async] - whether or not to make an asynchronous request
+
+ @returns a twoBirds request object
+
+ */
+tb.request = (function () {
+    /** @private */
+    var loadlist = [],
+        readyState = 'complete',
+        cachable = false,
+        log = false,
+        count = 0,
+        interval = 30,
+        msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
+
+    function getConnection(pId) {
+        var obj = {},
+            xhr,
+            getConnection;
+
+        if (typeof ActiveXObject !== 'undefined'){
+            for (var i = 0; i < msoft.length; ++i) {
+                try {
+                    xhr = new ActiveXObject(msoft[i]);
+                    obj = {
+                        connection: xhr,
+                        identifier: pId
+                    };
+
+                    getConnection = (function (pType) {
+                        return function (pId) {
+                            var http = new ActiveXObject(pType);
+                            obj = {
+                                connection: xhr,
+                                identifier: pId
+                            };
+                            return obj;
+                        };
+                    })(msoft[i]);
+                } catch (e) {
+                }
+            }
+        }
+
+        try {
+            xhr = new XMLHttpRequest();
+            obj = {
+                connection: xhr,
+                identifier: pId
+            };
+            /** @ignore */
+            getConnection = function (pId) {
+                var xhr = new XMLHttpRequest();
+                obj = {
+                    connection: xhr,
+                    identifier: pId
+                };
+                return obj;
+            };
+        }
+        catch (e) {
+        }
+        finally {
+            return obj;
+        }
+    }
+
+    /** @private */
+    function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
+        var connection = this;
+        var poll = window.setInterval((function (pReadyState) {
+            return function () {
+                if (pReq.connection.readyState !== pReadyState) {
+                    pReadyState = pReq.connection.readyState;
+                    //pStateChange();
+                }
+                if (pReadyState === 4) {
+                    if (pReq.aborttimer) {
+                        window.clearTimeout(pReq.aborttimer);
+                    }
+                    window.clearInterval(poll);
+                    handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
+                }
+            };
+        })(0), interval);
+
+        return poll;
+    }
+
+    /** @private */
+    function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+
+        try {
+            var httpStatus = pReq.connection.status;
+        }
+        catch (e) {
+            var httpStatus = 13030;
+        }
+        if (httpStatus >= 200 && httpStatus < 300) {
+            var responseObject = createResponseObject(pReq, pOptions);
+            try {
+                pCallback.call(pCallback, responseObject);
+            }
+            catch (e) {
+                if (tb.debug) debugger;
+            }
+        }
+        else {
+            var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
+            pFailure.call( pFailure, responseObject );
+        }
+        release(pReq);
+    }
+
+    /** @private */
+    function createResponseObject(pObj, pOptions) {
+        var obj = {
+            tId: pObj.identifier,
+            status: pObj.connection.status,
+            statusText: pObj.connection.statusText,
+            allResponseHeaders: pObj.connection.getAllResponseHeaders(),
+            text: pObj.connection.responseText,
+            xml: pObj.connection.responseXML,
+            options: pOptions
+        };
+        return obj;
+    }
+
+    /** @private */
+    function release(pReq) {
+        dec( pReq );
+        if (pReq.connection){
+            pReq.connection = null;
+        }
+        delete pReq.connection;
+        pReq = null;
+        delete pReq;
+    }
+
+    function inc( pReq ) {
+        loadlist.push( pReq );
+        count++;
+        readyState = 'loading';
+    }
+
+    function dec( pReq ) {
+        if ( loadlist.indexOf( pReq ) ){
+            count--;
+            loadlist.splice( loadlist.indexOf( pReq ) );
+            if ( count === 0 ){
+                readyState = 'complete';
+            }
+        }
+    }
+
+
+    /**
+     @name tb.request
+     @function
+     */
+    return function (pOptions) {
+        var uid = 'tb' + tb.getId(),
+            xmlreq = false,
+            method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
+            url = pOptions.url,
+            params = '',
+            successHandler = pOptions.success || tb.nop,
+            errorHandler = pOptions.error || tb.nop,
+            stateHandler = pOptions.statechange || tb.nop,
+            isCachable = pOptions.cachable || false,
+            timeout = pOptions.timeout || false,
+            isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
+
+        if (typeof pOptions.params != 'undefined') {
+            var ct = ( pOptions.headers && pOptions.headers['Content-Type']
+                ? pOptions.headers['Content-Type']
+                : 'application/x-www-form-urlencoded' );
+
+            switch ( ct ){
+                case 'application/json':
+                    params = JSON.stringify( pOptions.params );
+                    break;
+                default:
+                    for (var i in pOptions.params) { // concat parameter string
+                        params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
+                    }
+                    break;
+            }
+        }
+
+        inc();
+
+        /*
+         if (isCachable === false) { // proxy disable - cache busting
+         url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
+         }
+         */
+
+        xmlreq = getConnection(uid);
+        if (xmlreq) {
+            if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
+                url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
+            }
+            xmlreq.src=url;
+
+            xmlreq.connection.open(method, url, isAsync);
+
+            if (isAsync === true) {
+                xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
+            }
+
+            // set request headers
+            if (pOptions.headers) {
+                for (var i in pOptions.headers) {
+                    if (i !== 'Content-Type') {
+                        xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
+                    }
+                }
+            }
+
+            // abort functionality
+            if (timeout) {
+                xmlreq.timeoutTimer = window.setTimeout(
+
+                    function (pT, pR) {
+                        var f = typeof pT.cb === 'function' ? pT.cb : false;
+                        return function () {
+                            //if ( !myR && myR.connection.status == 4 ) return;
+                            if (typeof f == 'function') {
+                                f( /*createResponseObject(myR)*/ );
+                            }
+                            pR.connection.abort();
+                            window.clearInterval(pR.poll);
+                        };
+                    }(timeout, xmlreq), timeout.ms);
+            }
+
+            xmlreq.abort = ( function(xmlreq) {
+                return function () {
+                    window.clearInterval(xmlreq.poll);
+                    if (xmlreq.connection) xmlreq.connection.abort();
+                    release(xmlreq);
+                };
+            })( xmlreq );
+
+            // send
+            if (method === 'POST' || method === 'PUT') {
+                if (params !== '') {
+                    xmlreq.connection.setRequestHeader('Content-Type', ct);
+                    xmlreq.connection.send(params);
+                }
+                else {
+                    xmlreq.connection.send(null);
+                }
+            }
+            else {
+                xmlreq.connection.send(null);
+            }
+            // if sync request direct handler call
+            if (isAsync === false) {
+                tb.request.dec();
+                if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
+                    successHandler( xmlreq );
+                }
+                else {
+                    errorHandler( xmlreq );
+                }
+            }
+            else {
+                return xmlreq;
+            }
+            return;
+        }
+        else {
+            return false;
+        }
+    };
+
+})();
+
+
+/**
+ @method tb.stop
+
+ @param {boolean} pStopit - indicating whether to stop event handling
+
+ @return {boolean} - true if event handling stopped, else false
+
+ stops event handling
+
+ */
+tb.stop = (function(pStopIt){
+    var stopIt = pStopIt;
+    return function( pStopIt ){
+        return (stopIt = ( !!pStopIt ? pStopIt : stopIt ) );
+    };
+})( false );
+
+
+
+;
+/**
+ @class tb.Model
+ @constructor
+
+ @param {object} pConfig - config parameter, usually an object @todo param description
+
+ @return {object} - the model instance
+
+ tb.Model constructor
+ - create and return a simple CRUD model a "data" observable
+
+ @example
+
+     // templates crud model
+     that.templatesModel = new tb.Model({
+                'read': {
+                    url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data
+                    method: 'GET',
+                    type: 'json',
+                    params: {
+                    },
+                    success: function( pResult ){
+                        that.templatesModel.data( JSON.parse( pResult.text ).data );
+                    },
+                    error: function( pResult ){
+                        console.log( 'an error occured', pResult );
+                    }
+                }
+            });
+
+     // ... and later:
+
+     // when template list data has been read, render
+     that.templatesModel.data.observe( function templateModelDataChanged(){
+                that.trigger( 'render' );
+            });
+
+     // read data
+     that.templatesModel.read();
+
+ @example
+
+     // default config mixin -> result will be in that.config
+     tb.extend(
+     that.config,
+     {   // default settings, reference only
+         'create': {
+             url: '',
+             method: 'POST',
+             success: function( pResult ){
+                 that.data( pResult );
+             }
+         },
+         'read': {
+             url: '',
+             method: 'GET',
+             success: function( pResult ){
+                 that.data( pResult );
+             }
+         },
+         'update': {
+             url: '',
+             method: 'PUT',
+             success: function( pResult ){
+                 that.data( pResult );
+             }
+         },
+         'delete': {
+             url: '',
+             method: 'DELETE',
+             success: function( pResult ){
+                 that.data( pResult );
+             }
+         }
+     },
+     pConfig
+     );
+
+ */
+tb.Model = function ( pConfig ) {
+    var that = this;
+
+    // result element
+    that.data = tb.observable( {} );
+    that.config = {};
+
+    // default config mixin -> result will be in that.config
+    tb.extend(
+        that.config,
+        {   // default settings, reference only
+            'create': {
+                url: '',
+                method: 'POST',
+                success: function( pResult ){
+                    that.data( pResult );
+                }
+            },
+            'read': {
+                url: '',
+                method: 'GET',
+                success: function( pResult ){
+                    that.data( pResult );
+                }
+            },
+            'update': {
+                url: '',
+                method: 'PUT',
+                success: function( pResult ){
+                    that.data( pResult );
+                }
+            },
+            'delete': {
+                url: '',
+                method: 'DELETE',
+                success: function( pResult ){
+                    that.data( pResult );
+                }
+            }
+        },
+        pConfig
+    );
+
+};
+
+tb.Model.prototype = (function(){
+    // private
+
+    // create get parameter string
+    function makeGetParameterString( pParameterObject ){
+
+        var result='';
+
+        Object
+            .keys( pParameterObject )
+            .forEach(
+                function( key ) {
+                    result += ( !!result ? '&' : '' ) + key + '=' + pParameterObject[key];
+                }
+            );
+
+        return result;
+    }
+
+    return {
+
+        /**
+         @method create
+
+         @param {object} [pParameters] - any combination of parameters
+
+         .create() method
+
+         */
+        'create': function( pParams ){
+            var o = tb.extend( {}, this.config.create );
+
+            if ( !o.url ){
+                console.error( 'no create url given!');
+                return;
+            }
+
+            tb.request(
+                tb.extend(
+                    o,
+                    { // if params given, use microparse to fill them in url
+                        url: pParams ? tb.parse( this.config.create.url, pParams ) : this.config.create.url
+                    },
+                    {
+                        params: pParams
+                    }
+                )
+            );
+
+        },
+
+        /**
+         @method read
+
+         @param {object} [pParameters] - any combination of parameters
+
+         .read() method
+
+         */
+        'read': function( pParams ){
+
+            var o = tb.extend( {}, this.config.read );
+
+            if ( !o.url ){
+                console.error( 'no read url given!');
+                return;
+            }
+
+            tb.request(
+                tb.extend(
+                    o,
+                    { // if params given, use microparse to fill them in url
+                        url: pParams ? tb.parse( this.config.read.url, pParams ) : this.config.read.url
+                    },
+                    {
+                        params: pParams
+                    }
+                )
+            );
+
+        },
+
+        /**
+         @method update
+
+         @param {object} [pParameters] - any combination of parameters
+
+         .update() method
+
+         */
+        'update': function( pParams ){
+            var o = tb.extend( {}, this.config.update );
+
+            if ( !o.url ){
+                console.error( 'no update url given!');
+                return;
+            }
+
+            tb.request(
+                tb.extend(
+                    o,
+                    { // if params given, use microparse to fill them in url
+                        url: pParams ? tb.parse( this.config.update.url, pParams ) : this.config.update.url
+                    },
+                    {
+                        params: pParams
+                    }
+                )
+            );
+
+        },
+
+        /**
+         @method delete
+
+         @param {object} [pParameters] - any combination of parameters
+
+         .delete() method
+
+         */
+        'delete': function( pParams ){
+            var o = tb.extend( {}, this.config['delete'] );
+
+            if ( !o.url ){
+                console.error( 'no delete url given!');
+                return;
+            }
+
+            tb.request(
+                tb.extend(
+                    o,
+                    { // if params given, use microparse to fill them in url
+                        url: pParams ? tb.parse( this.config.delete.url, pParams ) : this.config.delete.url
+                    },
+                    {
+                        params: pParams
+                    }
+                )
+            );
+
+        }
+
+    };
+
+})();
+
+;
+/**
+ @class tb.Require
+ @constructor
+
+ @param   {array} pRequiredFiles - array containing required files
+
+ @return {void}
+
+ tb.require class
+
+ - add into prototype of your constructor
+ - instance will get an 'init' event when all files have loaded.
+
+ @example
+
+     tb.namespace( 'app', true ).GrandParent = (function(){
+
+        // Constructor
+        function GrandParent(){
+            var that = this;
+
+            that.handlers = {
+                init,
+                test
+            };
+
+        }
+
+        // Prototype
+        GrandParent.prototype = {
+
+            namespace: 'app.GrandParent',
+
+            'tb.Require': [
+                '/app/GrandParent.css'
+            ]
+
+        };
+
+        return GrandParent;
+
+        // Private Methods
+
+        // ...
+
+    })();
+ 
+ */
+tb.Require = function( pConfig ){
+
+    var that = this;
+
+    if ( !pConfig ) return;
+
+    that.requirements = pConfig;
+
+    // add requirement loading
+    tb.loader.load(
+        that.requirements,
+        function(){
+            that.target.trigger('init');
+        }
+    );
+
+};
+
+tb.Require.prototype = {
+    ready: function(){
+        // do we need this???
+    }
+};
+
+/**
+ * requirement handling
+ */
+(function(){
+    // private
+
+    function getTypeFromSrc( pSrc ){
+        return pSrc.split('?')[0].split('.').pop();
+    }
+
+    // requirement constructor
+    function _Requirement( pConfig ){
+
+        var that = this,
+            type = getTypeFromSrc( pConfig.src ), // filename extension
+            typeConfigs = { // standard configuration types
+                'css': {
+                    tag: 'link',
+                    attributes: {
+                        type: 'text/css',
+                        rel: 'stylesheet',
+                        href: '{src}'
+                    }
+                },
+                'js': {
+                    tag: 'script',
+                    attributes: {
+                        type: 'text/javascript',
+                        src: '{src}'
+                    }
+                }
+            },
+            typeConfig, // a single type configuration
+            element,
+            isTyped = !!typeConfigs[type];
+
+        if ( !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]]
+            &&  !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]].done ){ // already loaded
+
+            that.trigger( 'requirementLoaded', src.split('?')[0], 'u' );
+
+            return;
+        }
+
+        pConfig.type = type; // add type
+
+        that.config = pConfig;
+
+        // cache busting
+        if ( !!that.config.src ){
+            that.config.src = that.config.src + ( that.config.src.indexOf( '?' ) > -1 ? '&' : '?' ) + tb.getId();
+        }
+
+        //that.target = pConfig.target;
+        that.src = pConfig.src;
+        that.type = that.config.type = type;
+        that.done = false;
+        that.cb = that.config.cb || function(){};
+        that.data = tb.observable( {} );
+
+        // element 'load' callback
+        function onLoad( e ){
+
+            if ( !!e && e.data ){
+                that.data( e.data );
+            }
+
+            that.done = true;
+
+            if ( that.type === 'js' ) {
+                setTimeout(
+                    function(){
+                        // that.element.parent.removeChild( that.element );     // remove js script tag from head
+                    }
+                    ,200
+                );
+            }
+
+            that.trigger( 'requirementLoaded', that.src, 'u' );
+
+        }
+
+        // execute onLoad only once
+        onLoad.once = true;
+
+        // handlers
+        that.handlers = {
+            'onLoad': onLoad
+        };
+
+
+        if ( isTyped ) { // either *.css or *.js file
+
+            // get default config for type
+            typeConfig = typeConfigs[type];
+
+            // create DOM element
+            element = document.createElement( typeConfig.tag );
+            element.async = true;
+            element.onreadystatechange = element.onload = function() {
+                var state = element.readyState;
+                if (!that.done && (!state || /loaded|complete/.test(state))) {
+                    tb.status.loadCount( tb.status.loadCount() - 1 ); // decrease loadCount
+                    that.trigger( 'onLoad', element );
+                }
+            };
+
+            // add attributes to DOM element
+            for ( var i in typeConfig.attributes ) if ( typeConfig.attributes.hasOwnProperty(i) ){
+                element.setAttribute( i, tb.parse( typeConfig.attributes[i], that.config ) );
+            }
+
+            tb.status.loadCount( tb.status.loadCount() + 1 ); // increase loadCount
+
+            // append node to head
+            document.getElementsByTagName('head')[0].appendChild( element );
+
+            that.element = element;
+
+        } else { // load via request if unknown type, trigger callback with text or JSON
+
+            var f = function( data ){
+
+                if ( that.type === 'json' && !!data['text'] ){
+                    try {
+                        data = JSON.parse( data.text );
+                    } catch( e ){
+                        console.log( 'error parsing, JSON expected in:', data );
+                    }
+                } else {
+                    data = data.text;
+                }
+
+                that.trigger( 'onLoad', data );
+            };
+
+            var options = {
+                url: that.src,
+                success: f,
+                error: f
+            };
+
+            tb.request( options );
+
+        }
+
+    }
+
+    _Requirement.prototype = {
+        namespace: '_Requirement'
+    };
+
+
+
+
+    // requirement group constructor
+    function _RequirementGroup( pConfig ){
+
+        var that = this;
+
+        that.type = pConfig.type;
+        that.target = pConfig.target;
+
+        that.requirements = {};
+
+    };
+
+    _RequirementGroup.prototype = {
+
+        namespace: '_RequirementGroup',
+
+        load: function( pSrc ){
+
+            var that = this,
+                rq = !!that.requirements[ pSrc ];
+
+            if ( !rq ){ // not loading or loaded: add a new requirement
+
+                rq = that.requirements[ pSrc ] = new tb(
+                    _Requirement,
+                    {
+                        src: pSrc,
+                        target: that.target
+                    },
+                    that.requirements
+                );
+
+                that.requirements[ pSrc ].target = tb.loader; // needed for event bubbling
+
+            } else { // already loading or loaded
+
+                rq = that.requirements[ pSrc ];
+
+            }
+
+            if ( !!rq.done ){ // already loaded
+                rq.trigger( 'onLoad' );
+
+            }
+
+        }
+
+    };
+
+
+
+
+    function Loader( pConfig ){
+        var that = this;
+
+        that.config = pConfig;
+        that.requirementGroups = {}; // will later contain requirement groups ( grouped by file extension )
+        that.rqSets = []; // requirement sets, may contain various file types
+
+        that.handlers = {
+            requirementLoaded: requirementLoaded
+        }
+    };
+
+    Loader.prototype = {
+
+        namespace: '_Head',
+
+        load: function( pSrc, pCallback ){
+
+            var that = this,
+                pCallback = pCallback || function( e ){ console.log( 'onLoad dummy handler on', e ); },
+                type,
+                rg,
+                groupCallback,
+                pSrc = typeof pSrc === 'string' ? [ pSrc ] : pSrc, // convert to array if string
+                pSrc = ([]).concat( pSrc ); // make an array copy
+
+
+            // will trigger loading if necessary ( async callback even if already loaded )
+            pSrc
+                .forEach(
+                    function( filename ){
+                        type = getTypeFromSrc( filename );
+                        rg = !!that.requirementGroups[type];
+
+                        if ( !rg ){ // add a new requirement group
+
+                            that.requirementGroups[ type ] = new tb(
+                                _RequirementGroup,
+                                {
+                                    type: type
+                                },
+                                that.requirementGroups
+                            );
+
+                            that.requirementGroups[ type ].target = tb.loader; // needed for event bubbling
+                        }
+
+                        rg = that.requirementGroups[ type ];
+
+                        rg.load( filename );
+                    }
+
+                );
+
+            pSrc.callback = pCallback;
+
+            pSrc.done = function( pFilename ){ // will be called when each file 'requirementLoaded' was triggered
+                if ( pSrc.indexOf( pFilename ) > -1 ){
+                    pSrc.splice( pSrc.indexOf( pFilename ), 1 );
+                }
+            };
+
+            that.rqSets.push( pSrc );
+
+        },
+
+        get: function( pFileName ){
+
+            var that = this,
+                type = getTypeFromSrc( pFileName),
+                rg = that.requirementGroups[type] ? that.requirementGroups[type] : false,
+                rq = rg ? ( rg.requirements[pFileName] ? rg.requirements[pFileName] : false ) : false;
+
+            return rq ? rq.data() : 'data missing for: ' + pFileName;
+        }
+
+    };
+
+    // bind _Head instance
+    tb.loader = new tb( Loader );
+
+    function requirementLoaded( e ){
+
+        var that = this,
+            filename  = e.data.split('?')[0];
+
+        that
+            .rqSets
+            .forEach(
+                function( pRqSet ){
+                    pRqSet.done( filename );
+                    if ( pRqSet.length === 0 ){ // every file loaded
+                        pRqSet.callback();
+                    }
+                }
+            );
+
+        that.rqSets = that
+            .rqSets
+            .filter(
+                function( pElement ){
+                    return pElement.length > 0;
+                }
+            );
+
+        e.stopPropagation();
+    }
+
+})();
+
