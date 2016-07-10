@@ -352,16 +352,17 @@ tb = (function(){
                 // if target is a DOM element
                 // - add class to DOM data
                 // - if not already there add namespace to target data-tb attribute
-                if ( tbInstance.target && tbInstance.target.nodeType && !( tbInstance instanceof Nop ) ){
+                if ( !!tbInstance.target
+                    && !!tbInstance.target['nodeType']
+                    && !( tbInstance instanceof Nop )
+                ){
 
                     // put tb instance in dom node
-                    tbInstance.target.tb = !!tbInstance.target['tb'] ? tbInstance.target.tb : [];
+                    tbInstance.target.tb = tbInstance.target['tb'] || [];
                     tbInstance.target.tb[tbInstance.namespace] = tbInstance;
 
                     // if element does not reside in the DOM <head> add class
                     var dom = tb.dom( tbInstance.target );
-
-                    // add class
                     if ( tbInstance.target.nodeName !== 'head'
                         && dom.parents().toArray().indexOf( document.head ) === -1
                         && !!tbInstance['namespace']

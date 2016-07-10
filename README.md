@@ -179,7 +179,7 @@ The function will execute, starting the requirement loading. Further execution i
 
 #### ON EVENT / AT RUNTIME:
 
-You can also insert a twoBirds instance into an already existing instance at runtime, in this case inside some event handler you add this code ( the scroller is nott yet converted from V5 to V6, I will refactor the old demoapp later):
+You can also insert a twoBirds instance into an already existing instance at runtime, in this case inside some event handler or method you add this code:
 ```
 this.tbElement = new tb(
 	'app.someElement'
@@ -199,9 +199,11 @@ this.tbElement = new tb(
     </body>
 </html>
 ```
-By default upon startup twoBirds will lookup DOM nodes containing a "data-tb" attribute, 
-and treats them as a tB class: and instance of the class is created and attached to the DOM node. 
-If the corresponding repo class doesnt exist, on-demand loading is performed recursively. 
+By default upon startup twoBirds will lookup DOM nodes containing a "data-tb" attribute, and treats them as a tB class. 
+
+An instance of the class will be created and attached to the DOM node.
+ 
+If the corresponding class doesnt exist in the repository, on-demand loading is performed. 
 
 ### tb() Selector and inner structure example
 
@@ -314,25 +316,29 @@ tb( app.SomeElement ).trigger('scroll.update' );
 simple: copy tb.js from /dist and insert into your project. Have fun!
 
 ## Use case 
+
 - easily adding JS functionality to server side rendered HTML
 - migrating from an existing server side rendered website to a single page application
 - any size from embedded small functionality to enterprise apps
 
-# Features
+## Features
+
 - component style web programming
 - distributed programming
 - async on demand loading, recursive
 - web-component programming, defining repository objects
 
-# Status:
-- core API stable, optimization and cleanup on the way
-- what is not documented here is preliminary code
-- will be updated w/ new functionality as needed
+## Status:
 
-# History
-twoBirds was created 2004 to be able to build a complex web application for an insurance company.
-It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) and sorry for the character mess there, the page is outdated obviously ).
-It was constantly under development. 
+- core API stable
+- Best Practices stable but not documented yet. FAQ and BP docs coming soon.
+
+## History
+
+- twoBirds was created 2004 to be able to build a complex web application for an insurance company (similar to google calc, which came later). 
+- It was meant to be a Web Component Framework from the beginning.
+- It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) and sorry for the character mess there, the page is outdated obviously ).
+- It was constantly under development. 
 
 ## I dont want to read a lot - give me a kick-start
 
@@ -346,7 +352,7 @@ It was constantly under development.
 > grunt
 > cd src
 
-( you can use whatever you like as a web server, just one fast option here:)
+( you can use whatever you like as a web server, just one option using php here: )
 
 > php -S 0.0.0.0:3000 &
 
@@ -362,7 +368,8 @@ browser > ( select "test" )
 - go to the 'network' tab and reload to see the sequence of requirement loading
 
 ( in the file system )
-- view 'test.html' file to see the app code ( in this case case, its lack of in the page source code ;-) )
+
+- view 'test.html' file to see the app code ( in this case, its lack of ;-) )
 - view js files in /src/app/ to see the app code for those objects that are lazy loaded
 
 In case of questions contact [me](mailTo:fthuerigen@googlemail.com).

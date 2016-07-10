@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.9</em>
+            <em>API Docs for: v7.1.10</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.1.9 - 2016-07-10 */
+/*! twobirds-core - v7.1.10 - 2016-07-10 */
 
 /**
  twoBirds V7 core functionality
@@ -442,16 +442,17 @@ tb = (function(){
                 // if target is a DOM element
                 // - add class to DOM data
                 // - if not already there add namespace to target data-tb attribute
-                if ( tbInstance.target &amp;&amp; tbInstance.target.nodeType &amp;&amp; !( tbInstance instanceof Nop ) ){
+                if ( !!tbInstance.target
+                    &amp;&amp; !!tbInstance.target[&#x27;nodeType&#x27;]
+                    &amp;&amp; !( tbInstance instanceof Nop )
+                ){
 
                     // put tb instance in dom node
-                    tbInstance.target.tb = !!tbInstance.target[&#x27;tb&#x27;] ? tbInstance.target.tb : [];
+                    tbInstance.target.tb = tbInstance.target[&#x27;tb&#x27;] || [];
                     tbInstance.target.tb[tbInstance.namespace] = tbInstance;
 
                     // if element does not reside in the DOM &lt;head&gt; add class
                     var dom = tb.dom( tbInstance.target );
-
-                    // add class
                     if ( tbInstance.target.nodeName !== &#x27;head&#x27;
                         &amp;&amp; dom.parents().toArray().indexOf( document.head ) === -1
                         &amp;&amp; !!tbInstance[&#x27;namespace&#x27;]
