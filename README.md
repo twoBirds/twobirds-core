@@ -1,5 +1,5 @@
 
-# twoBirds v7
+# twoBirds
 
 Welcome Birdies ;-)
 

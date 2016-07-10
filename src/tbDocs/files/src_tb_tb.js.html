@@ -1571,6 +1571,11 @@ tb.Event.prototype = {
 
 })();
 
+// make it a node module
+if (typeof module !== &#x27;undefined&#x27; &amp;&amp; module.exports) {
+    module.exports.tb = tb;
+}
+
 ;
 tb.dom = (function () {
 
