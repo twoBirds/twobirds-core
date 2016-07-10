@@ -123,150 +123,150 @@ if (typeof module === 'undefined' ){ // will not work as a module
         );
 
     };
-}
 
-tb.Model.prototype = (function(){
-    // private
+    tb.Model.prototype = (function(){
+        // private
 
-    // create get parameter string
-    function makeGetParameterString( pParameterObject ){
+        // create get parameter string
+        function makeGetParameterString( pParameterObject ){
 
-        var result='';
+            var result='';
 
-        Object
-            .keys( pParameterObject )
-            .forEach(
-                function( key ) {
-                    result += ( !!result ? '&' : '' ) + key + '=' + pParameterObject[key];
-                }
-            );
-
-        return result;
-    }
-
-    return {
-
-        /**
-         @method create
-
-         @param {object} [pParameters] - any combination of parameters
-
-         .create() method
-
-         */
-        'create': function( pParams ){
-            var o = tb.extend( {}, this.config.create );
-
-            if ( !o.url ){
-                console.error( 'no create url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.create.url, pParams ) : this.config.create.url
-                    },
-                    {
-                        params: pParams
+            Object
+                .keys( pParameterObject )
+                .forEach(
+                    function( key ) {
+                        result += ( !!result ? '&' : '' ) + key + '=' + pParameterObject[key];
                     }
-                )
-            );
+                );
 
-        },
-
-        /**
-         @method read
-
-         @param {object} [pParameters] - any combination of parameters
-
-         .read() method
-
-         */
-        'read': function( pParams ){
-
-            var o = tb.extend( {}, this.config.read );
-
-            if ( !o.url ){
-                console.error( 'no read url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.read.url, pParams ) : this.config.read.url
-                    },
-                    {
-                        params: pParams
-                    }
-                )
-            );
-
-        },
-
-        /**
-         @method update
-
-         @param {object} [pParameters] - any combination of parameters
-
-         .update() method
-
-         */
-        'update': function( pParams ){
-            var o = tb.extend( {}, this.config.update );
-
-            if ( !o.url ){
-                console.error( 'no update url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.update.url, pParams ) : this.config.update.url
-                    },
-                    {
-                        params: pParams
-                    }
-                )
-            );
-
-        },
-
-        /**
-         @method delete
-
-         @param {object} [pParameters] - any combination of parameters
-
-         .delete() method
-
-         */
-        'delete': function( pParams ){
-            var o = tb.extend( {}, this.config['delete'] );
-
-            if ( !o.url ){
-                console.error( 'no delete url given!');
-                return;
-            }
-
-            tb.request(
-                tb.extend(
-                    o,
-                    { // if params given, use microparse to fill them in url
-                        url: pParams ? tb.parse( this.config.delete.url, pParams ) : this.config.delete.url
-                    },
-                    {
-                        params: pParams
-                    }
-                )
-            );
-
+            return result;
         }
 
-    };
+        return {
 
-})();
+            /**
+             @method create
+
+             @param {object} [pParameters] - any combination of parameters
+
+             .create() method
+
+             */
+            'create': function( pParams ){
+                var o = tb.extend( {}, this.config.create );
+
+                if ( !o.url ){
+                    console.error( 'no create url given!');
+                    return;
+                }
+
+                tb.request(
+                    tb.extend(
+                        o,
+                        { // if params given, use microparse to fill them in url
+                            url: pParams ? tb.parse( this.config.create.url, pParams ) : this.config.create.url
+                        },
+                        {
+                            params: pParams
+                        }
+                    )
+                );
+
+            },
+
+            /**
+             @method read
+
+             @param {object} [pParameters] - any combination of parameters
+
+             .read() method
+
+             */
+            'read': function( pParams ){
+
+                var o = tb.extend( {}, this.config.read );
+
+                if ( !o.url ){
+                    console.error( 'no read url given!');
+                    return;
+                }
+
+                tb.request(
+                    tb.extend(
+                        o,
+                        { // if params given, use microparse to fill them in url
+                            url: pParams ? tb.parse( this.config.read.url, pParams ) : this.config.read.url
+                        },
+                        {
+                            params: pParams
+                        }
+                    )
+                );
+
+            },
+
+            /**
+             @method update
+
+             @param {object} [pParameters] - any combination of parameters
+
+             .update() method
+
+             */
+            'update': function( pParams ){
+                var o = tb.extend( {}, this.config.update );
+
+                if ( !o.url ){
+                    console.error( 'no update url given!');
+                    return;
+                }
+
+                tb.request(
+                    tb.extend(
+                        o,
+                        { // if params given, use microparse to fill them in url
+                            url: pParams ? tb.parse( this.config.update.url, pParams ) : this.config.update.url
+                        },
+                        {
+                            params: pParams
+                        }
+                    )
+                );
+
+            },
+
+            /**
+             @method delete
+
+             @param {object} [pParameters] - any combination of parameters
+
+             .delete() method
+
+             */
+            'delete': function( pParams ){
+                var o = tb.extend( {}, this.config['delete'] );
+
+                if ( !o.url ){
+                    console.error( 'no delete url given!');
+                    return;
+                }
+
+                tb.request(
+                    tb.extend(
+                        o,
+                        { // if params given, use microparse to fill them in url
+                            url: pParams ? tb.parse( this.config.delete.url, pParams ) : this.config.delete.url
+                        },
+                        {
+                            params: pParams
+                        }
+                    )
+                );
+
+            }
+
+        };
+
+    })();
+}
