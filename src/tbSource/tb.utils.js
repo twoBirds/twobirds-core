@@ -367,7 +367,7 @@ tb.parse = function( pWhat, pParse ){
  @returns a twoBirds request object
 
  */
-if (typeof module !== 'undefined' && module.exports){
+if (typeof module === 'undefined' ){
     tb.request = (function () {
         /** @private */
         var loadlist = [],

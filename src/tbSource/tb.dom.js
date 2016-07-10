@@ -1,4 +1,4 @@
-if (typeof module !== 'undefined' && module.exports){
+if (typeof module === 'undefined' ){
     tb.dom = (function () {
 
         // Variables
