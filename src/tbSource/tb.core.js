@@ -117,18 +117,20 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-
                     tb.dom( '[data-tb]' )
                         .forEach(
                             function ( pDomNode ) {
-                                pDomNode.tb
+                                Object
+                                    .keys( pDomNode.tb )
                                     .forEach(
-                                        function( pTbElement ){
-                                            if ( pTbElement instanceof tb
-                                                && !!pTbElement['namespace']
-                                                && !!pTbElement.namespace.match(pSelector)
+                                        function( pKey ){
+                                            var tbElement = pDomNode.tb[ pKey ];
+
+                                            if ( tbElement instanceof tb
+                                                && !!tbElement['namespace']
+                                                && !!tbElement.namespace.match( pSelector )
                                             ){
-                                                [].push.call( that, pTbElement );
+                                                [].push.call( that, tbElement );
                                             }
                                         }
                                     )
@@ -136,14 +138,17 @@ tb = (function(){
                         );
 
                 } else if ( !!pSelector['nodeType'] && !!pSelector['tb'] ){ // it is a dom node containing tb elements
-                        pSelector.tb
-                            .forEach(
-                                function( pTbElement ){
-                                    [].push.call( that, pTbElement );
-                                }
-                            )
+                    Object
+                        .keys( pDomNode.tp )
+                        .forEach(
+                            function( pKey ){
+                                [].push.call( that, pDomNode.tp[ pKey ] );
+                            }
+                        )
 
-                } else if ( pSelector.constructor === Array || !!pSelector['length'] && !!pSelector['0'] && !(pSelector instanceof Array) ){
+                } else if ( pSelector.constructor === Array || !!pSelector['length']
+                    && !!pSelector['0'] && !(pSelector instanceof Array)
+                ){
                     // it is an array || array like object
                     [].forEach.call(
                         pSelector,
@@ -170,13 +175,16 @@ tb = (function(){
                 tb.dom( '[data-tb]' )
                     .map(
                         function ( pDomNode ) {
-                            pDomNode.tb
+                            Object
+                                .keys( pDomNode.tp )
                                 .forEach(
-                                    function( pTbElement ){
-                                        if ( pTbElement instanceof tb
-                                            && pTbElement instanceof pSelector
+                                    function( pKey ){
+                                        var tbElement = pDomNode.tp[ pKey ];
+
+                                        if ( tbElement instanceof tb
+                                            && tbElement instanceof pSelector
                                         ){
-                                            [].push.call( that, pTbElement );
+                                            [].push.call( that, tbElement );
                                         }
                                     }
                                 )
@@ -358,7 +366,7 @@ tb = (function(){
                 ){
 
                     // put tb instance in dom node
-                    tbInstance.target.tb = tbInstance.target['tb'] || [];
+                    tbInstance.target.tb = tbInstance.target['tb'] || {};
                     tbInstance.target.tb[tbInstance.namespace] = tbInstance;
 
                     // if element does not reside in the DOM <head> add class
@@ -942,9 +950,10 @@ tb = (function(){
 
                         if ( !tbParent ) return ret; // no parent -> empty result set
 
-                        tbParent.target.tb
-                            .forEach(function( tbElement ){
-                                [].push.call( ret, tbElement ); // push dom object to tb selector content
+                        Object
+                            .keys(tbParent.target.tb)
+                            .forEach(function( pKey ){
+                                [].push.call( ret, tbParent.target.tb[pKey] ); // push dom object to tb selector content
                             });
 
                     } else if ( that.target instanceof tb ){ // it is an embedded object, local target is another (parent) tb object
@@ -986,10 +995,11 @@ tb = (function(){
 
                     tb.dom( '[data-tb]', that.target )
                         .forEach(
-                            function( pDomElement ) {
-                                pDomElement.tb
-                                    .forEach(function( tbElement ){
-                                        [].push.call( ret, tbElement ); // push dom object to tb selector content
+                            function( pDomNode ) {
+                                Object
+                                    .keys( pDomNode.tb )
+                                    .forEach(function( pKey ){
+                                        [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
                                     });
                             }
                         );
@@ -1035,27 +1045,39 @@ tb = (function(){
             children: function( pSelector, pLocalOnly ){
 
                 var that = this,
-                    ret = tb();
+                    ret = tb(),
+                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node -> only local
 
                 if ( that instanceof TbSelector ) {
 
                     ret = walkSelector( that, 'children', arguments );
 
                 } else if ( that instanceof tb && !!that.target['nodeType'] && !pLocalOnly ) { // it must be a native tb object
-                    //console.log( 'children of ', that.target, tb.dom( '[data-tb]', that.target ) );
-                    tb.dom( '[data-tb]', that.target )
+                    var id = tb.getId(),
+                        selector = tb.dom('[data-tb]', that.target),
+                        notSelector = '['+'data-tempid="'+id+'"] [data-tb] *';
+
+                    // set temporary id for tb.dom/.querySelectorAll()
+                    tb.dom( that.target )
+                        .attr( 'data-tempid', id );
+
+                    selector
+                        .not( notSelector )
                         .forEach(
                             function( pDomNode ) {
-                                //console.log( pDomNode, tb.dom( pDomNode ).parents('[data-tb]')[0] === that.target );
-
-                                if ( tb.dom( pDomNode ).parents('[data-tb]')[0] === that.target ){
-                                    pDomNode.tb
-                                        .forEach(function( tbElement ){
-                                            [].push.call( ret, tbElement ); // push dom object to tb selector content
+                                //if ( tb.dom( pDomNode ).parents('[data-tb]')[0] === that.target ){
+                                    Object
+                                        .keys( pDomNode.tb )
+                                        .forEach(function( pKey ){
+                                            [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
                                         });
-                                }
+                                //}
                             }
                         );
+
+                    // remove temporary id
+                    tb.dom( that.target )
+                        .removeAttr( 'data-tempid' );
 
                 } else if ( !!pLocalOnly ){
 

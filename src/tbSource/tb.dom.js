@@ -109,7 +109,7 @@ if (typeof module === 'undefined' ){
                         pSelector
                             .split( ',' )
                             .forEach(
-                                function forEachTbDomSelector( pThisSelector ){
+                                function forEachTbDomSelector( pSelector ){
                                     nodeList = domNode.querySelectorAll(pSelector);
 
                                     if (!!nodeList.length) {
