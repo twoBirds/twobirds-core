@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.20 - 2016-07-10 */
+/*! twobirds-core - v7.1.21 - 2016-07-10 */
 
 /**
  twoBirds V7 core functionality
@@ -3026,11 +3026,11 @@ tb.namespace = function( pNamespace, pForceCreation, pObject ){
 tb.bind = function( pRootNode ){
 
     var rootNode = pRootNode || document.body,
-        foundElements = rootNode.querySelectorAll( '[data-tb]' );
+        foundElements = tb.dom( rootNode.querySelectorAll( '[data-tb]' ) ).toArray();
 
     // add self if data-tb attribute present
     if ( rootNode.getAttribute('data-tb') ){
-        foundElements = [].concat.call( [ rootNode ], tb.dom().toArray.call( foundElements ) );
+        foundElements = [rootNode].concat( foundElements );
     }
 
     // instanciate tb instances for given elements
