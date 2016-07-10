@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.16 - 2016-07-10 */
+/*! twobirds-core - v7.1.17 - 2016-07-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1489,7 +1489,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 ;
-if (typeof module !== 'undefined' && module.exports){
+if (typeof module === 'undefined' ){
     tb.dom = (function () {
 
         // Variables
@@ -3195,7 +3195,7 @@ tb.parse = function( pWhat, pParse ){
  @returns a twoBirds request object
 
  */
-if (typeof module !== 'undefined' && module.exports){
+if (typeof module === 'undefined' ){
     tb.request = (function () {
         /** @private */
         var loadlist = [],
@@ -3574,50 +3574,53 @@ tb.stop = (function(pStopIt){
      );
 
  */
-tb.Model = function ( pConfig ) {
-    var that = this;
+if (typeof module === 'undefined' ){ // will not work as a module
 
-    // result element
-    that.data = tb.observable( {} );
-    that.config = {};
+    tb.Model = function ( pConfig ) {
+        var that = this;
 
-    // default config mixin -> result will be in that.config
-    tb.extend(
-        that.config,
-        {   // default settings, reference only
-            'create': {
-                url: '',
-                method: 'POST',
-                success: function( pResult ){
-                    that.data( pResult );
+        // result element
+        that.data = tb.observable( {} );
+        that.config = {};
+
+        // default config mixin -> result will be in that.config
+        tb.extend(
+            that.config,
+            {   // default settings, reference only
+                'create': {
+                    url: '',
+                    method: 'POST',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
+                },
+                'read': {
+                    url: '',
+                    method: 'GET',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
+                },
+                'update': {
+                    url: '',
+                    method: 'PUT',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
+                },
+                'delete': {
+                    url: '',
+                    method: 'DELETE',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
                 }
             },
-            'read': {
-                url: '',
-                method: 'GET',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            },
-            'update': {
-                url: '',
-                method: 'PUT',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            },
-            'delete': {
-                url: '',
-                method: 'DELETE',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            }
-        },
-        pConfig
-    );
+            pConfig
+        );
 
-};
+    };
+}
 
 tb.Model.prototype = (function(){
     // private
@@ -3766,23 +3769,22 @@ tb.Model.prototype = (function(){
 })();
 
 ;
-if (typeof module !== 'undefined' && module.exports) {
-    /**
-     @class tb.Require
-     @constructor
+/**
+ @class tb.Require
+ @constructor
 
-     @param   {array} pRequiredFiles - array containing required files
+ @param   {array} pRequiredFiles - array containing required files
 
-     @return {void}
+ @return {void}
 
-     tb.require class
+ tb.require class
 
-     - add into prototype of your constructor
-     - instance will get an 'init' event when all files have loaded.
+ - add into prototype of your constructor
+ - instance will get an 'init' event when all files have loaded.
 
-     @example
+ @example
 
-     tb.namespace( 'app', true ).GrandParent = (function(){
+    tb.namespace( 'app', true ).GrandParent = (function(){
 
         // Constructor
         function GrandParent(){
@@ -3812,9 +3814,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
         // ...
 
-     })();
+    })();
 
-     */
+ */
+if ( typeof module === 'undefined' ) {
+
     tb.Require = function (pConfig) {
 
         var that = this;
@@ -4067,9 +4071,8 @@ if (typeof module !== 'undefined' && module.exports) {
                         },
                     type,
                     rg,
-                    groupCallback,
                     pSrc = typeof pSrc === 'string' ? [pSrc] : pSrc, // convert to array if string
-                    pSrc = ([]).concat(pSrc); // make an array copy
+                    pSrc = [].concat.call( [], pSrc); // make an array copy
 
 
                 // will trigger loading if necessary ( async callback even if already loaded )
@@ -4122,7 +4125,6 @@ if (typeof module !== 'undefined' && module.exports) {
 
         };
 
-        // bind _Head instance
         tb.loader = new tb(Loader);
 
         function requirementLoaded(e) {
@@ -4156,4 +4158,5 @@ if (typeof module !== 'undefined' && module.exports) {
 
 } else {
     // todo: in a node module
+    console.log( 'tb.Require not implemented yet for node use!!!');
 }

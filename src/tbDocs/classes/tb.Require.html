@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.16</em>
+            <em>API Docs for: v7.1.17</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l3770"><code>src&#x2F;tb&#x2F;tb.js:3770</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l3772"><code>src&#x2F;tb&#x2F;tb.js:3772</code></a>
         </div>
 
 
@@ -124,7 +124,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3770"><code>src&#x2F;tb&#x2F;tb.js:3770</code></a>
+        <a href="../files/src_tb_tb.js.html#l3772"><code>src&#x2F;tb&#x2F;tb.js:3772</code></a>
         </p>
 
 
@@ -175,27 +175,34 @@
 
             <div class="example-content">
                 <p>tb.namespace( 'app', true ).GrandParent = (function(){</p>
-<p>// Constructor
-function GrandParent(){
-var that = this;</p>
-<pre class="code prettyprint"><code>   that.handlers = {
-       init,
-       test
-   };
-</code></pre>
-<p>}</p>
-<p>// Prototype
-GrandParent.prototype = {</p>
-<pre class="code prettyprint"><code>   namespace: 'app.GrandParent',
+<pre class="code prettyprint"><code>   // Constructor
+   function GrandParent(){
+       var that = this;
 
-   'tb.Require': [
-       '/app/GrandParent.css'
-   ]
+       that.handlers = {
+           init,
+           test
+       };
+
+   }
+
+   // Prototype
+   GrandParent.prototype = {
+
+       namespace: 'app.GrandParent',
+
+       'tb.Require': [
+           '/app/GrandParent.css'
+       ]
+
+   };
+
+   return GrandParent;
+
+   // Private Methods
+
+   // ...
 </code></pre>
-<p>};</p>
-<p>return GrandParent;</p>
-<p>// Private Methods</p>
-<p>// ...</p>
 <p>})();</p>
 
             </div>

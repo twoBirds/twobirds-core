@@ -77,50 +77,53 @@
      );
 
  */
-tb.Model = function ( pConfig ) {
-    var that = this;
+if (typeof module === 'undefined' ){ // will not work as a module
 
-    // result element
-    that.data = tb.observable( {} );
-    that.config = {};
+    tb.Model = function ( pConfig ) {
+        var that = this;
 
-    // default config mixin -> result will be in that.config
-    tb.extend(
-        that.config,
-        {   // default settings, reference only
-            'create': {
-                url: '',
-                method: 'POST',
-                success: function( pResult ){
-                    that.data( pResult );
+        // result element
+        that.data = tb.observable( {} );
+        that.config = {};
+
+        // default config mixin -> result will be in that.config
+        tb.extend(
+            that.config,
+            {   // default settings, reference only
+                'create': {
+                    url: '',
+                    method: 'POST',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
+                },
+                'read': {
+                    url: '',
+                    method: 'GET',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
+                },
+                'update': {
+                    url: '',
+                    method: 'PUT',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
+                },
+                'delete': {
+                    url: '',
+                    method: 'DELETE',
+                    success: function( pResult ){
+                        that.data( pResult );
+                    }
                 }
             },
-            'read': {
-                url: '',
-                method: 'GET',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            },
-            'update': {
-                url: '',
-                method: 'PUT',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            },
-            'delete': {
-                url: '',
-                method: 'DELETE',
-                success: function( pResult ){
-                    that.data( pResult );
-                }
-            }
-        },
-        pConfig
-    );
+            pConfig
+        );
 
-};
+    };
+}
 
 tb.Model.prototype = (function(){
     // private

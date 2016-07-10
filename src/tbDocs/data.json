@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.1.16",
+        "version": "v7.1.17",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -219,7 +219,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3770,
+            "line": 3772,
             "is_constructor": 1,
             "params": [
                 {
@@ -233,7 +233,7 @@
                 "type": "Void"
             },
             "example": [
-                "\n\ntb.namespace( 'app', true ).GrandParent = (function(){\n\n   // Constructor\n   function GrandParent(){\n       var that = this;\n\n       that.handlers = {\n           init,\n           test\n       };\n\n   }\n\n   // Prototype\n   GrandParent.prototype = {\n\n       namespace: 'app.GrandParent',\n\n       'tb.Require': [\n           '/app/GrandParent.css'\n       ]\n\n   };\n\n   return GrandParent;\n\n   // Private Methods\n\n   // ...\n\n})();\n"
+                "\n\n   tb.namespace( 'app', true ).GrandParent = (function(){\n\n       // Constructor\n       function GrandParent(){\n           var that = this;\n\n           that.handlers = {\n               init,\n               test\n           };\n\n       }\n\n       // Prototype\n       GrandParent.prototype = {\n\n           namespace: 'app.GrandParent',\n\n           'tb.Require': [\n               '/app/GrandParent.css'\n           ]\n\n       };\n\n       return GrandParent;\n\n       // Private Methods\n\n       // ...\n\n   })();\n"
             ]
         }
     },
@@ -1598,7 +1598,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3643,
+            "line": 3646,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -1613,7 +1613,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3673,
+            "line": 3676,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1628,7 +1628,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3704,
+            "line": 3707,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1643,7 +1643,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3734,
+            "line": 3737,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1658,7 +1658,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3842,
+            "line": 3846,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1734,7 +1734,7 @@
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:3842"
+            "line": " src/tb/tb.js:3846"
         }
     ]
 }
