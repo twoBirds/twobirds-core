@@ -1,6 +1,5 @@
 
-caution: this is from the old repo, this repo only contains the lib: WORK IN PROGRESS
-# twoBirds v7.0.0a
+# twoBirds v7
 
 Welcome Birdies ;-)
 
@@ -23,22 +22,17 @@ demoapp/myClass.js
 var demoapp = demoapp || {};
 
 
-demoapp.myClass = function(){
-	handlers: {
-		myEventName: function( e ){
-			console.log( 'myEventName handler', e.data );
-		}
-	}
-}
+demoapp.myClass = function(){};
 
-demoapp.myClass.prototype = {
-}
+demoapp.myClass.prototype = {}
 ```
+as you see, any plain old javascript class is a tB class :-)
 
 index.html
 ```
 <body data-tb="demoapp.myClass">
 ```
+this will make an instance of above mentioned class and put it in the dom :-)
 
 or, somewhere in your js code:
 ```
@@ -48,6 +42,7 @@ new tb(
 	document.body
 );
 ```
+same as above, but done at run-time
 
 #### 2.) a selector to adress instances of these objects on the page
 
@@ -62,47 +57,56 @@ tb( 'body' ).trigger( 'myEventName', <eventData>, <bubble> );
 ```
 hint: bubble = 'l' for local, 'd' for down, 'u' for up ('l' being default)
 
-twoBirds allows for building of nested structures of instances of repository classes that all look the same codewise, but add up to complex functionality.
+twoBirds allows building nested structures of tB instances of repository classes that all look the same codewise, but add up to complex functionality.
 
-All instances of these classes are stored in DOM nodes or other tB instances.
+All instances of these classes are stored in DOM nodes or other tB instances / other objects.
 
-twoBirds was created 2004 and saw its first commercial use in 2006.
+twoBirds has a selector ot its own ( tb.dom() ), but can work with any selector lib that returns array-like objects.
 
-twoBirds has a selector ot its own, but can work with any selector lib that returns array-like objects.
+Comparision: 
+twoBirds can be compared to Flight, Polymer, React, ember and backboneJS.
 
-Comparision: twoBirds can be compared to Flight, Polymer, React and backbone JS.
-Unlike these frameworks it allows for complete separation of code and design. As mentioned it aims at making nesting of loose coupled objects into complex structures easier and more transparent. 
-Requirement loading is an inherent part of the system.
+Unlike these frameworks twoBirds ... 
+
+- ... allows for complete separation of code and design. 
+- ... requirement loading is an inherent part of the system.
+- ... recursively nests application instances transparently.
+- ... doesnt come with prebuilt widgets - every tB instance is a widget
+- ... strictly follows the KISS principle
 
 ## Description
 
 ### General
 
-As seen from a twoBirds perspective, a website / webapp consists of the HTML DOM and twoBirds JS objects attached to DOM nodes. Not every DOM node necessarily has a tB object attached to it, usually the tB objects reflect the higher order elements of a site, like "header", "login", "footer".
+As seen from a twoBirds perspective, a website / webapp consists of the HTML DOM and twoBirds JS objects attached to DOM nodes. 
 
-Also, twoBirds objects can be nested into each other, like in this structural example:
-```
-myWindow contains
-    a system window to display contents, which contains
-        a scollBar to scroll the window contents
-```
-Each of the nested instances may or may not add additional HTML / DOM nodes to the element, but together they form a logical unit. As shown later in the examples, you can find and address all these objects on the current page displayed, and trigger events on each element.
+Not every DOM node necessarily has a tB object attached to it, usually the tB objects reflect the higher order elements of a site, like "header", "login", "footer".
+
+Also, twoBirds objects can be nested into each other.
+
+Each of the nested instances may or may not add additional HTML / DOM nodes to the element, but together they form a logical unit. 
+
+As shown later in the examples, you can find and address all these objects on the current page displayed, and trigger events on each element.
 
 ### Repository
 
 In twoBirds, on the client side you have a repository of plain JS classes. 
+
 These are used to create instances. 
+
 The instances are saved in the DOM nodes or in other tB instances.
 
 ### Instances
 
-There are 3 property names in twoBirds objects that are reserved:
+There are some property names in twoBirds instances that are reserved:
 
 * *target*: ... is the DOM node the tB instance is attached to. In nested objects it is inherited from the parent, but AT RUNTIME can be set to another DOM node as well if necessary. You cannot set this property in a repo object, since it would make no sense.
 
 * *namespace*: ... is the namespace of the repo object, and should be set accordingly, since both the regEx selector tb(/.../) as well as the .instanceOf("namespace") method checks against the "name" property.
 
 * *handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions. Internally they are converted to array anyway.
+
+* *tb*: ... (reserved for internal use, overwriting deletes nested objects).
 
 As for handlers, there currently is 1 event name that is reserved:
 
@@ -116,7 +120,7 @@ There is a special convention inside twoBirds instances:
 
 IF NOT: twoBirds will convert the property name to a subdir string like so
 
-"demoapp.Body" ==> "/demoapp/Body.js"
+"app.Body" ==> "/app/Body.js"
 
 ...and starts loading the file.
 
@@ -132,7 +136,7 @@ Now lets see all of this in context:
 
 demoapp/Body.js 
 ```js
-tb.namespace('demoapp', true).Body = (function(){
+tb.namespace('app', true).Body = (function(){
 
 	// Constructor
 	function Body(){
@@ -162,7 +166,7 @@ tb.namespace('demoapp', true).Body = (function(){
 		
 		var that = this;
 
-		// ...
+		// initialize the instance and trigger further actions ...
 
 	}
 
@@ -178,7 +182,7 @@ The function will execute, starting the requirement loading. Further execution i
 You can also insert a twoBirds instance into an already existing instance at runtime, in this case inside some event handler you add this code ( the scroller is nott yet converted from V5 to V6, I will refactor the old demoapp later):
 ```
 this.tbElement = new tb(
-	'demoapp.someElement'
+	'app.someElement'
 );
 ```
 
@@ -191,13 +195,13 @@ this.tbElement = new tb(
 	<head>
 		<script src="http://<yourPathTo>/tb.js"></script>
 	</head>
-    <body data-tb="demoapp.Body">
+    <body data-tb="app.Body">
     </body>
 </html>
 ```
 By default upon startup twoBirds will lookup DOM nodes containing a "data-tb" attribute, 
 and treats them as a tB class: and instance of the class is created and attached to the DOM node. 
-If the corresponding repo object doesnt exist, on-demand loading is performed recursively. 
+If the corresponding repo class doesnt exist, on-demand loading is performed recursively. 
 
 ### tb() Selector and inner structure example
 
@@ -206,27 +210,31 @@ If the corresponding repo object doesnt exist, on-demand loading is performed re
 
 // PARAMETER TYPES
 
-// STRING: jQuery select DOM node and return tB object(s)
 
-// get the $('body') DOM node, 
-// retrieve its tB toplevel object
+
+// STRING: uses .querySelectorAll(), but returns tB object(s) contained in the DOM nodes.
+
 tb('body')
-// string selectors will be treated as jQuery DOM selectors, 
-// but only select DOM nodes that have twoBirds objects attached to them
+
+
 
 // OBJECT: instances of a repo object inside page structure
 
 // find all demoapp.Body sub-instances ( only one )
-tb( demoapp.Body )
+tb( app.Body )
 
 // find all demoapp.someElement sub-instances ( may return many )
-tb( demoapp.someElement )
+tb( app.someElement )
+
+
 
 // REGEXP: as object, but matching to instance 'namespace' property 
 
 // always returns the root object
 
-tb( /app.Bod/ ) // returns the demoapp.body object, its 'namespace' matches the regEx
+tb( /app.Bod/ ) // returns the app.body object, its 'namespace' matches the regEx
+
+
 
 // OTHER:
 
@@ -235,9 +243,13 @@ tb( /app.Bod/ ) // returns the demoapp.body object, its 'namespace' matches the 
 tb( /./ ) 
 tb( '*' ) // invoking document.querySelectorAll()
 
+
+
 // THIS:
 
 this // in handler code, this always points to the current instance
+
+
 
 // CHAINING:
 
@@ -253,10 +265,10 @@ tb( ... ).prev() // the previous tb instance in this.parent().children()
 tb( ... ).next() // the next tb instance in this.parent().children()
 tb( ... ).first() // the previous tb instance in this.parent().children()
 tb( ... ).last() // the next tb instance in this.parent().children()
+...for a complete list see the API documentation, there are about 20 of them ATM.
 
-// @todo: complete list
+// CHAINED SELECTOR RETURNS ARE ALWAYS UNIQUE!
 
-// CHAINED SELECTOR RETURNS ARE ALWAYS UNIQUE
 ```
 
 ### Adding or removing event handler functions
@@ -289,17 +301,17 @@ tb('body').trigger('<myevent>' [, data] [, bubble])
 
 // find all demoapp.body instances (only one), 
 // trigger <myevent> bubbling down locally.
-tb( demoapp.Body ).trigger('<myevent>' ,null ,'ld' )	
+tb( app.Body ).trigger('<myevent>' ,null ,'ld' )	
 
-// find all tb.ui.scroll instances, 
+// find all app.SomeElement instances, 
 // and trigger 'scroll.update' on it, meaning its a local event that doesnt bubble. 
-tb( demoapp.SomeElement ).trigger('scroll.update' );			
+tb( app.SomeElement ).trigger('scroll.update' );			
 
 ```
 
 ## Installation
 
-copy tb.js from this and insert into your project. Have fun!
+simple: copy tb.js from /dist and insert into your project. Have fun!
 
 ## Use case 
 - easily adding JS functionality to server side rendered HTML
@@ -310,7 +322,6 @@ copy tb.js from this and insert into your project. Have fun!
 - component style web programming
 - distributed programming
 - async on demand loading, recursive
-- effective multiple inheritance
 - web-component programming, defining repository objects
 
 # Status:
@@ -320,46 +331,38 @@ copy tb.js from this and insert into your project. Have fun!
 
 # History
 twoBirds was created 2004 to be able to build a complex web application for an insurance company.
-It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) ).
+It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) and sorry for the character mess there, the page is outdated obviously ).
 It was constantly under development. 
 
 ## I dont want to read a lot - give me a kick-start
 
 ### On console do...
 
-git clone this repository
+(git clone this repository)
 
-goto /dist
+(goto project directory)
 
-php -S 0.0.0.0:3000 &
+> npm install
+> grunt
+> cd src
 
+( you can use whatever you like as a web server, just one fast option here:)
 
-### Open browser, adress:
+> php -S 0.0.0.0:3000 &
 
+#### Example
 
-#### (Example one)
+browser > localhost:3000/index.html
+browser > ( select "test" )
 
-
-localhost:3000/tb.html
-
-#### Open dev tools, e.g. firebug
+( open dev tools, e.g. firebug )
 
 - inspect DOM to see how twoBirds instances reside in DOM structure, on HTML tab right-click on a div and select 'inspect in DOM' 
 - right-click on an "app.child" div, select 'inspect in DOM' to see how twoBirds instances can also reside inside each other
-- view 'tb.html' file to see the app code
-
-
-#### (Example two)
-
-
-localhost:3000/index.html
-
-
-#### Open dev tools, e.g. firebug
-
-- inspect DOM to see the structure
 - go to the 'network' tab and reload to see the sequence of requirement loading
-- view 'index.html' file to see the app code
-- view js files in /httpdocs/demoapp/ to see the app code for those objects that are lazy loaded
 
-In case of questions contact [me](mailTo:frank_thuerigen@yahoo.de).
+( in the file system )
+- view 'test.html' file to see the app code ( in this case case, its lack of in the page source code ;-) )
+- view js files in /src/app/ to see the app code for those objects that are lazy loaded
+
+In case of questions contact [me](mailTo:fthuerigen@googlemail.com).
