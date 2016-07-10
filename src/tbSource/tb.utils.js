@@ -367,280 +367,284 @@ tb.parse = function( pWhat, pParse ){
  @returns a twoBirds request object
 
  */
-tb.request = (function () {
-    /** @private */
-    var loadlist = [],
-        readyState = 'complete',
-        cachable = false,
-        log = false,
-        count = 0,
-        interval = 30,
-        msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
+if (typeof module !== 'undefined' && module.exports){
+    tb.request = (function () {
+        /** @private */
+        var loadlist = [],
+            readyState = 'complete',
+            cachable = false,
+            log = false,
+            count = 0,
+            interval = 30,
+            msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
 
-    function getConnection(pId) {
-        var obj = {},
-            xhr,
-            getConnection;
+        function getConnection(pId) {
+            var obj = {},
+                xhr,
+                getConnection;
 
-        if (typeof ActiveXObject !== 'undefined'){
-            for (var i = 0; i < msoft.length; ++i) {
-                try {
-                    xhr = new ActiveXObject(msoft[i]);
-                    obj = {
-                        connection: xhr,
-                        identifier: pId
-                    };
-
-                    getConnection = (function (pType) {
-                        return function (pId) {
-                            var http = new ActiveXObject(pType);
-                            obj = {
-                                connection: xhr,
-                                identifier: pId
-                            };
-                            return obj;
+            if (typeof ActiveXObject !== 'undefined'){
+                for (var i = 0; i < msoft.length; ++i) {
+                    try {
+                        xhr = new ActiveXObject(msoft[i]);
+                        obj = {
+                            connection: xhr,
+                            identifier: pId
                         };
-                    })(msoft[i]);
-                } catch (e) {
+
+                        getConnection = (function (pType) {
+                            return function (pId) {
+                                var http = new ActiveXObject(pType);
+                                obj = {
+                                    connection: xhr,
+                                    identifier: pId
+                                };
+                                return obj;
+                            };
+                        })(msoft[i]);
+                    } catch (e) {
+                    }
                 }
             }
-        }
 
-        try {
-            xhr = new XMLHttpRequest();
-            obj = {
-                connection: xhr,
-                identifier: pId
-            };
-            /** @ignore */
-            getConnection = function (pId) {
-                var xhr = new XMLHttpRequest();
+            try {
+                xhr = new XMLHttpRequest();
                 obj = {
                     connection: xhr,
                     identifier: pId
                 };
-                return obj;
-            };
-        }
-        catch (e) {
-        }
-        finally {
-            return obj;
-        }
-    }
-
-    /** @private */
-    function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
-        var connection = this;
-        var poll = window.setInterval((function (pReadyState) {
-            return function () {
-                if (pReq.connection.readyState !== pReadyState) {
-                    pReadyState = pReq.connection.readyState;
-                    //pStateChange();
-                }
-                if (pReadyState === 4) {
-                    if (pReq.aborttimer) {
-                        window.clearTimeout(pReq.aborttimer);
-                    }
-                    window.clearInterval(poll);
-                    handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
-                }
-            };
-        })(0), interval);
-
-        return poll;
-    }
-
-    /** @private */
-    function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
-
-        try {
-            var httpStatus = pReq.connection.status;
-        }
-        catch (e) {
-            var httpStatus = 13030;
-        }
-        if (httpStatus >= 200 && httpStatus < 300) {
-            var responseObject = createResponseObject(pReq, pOptions);
-            try {
-                pCallback.call(pCallback, responseObject);
+                /** @ignore */
+                getConnection = function (pId) {
+                    var xhr = new XMLHttpRequest();
+                    obj = {
+                        connection: xhr,
+                        identifier: pId
+                    };
+                    return obj;
+                };
             }
             catch (e) {
-                if (tb.debug) debugger;
+            }
+            finally {
+                return obj;
             }
         }
-        else {
-            var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
-            pFailure.call( pFailure, responseObject );
-        }
-        release(pReq);
-    }
 
-    /** @private */
-    function createResponseObject(pObj, pOptions) {
-        var obj = {
-            tId: pObj.identifier,
-            status: pObj.connection.status,
-            statusText: pObj.connection.statusText,
-            allResponseHeaders: pObj.connection.getAllResponseHeaders(),
-            text: pObj.connection.responseText,
-            xml: pObj.connection.responseXML,
-            options: pOptions
-        };
-        return obj;
-    }
-
-    /** @private */
-    function release(pReq) {
-        dec( pReq );
-        if (pReq.connection){
-            pReq.connection = null;
-        }
-        delete pReq.connection;
-        pReq = null;
-        delete pReq;
-    }
-
-    function inc( pReq ) {
-        loadlist.push( pReq );
-        count++;
-        readyState = 'loading';
-    }
-
-    function dec( pReq ) {
-        if ( loadlist.indexOf( pReq ) ){
-            count--;
-            loadlist.splice( loadlist.indexOf( pReq ) );
-            if ( count === 0 ){
-                readyState = 'complete';
-            }
-        }
-    }
-
-
-    /**
-     @name tb.request
-     @function
-     */
-    return function (pOptions) {
-        var uid = 'tb' + tb.getId(),
-            xmlreq = false,
-            method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
-            url = pOptions.url,
-            params = '',
-            successHandler = pOptions.success || tb.nop,
-            errorHandler = pOptions.error || tb.nop,
-            stateHandler = pOptions.statechange || tb.nop,
-            isCachable = pOptions.cachable || false,
-            timeout = pOptions.timeout || false,
-            isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
-
-        if (typeof pOptions.params != 'undefined') {
-            var ct = ( pOptions.headers && pOptions.headers['Content-Type']
-                ? pOptions.headers['Content-Type']
-                : 'application/x-www-form-urlencoded' );
-
-            switch ( ct ){
-                case 'application/json':
-                    params = JSON.stringify( pOptions.params );
-                    break;
-                default:
-                    for (var i in pOptions.params) { // concat parameter string
-                        params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
+        /** @private */
+        function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
+            var connection = this;
+            var poll = window.setInterval((function (pReadyState) {
+                return function () {
+                    if (pReq.connection.readyState !== pReadyState) {
+                        pReadyState = pReq.connection.readyState;
+                        //pStateChange();
                     }
-                    break;
+                    if (pReadyState === 4) {
+                        if (pReq.aborttimer) {
+                            window.clearTimeout(pReq.aborttimer);
+                        }
+                        window.clearInterval(poll);
+                        handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
+                    }
+                };
+            })(0), interval);
+
+            return poll;
+        }
+
+        /** @private */
+        function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+
+            try {
+                var httpStatus = pReq.connection.status;
+            }
+            catch (e) {
+                var httpStatus = 13030;
+            }
+            if (httpStatus >= 200 && httpStatus < 300) {
+                var responseObject = createResponseObject(pReq, pOptions);
+                try {
+                    pCallback.call(pCallback, responseObject);
+                }
+                catch (e) {
+                    if (tb.debug) debugger;
+                }
+            }
+            else {
+                var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
+                pFailure.call( pFailure, responseObject );
+            }
+            release(pReq);
+        }
+
+        /** @private */
+        function createResponseObject(pObj, pOptions) {
+            var obj = {
+                tId: pObj.identifier,
+                status: pObj.connection.status,
+                statusText: pObj.connection.statusText,
+                allResponseHeaders: pObj.connection.getAllResponseHeaders(),
+                text: pObj.connection.responseText,
+                xml: pObj.connection.responseXML,
+                options: pOptions
+            };
+            return obj;
+        }
+
+        /** @private */
+        function release(pReq) {
+            dec( pReq );
+            if (pReq.connection){
+                pReq.connection = null;
+            }
+            delete pReq.connection;
+            pReq = null;
+            delete pReq;
+        }
+
+        function inc( pReq ) {
+            loadlist.push( pReq );
+            count++;
+            readyState = 'loading';
+        }
+
+        function dec( pReq ) {
+            if ( loadlist.indexOf( pReq ) ){
+                count--;
+                loadlist.splice( loadlist.indexOf( pReq ) );
+                if ( count === 0 ){
+                    readyState = 'complete';
+                }
             }
         }
 
-        inc();
 
-        /*
-         if (isCachable === false) { // proxy disable - cache busting
-         url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
-         }
+        /**
+         @name tb.request
+         @function
          */
+        return function (pOptions) {
+            var uid = 'tb' + tb.getId(),
+                xmlreq = false,
+                method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
+                url = pOptions.url,
+                params = '',
+                successHandler = pOptions.success || tb.nop,
+                errorHandler = pOptions.error || tb.nop,
+                stateHandler = pOptions.statechange || tb.nop,
+                isCachable = pOptions.cachable || false,
+                timeout = pOptions.timeout || false,
+                isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
 
-        xmlreq = getConnection(uid);
-        if (xmlreq) {
-            if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
-                url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
-            }
-            xmlreq.src=url;
+            if (typeof pOptions.params != 'undefined') {
+                var ct = ( pOptions.headers && pOptions.headers['Content-Type']
+                    ? pOptions.headers['Content-Type']
+                    : 'application/x-www-form-urlencoded' );
 
-            xmlreq.connection.open(method, url, isAsync);
-
-            if (isAsync === true) {
-                xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
-            }
-
-            // set request headers
-            if (pOptions.headers) {
-                for (var i in pOptions.headers) {
-                    if (i !== 'Content-Type') {
-                        xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
-                    }
+                switch ( ct ){
+                    case 'application/json':
+                        params = JSON.stringify( pOptions.params );
+                        break;
+                    default:
+                        for (var i in pOptions.params) { // concat parameter string
+                            params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
+                        }
+                        break;
                 }
             }
 
-            // abort functionality
-            if (timeout) {
-                xmlreq.timeoutTimer = window.setTimeout(
+            inc();
 
-                    function (pT, pR) {
-                        var f = typeof pT.cb === 'function' ? pT.cb : false;
-                        return function () {
-                            //if ( !myR && myR.connection.status == 4 ) return;
-                            if (typeof f == 'function') {
-                                f( /*createResponseObject(myR)*/ );
-                            }
-                            pR.connection.abort();
-                            window.clearInterval(pR.poll);
-                        };
-                    }(timeout, xmlreq), timeout.ms);
-            }
+            /*
+             if (isCachable === false) { // proxy disable - cache busting
+             url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
+             }
+             */
 
-            xmlreq.abort = ( function(xmlreq) {
-                return function () {
-                    window.clearInterval(xmlreq.poll);
-                    if (xmlreq.connection) xmlreq.connection.abort();
-                    release(xmlreq);
-                };
-            })( xmlreq );
+            xmlreq = getConnection(uid);
+            if (xmlreq) {
+                if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
+                    url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
+                }
+                xmlreq.src=url;
 
-            // send
-            if (method === 'POST' || method === 'PUT') {
-                if (params !== '') {
-                    xmlreq.connection.setRequestHeader('Content-Type', ct);
-                    xmlreq.connection.send(params);
+                xmlreq.connection.open(method, url, isAsync);
+
+                if (isAsync === true) {
+                    xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
+                }
+
+                // set request headers
+                if (pOptions.headers) {
+                    for (var i in pOptions.headers) {
+                        if (i !== 'Content-Type') {
+                            xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
+                        }
+                    }
+                }
+
+                // abort functionality
+                if (timeout) {
+                    xmlreq.timeoutTimer = window.setTimeout(
+
+                        function (pT, pR) {
+                            var f = typeof pT.cb === 'function' ? pT.cb : false;
+                            return function () {
+                                //if ( !myR && myR.connection.status == 4 ) return;
+                                if (typeof f == 'function') {
+                                    f( /*createResponseObject(myR)*/ );
+                                }
+                                pR.connection.abort();
+                                window.clearInterval(pR.poll);
+                            };
+                        }(timeout, xmlreq), timeout.ms);
+                }
+
+                xmlreq.abort = ( function(xmlreq) {
+                    return function () {
+                        window.clearInterval(xmlreq.poll);
+                        if (xmlreq.connection) xmlreq.connection.abort();
+                        release(xmlreq);
+                    };
+                })( xmlreq );
+
+                // send
+                if (method === 'POST' || method === 'PUT') {
+                    if (params !== '') {
+                        xmlreq.connection.setRequestHeader('Content-Type', ct);
+                        xmlreq.connection.send(params);
+                    }
+                    else {
+                        xmlreq.connection.send(null);
+                    }
                 }
                 else {
                     xmlreq.connection.send(null);
                 }
-            }
-            else {
-                xmlreq.connection.send(null);
-            }
-            // if sync request direct handler call
-            if (isAsync === false) {
-                tb.request.dec();
-                if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
-                    successHandler( xmlreq );
+                // if sync request direct handler call
+                if (isAsync === false) {
+                    tb.request.dec();
+                    if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
+                        successHandler( xmlreq );
+                    }
+                    else {
+                        errorHandler( xmlreq );
+                    }
                 }
                 else {
-                    errorHandler( xmlreq );
+                    return xmlreq;
                 }
+                return;
             }
             else {
-                return xmlreq;
+                return false;
             }
-            return;
-        }
-        else {
-            return false;
-        }
-    };
+        };
 
-})();
+    })();
+} else {
+    // todo: implement module foreign request
+}
 
 
 /**

@@ -1452,36 +1452,36 @@ tb.Event.prototype = {
 
 };
 
-/**
- * document.ready bootstrap
- */
-(function(){
-
-    function domReady () {
-        tb.bind( document.body ); // find all tb dom nodes and add tb objects if not yet done
-    }
-
-    // Mozilla, Opera, Webkit
-    if ( document.addEventListener ) {
-        document.addEventListener( "DOMContentLoaded", function(){
-            document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
-            domReady();
-        }, false );
-
-        // If IE event model is used
-    } else if ( document.attachEvent ) {
-        // ensure firing before onload
-        document.attachEvent("onreadystatechange", function(){
-            if ( document.readyState === "complete" ) {
-                document.detachEvent( "onreadystatechange", arguments.callee );
-                domReady();
-            }
-        });
-    }
-
-})();
-
 // make it a node module
 if (typeof module !== 'undefined' && module.exports) {
     module.exports.tb = tb;
+} else {
+    /**
+     * document.ready bootstrap
+     */
+    (function(){
+
+        function domReady () {
+            tb.bind( document.body ); // find all tb dom nodes and add tb objects if not yet done
+        }
+
+        // Mozilla, Opera, Webkit
+        if ( document.addEventListener ) {
+            document.addEventListener( "DOMContentLoaded", function(){
+                document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
+                domReady();
+            }, false );
+
+            // If IE event model is used
+        } else if ( document.attachEvent ) {
+            // ensure firing before onload
+            document.attachEvent("onreadystatechange", function(){
+                if ( document.readyState === "complete" ) {
+                    document.detachEvent( "onreadystatechange", arguments.callee );
+                    domReady();
+                }
+            });
+        }
+
+    })();
 }

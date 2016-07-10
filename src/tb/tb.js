@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.14 - 2016-07-10 */
+/*! twobirds-core - v7.1.16 - 2016-07-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1454,1374 +1454,1376 @@ tb.Event.prototype = {
 
 };
 
-/**
- * document.ready bootstrap
- */
-(function(){
-
-    function domReady () {
-        tb.bind( document.body ); // find all tb dom nodes and add tb objects if not yet done
-    }
-
-    // Mozilla, Opera, Webkit
-    if ( document.addEventListener ) {
-        document.addEventListener( "DOMContentLoaded", function(){
-            document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
-            domReady();
-        }, false );
-
-        // If IE event model is used
-    } else if ( document.attachEvent ) {
-        // ensure firing before onload
-        document.attachEvent("onreadystatechange", function(){
-            if ( document.readyState === "complete" ) {
-                document.detachEvent( "onreadystatechange", arguments.callee );
-                domReady();
-            }
-        });
-    }
-
-})();
-
 // make it a node module
 if (typeof module !== 'undefined' && module.exports) {
     module.exports.tb = tb;
+} else {
+    /**
+     * document.ready bootstrap
+     */
+    (function(){
+
+        function domReady () {
+            tb.bind( document.body ); // find all tb dom nodes and add tb objects if not yet done
+        }
+
+        // Mozilla, Opera, Webkit
+        if ( document.addEventListener ) {
+            document.addEventListener( "DOMContentLoaded", function(){
+                document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
+                domReady();
+            }, false );
+
+            // If IE event model is used
+        } else if ( document.attachEvent ) {
+            // ensure firing before onload
+            document.attachEvent("onreadystatechange", function(){
+                if ( document.readyState === "complete" ) {
+                    document.detachEvent( "onreadystatechange", arguments.callee );
+                    domReady();
+                }
+            });
+        }
+
+    })();
 }
 
 ;
-tb.dom = (function () {
+if (typeof module !== 'undefined' && module.exports){
+    tb.dom = (function () {
 
-    // Variables
-    var regExReturn = /\r/g,
-        regExSpaces = /[\x20\t\r\n\f]+/g,
-        regExWord = /\S+/g,
-        regExHtml = /^<>$/g,
-        TbSelector = tb.Selector;
+        // Variables
+        var regExReturn = /\r/g,
+            regExSpaces = /[\x20\t\r\n\f]+/g,
+            regExWord = /\S+/g,
+            regExHtml = /^<>$/g,
+            TbSelector = tb.Selector;
 
-    return function (pSelector, pDomNode) {
+        return function (pSelector, pDomNode) {
 
-        var dom;
+            var dom;
 
-        // INTERNAL ONLY Private Functions
-        function _addEvent( pDomNode, pEventName, pHandler ) {
-            if (pDomNode.attachEvent) {
-                pDomNode.attachEvent('on' + pEventName, pHandler);
-            } else {
-                pDomNode.addEventListener(pEventName, pHandler);
+            // INTERNAL ONLY Private Functions
+            function _addEvent( pDomNode, pEventName, pHandler ) {
+                if (pDomNode.attachEvent) {
+                    pDomNode.attachEvent('on' + pEventName, pHandler);
+                } else {
+                    pDomNode.addEventListener(pEventName, pHandler);
+                }
             }
-        }
 
-        function _removeEvent( pDomNode, pEventName, pHandler ) {
-            if (pDomNode.detachEvent){
-                pDomNode.detachEvent('on'+pEventName, pHandler);
-            } else {
-                pDomNode.removeEventListener(pEventName, pHandler);
+            function _removeEvent( pDomNode, pEventName, pHandler ) {
+                if (pDomNode.detachEvent){
+                    pDomNode.detachEvent('on'+pEventName, pHandler);
+                } else {
+                    pDomNode.removeEventListener(pEventName, pHandler);
+                }
             }
-        }
 
-        function _htmlToElements(html) {
-            var template = document.createElement('template');
-            template.innerHTML = html;
-            return template.content.childNodes;
-        }
+            function _htmlToElements(html) {
+                var template = document.createElement('template');
+                template.innerHTML = html;
+                return template.content.childNodes;
+            }
 
-        function _mapArrayMethod( pMethodName ){
-            var method = [][pMethodName];
+            function _mapArrayMethod( pMethodName ){
+                var method = [][pMethodName];
 
-            return function(){
-                var arr = this.toArray(),
-                    ret = method.apply( arr, arguments );
+                return function(){
+                    var arr = this.toArray(),
+                        ret = method.apply( arr, arguments );
 
-                return (new tb.dom( ret )).unique();
+                    return (new tb.dom( ret )).unique();
+                };
+            }
+
+            /**
+             @class tb.dom
+             @constructor
+
+             @param [pSelector] a .querySelectorAll() selector string, a dom node or an array of dom nodes
+             @param [pDomNode] - DOM node to start search in
+
+             @return {object} - tb.dom() result set, may be empty
+
+             tb.dom() function
+
+             jquery like selector engine
+
+             */
+
+            dom = function tbDom(pSelector, pDomNode) {
+
+                var that = this,
+                    domNode,
+                    nodeList;
+
+                if (!pSelector) { // no selector given, or not a string
+                    return;
+                } else if (!!pSelector['nodeType']) { // selector is a dom node
+                    [].push.call(that, pSelector);
+                    return;
+                } else if (!!pSelector[0] && pSelector[0] instanceof TbSelector) { // a twobirds selector result set
+                    [].forEach.call(
+                        pSelector,
+                        function (pElement) {   // copy only DOM nodes
+                            if (!!pElement['target']
+                                && !!pElement['target']['nodeType']
+                            ) {
+                                [].push.call(that, pElement);
+                            }
+                        }
+                    );
+                    return;
+                } else if (pSelector instanceof Array
+                    || pSelector instanceof HTMLCollection
+                    || pSelector instanceof NodeList ) {
+                    [].forEach.call(
+                        pSelector,
+                        function (pElement) {   // copy only DOM nodes
+                            if (!!pElement && !!pElement['nodeType']) {
+                                [].push.call(that, tb.dom( pElement )[0] );
+                            }
+                        }
+                    );
+                    return;
+                } else if (typeof pSelector !== 'string') { // wrong selector type
+                    return;
+                } else { // pSelector is a string
+
+                    var DOM = _htmlToElements( pSelector );
+
+                    if ( DOM.length === 1 && DOM[0].nodeType === 3 ){ // it is not an HTML string
+
+                        domNode = pDomNode && !!pDomNode['nodeType'] ? pDomNode : document;
+
+                        pSelector
+                            .split( ',' )
+                            .forEach(
+                                function forEachTbDomSelector( pThisSelector ){
+                                    nodeList = domNode.querySelectorAll(pSelector);
+
+                                    if (!!nodeList.length) {
+                                        [].forEach.call(
+                                            nodeList,
+                                            function (domElement) {
+                                                that[that.length] = domElement;
+                                                that.length++;
+                                            }
+                                        );
+                                    }
+
+                                }
+                            );
+
+                    } else { // it is an HTML string
+
+                        return new tb.dom( DOM );
+
+                    }
+                }
+
             };
-        }
 
-        /**
-         @class tb.dom
-         @constructor
+            // dom prototype, public functions
+            dom.prototype = {
 
-         @param [pSelector] a .querySelectorAll() selector string, a dom node or an array of dom nodes
-         @param [pDomNode] - DOM node to start search in
+                length: 0,
 
-         @return {object} - tb.dom() result set, may be empty
+                // from Array prototype
+                /**
+                 @method concat
+                 @chainable
 
-         tb.dom() function
+                 @return {object} - tb.dom() result set, may be empty
 
-         jquery like selector engine
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat">concat</a>
+                 */
+                concat: _mapArrayMethod( 'concat' ),
 
-         */
+                /**
+                 @method every
+                 @chainable
 
-        dom = function tbDom(pSelector, pDomNode) {
+                 @return {object} - tb.dom() result set, may be empty
 
-            var that = this,
-                domNode,
-                nodeList;
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/every">every</a>
+                 */
+                every: _mapArrayMethod( 'every' ),
 
-            if (!pSelector) { // no selector given, or not a string
-                return;
-            } else if (!!pSelector['nodeType']) { // selector is a dom node
-                [].push.call(that, pSelector);
-                return;
-            } else if (!!pSelector[0] && pSelector[0] instanceof TbSelector) { // a twobirds selector result set
-                [].forEach.call(
-                    pSelector,
-                    function (pElement) {   // copy only DOM nodes
-                        if (!!pElement['target']
-                            && !!pElement['target']['nodeType']
-                        ) {
-                            [].push.call(that, pElement);
+                /**
+                 @method forEach
+                 @chainable
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">forEach</a>
+                 */
+                forEach: _mapArrayMethod( 'forEach' ),
+
+                /**
+                 @method indexOf
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a>
+                 */
+                indexOf: _mapArrayMethod( 'indexOf' ),
+
+                /**
+                 @method lastIndexOf
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf">lastIndexOf</a>
+                 */
+                lastIndexOf: _mapArrayMethod( 'lastIndexOf' ),
+
+                /**
+                 @method map
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map">map</a>
+                 */
+                map: _mapArrayMethod( 'map' ),
+
+                /**
+                 @method pop
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
+                 */
+                pop: _mapArrayMethod( 'pop' ),
+
+                /**
+                 @method reduce
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce">reduce</a>
+                 */
+                reduce: _mapArrayMethod( 'reduce' ),
+
+                /**
+                 @method reduce
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight">reduceRight</a>
+                 */
+                reduceRight: _mapArrayMethod( 'reduceRight' ),
+
+                /**
+                 @method reverse
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse">reverse</a>
+                 */
+                reverse: _mapArrayMethod( 'reverse' ),
+
+                /**
+                 @method shift
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">shift</a>
+                 */
+                shift: _mapArrayMethod( 'shift' ),
+
+                /**
+                 @method slice
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">slice</a>
+                 */
+                slice: _mapArrayMethod( 'slice' ),
+
+                /**
+                 @method some
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some">some</a>
+                 */
+                some: _mapArrayMethod( 'some' ),
+
+                /**
+                 @method splice
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">splice</a>
+                 */
+                splice: _mapArrayMethod( 'splice' ),
+
+                /**
+                 @method some
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift">unshift</a>
+                 */
+                unshift: _mapArrayMethod( 'unshift' ),
+
+                //own functions, documented in code below
+                add: add,
+                addClass: addClass,
+                append: append,
+                appendTo: appendTo,
+                attr: attr,
+                children: children,
+                descendants: descendants,
+                empty: empty,
+                hide: hide,
+                html: html,
+                insertBefore: insertBefore,
+                insertAfter: insertAfter,
+                removeClass: removeClass,
+                filter: filter,
+                not: not,
+                off: off,
+                on: on,
+                one: one,
+                parent: parent,
+                parents: parents,
+                push: push,
+                removeAttr: removeAttr,
+                show: show,
+                toArray: toArray,
+                trigger: trigger,
+                unique: unique,
+                val: val
+            };
+
+            return new dom( pSelector, pDomNode );
+
+            // Private Functions, exposed
+
+            /**
+             @method appendTo
+
+             @param [pElement] a .querySelectorAll() selector string, a dom node or an array of dom nodes
+
+             appends all elements in tb.dom() result set to given DOM nodes
+             */
+            function appendTo( pElement ){
+                var that = this;
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode['nodeType'] ){
+                            if ( !pElement.length ){
+                                pElement= [ pElement ];
+                            }
+
+                            [].forEach.call(
+                                pElement,
+                                function( pThisElement ){
+                                    if ( !!pThisElement['nodeType'] ){
+                                        pThisElement.appendChild( pDomNode );
+                                    }
+                                }
+                            );
                         }
                     }
                 );
-                return;
-            } else if (pSelector instanceof Array
-                || pSelector instanceof HTMLCollection
-                || pSelector instanceof NodeList ) {
-                [].forEach.call(
-                    pSelector,
-                    function (pElement) {   // copy only DOM nodes
-                        if (!!pElement && !!pElement['nodeType']) {
-                            [].push.call(that, tb.dom( pElement )[0] );
-                        }
-                    }
-                );
-                return;
-            } else if (typeof pSelector !== 'string') { // wrong selector type
-                return;
-            } else { // pSelector is a string
 
-                var DOM = _htmlToElements( pSelector );
-
-                if ( DOM.length === 1 && DOM[0].nodeType === 3 ){ // it is not an HTML string
-
-                    domNode = pDomNode && !!pDomNode['nodeType'] ? pDomNode : document;
-
-                    pSelector
-                        .split( ',' )
-                        .forEach(
-                            function forEachTbDomSelector( pThisSelector ){
-                                nodeList = domNode.querySelectorAll(pSelector);
-
-                                if (!!nodeList.length) {
-                                    [].forEach.call(
-                                        nodeList,
-                                        function (domElement) {
-                                            that[that.length] = domElement;
-                                            that.length++;
-                                        }
-                                    );
-                                }
-
-                            }
-                        );
-
-                } else { // it is an HTML string
-
-                    return new tb.dom( DOM );
-
-                }
-            }
-
-        };
-
-        // dom prototype, public functions
-        dom.prototype = {
-
-            length: 0,
-
-            // from Array prototype
-            /**
-             @method concat
-             @chainable
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat">concat</a>
-             */
-            concat: _mapArrayMethod( 'concat' ),
-
-            /**
-             @method every
-             @chainable
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/every">every</a>
-             */
-            every: _mapArrayMethod( 'every' ),
-
-            /**
-             @method forEach
-             @chainable
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">forEach</a>
-             */
-            forEach: _mapArrayMethod( 'forEach' ),
-
-            /**
-             @method indexOf
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a>
-             */
-            indexOf: _mapArrayMethod( 'indexOf' ),
-
-            /**
-             @method lastIndexOf
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf">lastIndexOf</a>
-             */
-            lastIndexOf: _mapArrayMethod( 'lastIndexOf' ),
-
-            /**
-             @method map
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map">map</a>
-             */
-            map: _mapArrayMethod( 'map' ),
-
-            /**
-             @method pop
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
-             */
-            pop: _mapArrayMethod( 'pop' ),
-
-            /**
-             @method reduce
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce">reduce</a>
-             */
-            reduce: _mapArrayMethod( 'reduce' ),
-
-            /**
-             @method reduce
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight">reduceRight</a>
-             */
-            reduceRight: _mapArrayMethod( 'reduceRight' ),
-
-            /**
-             @method reverse
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse">reverse</a>
-             */
-            reverse: _mapArrayMethod( 'reverse' ),
-
-            /**
-             @method shift
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">shift</a>
-             */
-            shift: _mapArrayMethod( 'shift' ),
-
-            /**
-             @method slice
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">slice</a>
-             */
-            slice: _mapArrayMethod( 'slice' ),
-
-            /**
-             @method some
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some">some</a>
-             */
-            some: _mapArrayMethod( 'some' ),
-
-            /**
-             @method splice
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">splice</a>
-             */
-            splice: _mapArrayMethod( 'splice' ),
-
-            /**
-             @method some
-
-             @return {object} - tb.dom() result set, may be empty
-
-             inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift">unshift</a>
-             */
-            unshift: _mapArrayMethod( 'unshift' ),
-
-            //own functions, documented in code below
-            add: add,
-            addClass: addClass,
-            append: append,
-            appendTo: appendTo,
-            attr: attr,
-            children: children,
-            descendants: descendants,
-            empty: empty,
-            hide: hide,
-            html: html,
-            insertBefore: insertBefore,
-            insertAfter: insertAfter,
-            removeClass: removeClass,
-            filter: filter,
-            not: not,
-            off: off,
-            on: on,
-            one: one,
-            parent: parent,
-            parents: parents,
-            push: push,
-            removeAttr: removeAttr,
-            show: show,
-            toArray: toArray,
-            trigger: trigger,
-            unique: unique,
-            val: val
-        };
-
-        return new dom( pSelector, pDomNode );
-
-        // Private Functions, exposed
-
-        /**
-         @method appendTo
-
-         @param [pElement] a .querySelectorAll() selector string, a dom node or an array of dom nodes
-
-         appends all elements in tb.dom() result set to given DOM nodes
-         */
-        function appendTo( pElement ){
-            var that = this;
-
-            that.forEach(
-                function( pDomNode ){
-                    if ( !!pDomNode['nodeType'] ){
-                        if ( !pElement.length ){
-                            pElement= [ pElement ];
-                        }
-
-                        [].forEach.call(
-                            pElement,
-                            function( pThisElement ){
-                                if ( !!pThisElement['nodeType'] ){
-                                    pThisElement.appendChild( pDomNode );
-                                }
-                            }
-                        );
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method append
-         @chainable
-
-         @param [pElement] an array like set of DOM nodes, or a single DOM node
-
-         @return {object} - tb.dom() result set, may be empty
-
-         appends given DOM nodes to every node in tb.dom() result set
-         */
-        function append( pElement ){
-            var that = this;
-
-            that.forEach(
-                function( pDomNode ){
-                    if ( !!pDomNode.nodeType ){
-                        if ( !pElement.length ){
-                            pElement= [ pElement ];
-                        }
-
-                        [].forEach.call(
-                            pElement,
-                            function( pThisElement ){
-                                if ( !!pThisElement['nodeType'] ){
-                                    pDomNode.appendChild( pThisElement );
-                                }
-                            }
-                        );
-                    } else if ( typeof pElement === 'string' && regExHtml.match(pElement) ){
-                        tb.dom( pDomNode ).append( tb.dom( pElement ) );
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method insertBefore
-
-         @param [pElement] - a single DOM node
-
-         prepends all elements in tb.dom() result set to given DOM node
-         */
-        function insertBefore( pTarget ){
-            var that = this;
-
-            that.forEach(
-                function( pDomNode ){
-                    if ( !!pDomNode.nodeType && !!pTarget.nodeType ){
-
-                        pTarget.parentElement
-                            .insertBefore(
-                                pDomNode.cloneNode( true ),
-                                pTarget
-                            );
-
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method insertAfter
-
-         @param [pElement] - a single DOM node
-
-         inserts all elements in tb.dom() result set after given DOM node
-         */
-        function insertAfter( pTarget ){
-            var that = this,
-                nextDomNode = pTarget.nextSibling || false;
-
-            that.forEach(
-                function( pDomNode ){
-                    if ( !!pDomNode.nodeType ){
-
-                        if ( nextDomNode ){
-                            pTarget
-                                .parentElement
-                                .insertBefore(
-                                    pDomNode.cloneNode( true ),
-                                    nextDomNode
-                                );
-                        } else {
-                            pTarget
-                                .parentElement
-                                .appendChild(
-                                    pDomNode.cloneNode( true )
-                                );
-                        }
-
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method trigger
-         @chainable
-
-         @param {string} pEventName - name of the event
-         @param [pData] - optional data
-
-         @return {object} - tb.dom() result set, may be empty
-
-         creates a DOM event for each element in tb.dom() result set
-         */
-        function trigger( pEventName, pData ){
-            var that = this,
-                eventNames = pEventName.split(' ');
-
-            that.forEach(
-                function( pDomNode ){
-                    if ( !!pDomNode.nodeType ){
-                        eventNames.forEach(
-                            function( pThisEventName ){
-                                if ('createEvent' in document) {
-                                    var e = document.createEvent('HTMLEvents');
-                                    e.data = pData;
-                                    e.initEvent(pThisEventName, false, true);
-                                    pDomNode.dispatchEvent(e);
-                                } else {
-                                    var e = document.createEventObject();
-                                    e.data = pData;
-                                    e.eventType = pThisEventName;
-                                    pDomNode.fireEvent('on'+e.pThisEventName, e);
-                                }
-                            }
-                        );
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method on
-         @chainable
-
-         @param {string} pEventName(s) - name(s) of the event separated by ' '
-         @param {function} pHandler - callback far event
-
-         @return {object} - tb.dom() result set, may be empty
-
-         creates a DOM event handler for each element in tb.dom() result set
-         */
-        function on( pEventName, pHandler ){
-            var that = this,
-                eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ],
-                onceHandler;
-
-            that.forEach(
-                function( pDomNode ){
-                    if ( !!pDomNode.nodeType ){
-                        eventNames.forEach(
-                            function( pThisEventName ){
-
-                                if ( !!pHandler['once'] ){
-                                    onceHandler = (function(pDomNode, pThisEventName, pHandler) {
-                                        return function(){
-                                            _removeEvent( pDomNode, pThisEventName, onceHandler );
-                                            pHandler.apply( pDomNode, arguments );
-                                        }
-                                    })(pDomNode, pThisEventName, pHandler);
-                                }
-
-                                _addEvent( pDomNode, pThisEventName, onceHandler || pHandler );
-                            }
-                        );
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method one
-         @chainable
-
-         @param {string} pEventName(s) - name(s) of the event separated by ' '
-         @param {function} pHandler - callback far event
-
-         @return {object} - tb.dom() result set, may be empty
-
-         creates a DOM event handler for each element in tb.dom() result set (to be called only once)
-         */
-        function one( pEventName, pHandler ){
-            var that = this;
-
-            pHandler.once = true;
-
-            that.on( pEventName, pHandler );
-
-            return that;
-        }
-
-        /**
-         @method off
-         @chainable
-
-         @param {string} pEventName(s) - name(s) of the event separated by ' '
-         @param {function} pHandler - callback far event
-
-         @return {object} - tb.dom() result set, may be empty
-
-         removes one or all DOM event handlers from each element in tb.dom() result set
-         */
-        function off( pEventName, pHandler ){
-            var that = this,
-                eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ];
-
-            that.forEach(
-                function( pDomNode ){
-                    if ( !!pDomNode.nodeType ){
-                        if ( !!pHandler ){
-                            eventNames.forEach(
-                                function( pThisEventName ){
-                                    _removeEvent( pDomNode, pThisEventName, pHandler );
-                                }
-                            );
-                        } else {
-                            // todo: remove all event handlers
-                        }
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method empty
-         @chainable
-
-         @return {object} - tb.dom() result set, may be empty
-
-         removes one or all DOM event handlers from each element in tb.dom() result set
-         */
-        function empty() {
-            var that = this;
-
-            that.forEach(
-                function( pNode ){
-                    pNode.innerHTML = '';
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method html
-         @chainable
-
-         @param {string} pHtml - html string or empty string
-
-         @return {object} - tb.dom() result set, may be empty
-
-         replace all nodes .innerHTML with pHtml
-         */
-        function html( pHtml ) {
-            var that = this;
-
-            if ( !!pHtml ){
-                if ( typeof pHtml === 'string' ) {
-                    that.forEach(
-                        function (pNode) {
-                            pNode.innerHTML = pHtml;
-                        }
-                    )
-                }
-            } else {
-                return !!that[0] ? that[0].innerHTML : '';
-            }
-
-            return that;
-        }
-
-        /**
-         @method hide
-         @chainable
-
-         @return {object} - tb.dom() result set, may be empty
-
-         hide all nodes in tb.dom() result set
-         */
-        function hide() {
-            var that = this;
-
-            that.forEach(
-                function( pNode ){
-                    pNode.style.prevDisplay = ([ '', 'none']).indexOf( pNode.style.display ) === -1
-                        ? pNode.style.display
-                        : '';
-                    pNode.style.display = 'none';
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method show
-         @chainable
-
-         @return {object} - tb.dom() result set, may be empty
-
-         show all nodes in tb.dom() result set
-         */
-        function show() {
-            var that = this;
-
-            that.forEach(
-                function( pNode ){
-                    pNode.style.display = pNode.style.prevDisplay;
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method unique
-         @chainable
-
-         @return {object} - tb.dom() result set, may be empty
-
-         force this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,
-         and we would like to hear about it... )
-
-         method is called internally though to force result set uniqueness
-         */
-        function unique() {
-            var that = this,
-                result = [];
-
-            [].forEach.call(
-                that,
-                function ( pElement ) {
-                    if ( result.indexOf( pElement ) === -1 ){
-                        result.push( pElement );
-                    }
-                }
-            );
-
-            return new tb.dom( result );
-        }
-
-        /**
-         @method not
-         @chainable
-
-         @param  pSelector - any valid tb.dom() constructor parameter
-
-         @return {object} - tb.dom() result set, may be empty
-
-         remove all nodes from this tb.dom() result set, that are in tb.dom( pSelector ) result set
-         */
-        function not(pSelector) {
-            var that = this,
-                result = new tb.dom(),
-                check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
-
-            if ( !check ){
                 return that;
             }
 
-            that.forEach(function (pElement) {
-                if ( -1 === [].indexOf.call( check, pElement) ) {
-                    result.add(pElement);
-                }
-            });
+            /**
+             @method append
+             @chainable
 
-            return result;
-        }
+             @param [pElement] an array like set of DOM nodes, or a single DOM node
 
-        /**
-         @method add
-         @chainable
+             @return {object} - tb.dom() result set, may be empty
 
-         @param  pSelector - any valid tb.dom() constructor parameter
+             appends given DOM nodes to every node in tb.dom() result set
+             */
+            function append( pElement ){
+                var that = this;
 
-         @return {object} - tb.dom() result set, may be empty
-
-         add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
-         */
-        function add(pElements) {
-            var that = this,
-                result;
-
-            if (pElements instanceof Array) { // if array given add each of its elements
-                pElements.forEach(
-                    function (pElement) {
-                        that.add(pElement);
-                    }
-                );
-            } else if (!!pElements['nodeType']) { // if DOM node given add it
-                that.push(pElements);
-            } else if (typeof pElements === 'string') { // DOM selector given add its results
-                that.add(new tb.dom(pElements).toArray());
-            }
-
-            result = that.unique();
-
-            return result;
-        }
-
-        /**
-         @method parents
-         @chainable
-
-         @param  pSelector - any valid tb.dom() constructor parameter
-
-         @return {object} - tb.dom() result set, may be empty
-
-         return all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
-         */
-        function parents(pSelector) {
-
-            var that = this,
-                result = new tb.dom(),
-                check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false,
-                nextNode;
-
-            that.forEach(
-                function (pDomNode) {
-                    var domNode = pDomNode.parentNode;
-
-                    while (!!domNode
-                    && !!domNode['tagName']
-                    && domNode['tagName'] !== 'html'
-                        ){
-                        nextNode = domNode.parentNode;
-                        if ([].indexOf.call(result, domNode) === -1
-                            && ( !check || -1 < [].indexOf.call( check, domNode ) )
-                        ) {
-                            result.push(domNode);
-                        }
-                        domNode = nextNode;
-                    }
-                }
-            );
-
-            return result;
-        }
-
-        /**
-         @method parent
-         @chainable
-
-         @param  pSelector - any valid tb.dom() constructor parameter
-
-         @return {object} - tb.dom() result set, may be empty
-
-         return closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
-         */
-        function parent(pSelector){
-            var that = this,
-                result = new tb.dom(),
-                check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
-
-            that.forEach(
-                function (pDomNode) {
-                    var domNode = pDomNode.parentNode;
-
-                    if ( -1 === [].indexOf.call( result, domNode )
-                        && ( !check ||  -1 < [].indexOf.call( check, domNode ) )
-                    ){
-                        [].push.call( result, domNode);
-                    }
-                }
-            );
-
-            return result;
-        }
-
-        /**
-         @method children
-         @chainable
-
-         @param  pSelector - any valid tb.dom() constructor parameter
-
-         @return {object} - tb.dom() result set, may be empty
-
-         return child nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
-         */
-        function children(pSelector) {
-
-            var that = this,
-                result = new tb.dom();
-
-            that.forEach(
-                function (pDomNode) {
-                    var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
-
-                    [].forEach.call(
-                        pDomNode.children,
-                        function( pChildNode ){
-                            if ( -1 === [].indexOf.call( result, pChildNode )
-                                && ( !check || -1 < [].indexOf.call( check, pChildNode ) )
-                            ){
-                                result.push( pChildNode );
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            if ( !pElement.length ){
+                                pElement= [ pElement ];
                             }
-                        }
-                    );
-                }
-            );
 
-            return result;
-        }
-
-        /**
-         @method descendants
-         @chainable
-
-         @param  pSelector - any valid tb.dom() constructor parameter
-
-         @return {object} - tb.dom() result set, may be empty
-
-         return all descendant nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
-         */
-        function descendants(pSelector) {
-
-            var that = this,
-                result = new tb.dom();
-
-            that.forEach(
-                function (pDomNode) {
-                    var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
-
-                    [].forEach.call(
-                        pDomNode.querySelectorAll( pSelector || '*' ),
-                        function( pDescendantNode ){
-                            if ( -1 === [].indexOf.call( result, pDescendantNode )
-                                && ( !check || -1 < [].indexOf.call( check, pDescendantNode ) )
-                                ){
-                                result.push( pDescendantNode );
-                            }
-                        }
-                    );
-                }
-            );
-
-            return result;
-        }
-
-        /**
-         @method addClass
-         @chainable
-
-         @param  {string} pClassName - class name(s) to add, separated by ' '
-
-         @return {object} - tb.dom() result set, may be empty
-
-         add class name to each of tb.dom() result set
-         */
-        function addClass(pClassName) {
-
-            var that = this;
-
-            that.forEach(
-                function (pDomNode) {
-                    var classes = pDomNode.getAttribute('class') || '',
-                        classes = !!classes.length ? classes.split(' ') : [],
-                        index = classes.indexOf(pClassName);
-
-                    if (index === -1) {
-                        classes.push( pClassName );
-                        pDomNode.setAttribute('class', classes.join(' ') );
-                    }
-                }
-            );
-
-            return that;
-        }
-
-        /**
-         @method removeClass
-         @chainable
-
-         @param  {string} pClassName - class name(s) to remove, separated by ' '
-
-         @return {object} - tb.dom() result set, may be empty
-
-         remove class name from each of tb.dom() result set
-         */
-        function removeClass(pClassName) {
-
-            var that = this;
-
-            that.forEach(
-                function (pDomNode) {
-                    var classes = pDomNode.getAttribute('class') || '';
-
-                    if ( classes ){
-                        if ( !!(classes.indexOf(' ') + 1) ){
-                            classes = classes.split(' ')
-                        } else {
-                            classes = [ classes ];
-                        }
-
-                        pClassName.split(' ')
-                            .forEach(
-                                function( pRemoveClass ){
-                                    while ( classes.indexOf(pRemoveClass) > -1 ){
-                                        classes.splice(classes.indexOf(pRemoveClass), 1)
+                            [].forEach.call(
+                                pElement,
+                                function( pThisElement ){
+                                    if ( !!pThisElement['nodeType'] ){
+                                        pDomNode.appendChild( pThisElement );
                                     }
                                 }
                             );
-
-                        if ( !!classes.length ){
-                            tb.dom( pDomNode ).attr('class', classes.join(' ') )
-                        } else {
-                            tb.dom( pDomNode ).removeAttr('class');
+                        } else if ( typeof pElement === 'string' && regExHtml.match(pElement) ){
+                            tb.dom( pDomNode ).append( tb.dom( pElement ) );
                         }
                     }
+                );
 
-                }
-            );
+                return that;
+            }
 
-            return that;
-        }
+            /**
+             @method insertBefore
 
-        /**
-         @method attr
-         @chainable
+             @param [pElement] - a single DOM node
 
-         @param pKey - if string: DOM node attribute name; if object: hash of attributeName: attributeValue
-         @param {string} [pValue] - value to set in DOM node(s)
+             prepends all elements in tb.dom() result set to given DOM node
+             */
+            function insertBefore( pTarget ){
+                var that = this;
 
-         @return {object} - tb.dom() result set, may be empty
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType && !!pTarget.nodeType ){
 
-         set of get attribute values to each DOM node in give tb.dom() result set
+                            pTarget.parentElement
+                                .insertBefore(
+                                    pDomNode.cloneNode( true ),
+                                    pTarget
+                                );
 
-         HINT:
-         if pKey is a string and pValue is not given its a GET
-         if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. ONLY THEN this is CHAINABLE.
-         */
-        function attr(pKey, pValue) {
-
-            var that = this,
-                rootNodes;
-
-            if ( pKey.constructor === Object ){ // hash given
-
-                Object
-                    .keys( pKey )
-                    .forEach(
-                        function( thisKey ){
-                            that.attr( thisKey, pKey[thisKey] );
                         }
-                    );
+                    }
+                );
 
-            } else { // key/value pair expected
+                return that;
+            }
 
-                // if no value is given and there are elements, return attribute value of first in list
-                if (!pValue && that.length > 0) {
-                    return that[0].getAttribute(pKey);
-                }
+            /**
+             @method insertAfter
 
-                // if a value to set is given, apply to all nodes in list
-                rootNodes = that.toArray();
-                rootNodes.forEach(
-                    function (pNode) {
-                        if ( pKey.constructor === Object ){
-                            Object
-                                .keys( pKey )
-                                .forEach(
-                                    function( thisKey ){
-                                        pNode.setAttribute( thisKey, pKey[thisKey] );
+             @param [pElement] - a single DOM node
+
+             inserts all elements in tb.dom() result set after given DOM node
+             */
+            function insertAfter( pTarget ){
+                var that = this,
+                    nextDomNode = pTarget.nextSibling || false;
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+
+                            if ( nextDomNode ){
+                                pTarget
+                                    .parentElement
+                                    .insertBefore(
+                                        pDomNode.cloneNode( true ),
+                                        nextDomNode
+                                    );
+                            } else {
+                                pTarget
+                                    .parentElement
+                                    .appendChild(
+                                        pDomNode.cloneNode( true )
+                                    );
+                            }
+
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method trigger
+             @chainable
+
+             @param {string} pEventName - name of the event
+             @param [pData] - optional data
+
+             @return {object} - tb.dom() result set, may be empty
+
+             creates a DOM event for each element in tb.dom() result set
+             */
+            function trigger( pEventName, pData ){
+                var that = this,
+                    eventNames = pEventName.split(' ');
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            eventNames.forEach(
+                                function( pThisEventName ){
+                                    if ('createEvent' in document) {
+                                        var e = document.createEvent('HTMLEvents');
+                                        e.data = pData;
+                                        e.initEvent(pThisEventName, false, true);
+                                        pDomNode.dispatchEvent(e);
+                                    } else {
+                                        var e = document.createEventObject();
+                                        e.data = pData;
+                                        e.eventType = pThisEventName;
+                                        pDomNode.fireEvent('on'+e.pThisEventName, e);
+                                    }
+                                }
+                            );
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method on
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by ' '
+             @param {function} pHandler - callback far event
+
+             @return {object} - tb.dom() result set, may be empty
+
+             creates a DOM event handler for each element in tb.dom() result set
+             */
+            function on( pEventName, pHandler ){
+                var that = this,
+                    eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ],
+                    onceHandler;
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            eventNames.forEach(
+                                function( pThisEventName ){
+
+                                    if ( !!pHandler['once'] ){
+                                        onceHandler = (function(pDomNode, pThisEventName, pHandler) {
+                                            return function(){
+                                                _removeEvent( pDomNode, pThisEventName, onceHandler );
+                                                pHandler.apply( pDomNode, arguments );
+                                            }
+                                        })(pDomNode, pThisEventName, pHandler);
+                                    }
+
+                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler );
+                                }
+                            );
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method one
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by ' '
+             @param {function} pHandler - callback far event
+
+             @return {object} - tb.dom() result set, may be empty
+
+             creates a DOM event handler for each element in tb.dom() result set (to be called only once)
+             */
+            function one( pEventName, pHandler ){
+                var that = this;
+
+                pHandler.once = true;
+
+                that.on( pEventName, pHandler );
+
+                return that;
+            }
+
+            /**
+             @method off
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by ' '
+             @param {function} pHandler - callback far event
+
+             @return {object} - tb.dom() result set, may be empty
+
+             removes one or all DOM event handlers from each element in tb.dom() result set
+             */
+            function off( pEventName, pHandler ){
+                var that = this,
+                    eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ];
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            if ( !!pHandler ){
+                                eventNames.forEach(
+                                    function( pThisEventName ){
+                                        _removeEvent( pDomNode, pThisEventName, pHandler );
                                     }
                                 );
-                            return;
-                        } else {
-                            pNode.setAttribute(pKey, pValue);
+                            } else {
+                                // todo: remove all event handlers
+                            }
                         }
                     }
                 );
 
+                return that;
             }
 
-            return that;
-        }
+            /**
+             @method empty
+             @chainable
 
-        /**
-         @method removeAttr
-         @chainable
+             @return {object} - tb.dom() result set, may be empty
 
-         @param {string} pKeys - attribute name(s) separated by ' '
+             removes one or all DOM event handlers from each element in tb.dom() result set
+             */
+            function empty() {
+                var that = this;
 
-         @return {object} - tb.dom() result set, may be empty
-
-         remove attribute(s) completely from tb.dom() result set
-         */
-        function removeAttr(pKeys) {
-
-            var that = this,
-                attrNames = pKeys && pKeys.match(regExWord),
-                name,
-                i;
-
-            that.forEach(
-                function (pDomNode) {
-                    i = 0;
-                    if (attrNames && !!pDomNode['nodeType'] && pDomNode.nodeType === 1) {
-                        while ((name = attrNames[i++])) {
-                            pDomNode.removeAttribute(name);
-                        }
+                that.forEach(
+                    function( pNode ){
+                        pNode.innerHTML = '';
                     }
+                );
+
+                return that;
+            }
+
+            /**
+             @method html
+             @chainable
+
+             @param {string} pHtml - html string or empty string
+
+             @return {object} - tb.dom() result set, may be empty
+
+             replace all nodes .innerHTML with pHtml
+             */
+            function html( pHtml ) {
+                var that = this;
+
+                if ( !!pHtml ){
+                    if ( typeof pHtml === 'string' ) {
+                        that.forEach(
+                            function (pNode) {
+                                pNode.innerHTML = pHtml;
+                            }
+                        )
+                    }
+                } else {
+                    return !!that[0] ? that[0].innerHTML : '';
                 }
-            );
 
-            return that;
-        }
-
-        /**
-         @method toArray
-         @chainable
-
-         @return {array} - tb.dom() result set converted to a plain array of DOM nodes
-
-         convert tb.dom() result set converted to a plain array of DOM nodes
-         */
-        function toArray() {
-
-            var that = this,
-                result = [];
-
-            if (!!that.length) {
-                [].map.call(
-                    that,
-                    function (pElement) {
-                        result.push(pElement);
-                    }
-                );
+                return that;
             }
 
-            return result;
+            /**
+             @method hide
+             @chainable
 
-        }
+             @return {object} - tb.dom() result set, may be empty
 
-        /**
-         @method filter
-         @chainable
+             hide all nodes in tb.dom() result set
+             */
+            function hide() {
+                var that = this;
 
-         @param pSelector - tb.dom() selector to match against or [].filter.call( this, function(){ ... } )
-
-         @return {object} - tb.dom() result set
-
-         match tb.dom() result set against pSelector filter
-         */
-        function filter( pSelector ) {
-
-            var that = this,
-                compare = new tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
-                result;
-
-            if ( pSelector === 'undefined' ) return that;    // unchanged
-
-            if ( typeof pSelector === 'string' ) { // DOM selector given
-                result = [].filter.call(
-                    that,
-                    function (pElement) {
-                        return -1 < compare.indexOf(pElement);
+                that.forEach(
+                    function( pNode ){
+                        pNode.style.prevDisplay = ([ '', 'none']).indexOf( pNode.style.display ) === -1
+                            ? pNode.style.display
+                            : '';
+                        pNode.style.display = 'none';
                     }
                 );
-            } else if ( typeof pSelector === 'function' ) { // function given
-                result = [].filter.call(
-                    that,
-                    pSelector
+
+                return that;
+            }
+
+            /**
+             @method show
+             @chainable
+
+             @return {object} - tb.dom() result set, may be empty
+
+             show all nodes in tb.dom() result set
+             */
+            function show() {
+                var that = this;
+
+                that.forEach(
+                    function( pNode ){
+                        pNode.style.display = pNode.style.prevDisplay;
+                    }
                 );
+
+                return that;
+            }
+
+            /**
+             @method unique
+             @chainable
+
+             @return {object} - tb.dom() result set, may be empty
+
+             force this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,
+             and we would like to hear about it... )
+
+             method is called internally though to force result set uniqueness
+             */
+            function unique() {
+                var that = this,
+                    result = [];
+
+                [].forEach.call(
+                    that,
+                    function ( pElement ) {
+                        if ( result.indexOf( pElement ) === -1 ){
+                            result.push( pElement );
+                        }
+                    }
+                );
+
+                return new tb.dom( result );
+            }
+
+            /**
+             @method not
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             remove all nodes from this tb.dom() result set, that are in tb.dom( pSelector ) result set
+             */
+            function not(pSelector) {
+                var that = this,
+                    result = new tb.dom(),
+                    check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
+
+                if ( !check ){
+                    return that;
+                }
+
+                that.forEach(function (pElement) {
+                    if ( -1 === [].indexOf.call( check, pElement) ) {
+                        result.add(pElement);
+                    }
+                });
+
                 return result;
             }
 
-            return new tb.dom(result);
+            /**
+             @method add
+             @chainable
 
-        }
+             @param  pSelector - any valid tb.dom() constructor parameter
 
-        /**
-         @method push
-         @chainable
+             @return {object} - tb.dom() result set, may be empty
 
-         @param pSelector - tb.dom() selector or DOM node
+             add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
+             */
+            function add(pElements) {
+                var that = this,
+                    result;
 
-         @return {object} - tb.dom() result set
-
-         add given pSelector result set to tb.dom() result set
-         */
-        function push(pSelector) {
-
-            var that = this,
-                result = [];
-
-            // todo: is this necessary? see .add()
-
-            if (typeof pSelector === 'undefined') return that;    // unchanged
-
-            if (pSelector instanceof Array) { // if array given add each of its elements
-                pSelector.forEach(
-                    function (pElement) {
-                        that.push(pElement);
-                    }
-                );
-            } else if (!!pSelector['nodeType']) { // if DOM node given add it
-                [].push.call(that, pSelector);
-            } else if (typeof pSelector === 'string') { // DOM selector given add its results
-                that.push(new tb.dom(pSelector).toArray());
-            }
-
-            result = that.unique();
-
-            return result;
-        }
-
-        /**
-         @method val
-         @chainable
-
-         @param {string} [pValue] - value to set to DOM input type element
-
-         @return [pValue] - value from input element [0] in tb.dom() result set
-
-         if pValue given, it is a SET and the method is chainable
-         if no pValue given, it is a GET and the method will return the value
-         */
-        function val( pValue ){
-
-            var that = this,
-                ret;
-
-            var valHandlers = {
-
-                'select': function selectVal( pValue ){
-
-                    var that = this,
-                        multiSelect = that.type === "select-multiple",
-                        ret;
-
-                    if ( !arguments.length ) { // getter
-
-                        ret = [];
-
-                        tb.dom( 'option:selected', that)
-                            .forEach(
-                                function( pThisSelectedOption ){
-                                    if ( !option.disabled
-                                        && ( !option.parentNode.disabled
-                                        || option.parentNode.nodeName !== "optgroup" )
-                                    ){
-                                        var value = pThisSelectedOption.value;
-
-                                        if ( !multiSelect ) {
-                                            return value;
-                                        }
-
-                                        ret.push( value );
-                                    }                                    }
-                            );
-
-                        return ret;
-
-                    } else { // setter
-
-                        // if single value given convert to array
-                        pValue = multiSelect && pValue.constructor !== Array ? [ pValue ] : pValue;
-
-                        // if not multiSelect but array given set array to first value
-                        pValue = !multiSelect && pValue.constructor === Array ? [ pValue[0] ] : pValue;
-
-                        // remove all 'selected' attributes
-                        tb.dom( 'option', that )
-                            .removeAttr( 'selected' );
-
-                        // set given 'selected' attributes
-                        pValue
-                            .forEach(
-                                function( pThisOptionValue ){
-                                    tb.dom( 'option[value="' + pThisOptionValue + '"]', that )
-                                        .attr( { 'selected': 'selected' } );
-                                }
-                            );
-
-                    }
-
-                    return that;
-                },
-
-                'default':function defaultVal( pValue ){
-
-                    var that = this,
-                        ret;
-
-                    if ( ([ 'radio', 'checkbox' ]).indexOf( that.type ) > -1 ){ // input radio or checkbox
-
-                        if ( !!arguments.length ){ // setter
-                            that.checked = !!pValue;
+                if (pElements instanceof Array) { // if array given add each of its elements
+                    pElements.forEach(
+                        function (pElement) {
+                            that.add(pElement);
                         }
-
-                        return that.checked; // getter
-
-                    } else {
-
-                        if ( !arguments.length ) { // getter
-
-                            ret = that.value;
-
-                            return typeof ret === "string" ?
-                                ret :
-                                ret == null ? "" : ret;
-
-                        } else { // setter
-
-                            // Treat null/undefined as ""; convert numbers to string
-                            if (pValue == null) {
-                                pValue = "";
-                            } else if (typeof val === "number") {
-                                pValue += "";
-                            }
-
-                            that.value = pValue;
-
-                        }
-
-                    }
-
+                    );
+                } else if (!!pElements['nodeType']) { // if DOM node given add it
+                    that.push(pElements);
+                } else if (typeof pElements === 'string') { // DOM selector given add its results
+                    that.add(new tb.dom(pElements).toArray());
                 }
 
-            };
+                result = that.unique();
 
-            if ( arguments.length ){
+                return result;
+            }
+
+            /**
+             @method parents
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             return all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+             */
+            function parents(pSelector) {
+
+                var that = this,
+                    result = new tb.dom(),
+                    check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false,
+                    nextNode;
 
                 that.forEach(
-                    function ( pElement ) {
+                    function (pDomNode) {
+                        var domNode = pDomNode.parentNode;
 
-                        var inputTags = [ 'input', 'select', 'option', 'textarea'];
-
-                        if ( pElement.nodeType !== 1
-                            || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
-                        ){
-                            return; // not an input element
+                        while (!!domNode
+                        && !!domNode['tagName']
+                        && domNode['tagName'] !== 'html'
+                            ){
+                            nextNode = domNode.parentNode;
+                            if ([].indexOf.call(result, domNode) === -1
+                                && ( !check || -1 < [].indexOf.call( check, domNode ) )
+                            ) {
+                                result.push(domNode);
+                            }
+                            domNode = nextNode;
                         }
+                    }
+                );
 
-                        ret = !!valHandlers[ pElement.tagName.toLowerCase() ]
-                            ? valHandlers[ pElement.tagName.toLowerCase() ].call( pElement, pValue )
-                            : valHandlers[ 'default' ].call( pElement, pValue );
+                return result;
+            }
+
+            /**
+             @method parent
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             return closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+             */
+            function parent(pSelector){
+                var that = this,
+                    result = new tb.dom(),
+                    check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
+
+                that.forEach(
+                    function (pDomNode) {
+                        var domNode = pDomNode.parentNode;
+
+                        if ( -1 === [].indexOf.call( result, domNode )
+                            && ( !check ||  -1 < [].indexOf.call( check, domNode ) )
+                        ){
+                            [].push.call( result, domNode);
+                        }
+                    }
+                );
+
+                return result;
+            }
+
+            /**
+             @method children
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             return child nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+             */
+            function children(pSelector) {
+
+                var that = this,
+                    result = new tb.dom();
+
+                that.forEach(
+                    function (pDomNode) {
+                        var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
+
+                        [].forEach.call(
+                            pDomNode.children,
+                            function( pChildNode ){
+                                if ( -1 === [].indexOf.call( result, pChildNode )
+                                    && ( !check || -1 < [].indexOf.call( check, pChildNode ) )
+                                ){
+                                    result.push( pChildNode );
+                                }
+                            }
+                        );
+                    }
+                );
+
+                return result;
+            }
+
+            /**
+             @method descendants
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             return all descendant nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+             */
+            function descendants(pSelector) {
+
+                var that = this,
+                    result = new tb.dom();
+
+                that.forEach(
+                    function (pDomNode) {
+                        var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
+
+                        [].forEach.call(
+                            pDomNode.querySelectorAll( pSelector || '*' ),
+                            function( pDescendantNode ){
+                                if ( -1 === [].indexOf.call( result, pDescendantNode )
+                                    && ( !check || -1 < [].indexOf.call( check, pDescendantNode ) )
+                                ){
+                                    result.push( pDescendantNode );
+                                }
+                            }
+                        );
+                    }
+                );
+
+                return result;
+            }
+
+            /**
+             @method addClass
+             @chainable
+
+             @param  {string} pClassName - class name(s) to add, separated by ' '
+
+             @return {object} - tb.dom() result set, may be empty
+
+             add class name to each of tb.dom() result set
+             */
+            function addClass(pClassName) {
+
+                var that = this;
+
+                that.forEach(
+                    function (pDomNode) {
+                        var classes = pDomNode.getAttribute('class') || '',
+                            classes = !!classes.length ? classes.split(' ') : [],
+                            index = classes.indexOf(pClassName);
+
+                        if (index === -1) {
+                            classes.push( pClassName );
+                            pDomNode.setAttribute('class', classes.join(' ') );
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method removeClass
+             @chainable
+
+             @param  {string} pClassName - class name(s) to remove, separated by ' '
+
+             @return {object} - tb.dom() result set, may be empty
+
+             remove class name from each of tb.dom() result set
+             */
+            function removeClass(pClassName) {
+
+                var that = this;
+
+                that.forEach(
+                    function (pDomNode) {
+                        var classes = pDomNode.getAttribute('class') || '';
+
+                        if ( classes ){
+                            if ( !!(classes.indexOf(' ') + 1) ){
+                                classes = classes.split(' ')
+                            } else {
+                                classes = [ classes ];
+                            }
+
+                            pClassName.split(' ')
+                                .forEach(
+                                    function( pRemoveClass ){
+                                        while ( classes.indexOf(pRemoveClass) > -1 ){
+                                            classes.splice(classes.indexOf(pRemoveClass), 1)
+                                        }
+                                    }
+                                );
+
+                            if ( !!classes.length ){
+                                tb.dom( pDomNode ).attr('class', classes.join(' ') )
+                            } else {
+                                tb.dom( pDomNode ).removeAttr('class');
+                            }
+                        }
 
                     }
                 );
 
                 return that;
+            }
 
-            } else { // getter
+            /**
+             @method attr
+             @chainable
 
-                that.some(
-                    function ( pElement ) {
+             @param pKey - if string: DOM node attribute name; if object: hash of attributeName: attributeValue
+             @param {string} [pValue] - value to set in DOM node(s)
 
-                        var inputTags = [ 'input', 'select', 'option', 'textarea'];
+             @return {object} - tb.dom() result set, may be empty
 
-                        if ( pElement.nodeType !== 1
-                            || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
-                        ){
-                            return false; // not an input element
+             set of get attribute values to each DOM node in give tb.dom() result set
+
+             HINT:
+             if pKey is a string and pValue is not given its a GET
+             if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. ONLY THEN this is CHAINABLE.
+             */
+            function attr(pKey, pValue) {
+
+                var that = this,
+                    rootNodes;
+
+                if ( pKey.constructor === Object ){ // hash given
+
+                    Object
+                        .keys( pKey )
+                        .forEach(
+                            function( thisKey ){
+                                that.attr( thisKey, pKey[thisKey] );
+                            }
+                        );
+
+                } else { // key/value pair expected
+
+                    // if no value is given and there are elements, return attribute value of first in list
+                    if (!pValue && that.length > 0) {
+                        return that[0].getAttribute(pKey);
+                    }
+
+                    // if a value to set is given, apply to all nodes in list
+                    rootNodes = that.toArray();
+                    rootNodes.forEach(
+                        function (pNode) {
+                            if ( pKey.constructor === Object ){
+                                Object
+                                    .keys( pKey )
+                                    .forEach(
+                                        function( thisKey ){
+                                            pNode.setAttribute( thisKey, pKey[thisKey] );
+                                        }
+                                    );
+                                return;
+                            } else {
+                                pNode.setAttribute(pKey, pValue);
+                            }
                         }
+                    );
 
-                        ret = !!valHandlers[ pElement.tagName.toLowerCase() ]
-                            ? valHandlers[ pElement.tagName.toLowerCase() ].call( pElement )
-                            : valHandlers[ 'default' ].call( pElement );
+                }
 
-                        return true; // not an input element
+                return that;
+            }
 
+            /**
+             @method removeAttr
+             @chainable
+
+             @param {string} pKeys - attribute name(s) separated by ' '
+
+             @return {object} - tb.dom() result set, may be empty
+
+             remove attribute(s) completely from tb.dom() result set
+             */
+            function removeAttr(pKeys) {
+
+                var that = this,
+                    attrNames = pKeys && pKeys.match(regExWord),
+                    name,
+                    i;
+
+                that.forEach(
+                    function (pDomNode) {
+                        i = 0;
+                        if (attrNames && !!pDomNode['nodeType'] && pDomNode.nodeType === 1) {
+                            while ((name = attrNames[i++])) {
+                                pDomNode.removeAttribute(name);
+                            }
+                        }
                     }
                 );
 
-                return ret;
+                return that;
+            }
+
+            /**
+             @method toArray
+             @chainable
+
+             @return {array} - tb.dom() result set converted to a plain array of DOM nodes
+
+             convert tb.dom() result set converted to a plain array of DOM nodes
+             */
+            function toArray() {
+
+                var that = this,
+                    result = [];
+
+                if (!!that.length) {
+                    [].map.call(
+                        that,
+                        function (pElement) {
+                            result.push(pElement);
+                        }
+                    );
+                }
+
+                return result;
 
             }
 
-        }
+            /**
+             @method filter
+             @chainable
 
-    };
-})();
+             @param pSelector - tb.dom() selector to match against or [].filter.call( this, function(){ ... } )
+
+             @return {object} - tb.dom() result set
+
+             match tb.dom() result set against pSelector filter
+             */
+            function filter( pSelector ) {
+
+                var that = this,
+                    compare = new tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
+                    result;
+
+                if ( pSelector === 'undefined' ) return that;    // unchanged
+
+                if ( typeof pSelector === 'string' ) { // DOM selector given
+                    result = [].filter.call(
+                        that,
+                        function (pElement) {
+                            return -1 < compare.indexOf(pElement);
+                        }
+                    );
+                } else if ( typeof pSelector === 'function' ) { // function given
+                    result = [].filter.call(
+                        that,
+                        pSelector
+                    );
+                    return result;
+                }
+
+                return new tb.dom(result);
+
+            }
+
+            /**
+             @method push
+             @chainable
+
+             @param pSelector - tb.dom() selector or DOM node
+
+             @return {object} - tb.dom() result set
+
+             add given pSelector result set to tb.dom() result set
+             */
+            function push(pSelector) {
+
+                var that = this,
+                    result = [];
+
+                // todo: is this necessary? see .add()
+
+                if (typeof pSelector === 'undefined') return that;    // unchanged
+
+                if (pSelector instanceof Array) { // if array given add each of its elements
+                    pSelector.forEach(
+                        function (pElement) {
+                            that.push(pElement);
+                        }
+                    );
+                } else if (!!pSelector['nodeType']) { // if DOM node given add it
+                    [].push.call(that, pSelector);
+                } else if (typeof pSelector === 'string') { // DOM selector given add its results
+                    that.push(new tb.dom(pSelector).toArray());
+                }
+
+                result = that.unique();
+
+                return result;
+            }
+
+            /**
+             @method val
+             @chainable
+
+             @param {string} [pValue] - value to set to DOM input type element
+
+             @return [pValue] - value from input element [0] in tb.dom() result set
+
+             if pValue given, it is a SET and the method is chainable
+             if no pValue given, it is a GET and the method will return the value
+             */
+            function val( pValue ){
+
+                var that = this,
+                    ret;
+
+                var valHandlers = {
+
+                    'select': function selectVal( pValue ){
+
+                        var that = this,
+                            multiSelect = that.type === "select-multiple",
+                            ret;
+
+                        if ( !arguments.length ) { // getter
+
+                            ret = [];
+
+                            tb.dom( 'option:selected', that)
+                                .forEach(
+                                    function( pThisSelectedOption ){
+                                        if ( !option.disabled
+                                            && ( !option.parentNode.disabled
+                                            || option.parentNode.nodeName !== "optgroup" )
+                                        ){
+                                            var value = pThisSelectedOption.value;
+
+                                            if ( !multiSelect ) {
+                                                return value;
+                                            }
+
+                                            ret.push( value );
+                                        }                                    }
+                                );
+
+                            return ret;
+
+                        } else { // setter
+
+                            // if single value given convert to array
+                            pValue = multiSelect && pValue.constructor !== Array ? [ pValue ] : pValue;
+
+                            // if not multiSelect but array given set array to first value
+                            pValue = !multiSelect && pValue.constructor === Array ? [ pValue[0] ] : pValue;
+
+                            // remove all 'selected' attributes
+                            tb.dom( 'option', that )
+                                .removeAttr( 'selected' );
+
+                            // set given 'selected' attributes
+                            pValue
+                                .forEach(
+                                    function( pThisOptionValue ){
+                                        tb.dom( 'option[value="' + pThisOptionValue + '"]', that )
+                                            .attr( { 'selected': 'selected' } );
+                                    }
+                                );
+
+                        }
+
+                        return that;
+                    },
+
+                    'default':function defaultVal( pValue ){
+
+                        var that = this,
+                            ret;
+
+                        if ( ([ 'radio', 'checkbox' ]).indexOf( that.type ) > -1 ){ // input radio or checkbox
+
+                            if ( !!arguments.length ){ // setter
+                                that.checked = !!pValue;
+                            }
+
+                            return that.checked; // getter
+
+                        } else {
+
+                            if ( !arguments.length ) { // getter
+
+                                ret = that.value;
+
+                                return typeof ret === "string" ?
+                                    ret :
+                                    ret == null ? "" : ret;
+
+                            } else { // setter
+
+                                // Treat null/undefined as ""; convert numbers to string
+                                if (pValue == null) {
+                                    pValue = "";
+                                } else if (typeof val === "number") {
+                                    pValue += "";
+                                }
+
+                                that.value = pValue;
+
+                            }
+
+                        }
+
+                    }
+
+                };
+
+                if ( arguments.length ){
+
+                    that.forEach(
+                        function ( pElement ) {
+
+                            var inputTags = [ 'input', 'select', 'option', 'textarea'];
+
+                            if ( pElement.nodeType !== 1
+                                || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
+                            ){
+                                return; // not an input element
+                            }
+
+                            ret = !!valHandlers[ pElement.tagName.toLowerCase() ]
+                                ? valHandlers[ pElement.tagName.toLowerCase() ].call( pElement, pValue )
+                                : valHandlers[ 'default' ].call( pElement, pValue );
+
+                        }
+                    );
+
+                    return that;
+
+                } else { // getter
+
+                    that.some(
+                        function ( pElement ) {
+
+                            var inputTags = [ 'input', 'select', 'option', 'textarea'];
+
+                            if ( pElement.nodeType !== 1
+                                || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
+                            ){
+                                return false; // not an input element
+                            }
+
+                            ret = !!valHandlers[ pElement.tagName.toLowerCase() ]
+                                ? valHandlers[ pElement.tagName.toLowerCase() ].call( pElement )
+                                : valHandlers[ 'default' ].call( pElement );
+
+                            return true; // not an input element
+
+                        }
+                    );
+
+                    return ret;
+
+                }
+
+            }
+
+        };
+    })();
+}
 
 ;
 /*
@@ -3193,280 +3195,284 @@ tb.parse = function( pWhat, pParse ){
  @returns a twoBirds request object
 
  */
-tb.request = (function () {
-    /** @private */
-    var loadlist = [],
-        readyState = 'complete',
-        cachable = false,
-        log = false,
-        count = 0,
-        interval = 30,
-        msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
+if (typeof module !== 'undefined' && module.exports){
+    tb.request = (function () {
+        /** @private */
+        var loadlist = [],
+            readyState = 'complete',
+            cachable = false,
+            log = false,
+            count = 0,
+            interval = 30,
+            msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
 
-    function getConnection(pId) {
-        var obj = {},
-            xhr,
-            getConnection;
+        function getConnection(pId) {
+            var obj = {},
+                xhr,
+                getConnection;
 
-        if (typeof ActiveXObject !== 'undefined'){
-            for (var i = 0; i < msoft.length; ++i) {
-                try {
-                    xhr = new ActiveXObject(msoft[i]);
-                    obj = {
-                        connection: xhr,
-                        identifier: pId
-                    };
-
-                    getConnection = (function (pType) {
-                        return function (pId) {
-                            var http = new ActiveXObject(pType);
-                            obj = {
-                                connection: xhr,
-                                identifier: pId
-                            };
-                            return obj;
+            if (typeof ActiveXObject !== 'undefined'){
+                for (var i = 0; i < msoft.length; ++i) {
+                    try {
+                        xhr = new ActiveXObject(msoft[i]);
+                        obj = {
+                            connection: xhr,
+                            identifier: pId
                         };
-                    })(msoft[i]);
-                } catch (e) {
+
+                        getConnection = (function (pType) {
+                            return function (pId) {
+                                var http = new ActiveXObject(pType);
+                                obj = {
+                                    connection: xhr,
+                                    identifier: pId
+                                };
+                                return obj;
+                            };
+                        })(msoft[i]);
+                    } catch (e) {
+                    }
                 }
             }
-        }
 
-        try {
-            xhr = new XMLHttpRequest();
-            obj = {
-                connection: xhr,
-                identifier: pId
-            };
-            /** @ignore */
-            getConnection = function (pId) {
-                var xhr = new XMLHttpRequest();
+            try {
+                xhr = new XMLHttpRequest();
                 obj = {
                     connection: xhr,
                     identifier: pId
                 };
-                return obj;
-            };
-        }
-        catch (e) {
-        }
-        finally {
-            return obj;
-        }
-    }
-
-    /** @private */
-    function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
-        var connection = this;
-        var poll = window.setInterval((function (pReadyState) {
-            return function () {
-                if (pReq.connection.readyState !== pReadyState) {
-                    pReadyState = pReq.connection.readyState;
-                    //pStateChange();
-                }
-                if (pReadyState === 4) {
-                    if (pReq.aborttimer) {
-                        window.clearTimeout(pReq.aborttimer);
-                    }
-                    window.clearInterval(poll);
-                    handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
-                }
-            };
-        })(0), interval);
-
-        return poll;
-    }
-
-    /** @private */
-    function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
-
-        try {
-            var httpStatus = pReq.connection.status;
-        }
-        catch (e) {
-            var httpStatus = 13030;
-        }
-        if (httpStatus >= 200 && httpStatus < 300) {
-            var responseObject = createResponseObject(pReq, pOptions);
-            try {
-                pCallback.call(pCallback, responseObject);
+                /** @ignore */
+                getConnection = function (pId) {
+                    var xhr = new XMLHttpRequest();
+                    obj = {
+                        connection: xhr,
+                        identifier: pId
+                    };
+                    return obj;
+                };
             }
             catch (e) {
-                if (tb.debug) debugger;
+            }
+            finally {
+                return obj;
             }
         }
-        else {
-            var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
-            pFailure.call( pFailure, responseObject );
-        }
-        release(pReq);
-    }
 
-    /** @private */
-    function createResponseObject(pObj, pOptions) {
-        var obj = {
-            tId: pObj.identifier,
-            status: pObj.connection.status,
-            statusText: pObj.connection.statusText,
-            allResponseHeaders: pObj.connection.getAllResponseHeaders(),
-            text: pObj.connection.responseText,
-            xml: pObj.connection.responseXML,
-            options: pOptions
-        };
-        return obj;
-    }
-
-    /** @private */
-    function release(pReq) {
-        dec( pReq );
-        if (pReq.connection){
-            pReq.connection = null;
-        }
-        delete pReq.connection;
-        pReq = null;
-        delete pReq;
-    }
-
-    function inc( pReq ) {
-        loadlist.push( pReq );
-        count++;
-        readyState = 'loading';
-    }
-
-    function dec( pReq ) {
-        if ( loadlist.indexOf( pReq ) ){
-            count--;
-            loadlist.splice( loadlist.indexOf( pReq ) );
-            if ( count === 0 ){
-                readyState = 'complete';
-            }
-        }
-    }
-
-
-    /**
-     @name tb.request
-     @function
-     */
-    return function (pOptions) {
-        var uid = 'tb' + tb.getId(),
-            xmlreq = false,
-            method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
-            url = pOptions.url,
-            params = '',
-            successHandler = pOptions.success || tb.nop,
-            errorHandler = pOptions.error || tb.nop,
-            stateHandler = pOptions.statechange || tb.nop,
-            isCachable = pOptions.cachable || false,
-            timeout = pOptions.timeout || false,
-            isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
-
-        if (typeof pOptions.params != 'undefined') {
-            var ct = ( pOptions.headers && pOptions.headers['Content-Type']
-                ? pOptions.headers['Content-Type']
-                : 'application/x-www-form-urlencoded' );
-
-            switch ( ct ){
-                case 'application/json':
-                    params = JSON.stringify( pOptions.params );
-                    break;
-                default:
-                    for (var i in pOptions.params) { // concat parameter string
-                        params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
+        /** @private */
+        function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
+            var connection = this;
+            var poll = window.setInterval((function (pReadyState) {
+                return function () {
+                    if (pReq.connection.readyState !== pReadyState) {
+                        pReadyState = pReq.connection.readyState;
+                        //pStateChange();
                     }
-                    break;
+                    if (pReadyState === 4) {
+                        if (pReq.aborttimer) {
+                            window.clearTimeout(pReq.aborttimer);
+                        }
+                        window.clearInterval(poll);
+                        handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
+                    }
+                };
+            })(0), interval);
+
+            return poll;
+        }
+
+        /** @private */
+        function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+
+            try {
+                var httpStatus = pReq.connection.status;
+            }
+            catch (e) {
+                var httpStatus = 13030;
+            }
+            if (httpStatus >= 200 && httpStatus < 300) {
+                var responseObject = createResponseObject(pReq, pOptions);
+                try {
+                    pCallback.call(pCallback, responseObject);
+                }
+                catch (e) {
+                    if (tb.debug) debugger;
+                }
+            }
+            else {
+                var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
+                pFailure.call( pFailure, responseObject );
+            }
+            release(pReq);
+        }
+
+        /** @private */
+        function createResponseObject(pObj, pOptions) {
+            var obj = {
+                tId: pObj.identifier,
+                status: pObj.connection.status,
+                statusText: pObj.connection.statusText,
+                allResponseHeaders: pObj.connection.getAllResponseHeaders(),
+                text: pObj.connection.responseText,
+                xml: pObj.connection.responseXML,
+                options: pOptions
+            };
+            return obj;
+        }
+
+        /** @private */
+        function release(pReq) {
+            dec( pReq );
+            if (pReq.connection){
+                pReq.connection = null;
+            }
+            delete pReq.connection;
+            pReq = null;
+            delete pReq;
+        }
+
+        function inc( pReq ) {
+            loadlist.push( pReq );
+            count++;
+            readyState = 'loading';
+        }
+
+        function dec( pReq ) {
+            if ( loadlist.indexOf( pReq ) ){
+                count--;
+                loadlist.splice( loadlist.indexOf( pReq ) );
+                if ( count === 0 ){
+                    readyState = 'complete';
+                }
             }
         }
 
-        inc();
 
-        /*
-         if (isCachable === false) { // proxy disable - cache busting
-         url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
-         }
+        /**
+         @name tb.request
+         @function
          */
+        return function (pOptions) {
+            var uid = 'tb' + tb.getId(),
+                xmlreq = false,
+                method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
+                url = pOptions.url,
+                params = '',
+                successHandler = pOptions.success || tb.nop,
+                errorHandler = pOptions.error || tb.nop,
+                stateHandler = pOptions.statechange || tb.nop,
+                isCachable = pOptions.cachable || false,
+                timeout = pOptions.timeout || false,
+                isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
 
-        xmlreq = getConnection(uid);
-        if (xmlreq) {
-            if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
-                url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
-            }
-            xmlreq.src=url;
+            if (typeof pOptions.params != 'undefined') {
+                var ct = ( pOptions.headers && pOptions.headers['Content-Type']
+                    ? pOptions.headers['Content-Type']
+                    : 'application/x-www-form-urlencoded' );
 
-            xmlreq.connection.open(method, url, isAsync);
-
-            if (isAsync === true) {
-                xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
-            }
-
-            // set request headers
-            if (pOptions.headers) {
-                for (var i in pOptions.headers) {
-                    if (i !== 'Content-Type') {
-                        xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
-                    }
+                switch ( ct ){
+                    case 'application/json':
+                        params = JSON.stringify( pOptions.params );
+                        break;
+                    default:
+                        for (var i in pOptions.params) { // concat parameter string
+                            params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
+                        }
+                        break;
                 }
             }
 
-            // abort functionality
-            if (timeout) {
-                xmlreq.timeoutTimer = window.setTimeout(
+            inc();
 
-                    function (pT, pR) {
-                        var f = typeof pT.cb === 'function' ? pT.cb : false;
-                        return function () {
-                            //if ( !myR && myR.connection.status == 4 ) return;
-                            if (typeof f == 'function') {
-                                f( /*createResponseObject(myR)*/ );
-                            }
-                            pR.connection.abort();
-                            window.clearInterval(pR.poll);
-                        };
-                    }(timeout, xmlreq), timeout.ms);
-            }
+            /*
+             if (isCachable === false) { // proxy disable - cache busting
+             url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
+             }
+             */
 
-            xmlreq.abort = ( function(xmlreq) {
-                return function () {
-                    window.clearInterval(xmlreq.poll);
-                    if (xmlreq.connection) xmlreq.connection.abort();
-                    release(xmlreq);
-                };
-            })( xmlreq );
+            xmlreq = getConnection(uid);
+            if (xmlreq) {
+                if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
+                    url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
+                }
+                xmlreq.src=url;
 
-            // send
-            if (method === 'POST' || method === 'PUT') {
-                if (params !== '') {
-                    xmlreq.connection.setRequestHeader('Content-Type', ct);
-                    xmlreq.connection.send(params);
+                xmlreq.connection.open(method, url, isAsync);
+
+                if (isAsync === true) {
+                    xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
+                }
+
+                // set request headers
+                if (pOptions.headers) {
+                    for (var i in pOptions.headers) {
+                        if (i !== 'Content-Type') {
+                            xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
+                        }
+                    }
+                }
+
+                // abort functionality
+                if (timeout) {
+                    xmlreq.timeoutTimer = window.setTimeout(
+
+                        function (pT, pR) {
+                            var f = typeof pT.cb === 'function' ? pT.cb : false;
+                            return function () {
+                                //if ( !myR && myR.connection.status == 4 ) return;
+                                if (typeof f == 'function') {
+                                    f( /*createResponseObject(myR)*/ );
+                                }
+                                pR.connection.abort();
+                                window.clearInterval(pR.poll);
+                            };
+                        }(timeout, xmlreq), timeout.ms);
+                }
+
+                xmlreq.abort = ( function(xmlreq) {
+                    return function () {
+                        window.clearInterval(xmlreq.poll);
+                        if (xmlreq.connection) xmlreq.connection.abort();
+                        release(xmlreq);
+                    };
+                })( xmlreq );
+
+                // send
+                if (method === 'POST' || method === 'PUT') {
+                    if (params !== '') {
+                        xmlreq.connection.setRequestHeader('Content-Type', ct);
+                        xmlreq.connection.send(params);
+                    }
+                    else {
+                        xmlreq.connection.send(null);
+                    }
                 }
                 else {
                     xmlreq.connection.send(null);
                 }
-            }
-            else {
-                xmlreq.connection.send(null);
-            }
-            // if sync request direct handler call
-            if (isAsync === false) {
-                tb.request.dec();
-                if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
-                    successHandler( xmlreq );
+                // if sync request direct handler call
+                if (isAsync === false) {
+                    tb.request.dec();
+                    if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
+                        successHandler( xmlreq );
+                    }
+                    else {
+                        errorHandler( xmlreq );
+                    }
                 }
                 else {
-                    errorHandler( xmlreq );
+                    return xmlreq;
                 }
+                return;
             }
             else {
-                return xmlreq;
+                return false;
             }
-            return;
-        }
-        else {
-            return false;
-        }
-    };
+        };
 
-})();
+    })();
+} else {
+    // todo: implement module foreign request
+}
 
 
 /**
@@ -3760,20 +3766,21 @@ tb.Model.prototype = (function(){
 })();
 
 ;
-/**
- @class tb.Require
- @constructor
+if (typeof module !== 'undefined' && module.exports) {
+    /**
+     @class tb.Require
+     @constructor
 
- @param   {array} pRequiredFiles - array containing required files
+     @param   {array} pRequiredFiles - array containing required files
 
- @return {void}
+     @return {void}
 
- tb.require class
+     tb.require class
 
- - add into prototype of your constructor
- - instance will get an 'init' event when all files have loaded.
+     - add into prototype of your constructor
+     - instance will get an 'init' event when all files have loaded.
 
- @example
+     @example
 
      tb.namespace( 'app', true ).GrandParent = (function(){
 
@@ -3806,346 +3813,347 @@ tb.Model.prototype = (function(){
         // ...
 
      })();
- 
- */
-tb.Require = function( pConfig ){
 
-    var that = this;
+     */
+    tb.Require = function (pConfig) {
 
-    if ( !pConfig ) return;
+        var that = this;
 
-    that.requirements = pConfig;
+        if (!pConfig) return;
 
-    // add requirement loading
-    tb.loader.load(
-        that.requirements,
-        function(){
-            that.target.trigger('init');
+        that.requirements = pConfig;
+
+        // add requirement loading
+        tb.loader.load(
+            that.requirements,
+            function () {
+                that.target.trigger('init');
+            }
+        );
+
+    };
+
+    tb.Require.prototype = {
+        ready: function () {
+            // do we need this???
         }
-    );
+    };
 
-};
+    /**
+     * requirement handling
+     */
+    (function () {
+        // private
 
-tb.Require.prototype = {
-    ready: function(){
-        // do we need this???
-    }
-};
+        function getTypeFromSrc(pSrc) {
+            return pSrc.split('?')[0].split('.').pop();
+        }
 
-/**
- * requirement handling
- */
-(function(){
-    // private
+        // requirement constructor
+        function _Requirement(pConfig) {
 
-    function getTypeFromSrc( pSrc ){
-        return pSrc.split('?')[0].split('.').pop();
-    }
-
-    // requirement constructor
-    function _Requirement( pConfig ){
-
-        var that = this,
-            type = getTypeFromSrc( pConfig.src ), // filename extension
-            typeConfigs = { // standard configuration types
-                'css': {
-                    tag: 'link',
-                    attributes: {
-                        type: 'text/css',
-                        rel: 'stylesheet',
-                        href: '{src}'
+            var that = this,
+                type = getTypeFromSrc(pConfig.src), // filename extension
+                typeConfigs = { // standard configuration types
+                    'css': {
+                        tag: 'link',
+                        attributes: {
+                            type: 'text/css',
+                            rel: 'stylesheet',
+                            href: '{src}'
+                        }
+                    },
+                    'js': {
+                        tag: 'script',
+                        attributes: {
+                            type: 'text/javascript',
+                            src: '{src}'
+                        }
                     }
                 },
-                'js': {
-                    tag: 'script',
-                    attributes: {
-                        type: 'text/javascript',
-                        src: '{src}'
-                    }
+                typeConfig, // a single type configuration
+                element,
+                isTyped = !!typeConfigs[type];
+
+            if (!!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]]
+                && !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]].done) { // already loaded
+
+                that.trigger('requirementLoaded', src.split('?')[0], 'u');
+
+                return;
+            }
+
+            pConfig.type = type; // add type
+
+            that.config = pConfig;
+
+            // cache busting
+            if (!!that.config.src) {
+                that.config.src = that.config.src + ( that.config.src.indexOf('?') > -1 ? '&' : '?' ) + tb.getId();
+            }
+
+            //that.target = pConfig.target;
+            that.src = pConfig.src;
+            that.type = that.config.type = type;
+            that.done = false;
+            that.cb = that.config.cb || function () {
+                };
+            that.data = tb.observable({});
+
+            // element 'load' callback
+            function onLoad(e) {
+
+                if (!!e && e.data) {
+                    that.data(e.data);
                 }
-            },
-            typeConfig, // a single type configuration
-            element,
-            isTyped = !!typeConfigs[type];
 
-        if ( !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]]
-            &&  !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]].done ){ // already loaded
+                that.done = true;
 
-            that.trigger( 'requirementLoaded', src.split('?')[0], 'u' );
+                if (that.type === 'js') {
+                    setTimeout(
+                        function () {
+                            // that.element.parent.removeChild( that.element );     // remove js script tag from head
+                        }
+                        , 200
+                    );
+                }
 
-            return;
-        }
+                that.trigger('requirementLoaded', that.src, 'u');
 
-        pConfig.type = type; // add type
-
-        that.config = pConfig;
-
-        // cache busting
-        if ( !!that.config.src ){
-            that.config.src = that.config.src + ( that.config.src.indexOf( '?' ) > -1 ? '&' : '?' ) + tb.getId();
-        }
-
-        //that.target = pConfig.target;
-        that.src = pConfig.src;
-        that.type = that.config.type = type;
-        that.done = false;
-        that.cb = that.config.cb || function(){};
-        that.data = tb.observable( {} );
-
-        // element 'load' callback
-        function onLoad( e ){
-
-            if ( !!e && e.data ){
-                that.data( e.data );
             }
 
-            that.done = true;
+            // execute onLoad only once
+            onLoad.once = true;
 
-            if ( that.type === 'js' ) {
-                setTimeout(
-                    function(){
-                        // that.element.parent.removeChild( that.element );     // remove js script tag from head
+            // handlers
+            that.handlers = {
+                'onLoad': onLoad
+            };
+
+
+            if (isTyped) { // either *.css or *.js file
+
+                // get default config for type
+                typeConfig = typeConfigs[type];
+
+                // create DOM element
+                element = document.createElement(typeConfig.tag);
+                element.async = true;
+                element.onreadystatechange = element.onload = function () {
+                    var state = element.readyState;
+                    if (!that.done && (!state || /loaded|complete/.test(state))) {
+                        tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
+                        that.trigger('onLoad', element);
                     }
-                    ,200
-                );
-            }
+                };
 
-            that.trigger( 'requirementLoaded', that.src, 'u' );
+                // add attributes to DOM element
+                for (var i in typeConfig.attributes) if (typeConfig.attributes.hasOwnProperty(i)) {
+                    element.setAttribute(i, tb.parse(typeConfig.attributes[i], that.config));
+                }
+
+                tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
+
+                // append node to head
+                document.getElementsByTagName('head')[0].appendChild(element);
+
+                that.element = element;
+
+            } else { // load via request if unknown type, trigger callback with text or JSON
+
+                var f = function (data) {
+
+                    if (that.type === 'json' && !!data['text']) {
+                        try {
+                            data = JSON.parse(data.text);
+                        } catch (e) {
+                            console.log('error parsing, JSON expected in:', data);
+                        }
+                    } else {
+                        data = data.text;
+                    }
+
+                    that.trigger('onLoad', data);
+                };
+
+                var options = {
+                    url: that.src,
+                    success: f,
+                    error: f
+                };
+
+                tb.request(options);
+
+            }
 
         }
 
-        // execute onLoad only once
-        onLoad.once = true;
-
-        // handlers
-        that.handlers = {
-            'onLoad': onLoad
+        _Requirement.prototype = {
+            namespace: '_Requirement'
         };
 
 
-        if ( isTyped ) { // either *.css or *.js file
+        // requirement group constructor
+        function _RequirementGroup(pConfig) {
 
-            // get default config for type
-            typeConfig = typeConfigs[type];
+            var that = this;
 
-            // create DOM element
-            element = document.createElement( typeConfig.tag );
-            element.async = true;
-            element.onreadystatechange = element.onload = function() {
-                var state = element.readyState;
-                if (!that.done && (!state || /loaded|complete/.test(state))) {
-                    tb.status.loadCount( tb.status.loadCount() - 1 ); // decrease loadCount
-                    that.trigger( 'onLoad', element );
-                }
-            };
+            that.type = pConfig.type;
+            that.target = pConfig.target;
 
-            // add attributes to DOM element
-            for ( var i in typeConfig.attributes ) if ( typeConfig.attributes.hasOwnProperty(i) ){
-                element.setAttribute( i, tb.parse( typeConfig.attributes[i], that.config ) );
-            }
+            that.requirements = {};
 
-            tb.status.loadCount( tb.status.loadCount() + 1 ); // increase loadCount
+        };
 
-            // append node to head
-            document.getElementsByTagName('head')[0].appendChild( element );
+        _RequirementGroup.prototype = {
 
-            that.element = element;
+            namespace: '_RequirementGroup',
 
-        } else { // load via request if unknown type, trigger callback with text or JSON
+            load: function (pSrc) {
 
-            var f = function( data ){
+                var that = this,
+                    rq = !!that.requirements[pSrc];
 
-                if ( that.type === 'json' && !!data['text'] ){
-                    try {
-                        data = JSON.parse( data.text );
-                    } catch( e ){
-                        console.log( 'error parsing, JSON expected in:', data );
-                    }
-                } else {
-                    data = data.text;
+                if (!rq) { // not loading or loaded: add a new requirement
+
+                    rq = that.requirements[pSrc] = new tb(
+                        _Requirement,
+                        {
+                            src: pSrc,
+                            target: that.target
+                        },
+                        that.requirements
+                    );
+
+                    that.requirements[pSrc].target = tb.loader; // needed for event bubbling
+
+                } else { // already loading or loaded
+
+                    rq = that.requirements[pSrc];
+
                 }
 
-                that.trigger( 'onLoad', data );
-            };
+                if (!!rq.done) { // already loaded
+                    rq.trigger('onLoad');
 
-            var options = {
-                url: that.src,
-                success: f,
-                error: f
-            };
-
-            tb.request( options );
-
-        }
-
-    }
-
-    _Requirement.prototype = {
-        namespace: '_Requirement'
-    };
-
-
-
-
-    // requirement group constructor
-    function _RequirementGroup( pConfig ){
-
-        var that = this;
-
-        that.type = pConfig.type;
-        that.target = pConfig.target;
-
-        that.requirements = {};
-
-    };
-
-    _RequirementGroup.prototype = {
-
-        namespace: '_RequirementGroup',
-
-        load: function( pSrc ){
-
-            var that = this,
-                rq = !!that.requirements[ pSrc ];
-
-            if ( !rq ){ // not loading or loaded: add a new requirement
-
-                rq = that.requirements[ pSrc ] = new tb(
-                    _Requirement,
-                    {
-                        src: pSrc,
-                        target: that.target
-                    },
-                    that.requirements
-                );
-
-                that.requirements[ pSrc ].target = tb.loader; // needed for event bubbling
-
-            } else { // already loading or loaded
-
-                rq = that.requirements[ pSrc ];
+                }
 
             }
 
-            if ( !!rq.done ){ // already loaded
-                rq.trigger( 'onLoad' );
+        };
 
+
+        function Loader(pConfig) {
+            var that = this;
+
+            that.config = pConfig;
+            that.requirementGroups = {}; // will later contain requirement groups ( grouped by file extension )
+            that.rqSets = []; // requirement sets, may contain various file types
+
+            that.handlers = {
+                requirementLoaded: requirementLoaded
             }
+        };
 
-        }
+        Loader.prototype = {
 
-    };
+            namespace: '_Head',
 
+            load: function (pSrc, pCallback) {
 
-
-
-    function Loader( pConfig ){
-        var that = this;
-
-        that.config = pConfig;
-        that.requirementGroups = {}; // will later contain requirement groups ( grouped by file extension )
-        that.rqSets = []; // requirement sets, may contain various file types
-
-        that.handlers = {
-            requirementLoaded: requirementLoaded
-        }
-    };
-
-    Loader.prototype = {
-
-        namespace: '_Head',
-
-        load: function( pSrc, pCallback ){
-
-            var that = this,
-                pCallback = pCallback || function( e ){ console.log( 'onLoad dummy handler on', e ); },
-                type,
-                rg,
-                groupCallback,
-                pSrc = typeof pSrc === 'string' ? [ pSrc ] : pSrc, // convert to array if string
-                pSrc = ([]).concat( pSrc ); // make an array copy
+                var that = this,
+                    pCallback = pCallback || function (e) {
+                            console.log('onLoad dummy handler on', e);
+                        },
+                    type,
+                    rg,
+                    groupCallback,
+                    pSrc = typeof pSrc === 'string' ? [pSrc] : pSrc, // convert to array if string
+                    pSrc = ([]).concat(pSrc); // make an array copy
 
 
-            // will trigger loading if necessary ( async callback even if already loaded )
-            pSrc
-                .forEach(
-                    function( filename ){
-                        type = getTypeFromSrc( filename );
-                        rg = !!that.requirementGroups[type];
+                // will trigger loading if necessary ( async callback even if already loaded )
+                pSrc
+                    .forEach(
+                        function (filename) {
+                            type = getTypeFromSrc(filename);
+                            rg = !!that.requirementGroups[type];
 
-                        if ( !rg ){ // add a new requirement group
+                            if (!rg) { // add a new requirement group
 
-                            that.requirementGroups[ type ] = new tb(
-                                _RequirementGroup,
-                                {
-                                    type: type
-                                },
-                                that.requirementGroups
-                            );
+                                that.requirementGroups[type] = new tb(
+                                    _RequirementGroup,
+                                    {
+                                        type: type
+                                    },
+                                    that.requirementGroups
+                                );
 
-                            that.requirementGroups[ type ].target = tb.loader; // needed for event bubbling
+                                that.requirementGroups[type].target = tb.loader; // needed for event bubbling
+                            }
+
+                            rg = that.requirementGroups[type];
+
+                            rg.load(filename);
                         }
+                    );
 
-                        rg = that.requirementGroups[ type ];
+                pSrc.callback = pCallback;
 
-                        rg.load( filename );
+                pSrc.done = function (pFilename) { // will be called when each file 'requirementLoaded' was triggered
+                    if (pSrc.indexOf(pFilename) > -1) {
+                        pSrc.splice(pSrc.indexOf(pFilename), 1);
                     }
+                };
 
-                );
+                that.rqSets.push(pSrc);
 
-            pSrc.callback = pCallback;
+            },
 
-            pSrc.done = function( pFilename ){ // will be called when each file 'requirementLoaded' was triggered
-                if ( pSrc.indexOf( pFilename ) > -1 ){
-                    pSrc.splice( pSrc.indexOf( pFilename ), 1 );
-                }
-            };
+            get: function (pFileName) {
 
-            that.rqSets.push( pSrc );
+                var that = this,
+                    type = getTypeFromSrc(pFileName),
+                    rg = that.requirementGroups[type] ? that.requirementGroups[type] : false,
+                    rq = rg ? ( rg.requirements[pFileName] ? rg.requirements[pFileName] : false ) : false;
 
-        },
+                return rq ? rq.data() : 'data missing for: ' + pFileName;
+            }
 
-        get: function( pFileName ){
+        };
+
+        // bind _Head instance
+        tb.loader = new tb(Loader);
+
+        function requirementLoaded(e) {
 
             var that = this,
-                type = getTypeFromSrc( pFileName),
-                rg = that.requirementGroups[type] ? that.requirementGroups[type] : false,
-                rq = rg ? ( rg.requirements[pFileName] ? rg.requirements[pFileName] : false ) : false;
+                filename = e.data.split('?')[0];
 
-            return rq ? rq.data() : 'data missing for: ' + pFileName;
+            that
+                .rqSets
+                .forEach(
+                    function (pRqSet) {
+                        pRqSet.done(filename);
+                        if (pRqSet.length === 0) { // every file loaded
+                            pRqSet.callback();
+                        }
+                    }
+                );
+
+            that.rqSets = that
+                .rqSets
+                .filter(
+                    function (pElement) {
+                        return pElement.length > 0;
+                    }
+                );
+
+            e.stopPropagation();
         }
 
-    };
+    })();
 
-    // bind _Head instance
-    tb.loader = new tb( Loader );
-
-    function requirementLoaded( e ){
-
-        var that = this,
-            filename  = e.data.split('?')[0];
-
-        that
-            .rqSets
-            .forEach(
-                function( pRqSet ){
-                    pRqSet.done( filename );
-                    if ( pRqSet.length === 0 ){ // every file loaded
-                        pRqSet.callback();
-                    }
-                }
-            );
-
-        that.rqSets = that
-            .rqSets
-            .filter(
-                function( pElement ){
-                    return pElement.length > 0;
-                }
-            );
-
-        e.stopPropagation();
-    }
-
-})();
-
+} else {
+    // todo: in a node module
+}
