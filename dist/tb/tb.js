@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.21 - 2016-07-10 */
+/*! twobirds-core - v7.1.22 - 2016-07-11 */
 
 /**
  twoBirds V7 core functionality
@@ -141,10 +141,10 @@ tb = (function(){
 
                 } else if ( !!pSelector['nodeType'] && !!pSelector['tb'] ){ // it is a dom node containing tb elements
                     Object
-                        .keys( pDomNode.tp )
+                        .keys( pDomNode.tb )
                         .forEach(
                             function( pKey ){
-                                [].push.call( that, pDomNode.tp[ pKey ] );
+                                [].push.call( that, pDomNode.tb[ pKey ] );
                             }
                         )
 
@@ -178,10 +178,10 @@ tb = (function(){
                     .map(
                         function ( pDomNode ) {
                             Object
-                                .keys( pDomNode.tp )
+                                .keys( pDomNode.tb )
                                 .forEach(
                                     function( pKey ){
-                                        var tbElement = pDomNode.tp[ pKey ];
+                                        var tbElement = pDomNode.tb[ pKey ];
 
                                         if ( tbElement instanceof tb
                                             && tbElement instanceof pSelector
@@ -1067,13 +1067,11 @@ tb = (function(){
                         .not( notSelector )
                         .forEach(
                             function( pDomNode ) {
-                                //if ( tb.dom( pDomNode ).parents('[data-tb]')[0] === that.target ){
-                                    Object
-                                        .keys( pDomNode.tb )
-                                        .forEach(function( pKey ){
-                                            [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
-                                        });
-                                //}
+                                Object
+                                    .keys( pDomNode.tb )
+                                    .forEach(function( pKey ){
+                                        [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                    });
                             }
                         );
 

@@ -139,10 +139,10 @@ tb = (function(){
 
                 } else if ( !!pSelector['nodeType'] && !!pSelector['tb'] ){ // it is a dom node containing tb elements
                     Object
-                        .keys( pDomNode.tp )
+                        .keys( pDomNode.tb )
                         .forEach(
                             function( pKey ){
-                                [].push.call( that, pDomNode.tp[ pKey ] );
+                                [].push.call( that, pDomNode.tb[ pKey ] );
                             }
                         )
 
@@ -176,10 +176,10 @@ tb = (function(){
                     .map(
                         function ( pDomNode ) {
                             Object
-                                .keys( pDomNode.tp )
+                                .keys( pDomNode.tb )
                                 .forEach(
                                     function( pKey ){
-                                        var tbElement = pDomNode.tp[ pKey ];
+                                        var tbElement = pDomNode.tb[ pKey ];
 
                                         if ( tbElement instanceof tb
                                             && tbElement instanceof pSelector

@@ -25,7 +25,7 @@ tb.namespace( 'app', true ).GrandParent = (function(){
     return GrandParent;
 
     // Private Methods
-    function init( e ){
+    function init(){
         var that = this;
 
         for ( var x=0; x < 5; x++ ) {
