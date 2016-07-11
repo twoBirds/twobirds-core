@@ -1065,13 +1065,11 @@ tb = (function(){
                         .not( notSelector )
                         .forEach(
                             function( pDomNode ) {
-                                //if ( tb.dom( pDomNode ).parents('[data-tb]')[0] === that.target ){
-                                    Object
-                                        .keys( pDomNode.tb )
-                                        .forEach(function( pKey ){
-                                            [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
-                                        });
-                                //}
+                                Object
+                                    .keys( pDomNode.tb )
+                                    .forEach(function( pKey ){
+                                        [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                    });
                             }
                         );
 

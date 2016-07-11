@@ -106,8 +106,6 @@ There are some property names in twoBirds instances that are reserved:
 
 * *handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions. Internally they are converted to array anyway.
 
-* *tb*: ... (reserved for internal use, overwriting deletes nested objects).
-
 As for handlers, there currently is 1 event name that is reserved:
 
 * *init*: function(){ /* all requirement loading for all nestings is done, now construct the object as necessary */ }
@@ -348,13 +346,20 @@ simple: copy tb.js from /dist and insert into your project. Have fun!
 
 (goto project directory)
 
-> npm install
-> grunt
-> cd src
+```console
 
+npm install
+grunt
+cd src
+
+```
 ( you can use whatever you like as a web server, just one option using php here: )
 
-> php -S 0.0.0.0:3000 &
+```console
+
+php -S 0.0.0.0:3000 &
+
+```
 
 #### Example
 
