@@ -6,8 +6,10 @@ module.exports = function(grunt) {
         clean: {
             clean: [
                 "dist",
+                "src/jasmine",
                 "src/tbMin",
-                "src/tb"
+                "src/tb",
+                "src/tbTest.js"
             ]
         },
 
@@ -45,8 +47,8 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'node_modules/jasmine-core/lib/jasmine-core',
-                        src: 'jasmine.js',
-                        dest: 'src/tb'
+                        src: [ '*.js', '*.css' ],
+                        dest: 'src/jasmine'
                     }
                 ]
             }
@@ -59,15 +61,22 @@ module.exports = function(grunt) {
                 banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n\n'
             },
             dist: {
-                src: [
-                    'src/tbSource/tb.core.js',
-                    'src/tbSource/tb.dom.js',
-                    'src/tbSource/tb.utils.js',
-                    'src/tbSource/tb.Model.js',
-                    'src/tbSource/tb.Require.js'
-                ],
-                dest: 'src/tb/tb.js',
-                nonull: true
+                files: {
+                    'src/tb/tb.js': [
+                        'src/tbSource/tb.core.js',
+                        'src/tbSource/tb.dom.js',
+                        'src/tbSource/tb.utils.js',
+                        'src/tbSource/tb.Model.js',
+                        'src/tbSource/tb.Require.js'
+                    ],
+                    'src/tbTest.js': [
+                        'src/jasmine/jasmine.js',
+                        'src/jasmine/jasmine-html.js',
+                        'src/jasmine/boot.js',
+                        'src/tbTest/tb.core.test.js'
+                    ]
+                },
+                nonull: false
             }
         },
 

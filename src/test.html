@@ -2,13 +2,16 @@
 <html>
     <head>
         <title>tb manual testing</title>
-        <script src="tb/tb.js"></script>
-        <script src="tb/jasmine.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
+
+        <script type="text/javascript" src="tb/tb.js"></script>
+
         <script>
             tb.idle(
                 function(){
-                    new tb.Require([
-                        'tbTest/tb.core.test.js'
+                    tb.Require([
+                        'tbTest.js'
                     ]);
                 }
             );
