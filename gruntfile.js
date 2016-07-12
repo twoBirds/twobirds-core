@@ -70,10 +70,9 @@ module.exports = function(grunt) {
                         'src/tbSource/tb.Require.js'
                     ],
                     'src/tbTest.js': [
-                        'src/jasmine/asdfe.js',
-                        'src/jasmine/jasmine.js',
-                        'src/jasmine/jasmine-html.js',
-                        'src/jasmine/boot.js',
+                        'src/tbJasmine/jasmine.js',
+                        'src/tbJasmine/jasmine-html.js',
+                        'src/tbTest/tbJasmineBoot.js',
                         'src/tbTest/tb.core.test.js'
                     ]
                 },
