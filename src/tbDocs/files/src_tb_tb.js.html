@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.22</em>
+            <em>API Docs for: v7.1.23</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.1.22 - 2016-07-11 */
+/*! twobirds-core - v7.1.23 - 2016-07-12 */
 
 /**
  twoBirds V7 core functionality
@@ -3158,8 +3158,10 @@ tb.status = {
 
 tb.idle = function( pCallback ){
 
+
     var f = function(){
         if ( tb.status.loadCount() === 0 ){
+            //console.log( &#x27;idle lc reached&#x27;, tb.status.loadCount(), tb.loader.requirementGroups.js.requirements );
             pCallback();
         } else {
             // if idle not yet reached, re-atttach function for ONE execution

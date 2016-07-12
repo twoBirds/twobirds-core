@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.22 - 2016-07-11 */
+/*! twobirds-core - v7.1.23 - 2016-07-12 */
 
 /**
  twoBirds V7 core functionality
@@ -3070,8 +3070,10 @@ tb.status = {
 
 tb.idle = function( pCallback ){
 
+
     var f = function(){
         if ( tb.status.loadCount() === 0 ){
+            //console.log( 'idle lc reached', tb.status.loadCount(), tb.loader.requirementGroups.js.requirements );
             pCallback();
         } else {
             // if idle not yet reached, re-atttach function for ONE execution

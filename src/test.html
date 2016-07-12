@@ -3,6 +3,16 @@
     <head>
         <title>tb manual testing</title>
         <script src="tb/tb.js"></script>
+        <script src="tb/jasmine.js"></script>
+        <script>
+            tb.idle(
+                function(){
+                    new tb.Require([
+                        'src/tbTest/tb.core.test.js'
+                    ]);
+                }
+            );
+        </script>
     </head>
     <body data-tb="app.GrandParent">
     </body>

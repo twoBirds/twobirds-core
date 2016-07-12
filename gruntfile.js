@@ -41,6 +41,12 @@ module.exports = function(grunt) {
                         cwd: 'src/tbMin',
                         src: '*.js.map',
                         dest: 'dist/tb'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'node_modules/jasmine-core/lib/jasmine-core',
+                        src: 'jasmine.js',
+                        dest: 'src/tb'
                     }
                 ]
             }

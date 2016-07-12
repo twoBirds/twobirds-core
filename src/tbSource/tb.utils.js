@@ -222,8 +222,10 @@ tb.status = {
 
 tb.idle = function( pCallback ){
 
+
     var f = function(){
         if ( tb.status.loadCount() === 0 ){
+            //console.log( 'idle lc reached', tb.status.loadCount(), tb.loader.requirementGroups.js.requirements );
             pCallback();
         } else {
             // if idle not yet reached, re-atttach function for ONE execution
