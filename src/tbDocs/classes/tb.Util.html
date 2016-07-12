@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.24</em>
+            <em>API Docs for: v7.1.25</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -183,6 +183,7 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -203,6 +204,10 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_tb.getId">tb.getId</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.idle">tb.idle</a>
 
                             </li>
                             <li class="index-item method">
@@ -232,6 +237,20 @@
                     </ul>
                 </div>
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_tb.status">tb.status</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_tb.status.loadCount">tb.status.loadCount</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
@@ -350,7 +369,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3131"><code>src&#x2F;tb&#x2F;tb.js:3131</code></a>
+        <a href="../files/src_tb_tb.js.html#l3159"><code>src&#x2F;tb&#x2F;tb.js:3159</code></a>
         </p>
 
 
@@ -431,7 +450,7 @@ always a deep copy</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3118"><code>src&#x2F;tb&#x2F;tb.js:3118</code></a>
+        <a href="../files/src_tb_tb.js.html#l3146"><code>src&#x2F;tb&#x2F;tb.js:3146</code></a>
         </p>
 
 
@@ -457,6 +476,86 @@ always a deep copy</p>
         </div>
 
 
+</div>
+<div id="method_tb.idle" class="method item">
+    <h3 class="name"><code>tb.idle</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pCallback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Void</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3081"><code>src&#x2F;tb&#x2F;tb.js:3081</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pCallback</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>function to execute when all loading is finished</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Void</span>:
+                    <p>tb.idle() function</p>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>// in code...
+tb.idle(
+function(){
+// do whatever you like
+}
+);</p>
+
+            </div>
+        </div>
 </div>
 <div id="method_tb.namespace" class="method item">
     <h3 class="name"><code>tb.namespace</code></h3>
@@ -691,7 +790,7 @@ o.observe( function(){ ... }, true ); // will be triggered when observable value
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3172"><code>src&#x2F;tb&#x2F;tb.js:3172</code></a>
+        <a href="../files/src_tb_tb.js.html#l3200"><code>src&#x2F;tb&#x2F;tb.js:3200</code></a>
         </p>
 
 
@@ -774,7 +873,7 @@ if typeof pWhat is object or array, it will be done with all strings contained t
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3228"><code>src&#x2F;tb&#x2F;tb.js:3228</code></a>
+        <a href="../files/src_tb_tb.js.html#l3256"><code>src&#x2F;tb&#x2F;tb.js:3256</code></a>
         </p>
 
 
@@ -960,7 +1059,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3403"><code>src&#x2F;tb&#x2F;tb.js:3403</code></a>
+        <a href="../files/src_tb_tb.js.html#l3431"><code>src&#x2F;tb&#x2F;tb.js:3431</code></a>
         </p>
 
 
@@ -999,7 +1098,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3531"><code>src&#x2F;tb&#x2F;tb.js:3531</code></a>
+        <a href="../files/src_tb_tb.js.html#l3559"><code>src&#x2F;tb&#x2F;tb.js:3559</code></a>
         </p>
 
 
@@ -1047,6 +1146,62 @@ ms: number of milliseconds the request will run before being terminated</li>
 </div>
             </div>
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_tb.status" class="property item">
+    <h3 class="name"><code>tb.status</code></h3>
+    <span class="type">Object
+
+container for twoBirds status observables</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3063"><code>src&#x2F;tb&#x2F;tb.js:3063</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_tb.status.loadCount" class="property item">
+    <h3 class="name"><code>tb.status.loadCount</code></h3>
+    <span class="type">Function
+
+observable containing the number of ( script load operations + xHr requests ) currently pending</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3070"><code>src&#x2F;tb&#x2F;tb.js:3070</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>

@@ -211,18 +211,42 @@ tb.bind = function( pRootNode ){
 
 
 
-// twoBirds system status
+/**
+ @property tb.status
+ @type Object
+
+ container for twoBirds status observables
+ */
 tb.status = {
-    loadCount: tb.observable(0)
+    /**
+     @property tb.status.loadCount
+     @type Function
+
+     observable containing the number of ( script load operations + xHr requests ) currently pending
+     */
+    loadCount: tb.observable(0)         // contains the number of ( file loads + xHr requests ) pending
 };
 
-/*
- // debugging...
- tb.status.loadCount.observe(function(){
- console.log( 'loadCount:', tb.status.loadCount() );
- });
- */
 
+
+/**
+ @method tb.idle
+
+ @param   {function} pCallback - function to execute when all loading is finished
+
+ @return {void}
+
+ tb.idle() function
+
+ @example
+
+    // in code...
+    tb.idle(
+        function(){
+            // do whatever you like
+        }
+    );
+ */
 tb.idle = function( pCallback ){
 
 
@@ -234,7 +258,11 @@ tb.idle = function( pCallback ){
             var tf = function(){
                 var x = tb.status.loadCount();
 
-                if ( x === 0 && tb.loader.idle() && tb.status.loadCount.lastChanged === f.lastChanged ){
+                if (
+                    x === 0
+                    && tb.loader.idle()
+                    && tb.status.loadCount.lastChanged === f.lastChanged
+                ){
                     // system is still idle
                     if ( typeof pCallback === 'function'){
                         pCallback();
@@ -254,13 +282,13 @@ tb.idle = function( pCallback ){
                 50
             );
         } else {
-            // if idle not yet reached, re-atttach function for ONE execution
-            console.log( 'idle test', tb.status.loadCount() );
+            // if idle not yet reached, re-attach function for ONE execution
             tb.status.loadCount.observe( f, true );
         }
 
     };
 
+    // attach function for ONE execution
     tb.status.loadCount.observe( f, true );
 
 };
