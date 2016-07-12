@@ -48,7 +48,7 @@
  */
 if ( typeof module === 'undefined' ) {
 
-    tb.Require = function (pConfig) {
+    tb.Require = function (pConfig, pCallback ) {
 
         var that = this;
 
@@ -60,7 +60,12 @@ if ( typeof module === 'undefined' ) {
         tb.loader.load(
             that.requirements,
             function () {
-                that.target.trigger('init');
+                if ( !!that['target'] && !!that['target']['tb.Require'] ){
+                    that.target.trigger('init');
+                }
+                if ( typeof pCallback === 'function'){
+                    pCallback();
+                }
             }
         );
 
@@ -108,6 +113,7 @@ if ( typeof module === 'undefined' ) {
                 element,
                 isTyped = !!typeConfigs[type];
 
+            // if already loaded
             if (!!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]]
                 && !!tb.loader.requirementGroups[type][pConfig.src.split('?')[0]].done) { // already loaded
 
@@ -115,6 +121,8 @@ if ( typeof module === 'undefined' ) {
 
                 return;
             }
+            
+            tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
 
             pConfig.type = type; // add type
 
@@ -145,10 +153,12 @@ if ( typeof module === 'undefined' ) {
                 if (that.type === 'js') {
                     setTimeout(
                         function () {
-                            // that.element.parent.removeChild( that.element );     // remove js script tag from head
-                        }
-                        , 200
+                            tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
+                        },
+                        50
                     );
+                } else {
+                    tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
                 }
 
                 that.trigger('requirementLoaded', that.src, 'u');
@@ -175,7 +185,6 @@ if ( typeof module === 'undefined' ) {
                 element.onreadystatechange = element.onload = function () {
                     var state = element.readyState;
                     if (!that.done && (!state || /loaded|complete/.test(state))) {
-                        tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
                         that.trigger('onLoad', element);
                     }
                 };
@@ -184,8 +193,6 @@ if ( typeof module === 'undefined' ) {
                 for (var i in typeConfig.attributes) if (typeConfig.attributes.hasOwnProperty(i)) {
                     element.setAttribute(i, tb.parse(typeConfig.attributes[i], that.config));
                 }
-
-                tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
 
                 // append node to head
                 document.getElementsByTagName('head')[0].appendChild(element);
@@ -350,6 +357,12 @@ if ( typeof module === 'undefined' ) {
                     rq = rg ? ( rg.requirements[pFileName] ? rg.requirements[pFileName] : false ) : false;
 
                 return rq ? rq.data() : 'data missing for: ' + pFileName;
+            },
+
+            idle: function() {
+                var that = this;
+
+                return !!that.rqSets; // false if everything loaded
             }
 
         };

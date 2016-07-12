@@ -54,10 +54,13 @@ tb.observable = function( pStartValue ){
 
         if ( pValue !== undefined ){ // value has changed
             observedValue = pValue;
+            observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
             observableFunction.notify();
         }
         return observedValue;
     };
+
+    observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
 
     // list of all callbacks to trigger on observedValue change
     observableFunction.list = [];
@@ -224,13 +227,38 @@ tb.idle = function( pCallback ){
 
 
     var f = function(){
+
         if ( tb.status.loadCount() === 0 ){
-            //console.log( 'idle lc reached', tb.status.loadCount(), tb.loader.requirementGroups.js.requirements );
-            pCallback();
+            f.lastChanged = tb.status.loadCount.lastChanged; // get timestamp for when loadcount has been changed
+
+            var tf = function(){
+                var x = tb.status.loadCount();
+
+                if ( x === 0 && tb.loader.idle() && tb.status.loadCount.lastChanged === f.lastChanged ){
+                    // system is still idle
+                    if ( typeof pCallback === 'function'){
+                        pCallback();
+                    };
+                } else {
+                    // not idle -> reattach
+                    f.lastChanged = tb.status.loadCount.lastChanged;
+                    setTimeout(
+                        tf,
+                        50
+                    );
+                }
+            };
+
+            setTimeout(
+                tf,
+                50
+            );
         } else {
             // if idle not yet reached, re-atttach function for ONE execution
+            console.log( 'idle test', tb.status.loadCount() );
             tb.status.loadCount.observe( f, true );
         }
+
     };
 
     tb.status.loadCount.observe( f, true );
@@ -505,12 +533,14 @@ if (typeof module === 'undefined' ){
         }
 
         function inc( pReq ) {
+            tb.status.loadCount( tb.status.loadCount() + 1 );
             loadlist.push( pReq );
             count++;
             readyState = 'loading';
         }
 
         function dec( pReq ) {
+            tb.status.loadCount( tb.status.loadCount() - 1 );
             if ( loadlist.indexOf( pReq ) ){
                 count--;
                 loadlist.splice( loadlist.indexOf( pReq ) );

@@ -294,6 +294,7 @@ tb = (function(){
                     fileName,
                     (function( args ){
                         return function(){
+
                             var thisTb = new tb(
                                 args[0],
                                 args[1] || {},
