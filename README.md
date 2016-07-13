@@ -18,7 +18,7 @@ It consists of 3 parts:
 #### 1.) a simple client repository object structure + instanciation mechanism
 
 demoapp/myClass.js
-```
+```js
 var demoapp = demoapp || {};
 
 
@@ -29,13 +29,13 @@ demoapp.myClass.prototype = {}
 as you see, any plain old javascript class is a tB class :-)
 
 index.html
-```
+```html
 <body data-tb="demoapp.myClass">
 ```
 this will make an instance of above mentioned class and put it in the dom :-)
 
 or, somewhere in your js code:
-```
+```js
 new tb(
 	demoapp.myClass,
 	{ ... config data ... },
