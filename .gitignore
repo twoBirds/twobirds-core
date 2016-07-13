@@ -1,3 +1,5 @@
 node_modules
 src/tbMin
 src/tbTest.js
+npm-debug.log
+

@@ -51,7 +51,7 @@ tb.namespace( 'app', true ).Child = (function(){
             new tb(
                 'app.GrandChild',
                 {},
-                that.target.appendChild( document.createElement("div") )
+                that.target.appendChild( document.createElement("span") )
             );
         }
     }

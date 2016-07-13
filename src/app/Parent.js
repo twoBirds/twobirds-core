@@ -25,7 +25,7 @@ tb.namespace( 'app', true ).Parent = (function(){
             new tb(
                 'app.Child',
                 {},
-                that.target.appendChild( document.createElement("div") )
+                that.target.appendChild( document.createElement("span") )
             );
         }
     }

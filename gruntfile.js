@@ -73,7 +73,11 @@ module.exports = function(grunt) {
                         'src/tbJasmine/jasmine.js',
                         'src/tbJasmine/jasmine-html.js',
                         'src/tbTest/tbJasmineBoot.js',
-                        'src/tbTest/tb.core.test.js'
+                        'src/tbTest/tb.core.test.js',
+                        'src/tbTest/tb.dom.test.js',
+                        'src/tbTest/tb.Model.test.js',
+                        'src/tbTest/tb.Require.test.js',
+                        'src/tbTest/tb.utils.test.js'
                     ]
                 },
                 nonull: true

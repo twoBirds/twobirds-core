@@ -1,9 +1,16 @@
 
-[class*="app-"] {
-  padding: 10px;
-  margin: 10px;
-  border: 1px solid black;
-  background-color: antiquewhite;
-  color: blue; }
+[class*="parent"] {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid black;
+    background-color: antiquewhite;
+}
+
+[class*="child"] {
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid darkslategray;
+    background-color: antiquewhite;
+}
 
 /*# sourceMappingURL=GrandParent.css.map */

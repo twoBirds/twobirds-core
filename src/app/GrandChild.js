@@ -29,7 +29,7 @@ tb.namespace( 'app', true ).GrandChild = (function(){
             new tb(
                 'app.GreatGrandChild',
                 {},
-                that.target.appendChild( document.createElement("div") )
+                that.target.appendChild( document.createElement("span") )
             );
         }
     }
