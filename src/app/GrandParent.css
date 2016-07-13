@@ -1,12 +1,14 @@
 
-[class*="parent"] {
-    padding: 10px;
+[class*="parent"],
+.jasmine_html-reporter {
+    padding: 2px;
     margin: 10px;
     border: 1px solid black;
     background-color: antiquewhite;
 }
 
 [class*="child"] {
+    display: inline-block;
     padding: 2px;
     margin: 2px;
     border: 1px solid darkslategray;
