@@ -50,7 +50,7 @@ same as above, but done at run-time.
 tb( document.body )    // will return any tb instances that are contained in document.body
 ```
 
-Of there are a lot of chained methods to that selector.
+There are a lot of chained methods to that selector.
 
 You also have a jQuery-like tb.dom() selector.
 
