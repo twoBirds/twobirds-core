@@ -103,15 +103,15 @@ In twoBirds, on the client side you have a repository of plain JS classes.
 
 These are used to create instances. 
 
-The instances are saved in the DOM nodes or in other tB instances.
+The instances usually are saved in a DOM node or in other tB instances.
 
 ### Instances
 
 There are some property names in twoBirds instances that are reserved:
 
-* *target*: ... is the DOM node the tB instance is attached to. In nested objects it is inherited from the parent, but AT RUNTIME can be set to another DOM node as well if necessary. You cannot set this property in a repo object, since it would make no sense.
+* *target*: ... is the DOM node the tB instance is attached to.
 
-* *namespace*: ... is the namespace of the repo object, and should be set accordingly, since both the regEx selector tb(/.../) as well as the .instanceOf("namespace") method checks against the "name" property.
+* *namespace*: ... is the namespace of the repo object, and should be set accordingly, since both the regEx selector tb(/.../) checks against the "namespace" property.
 
 * *handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions. Internally they are converted to array anyway.
 
@@ -119,11 +119,13 @@ As for handlers, there currently is 1 event name that is reserved:
 
 * *init*: function(){ /* all requirement loading for all nestings is done, now construct the object as necessary */ }
 
-This event will be sent to every newly created instance, when all required files have been loaded.
+This event *will be sent to every newly created instance*, wether there is requirement loading or not. The init handler defined in the class is the "boot method" of every tb instance.
 
-There is a special convention inside twoBirds instances:
 
-* If a property name contains a dot ("."), it is treated as a namepace which should contain a JS object or function. twoBirds will check whether this namespace already exists, then ...
+
+#### ...special convention inside twoBirds instances:
+
+* If a property name contains a dot ("."), it is treated as a namespace which should contain a JS object or function. twoBirds will check whether this namespace already exists, then ...
 
 IF NOT: twoBirds will convert the property name to a subdir string like so
 
@@ -141,7 +143,7 @@ If it is a plain object, the property value will be replaced with it, and when "
 
 Now lets see all of this in context:
 
-demoapp/Body.js 
+app/Body.js 
 ```js
 tb.namespace('app', true).Body = (function(){
 
@@ -180,7 +182,7 @@ tb.namespace('app', true).Body = (function(){
 })();
 ```
 
-The function will execute, starting the requirement loading. Further execution is halted until all required files have loaded. The "init" event will fire then.
+Upon instanciation this class will create a tb instance, starting the requirement loading if necessary. Further execution is halted until all required files have loaded. The "init" event will fire then.
 
 * HINT: Properties that contain a dot (.) are said to be misleading because they look like a namespace. In twoBirds, what looks like a namespace IS a namespace - and will be treated as such.
 
@@ -188,6 +190,7 @@ The function will execute, starting the requirement loading. Further execution i
 
 You can also insert a twoBirds instance into an already existing instance at runtime, in this case inside some event handler or method you add this code:
 ```js
+// somewhere in you class code...
 this.tbElement = new tb(
 	'app.someElement'
 );
@@ -221,18 +224,15 @@ If the corresponding class doesnt exist in the repository, on-demand loading is 
 
 
 
-// STRING: uses .querySelectorAll(), but returns tB object(s) contained in the DOM nodes.
+// STRING: invokes .querySelectorAll(), but returns tB object(s) contained in the DOM nodes returned.
 
 tb('body')
 
 
 
-// OBJECT: instances of a repo object inside page structure
+// OBJECT: instances of a repo class inside page structure
 
-// find all demoapp.Body sub-instances ( only one )
-tb( app.Body )
-
-// find all demoapp.someElement sub-instances ( may return many )
+// find all demoapp.someElement instances
 tb( app.someElement )
 
 
@@ -241,7 +241,7 @@ tb( app.someElement )
 
 // always returns the root object
 
-tb( /app.Bod/ ) // returns the app.body object, its 'namespace' matches the regEx
+tb( /app.Bod/ ) // e.g. returns the app.body object, for its 'namespace' property should match the regEx
 
 
 
@@ -249,7 +249,7 @@ tb( /app.Bod/ ) // returns the app.body object, its 'namespace' matches the regE
 
 // both of the following return all toplevel objects in the current DOM, as expected.
 
-tb( /./ ) 
+tb( /./ ) // any namespace matches
 tb( '*' ) // invoking document.querySelectorAll()
 
 
@@ -275,7 +275,7 @@ tb( ... ).next() // the next tb instance in this.parent().children()
 tb( ... ).first() // the previous tb instance in this.parent().children()
 tb( ... ).last() // the next tb instance in this.parent().children()
 
-...for a complete list see the API documentation
+...for a complete list see the API documentation contained in the package.
 
 // CHAINED SELECTOR RETURNS ARE ALWAYS UNIQUE!
 
@@ -304,24 +304,20 @@ tb('body').off('myevent', myHandler);
 
 some trigger snippets:
 ```js 
-// get the $('body') DOM node, 
-// retrieve its tB toplevel object, 
-// and trigger '<myevent>' on it
-tb('body').trigger('<myevent>' [, data] [, bubble])
+// general
+tb( pSelector ).trigger('eventName' [, data] [, bubble] );
 
-// find all demoapp.body instances (only one), 
-// trigger <myevent> bubbling down locally.
-tb( app.Body ).trigger('<myevent>' ,null ,'ld' )	
+// as in:
+tb( app.Body ).trigger('eventName' , null, 'ld' ); // local on instance found & down	
 
-// find all app.SomeElement instances, 
-// and trigger 'scroll.update' on it, meaning its a local event that doesnt bubble. 
-tb( app.SomeElement ).trigger('scroll.update' );			
+// sample from code
+this.trigger( 'scroll.update', null, 'u' ); // not in this instance but bubbling up			
 
 ```
 
 ## Installation
 
-simple: copy tb.js from /dist and insert into your project. Have fun!
+simple: copy tb.js from /dist and insert into your project, or, using npm, follow [instructions below](#i-dont-want-to-read-a-lot-give-me-a-kick-start). Have fun!
 
 ## Use case 
 
@@ -334,19 +330,19 @@ simple: copy tb.js from /dist and insert into your project. Have fun!
 - component style web programming
 - distributed programming
 - async on demand loading, recursive
-- web-component programming, defining repository objects
+- web-component programming
 
 ## Status:
 
 - core API stable
-- Best Practices stable but not documented yet. FAQ and BP docs coming soon.
+- Best Practices stable but not documented yet. FAQ and Tutorials coming soon I hope.
 
 ## History
 
 - twoBirds was created 2004 to be able to build a complex web application for an insurance company (similar to google calc, which came later). 
-- It was meant to be a Web Component Framework from the beginning.
+- It was meant to be a Web Component Framework from the beginning, and was said to be one since 2007.
 - It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) and sorry for the character mess there, the page is outdated obviously ).
-- It was constantly under development. 
+- It was constantly under development, though I had to earn some money from time to time. 
 
 ## I dont want to read a lot - give me a kick-start
 
