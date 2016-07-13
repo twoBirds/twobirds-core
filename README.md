@@ -52,11 +52,11 @@ tb( document.body )    // will return any tb instances that are contained in doc
 
 There are a lot of chained methods to that selector.
 
-You also have a jQuery-like tb.dom() selector.
+You also have a document.querySelectorAll() based tb.dom() selector, also with the chained methods you expect.
 
-The difference between these is: 
+The difference between these selectors is: tb.dom() returns DOM nodes, tb() returns tb instances that are contained therein.
 
-tb.dom() returns DOM nodes, tb() returns tb instances that are in the dom nodes.
+twoBirds can work with any selector lib ( jQuery etc. ) that returns array-like objects.
 
 Read the API documentation included in the package.
 
@@ -70,11 +70,9 @@ HINT: bubble = 'l' for local, 'd' for down, 'u' for up ('l' being default)
 
 twoBirds allows building nested structures of tB instances of repository classes that all look the same codewise, but add up to complex functionality.
 
-All instances of these classes are stored in DOM nodes or other tB instances / other objects.
+All instances of these classes are stored in DOM nodes or other tB instances / other objects and vars of course.
 
-twoBirds has a selector ot its own ( tb.dom() ), but can work with any selector lib that returns array-like objects.
-
-Comparision: 
+### Comparision
 twoBirds can be compared to Flight, Polymer, React, ember and backboneJS.
 
 Unlike these frameworks twoBirds ... 
