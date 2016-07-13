@@ -4,7 +4,7 @@
 Welcome Birdies ;-)
 
 
-[I dont want to read a lot - give me a kick-start](https://gitlab.com/twoBirds/twobirds-core#i-dont-want-to-read-a-lot-give-me-a-kick-start)
+[I dont want to read a lot - give me a kick-start](#i-dont-want-to-read-a-lot-give-me-a-kick-start)
 
 
 ## Intro
