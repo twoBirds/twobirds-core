@@ -52,7 +52,7 @@ tb( document.body )    // will return any tb instances that are contained in doc
 
 #### 3.) a trigger mechanism to communicate with the selected instance on the page
 
-```
+```js
 tb( 'body' ).trigger( 'myEventName', <eventData>, <bubble> );
 ```
 hint: bubble = 'l' for local, 'd' for down, 'u' for up ('l' being default)
@@ -178,7 +178,7 @@ The function will execute, starting the requirement loading. Further execution i
 #### ON EVENT / AT RUNTIME:
 
 You can also insert a twoBirds instance into an already existing instance at runtime, in this case inside some event handler or method you add this code:
-```
+```js
 this.tbElement = new tb(
 	'app.someElement'
 );
@@ -265,7 +265,8 @@ tb( ... ).prev() // the previous tb instance in this.parent().children()
 tb( ... ).next() // the next tb instance in this.parent().children()
 tb( ... ).first() // the previous tb instance in this.parent().children()
 tb( ... ).last() // the next tb instance in this.parent().children()
-...for a complete list see the API documentation, there are about 20 of them ATM.
+
+...for a complete list see the API documentation
 
 // CHAINED SELECTOR RETURNS ARE ALWAYS UNIQUE!
 
@@ -364,6 +365,7 @@ php -S 0.0.0.0:3000 &
 #### Example
 
 browser > localhost:3000/index.html
+
 browser > ( select "test" )
 
 ( open dev tools, e.g. firebug )
