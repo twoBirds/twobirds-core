@@ -26,13 +26,13 @@ demoapp.myClass = function(){};
 
 demoapp.myClass.prototype = {}
 ```
-as you see, any plain old javascript class is a tB class :-)
+as you see, any plain old javascript class is a tB class.
 
 index.html
 ```html
 <body data-tb="demoapp.myClass">
 ```
-this will make an instance of above mentioned class and put it in the dom :-)
+this will make an instance of above mentioned class and put it in the dom.
 
 or, somewhere in your js code:
 ```js
@@ -42,7 +42,7 @@ new tb(
 	document.body
 );
 ```
-same as above, but done at run-time
+same as above, but done at run-time.
 
 #### 2.) a selector to adress instances of these objects on the page
 
@@ -50,12 +50,23 @@ same as above, but done at run-time
 tb( document.body )    // will return any tb instances that are contained in document.body
 ```
 
+Of there are a lot of chained methods to that selector.
+
+You also have a jQuery-like tb.dom() selector.
+
+The difference between these is: 
+
+tb.dom() returns DOM nodes, tb() returns tb instances that are in the dom nodes.
+
+Read the API documentation included in the package.
+
 #### 3.) a trigger mechanism to communicate with the selected instance on the page
 
 ```js
 tb( 'body' ).trigger( 'myEventName', <eventData>, <bubble> );
 ```
-hint: bubble = 'l' for local, 'd' for down, 'u' for up ('l' being default)
+
+HINT: bubble = 'l' for local, 'd' for down, 'u' for up ('l' being default)
 
 twoBirds allows building nested structures of tB instances of repository classes that all look the same codewise, but add up to complex functionality.
 
