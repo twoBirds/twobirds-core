@@ -1,4 +1,4 @@
-tb.namespace( 'app', true ).GreatGrandChild = (function(){
+tb.namespace( 'test', true ).GreatGrandChild = (function(){
 
     // Constructor
     function GreatGrandChild( pConfig ){
@@ -12,7 +12,7 @@ tb.namespace( 'app', true ).GreatGrandChild = (function(){
 
     // Prototype
     GreatGrandChild.prototype = {
-        namespace: 'app.GreatGrandChild'
+        namespace: 'test.GreatGrandChild'
     };
 
     return GreatGrandChild;

@@ -1,13 +1,13 @@
 // simple objects...
-app.EmbeddedObject1 = function EmbeddedObject1( pConfig ){
+test.EmbeddedObject1 = function EmbeddedObject1( pConfig ){
 };
 
-app.EmbeddedObject1.prototype = {
-    namespace: 'app.EmbeddedObject1',
-    'app.EmbeddedObject2': {}
+test.EmbeddedObject1.prototype = {
+    namespace: 'test.EmbeddedObject1',
+    'test.EmbeddedObject2': {}
 };
 
-app.EmbeddedObject2 = function EmbeddedObject2( pConfig ){
+test.EmbeddedObject2 = function EmbeddedObject2( pConfig ){
     var that = this;
 
     that.handlers = {
@@ -17,12 +17,12 @@ app.EmbeddedObject2 = function EmbeddedObject2( pConfig ){
     }
 };
 
-app.EmbeddedObject2.prototype = {
-    namespace: 'app.EmbeddedObject2'
+test.EmbeddedObject2.prototype = {
+    namespace: 'test.EmbeddedObject2'
 };
 
 
-tb.namespace( 'app', true ).Child = (function(){
+tb.namespace( 'test', true ).Child = (function(){
 
     // Constructor
     function Child( pConfig ){
@@ -37,8 +37,8 @@ tb.namespace( 'app', true ).Child = (function(){
 
     // Prototype
     Child.prototype = {
-        namespace: 'app.Child',
-        'app.EmbeddedObject1': {}
+        namespace: 'test.Child',
+        'test.EmbeddedObject1': {}
     };
 
     return Child;
@@ -49,7 +49,7 @@ tb.namespace( 'app', true ).Child = (function(){
 
         for ( var i=0; i<3; i++ ){
             new tb(
-                'app.GrandChild',
+                'test.GrandChild',
                 {},
                 that.target.appendChild( document.createElement("span") )
             );
@@ -59,7 +59,7 @@ tb.namespace( 'app', true ).Child = (function(){
     function test( e ){
         var that = this;
 
-        if ( e.data.namespace === 'app.EmbeddedObject2' ){
+        if ( e.data.namespace === 'test.EmbeddedObject2' ){
             e.stopPropagation();
         }
         //console.info( 'child ::test()' );

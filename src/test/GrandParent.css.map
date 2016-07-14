@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA;sBACuB;EACrB,OAAO,EAAE,GAAG;EACZ,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,eAAe;EACvB,gBAAgB,EAAE,YAAY;;AAGhC,gBAAiB;EACf,OAAO,EAAE,YAAY;EACrB,OAAO,EAAE,GAAG;EACZ,MAAM,EAAE,GAAG;EACX,MAAM,EAAE,uBAAuB;EAC/B,gBAAgB,EAAE,YAAY",
+"sources": ["scss/GrandParent.scss"],
+"names": [],
+"file": "GrandParent.css"
+}

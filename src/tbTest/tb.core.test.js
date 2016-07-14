@@ -7,23 +7,23 @@ describe("tb.core.js", function() {
     describe("general tests", function() {
 
         it("tb() present and typeof 'function'", function() {
-            expect( typeof tb === 'function' ).toBe(true);
+            expect( typeof tb === 'function' ).toBe( true );
         });
 
         it("tb.dom() present and typeof 'function'", function() {
-            expect( typeof tb.dom === 'function' ).toBe(true);
+            expect( typeof tb.dom === 'function' ).toBe( true );
         });
 
         it("tb.Model() present and typeof 'function'", function() {
-            expect( typeof tb.Model === 'function' ).toBe(true);
+            expect( typeof tb.Model === 'function' ).toBe( true );
         });
 
         it("tb.Event() present and typeof 'function'", function() {
-            expect( typeof tb.Event === 'function' ).toBe(true);
+            expect( typeof tb.Event === 'function' ).toBe( true );
         });
 
         it("tb.Require() present and typeof 'function'", function() {
-            expect( typeof tb.Require === 'function' ).toBe(true);
+            expect( typeof tb.Require === 'function' ).toBe( true );
         });
 
     });
@@ -33,98 +33,98 @@ describe("tb.core.js", function() {
         describe("tb( 'String' ) .querySelectorAll() string selector tests", function() {
 
             it("tb('body') is a tb instance", function() {
-                expect( tb('body') instanceof tb.Selector ).toBe(true);
+                expect( tb('body') instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body') to have .length 1", function() {
-                expect( tb('body').length === 1 ).toBe(true);
+                expect( tb('body').length === 1 ).toBe( true );
             });
 
             it("tb('body')[0] instanceof tb", function() {
-                expect( tb('body')[0] instanceof tb ).toBe(true);
+                expect( tb('body')[0] instanceof tb ).toBe( true );
             });
 
             it("tb('body')[0].target to be document.body DOM node", function() {
-                expect( tb('body')[0].target === document.body ).toBe(true);
+                expect( tb('body')[0].target === document.body ).toBe( true );
             });
 
         });
 
         describe("tb( /String/ ) regEx selector tests", function() {
 
-            it("tb( /app.Body/ ) is a tb instance", function() {
-                expect( tb('body') instanceof tb.Selector ).toBe(true);
+            it("tb( /test.Body/ ) is a tb instance", function() {
+                expect( tb('body') instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb( /app.Body/ ) to have .length 1", function() {
-                expect( tb('body').length === 1 ).toBe(true);
+            it("tb( /test.Body/ ) to have .length 1", function() {
+                expect( tb('body').length === 1 ).toBe( true );
             });
 
-            it("tb( /app.Body/ )[0] instanceof tb", function() {
-                expect( tb('body')[0] instanceof tb ).toBe(true);
+            it("tb( /test.Body/ )[0] instanceof tb", function() {
+                expect( tb('body')[0] instanceof tb ).toBe( true );
             });
 
-            it("tb( /app.Body/ )[0].target to be document.body DOM node", function() {
-                expect( tb('body')[0].target === document.body ).toBe(true);
+            it("tb( /test.Body/ )[0].target to be document.body DOM node", function() {
+                expect( tb('body')[0].target === document.body ).toBe( true );
             });
 
         });
 
         describe("tb( classNamespace ) regEx selector tests", function() {
 
-            it("tb( app.Body ) is a tb instance", function() {
-                expect( tb('body') instanceof tb.Selector ).toBe(true);
+            it("tb( test.Body ) is a tb instance", function() {
+                expect( tb('body') instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb( app.Body ) to have .length 1", function() {
-                expect( tb('body').length === 1 ).toBe(true);
+            it("tb( test.Body ) to have .length 1", function() {
+                expect( tb('body').length === 1 ).toBe( true );
             });
 
-            it("tb( app.Body )[0] instanceof tb", function() {
-                expect( tb('body')[0] instanceof tb ).toBe(true);
+            it("tb( test.Body )[0] instanceof tb", function() {
+                expect( tb('body')[0] instanceof tb ).toBe( true );
             });
 
-            it("tb( app.Body )[0].target to be document.body DOM node", function() {
-                expect( tb('body')[0].target === document.body ).toBe(true);
+            it("tb( test.Body )[0].target to be document.body DOM node", function() {
+                expect( tb('body')[0].target === document.body ).toBe( true );
             });
 
         });
 
         describe("tb( [ selector1, selector2, ... ] ) array of selectors tests", function() {
 
-            it("tb( [ app.GrandParent, 'div', 'body' ] ) is a tb instance", function() {
-                expect( tb([ app.GrandParent, 'div', 'body' ]) instanceof tb.Selector ).toBe(true);
+            it("tb( [ test.GrandParent, 'div', 'body' ] ) is a tb instance", function() {
+                expect( tb([ test.GrandParent, 'div', 'body' ]) instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb( [ app.GrandParent ] ) to have .length 1", function() {
-                // should be 6, not 7 due to uniqueness of result ( 'body' === app.GrandParent )
-                expect( tb([ app.GrandParent, 'div', 'body' ]).length === 6 ).toBe(true);
+            it("tb( [ test.GrandParent ] ) to have .length 1", function() {
+                // should be 6, not 7 due to uniqueness of result ( 'body' === test.GrandParent )
+                expect( tb([ test.GrandParent, 'div', 'body' ]).length === 6 ).toBe( true );
             });
 
-            it("tb( [ app.GrandParent, 'div' ] ) to have .length 6", function() {
-                // should be 6, not 7 due to uniqueness of result ( 'body' === app.GrandParent )
-                expect( tb([ app.GrandParent, 'div' ]).length === 6 ).toBe(true);
+            it("tb( [ test.GrandParent, 'div' ] ) to have .length 6", function() {
+                // should be 6, not 7 due to uniqueness of result ( 'body' === test.GrandParent )
+                expect( tb([ test.GrandParent, 'div' ]).length === 6 ).toBe( true );
             });
 
-            it("tb( [ app.GrandParent, 'div', 'body' ] ) to have .length 6", function() {
-                // should be 6, not 7 due to uniqueness of result ( 'body' === app.GrandParent )
-                expect( tb([ app.GrandParent, 'div', 'body' ]).length === 6 ).toBe(true);
+            it("tb( [ test.GrandParent, 'div', 'body' ] ) to have .length 6", function() {
+                // should be 6, not 7 due to uniqueness of result ( 'body' === test.GrandParent )
+                expect( tb([ test.GrandParent, 'div', 'body' ]).length === 6 ).toBe( true );
             });
 
-            it("tb( [ app.GrandParent, 'div', 'body' ] )[0] instanceof tb", function() {
-                expect( tb([ app.GrandParent, 'div', 'body' ])[0] instanceof tb ).toBe(true);
+            it("tb( [ test.GrandParent, 'div', 'body' ] )[0] instanceof tb", function() {
+                expect( tb([ test.GrandParent, 'div', 'body' ])[0] instanceof tb ).toBe( true );
             });
 
-            it("tb( [ app.GrandParent, 'div', 'body' ] )[0].target to be document.body DOM node", function() {
-                expect( tb([ app.GrandParent, 'div', 'body' ])[0].target === document.body ).toBe(true);
+            it("tb( [ test.GrandParent, 'div', 'body' ] )[0].target to be document.body DOM node", function() {
+                expect( tb([ test.GrandParent, 'div', 'body' ])[0].target === document.body ).toBe( true );
             });
 
-            it("tb( [ app.GrandParent, 'div', 'body' ] )[1] instanceof tb", function() {
-                expect( tb([ app.GrandParent, 'div', 'body' ])[1] instanceof tb ).toBe(true);
+            it("tb( [ test.GrandParent, 'div', 'body' ] )[1] instanceof tb", function() {
+                expect( tb([ test.GrandParent, 'div', 'body' ])[1] instanceof tb ).toBe( true );
             });
 
-            it("tb( [ app.GrandParent, 'div', 'body' ] )[1].target.tagName to be 'DIV'", function() {
-                expect( tb([ app.GrandParent, 'div', 'body' ])[1].target.tagName === 'DIV' ).toBe(true);
+            it("tb( [ test.GrandParent, 'div', 'body' ] )[1].target.tagName to be 'DIV'", function() {
+                expect( tb([ test.GrandParent, 'div', 'body' ])[1].target.tagName === 'DIV' ).toBe( true );
             });
 
         });
@@ -136,11 +136,11 @@ describe("tb.core.js", function() {
         describe("add()", function() {
 
             it("tb('body').add('div') is a tb instance", function() {
-                expect( tb('body').add('div') instanceof tb.Selector ).toBe(true);
+                expect( tb('body').add('div') instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body').add('div').length === 6", function() {
-                expect( tb('body').add('div').length === 6 ).toBe(true);
+                expect( tb('body').add('div').length === 6 ).toBe( true );
             });
 
         });
@@ -148,27 +148,27 @@ describe("tb.core.js", function() {
         describe("children()", function() {
 
             it("tb('body').children() instanceof tb.Selector", function() {
-                expect( tb('body').children() instanceof tb.Selector ).toBe(true);
+                expect( tb('body').children() instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body').children().length === 5", function() {
-                expect( tb('body').children().length === 5 ).toBe(true);
+                expect( tb('body').children().length === 5 ).toBe( true );
             });
 
             it("tb('body').children('div') instanceof tb.Selector", function() {
-                expect( tb('body').children('div') instanceof tb.Selector ).toBe(true);
+                expect( tb('body').children('div') instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body').children('div').length === 5", function() {
-                expect( tb('body').children('div').length === 5 ).toBe(true);
+                expect( tb('body').children('div').length === 5 ).toBe( true );
             });
 
             it("tb('body').children('span') instanceof tb.Selector", function() {
-                expect( tb('body').children('span') instanceof tb.Selector ).toBe(true);
+                expect( tb('body').children('span') instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body').children('span').length === 0", function() {
-                expect( tb('body').children('span').length === 0 ).toBe(true);
+                expect( tb('body').children('span').length === 0 ).toBe( true );
             });
 
         });
@@ -176,27 +176,27 @@ describe("tb.core.js", function() {
         describe("descendants()", function() {
 
             it("tb('body').descendants() instanceof tb.Selector", function() {
-                expect( tb('body').descendants() instanceof tb.Selector ).toBe(true);
+                expect( tb('body').descendants() instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body').descendants().length === 505", function() {
-                expect( tb('body').descendants().length === 505 ).toBe(true);
+                expect( tb('body').descendants().length === 505 ).toBe( true );
             });
 
             it("tb('body').descendants('div') instanceof tb.Selector", function() {
-                expect( tb('body').descendants('div') instanceof tb.Selector ).toBe(true);
+                expect( tb('body').descendants('div') instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body').descendants('div').length === 5", function() {
-                expect( tb('body').descendants('div').length === 5 ).toBe(true);
+                expect( tb('body').descendants('div').length === 5 ).toBe( true );
             });
 
             it("tb('body').descendants('span') instanceof tb.Selector", function() {
-                expect( tb('body').descendants('span') instanceof tb.Selector ).toBe(true);
+                expect( tb('body').descendants('span') instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('body').descendants('span').length === 500", function() {
-                expect( tb('body').descendants('span').length === 500 ).toBe(true);
+                expect( tb('body').descendants('span').length === 500 ).toBe( true );
             });
 
         });
@@ -204,15 +204,15 @@ describe("tb.core.js", function() {
         describe("filter()", function() {
 
             it("tb('div').filter( 'body' ) instanceof tb.Selector", function() {
-                expect( tb('div').filter( 'body' ) instanceof tb.Selector ).toBe(true);
+                expect( tb('div').filter( 'body' ) instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('div').filter( 'body' ).length === 0", function() {
-                expect( tb('div').filter( 'body' ).length === 0 ).toBe(true);
+                expect( tb('div').filter( 'body' ).length === 0 ).toBe( true );
             });
 
-            it("tb('div').filter( app.Parent ).length === 5", function() {
-                expect( tb('div').filter( app.Parent ).length === 5 ).toBe(true);
+            it("tb('div').filter( test.Parent ).length === 5", function() {
+                expect( tb('div').filter( test.Parent ).length === 5 ).toBe( true );
             });
 
         });
@@ -220,15 +220,15 @@ describe("tb.core.js", function() {
         describe("first()", function() {
 
             it("tb('div').first() instanceof tb.Selector", function() {
-                expect( tb('div').first() instanceof tb.Selector ).toBe(true);
+                expect( tb('div').first() instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('div').first().length === 1", function() {
-                expect( tb('div').first().length === 1).toBe(true);
+                expect( tb('div').first().length === 1).toBe( true );
             });
 
             it("tb('div').first( 'span' ).length === 0", function() {
-                expect( tb('div').first( 'span' ).length === 0 ).toBe(true);
+                expect( tb('div').first( 'span' ).length === 0 ).toBe( true );
             });
 
         });
@@ -236,7 +236,7 @@ describe("tb.core.js", function() {
         describe("get()", function() {
 
             it("tb('div').get('target')", function() {
-                expect( tb('div')[0].get('target').tagName === "DIV" ).toBe(true);
+                expect( tb('div')[0].get('target').tagName === "DIV" ).toBe( true );
             });
 
         });
@@ -244,15 +244,15 @@ describe("tb.core.js", function() {
         describe("last()", function() {
 
             it("tb('div').last() instanceof tb.Selector", function() {
-                expect( tb('div').last() instanceof tb.Selector ).toBe(true);
+                expect( tb('div').last() instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('div').last().length === 1", function() {
-                expect( tb('div').last().length === 1).toBe(true);
+                expect( tb('div').last().length === 1).toBe( true );
             });
 
             it("tb('div').last( 'span' ).length === 0", function() {
-                expect( tb('div').last( 'span' ).length === 0 ).toBe(true);
+                expect( tb('div').last( 'span' ).length === 0 ).toBe( true );
             });
 
         });
@@ -260,19 +260,19 @@ describe("tb.core.js", function() {
         describe("next()", function() {
 
             it("tb('div').next() instanceof tb.Selector", function() {
-                expect( tb('div').next() instanceof tb.Selector ).toBe(true);
+                expect( tb('div').next() instanceof tb.Selector ).toBe( true );
             });
 
             it("tb('div')[0].next().length === 1", function() {
-                expect( tb('div')[0].next().length === 1).toBe(true);
+                expect( tb('div')[0].next().length === 1).toBe( true );
             });
 
             it("tb('div')[4].next().length === 0", function() {
-                expect( tb('div').last().next().length === 0).toBe(true);
+                expect( tb('div').last().next().length === 0).toBe( true );
             });
 
             it("tb('div')[0].next( 'span' ).length === 0", function() {
-                expect( tb('div').next( 'span' ).length === 0 ).toBe(true);
+                expect( tb('div').next( 'span' ).length === 0 ).toBe( true );
             });
 
         });
@@ -280,11 +280,11 @@ describe("tb.core.js", function() {
         describe("not()", function() {
 
             it("tb('div').not('div').length === 0", function() {
-                expect( tb('div').not('div').length === 0).toBe(true);
+                expect( tb('div').not('div').length === 0).toBe( true );
             });
 
             it("tb('div').not('span').length === 5", function() {
-                expect( tb('div').not('span').length === 5).toBe(true);
+                expect( tb('div').not('span').length === 5).toBe( true );
             });
 
         });
@@ -296,11 +296,11 @@ describe("tb.core.js", function() {
                 var testHandler1 = function(){},
                     testHandler2 = function(){};
 
-                tb( app.GrandParent )[0].handlers['testEventName'] = [ testHandler1, testHandler2 ];
+                tb( test.GrandParent )[0].handlers['testEventName'] = [ testHandler1, testHandler2 ];
 
-                tb( app.GrandParent ).off( 'testEventName', testHandler1 ); // remove first handler
+                tb( test.GrandParent ).off( 'testEventName', testHandler1 ); // remove first handler
 
-                expect( tb( app.GrandParent )[0].handlers['testEventName'].length === 1 ).toBe(true);
+                expect( tb( test.GrandParent )[0].handlers['testEventName'].length === 1 ).toBe( true );
 
             });
 
@@ -308,12 +308,12 @@ describe("tb.core.js", function() {
 
                 var testHandler1 = function(){};
 
-                tb( app.GrandParent )[0].handlers['testEventName'] = [ testHandler1 ];
+                tb( test.GrandParent )[0].handlers['testEventName'] = [ testHandler1 ];
 
-                tb( app.GrandParent ).off( 'testEventName', testHandler1 ); // remove first handler
+                tb( test.GrandParent ).off( 'testEventName', testHandler1 ); // remove first handler
 
                 // 'testhandler' array in this.handlers should be gone when the last handler is removed
-                expect( !tb( app.GrandParent )[0].handlers['testEventName'] ).toBe(true);
+                expect( !tb( test.GrandParent )[0].handlers['testEventName'] ).toBe( true );
 
             });
 
@@ -322,12 +322,12 @@ describe("tb.core.js", function() {
                 var testHandler1 = function(){},
                     testHandler2 = function(){};
 
-                tb( app.GrandParent )[0].handlers['testEventName'] = [ testHandler1, testHandler2 ];
+                tb( test.GrandParent )[0].handlers['testEventName'] = [ testHandler1, testHandler2 ];
 
-                tb( app.GrandParent ).off( 'testEventName' );
+                tb( test.GrandParent ).off( 'testEventName' );
 
                 // 'testhandler' array in this.handlers should be gone when the last handler is removed
-                expect( !tb( app.GrandParent )[0].handlers['testEventName'] ).toBe(true);
+                expect( !tb( test.GrandParent )[0].handlers['testEventName'] ).toBe( true );
 
             });
 
@@ -340,7 +340,7 @@ describe("tb.core.js", function() {
                 var testHandler1 = function(){},
                     testHandler2 = function(){};
 
-                tb( app.GrandParent )
+                tb( test.GrandParent )
                     .on(
                         'testEventName',
                         testHandler1
@@ -350,9 +350,9 @@ describe("tb.core.js", function() {
                         testHandler2
                     );
 
-                expect( tb( app.GrandParent )[0].handlers['testEventName'].length === 2 ).toBe(true);
+                expect( tb( test.GrandParent )[0].handlers['testEventName'].length === 2 ).toBe( true );
 
-                delete tb( app.GrandParent )[0].handlers['testEventName'];
+                delete tb( test.GrandParent )[0].handlers['testEventName'];
 
             });
 
@@ -365,7 +365,7 @@ describe("tb.core.js", function() {
                 var testHandler1 = function(){},
                     testHandler2 = function(){};
 
-                tb( app.GrandParent )
+                tb( test.GrandParent )
                     .one(
                         'testEventName',
                         testHandler1
@@ -376,14 +376,14 @@ describe("tb.core.js", function() {
                     );
 
 
-                tb( app.GrandParent )
+                tb( test.GrandParent )
                     .trigger(
                         'testEventName'
                     );
 
-                expect( tb( app.GrandParent )[0].handlers['testEventName'].length === 1 ).toBe(true);
+                expect( tb( test.GrandParent )[0].handlers['testEventName'].length === 1 ).toBe( true );
 
-                delete tb( app.GrandParent )[0].handlers['testEventName'];
+                delete tb( test.GrandParent )[0].handlers['testEventName'];
             });
 
             it("tb('div').one( 'testEventName', pHandler ) only .once handlers", function() {
@@ -391,7 +391,7 @@ describe("tb.core.js", function() {
                 var testHandler1 = function(){},
                     testHandler2 = function(){};
 
-                tb( app.GrandParent )
+                tb( test.GrandParent )
                     .one(
                         'testEventName',
                         testHandler1
@@ -402,14 +402,138 @@ describe("tb.core.js", function() {
                     );
 
 
-                tb( app.GrandParent )
+                tb( test.GrandParent )
                     .trigger(
                         'testEventName'
                     );
 
-                console.log(tb( app.GrandParent )[0].handlers);
-                expect( typeof tb( app.GrandParent )[0].handlers['testEventName'] === 'undefined' ).toBe(true);
+                expect( typeof tb( test.GrandParent )[0].handlers['testEventName'] === 'undefined' ).toBe( true );
 
+            });
+
+        });
+
+        describe("parent()", function() {
+
+            it("tb('body').parent() instanceof tb.Selector", function() {
+                expect( tb('body').parent() instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb( test.Child ).parent().length === 5", function() {
+                expect( tb( test.Child ).parent().length === 5 ).toBe( true );
+            });
+
+            it("tb( test.Child ).parent('div') instanceof tb.Selector", function() {
+                expect( tb( test.Child ).parent('div') instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb( test.Child ).parent('div').length === 5", function() {
+                expect( tb( test.Child ).parent('div').length === 5 ).toBe( true );
+            });
+
+            it("tb( test.Child ).parent('span') instanceof tb.Selector", function() {
+                expect( tb( test.Child ).parent('span') instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb( test.Child ).parent('span').length === 0", function() {
+                expect( tb( test.Child ).parent('span').length === 0 ).toBe( true );
+            });
+
+        });
+
+        describe("parents()", function() {
+
+            it("tb('body').parents() instanceof tb.Selector", function() {
+                expect( tb('body').parents() instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb( test.Child ).parents().length === 6", function() {
+                expect( tb( test.Child ).parents().length === 6 ).toBe( true );
+            });
+
+            it("tb( test.Child ).parents('div') instanceof tb.Selector", function() {
+                expect( tb( test.Child ).parents('div') instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb( test.Child ).parents('div').length === 5", function() {
+                expect( tb( test.Child ).parents('div').length === 5 ).toBe( true );
+            });
+
+            it("tb( test.Child ).parents('span') instanceof tb.Selector", function() {
+                expect( tb( test.Child ).parents('span') instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb( test.Child ).parents('span').length === 0", function() {
+                expect( tb( test.Child ).parents('span').length === 0 ).toBe( true );
+            });
+
+        });
+
+        describe("prev()", function() {
+
+            it("tb('div').prev() instanceof tb.Selector", function() {
+                expect( tb('div').prev() instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb('div')[1].prev().length === 1", function() {
+                expect( tb('div')[1].prev().length === 1).toBe( true );
+            });
+
+            it("tb('div')[0].prev().length === 0", function() {
+                expect( tb('div')[0].prev().length === 0).toBe( true );
+            });
+
+            it("tb('div')[1].prev( 'span' ).length === 0", function() {
+                expect( tb('div')[1].prev( 'span' ).length === 0 ).toBe( true );
+            });
+
+        });
+
+        describe("set()", function() {
+
+            it("tb('body').set('answer', 42 ) instanceof tb.Selector", function() {
+                expect( tb('body').set('answer', 42 )[0]['answer'] === 42 ).toBe( true );
+                delete tb('body')[0]['answer'];
+            });
+
+            it("tb('div').set('answer', 42 ) instanceof tb.Selector", function() {
+                tb('div').set('answer', 42 ); // 5 elements
+
+                [].forEach.call(
+                    tb('div'),
+                    function( tbInstance ){
+                        expect( tbInstance['answer'] === 42 ).toBe( true );
+                        delete tbInstance['answer'];
+                    }
+                );
+            });
+
+        });
+
+        describe("toArray()", function() {
+
+            it("tb('body').toArray() instanceof Array", function() {
+                expect( tb('body').toArray() instanceof Array ).toBe( true );
+            });
+
+            it("tb('body').toArray() .length === 1", function() {
+                expect( tb('body').toArray().length === 1 ).toBe( true );
+            });
+
+            it("tb('div').toArray() instanceof Array", function() {
+                expect( tb('div').toArray() instanceof Array ).toBe( true );
+            });
+
+            it("tb('div').toArray() .length === 5", function() {
+                expect( tb('div').toArray().length === 5 ).toBe( true );
+            });
+
+        });
+
+        describe("trigger()", function() {
+
+            it("(WORK IN PROGRESS)", function() {
+                expect( true ).toBe( true );
             });
 
         });

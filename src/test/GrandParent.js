@@ -1,4 +1,4 @@
-tb.namespace( 'app', true ).GrandParent = (function(){
+tb.namespace( 'test', true ).GrandParent = (function(){
 
     // Constructor
     function GrandParent(){
@@ -14,10 +14,10 @@ tb.namespace( 'app', true ).GrandParent = (function(){
     // Prototype
     GrandParent.prototype = {
 
-        namespace: 'app.GrandParent',
+        namespace: 'test.GrandParent',
 
         'tb.Require': [
-            '/app/GrandParent.css'
+            '/test/GrandParent.css'
         ]
     };
 
@@ -29,7 +29,7 @@ tb.namespace( 'app', true ).GrandParent = (function(){
 
         for ( var x=0; x < 5; x++ ) {
             new tb(
-                'app.Parent',
+                'test.Parent',
                 {},
                 that.target.appendChild( document.createElement("div") )
             );

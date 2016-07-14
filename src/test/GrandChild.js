@@ -1,4 +1,4 @@
-tb.namespace( 'app', true ).GrandChild = (function(){
+tb.namespace( 'test', true ).GrandChild = (function(){
 
     // Constructor
     function GrandChild( pConfig ){
@@ -12,10 +12,10 @@ tb.namespace( 'app', true ).GrandChild = (function(){
 
     // Prototype
     GrandChild.prototype = {
-        namespace: 'app.GrandChild',
+        namespace: 'test.GrandChild',
 
-        'tb.Require': [
-            '/app/GreatGrandChild.js'
+        'tb.Require': [ // predictive load to avoid tb.loader stress
+            '/test/GreatGrandChild.js'
         ]
     };
 
@@ -27,7 +27,7 @@ tb.namespace( 'app', true ).GrandChild = (function(){
 
         for ( var i=0; i<2; i++ ){
             new tb(
-                'app.GreatGrandChild',
+                'test.GreatGrandChild',
                 {},
                 that.target.appendChild( document.createElement("span") )
             );

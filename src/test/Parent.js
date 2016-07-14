@@ -1,4 +1,4 @@
-tb.namespace( 'app', true ).Parent = (function(){
+tb.namespace( 'test', true ).Parent = (function(){
 
     // Constructor
     function Parent( pConfig ){
@@ -12,7 +12,7 @@ tb.namespace( 'app', true ).Parent = (function(){
 
     // Prototype
     Parent.prototype = {
-        namespace: 'app.Parent'
+        namespace: 'test.Parent'
     };
 
     return Parent;
@@ -23,7 +23,7 @@ tb.namespace( 'app', true ).Parent = (function(){
 
         for ( var i=0; i<10; i++ ){
             new tb(
-                'app.Child',
+                'test.Child',
                 {},
                 that.target.appendChild( document.createElement("span") )
             );
