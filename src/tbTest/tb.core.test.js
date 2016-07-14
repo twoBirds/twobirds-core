@@ -50,6 +50,7 @@ describe("tb.core.js", function() {
 
         });
 
+        
         describe("tb( /String/ ) regEx selector tests", function() {
 
             it("tb( /test.Body/ ) is a tb instance", function() {
