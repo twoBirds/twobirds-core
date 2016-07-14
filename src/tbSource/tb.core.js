@@ -78,7 +78,12 @@ tb = (function(){
 
         that.length = 0;
 
-        if ( !pSelector ) return that;
+        if ( !pSelector ){
+            return that;
+        } else if( pSelector instanceof tb ){
+            [].concat.call( that, [ pSelector ] );
+            return that;
+        }
 
         switch (typeof pSelector) {
 
@@ -671,7 +676,12 @@ tb = (function(){
                             }
                         );
 
-                        that.handlers[tbEvent.name] = temp;
+                        if ( !!temp.length ){
+                            that.handlers[ tbEvent.name ] = temp;
+                        } else {
+                            that.handlers[ tbEvent.name ] = null;
+                            delete that.handlers[ tbEvent.name ];
+                        }
 
                     }
 
@@ -749,31 +759,35 @@ tb = (function(){
                 var that = this,
                     eventNames;
 
-                if ( -1 < pEventName.indexOf(' ') ){
-                    eventNames = pEventName.split(' ');
-                } else {
-                    eventNames = [ pEventName ];
-                }
-                pHandler.once = !!pHandler.once || !!pOnce;
+                if ( that instanceof TbSelector ) {
 
-                eventNames.forEach(function(pEventName){
-                    if ( that instanceof TbSelector ) {
+                    walkSelector( that, 'on', arguments );
 
-                        walkSelector( that, 'on', arguments );
+                } else if ( that instanceof tb ) { // either a toplevel or an internal tb object
 
-                    } else if ( that instanceof tb) {
-
-                        if ( !that.handlers ){
-                            that.handlers = {};
-                        }
-
-                        if ( !that.handlers[ pEventName ] ){
-                            that.handlers[ pEventName ] = [];
-                        }
-
-                        that.handlers[ pEventName ].push( pHandler );
+                    if ( -1 < pEventName.indexOf(' ') ){
+                        eventNames = pEventName.split(' ');
+                    } else {
+                        eventNames = [ pEventName ];
                     }
-                });
+                    pHandler.once = !!pHandler.once || !!pOnce;
+
+                    eventNames.forEach(
+                        function(pThisEventName){
+
+                            if ( !that.handlers ){
+                                that.handlers = {};
+                            }
+
+                            if ( !that.handlers[ pThisEventName ] ){
+                                that.handlers[ pThisEventName ] = [];
+                            }
+
+                            that.handlers[ pThisEventName ].push( pHandler );
+                        }
+                    );
+
+                }
 
                 return that;
 
@@ -798,7 +812,7 @@ tb = (function(){
 
                 var that = this;
 
-                that.on( pEventName, pHandler, true ); // add event that is only being triggered once
+                that.on( pEventName, pHandler, true ); // add event handler that will be deleted after first execution
 
                 return that;
 
@@ -824,32 +838,51 @@ tb = (function(){
                     index,
                     eventNames;
 
-                if ( -1 < pEventName.indexOf(' ') ){
-                    eventNames = pEventName.split(' ');
-                } else {
-                    eventNames = [ pEventName ];
+                if ( typeof pEventName === 'undefined' ){
+                    return that;
                 }
-                pHandler.once = !!pHandler.once || !!pOnce;
 
-                eventNames.forEach(function(pEventName){
-                    if ( that instanceof TbSelector ) {
+                if ( that instanceof TbSelector ) {
 
-                        walkSelector( that, 'off', arguments );
+                    walkSelector( that, 'off', arguments );
 
-                    } else if ( that instanceof tb ) { // either a toplevel or an internal tb object
+                } else if ( that instanceof tb ) { // either a toplevel or an internal tb object
 
-                        if ( !that.handlers[ pEventName ] ){
-                            return;
-                        }
-
-                        index = that.handlers[ pEventName].indexOf( pHandler );
-
-                        if ( index > -1 ){
-                            that.handlers[ pEventName ].splice( index, 1 );
-                        }
-
+                    if ( -1 < pEventName.indexOf(' ') ){
+                        eventNames = pEventName.split(' ');
+                    } else {
+                        eventNames = [ pEventName ];
                     }
-                });
+
+                    eventNames
+                        .forEach(
+
+                            function(pThisEventName){
+
+                                if ( !!that.handlers[ pThisEventName ] ){
+                                    if ( typeof pHandler !== 'undefined' ){
+                                        index = that.handlers[ pThisEventName ].indexOf( pHandler );
+
+                                        while ( index > -1 ){
+                                            that.handlers[ pThisEventName ].splice( index, 1 );
+
+                                            index = that.handlers[ pThisEventName ].indexOf( pHandler );
+
+                                            if ( that.handlers[ pThisEventName ].length === 0 ){ // remove array if empty
+                                                that.handlers[ pThisEventName ] = null;
+                                                delete that.handlers[ pThisEventName ];
+                                            }
+
+                                        }
+                                    } else { // remove all handlers
+                                        that.handlers[ pThisEventName ] = null;
+                                        delete that.handlers[ pThisEventName ];
+                                    }
+                                }
+                            }
+                        );
+
+                }
 
                 return that;
 
@@ -1306,65 +1339,13 @@ tb = (function(){
 
                 var that = this,
                     compare = tb( pSelector ).toArray(), // object array to check against
-                    ret,
-                    index;
-
-                if ( that instanceof TbSelector ) {
-                    ret = that;
-                } else {
-                    ret = tb( '' );
-                    [].push.call( ret, that );
-                }
-
-                that.each(
-                    check,
-                    function( key, tbObject ) {
-
-                        index = [].indexOf.call( ret, tbObject );
-                        if (  index > -1 ){
-                            [].splice.apply( ret, [ index, 1 ] );
-                        }
-
-                    }
-                );
-
-                return ret;
-            },
-
-            /**
-             @method is
-             @chainable
-
-             @param [pParam] - any kind of TbSelector parameter
-
-             @return {object} - tb.Selector instance (maybe empty) - for chaining
-
-             is() method
-
-             for each this[0...n] or this as tb() instance,
-             - check them against tbSelector( pParam ) and remove all that DO NOT match
-             - return TbSelector result set (unique)
-             */
-            is: function( pSelector ){
-
-                var that = this,
-                    check = tb( pSelector ).toArray(), // object array to check against
-                    ret,
-                    index;
-
-                if ( that instanceof TbSelector ) {
-                    ret = that;
-                } else {
                     ret = tb();
-                    [].push.call( ret, that );
-                }
 
-                check.forEach(
-                    function( tbObject ) {
-
-                        index = [].indexOf.call( ret, tbObject );
-                        if (  index === -1 ){
-                            [].splice.apply( ret, [ index, 1 ] );
+                [].forEach.call(
+                    that,
+                    function( pTbInstance ) {
+                        if ( compare.indexOf( pTbInstance ) === -1 ){
+                            [].push.call( ret, pTbInstance );
                         }
 
                     }
@@ -1390,8 +1371,7 @@ tb = (function(){
 
                 var that = this,
                     check = tb( pSelector ).toArray(), // object array to check against
-                    ret,
-                    index;
+                    ret;
 
 
                 if ( that instanceof TbSelector ) {
@@ -1404,9 +1384,7 @@ tb = (function(){
                 check.forEach(
                     function( tbObject ) {
 
-                        index = [].indexOf.call( ret, tbObject );
-
-                        if (  index === -1 ){ // unique result set...
+                        if (  -1 === [].indexOf.call( ret, tbObject ) ){ // unique result set...
                             [].push.call( ret, tbObject );
                         }
 
