@@ -13,37 +13,37 @@
 
  @example
 
-    tb.namespace( 'app', true ).GrandParent = (function(){
+     tb.namespace( 'app', true ).GrandParent = (function(){
 
-        // Constructor
-        function GrandParent(){
-            var that = this;
+         // Constructor
+          function GrandParent(){
+             var that = this;
 
-            that.handlers = {
-                init,
-                test
-            };
+             that.handlers = {
+                 init,
+                 test
+             };
 
-        }
+         }
 
-        // Prototype
-        GrandParent.prototype = {
+         // Prototype
+         GrandParent.prototype = {
 
-            namespace: 'app.GrandParent',
+             namespace: 'app.GrandParent',
 
-            'tb.Require': [
-                '/app/GrandParent.css'
-            ]
+             'tb.Require': [
+                  '/app/GrandParent.css'
+             ]
 
-        };
+         };
 
-        return GrandParent;
+         return GrandParent;
 
-        // Private Methods
+         // Private Methods
 
-        // ...
+         // ...
 
-    })();
+     })();
 
  */
 if ( typeof module === 'undefined' ) {
