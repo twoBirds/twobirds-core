@@ -1,4 +1,5 @@
 node_modules
+src/tb
 src/tbMin
 src/tbTest.js
 npm-debug.log

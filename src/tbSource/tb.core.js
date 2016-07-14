@@ -97,12 +97,15 @@ tb = (function(){
                 tb.dom( selector )
                     .forEach(
                         function ( pDomNode ) {
-                            pDomNode.tb
-                                .forEach(
-                                    function( pTbElement ){
-                                        [].push.call( that, pTbElement ); // push dom object to tb selector content
-                                    }
-                                )
+                            if ( !!pDomNode['tb'] ){
+                                Object
+                                    .keys( pDomNode.tb )
+                                    .forEach(
+                                        function( pKey ){
+                                            [].push.call( that, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                        }
+                                    );
+                            }
                         }
                     );
                 break;

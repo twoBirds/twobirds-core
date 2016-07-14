@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.28 - 2016-07-13 */
+/*! twobirds-core - v7.1.31 - 2016-07-14 */
 
 /**
  twoBirds V7 core functionality
@@ -99,12 +99,15 @@ tb = (function(){
                 tb.dom( selector )
                     .forEach(
                         function ( pDomNode ) {
-                            pDomNode.tb
-                                .forEach(
-                                    function( pTbElement ){
-                                        [].push.call( that, pTbElement ); // push dom object to tb selector content
-                                    }
-                                )
+                            if ( !!pDomNode['tb'] ){
+                                Object
+                                    .keys( pDomNode.tb )
+                                    .forEach(
+                                        function( pKey ){
+                                            [].push.call( that, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                        }
+                                    );
+                            }
                         }
                     );
                 break;
@@ -3865,37 +3868,37 @@ if (typeof module === 'undefined' ){ // will not work as a module
 
  @example
 
-    tb.namespace( 'app', true ).GrandParent = (function(){
+     tb.namespace( 'app', true ).GrandParent = (function(){
 
-        // Constructor
-        function GrandParent(){
-            var that = this;
+         // Constructor
+          function GrandParent(){
+             var that = this;
 
-            that.handlers = {
-                init,
-                test
-            };
+             that.handlers = {
+                 init,
+                 test
+             };
 
-        }
+         }
 
-        // Prototype
-        GrandParent.prototype = {
+         // Prototype
+         GrandParent.prototype = {
 
-            namespace: 'app.GrandParent',
+             namespace: 'app.GrandParent',
 
-            'tb.Require': [
-                '/app/GrandParent.css'
-            ]
+             'tb.Require': [
+                  '/app/GrandParent.css'
+             ]
 
-        };
+         };
 
-        return GrandParent;
+         return GrandParent;
 
-        // Private Methods
+         // Private Methods
 
-        // ...
+         // ...
 
-    })();
+     })();
 
  */
 if ( typeof module === 'undefined' ) {

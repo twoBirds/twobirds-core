@@ -19,7 +19,6 @@ tb.namespace( 'app', true ).GrandParent = (function(){
         'tb.Require': [
             '/app/GrandParent.css'
         ]
-
     };
 
     return GrandParent;

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.28</em>
+            <em>API Docs for: v7.1.31</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l3853"><code>src&#x2F;tb&#x2F;tb.js:3853</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l3856"><code>src&#x2F;tb&#x2F;tb.js:3856</code></a>
         </div>
 
 
@@ -124,7 +124,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3853"><code>src&#x2F;tb&#x2F;tb.js:3853</code></a>
+        <a href="../files/src_tb_tb.js.html#l3856"><code>src&#x2F;tb&#x2F;tb.js:3856</code></a>
         </p>
 
 
@@ -174,36 +174,38 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>tb.namespace( 'app', true ).GrandParent = (function(){</p>
-<pre class="code prettyprint"><code>   // Constructor
-   function GrandParent(){
-       var that = this;
+                <pre class="code prettyprint"><code>tb.namespace( 'app', true ).GrandParent = (function(){
 
-       that.handlers = {
-           init,
-           test
-       };
+    // Constructor
+     function GrandParent(){
+        var that = this;
 
-   }
+        that.handlers = {
+            init,
+            test
+        };
 
-   // Prototype
-   GrandParent.prototype = {
+    }
 
-       namespace: 'app.GrandParent',
+    // Prototype
+    GrandParent.prototype = {
 
-       'tb.Require': [
-           '/app/GrandParent.css'
-       ]
+        namespace: 'app.GrandParent',
 
-   };
+        'tb.Require': [
+             '/app/GrandParent.css'
+        ]
 
-   return GrandParent;
+    };
 
-   // Private Methods
+    return GrandParent;
 
-   // ...
+    // Private Methods
+
+    // ...
+
+})();
 </code></pre>
-<p>})();</p>
 
             </div>
         </div>
