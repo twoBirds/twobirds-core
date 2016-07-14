@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.33 - 2016-07-15 */
+/*! twobirds-core - v7.1.34 - 2016-07-15 */
 
 /**
  twoBirds V7 core functionality
@@ -504,6 +504,7 @@ tb = (function(){
             return [];
         }
 
+        
         return {
             // public methods and properties
 

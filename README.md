@@ -109,31 +109,39 @@ The instances usually are saved in a DOM node or in other tB instances.
 
 There are some property names in twoBirds instances that are reserved:
 
-* *target*: ... is the DOM node the tB instance is attached to.
+* *target*: ... is the DOM node or another object ( e.g. a tB instance ) the tB instance is attached to.
 
-* *namespace*: ... is the namespace of the repo object, and should be set accordingly, since both the regEx selector tb(/.../) checks against the "namespace" property.
+* *namespace*: ... is the namespace of the repo object, and should be set accordingly, since the regEx selector tb( /.../ ) checks against the "namespace" property.
 
-* *handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions. Internally they are converted to array anyway.
+* *handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. 
+
+If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions. 
+
+Internally they are converted to array anyway.
 
 As for handlers, there currently is 1 event name that is reserved:
 
 * *init*: function(){ /* all requirement loading for all nestings is done, now construct the object as necessary */ }
 
-This event *will be sent to every newly created instance*, wether there is requirement loading or not. The init handler defined in the class is the "boot method" of every tb instance.
+This event *will be sent to every newly created instance*, wether there is requirement loading or not. 
+
+The init handler defined in the constructor is the "boot method" of every tb instance.
 
 
 
 #### ...special convention inside twoBirds instances:
 
-* If a property name contains a dot ("."), it is treated as a namespace which should contain a JS object or function. twoBirds will check whether this namespace already exists, then ...
+* If a property name contains a dot ("."), it is treated as a namespace which should contain a JS object or function. 
 
-IF NOT: twoBirds will convert the property name to a subdir string like so
+twoBirds will check whether this namespace already exists, then ...
+
+*IF NOT:* twoBirds will convert the property name to a subdir string like so
 
 "app.Body" ==> "/app/Body.js"
 
 ...and starts loading the file.
 
-IF IT EXISTS OR WHEN ITS LOADED:
+*IF IT EXISTS OR WHEN ITS LOADED:*
 
 twoBirds will check whether the namespace points to a function or a plain object.
 
