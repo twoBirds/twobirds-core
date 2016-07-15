@@ -114,9 +114,17 @@ tb.observable = function( pStartValue ){
      tb.namespace( 'app', true )     // force creation of 'app' if it is not there yet
      .Dashboard = function(){ ... }
 
+ @example
+
      // lookup namespace in any object and return value:
-     tb.namespace( 'x.y', null, { x: { y: 42 } } );     // 42
- 
+     tb.namespace( 'x.y', false, { x: { y: 42 } } );     // 42
+
+ @example
+
+     // create content in any object as denominated by namespace:
+     var obj = { x: { y: 42 } }
+     tb.namespace( 'x.z', true, obj ) = 43;     // obj => { x: { y: 42, z: 43 } }
+
  */
 tb.namespace = function( pNamespace, pForceCreation, pObject ){
 
