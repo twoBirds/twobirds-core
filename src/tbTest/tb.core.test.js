@@ -50,7 +50,7 @@ describe("tb.core.js", function() {
 
         });
 
-        
+
         describe("tb( /String/ ) regEx selector tests", function() {
 
             it("tb( /test.Body/ ) is a tb instance", function() {
@@ -533,8 +533,207 @@ describe("tb.core.js", function() {
 
         describe("trigger()", function() {
 
-            it("(WORK IN PROGRESS)", function() {
-                expect( true ).toBe( true );
+            var GPdone = false,
+                Cdone = false,
+                GGCdone = false,
+                handlers = {
+                    GPtestHandler: function(e){    // test handler for Grandparent
+                        GPdone = true;
+                    },
+                    CtestHandler: function(e){     // test handler for Child
+                        Cdone = true;
+                    },
+                    GGCtestHandler: function(e) {   // test handler for GreatGrandChild
+                        GGCdone = true;
+                    }
+                };
+
+            beforeEach(function() {
+
+                // reset done vars
+                GPdone = false;
+                Cdone = false;
+                GGCdone = false;
+
+            });
+
+            afterEach(function() {
+                // clear all handlers from all tb() instances
+                tb('*').off( 'triggerTest' );
+            });
+
+            // trigger a simple local event, no bubbling
+            describe("local event", function() {
+
+                beforeEach(function(done) {
+
+                    // set handlers for testing
+                    tb( test.GreatGrandChild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
+                    tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
+
+                    // trigger event
+                    tb( test.Child )[0].trigger( 'triggerTest' );
+
+                    // set timeout for resolving
+                    setTimeout(
+                        function() {
+                            done();
+                        },
+                        200
+                    );
+
+                });
+
+                it("handler called", function (done) {
+                    expect( Cdone === true ).toBe( true );
+                    done();
+                });
+            });
+
+            // trigger a local event and bubble up
+            describe("local event bubbling up", function() {
+
+                beforeEach(function(done) {
+
+                    // set handlers for testing
+                    tb( test.GreatGrandChild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
+                    tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
+
+                    // trigger event
+                    tb( test.Child )[0].trigger( 'triggerTest', null, 'lu' );
+
+                    // set timeout for resolving
+                    setTimeout(
+                        function() {
+                            done();
+                        },
+                        200
+                    );
+
+                });
+
+                it("handler called", function (done) {
+                    expect( Cdone === true && GPdone === true ).toBe( true );
+                    done();
+                });
+            });
+
+            // trigger event only bubble up
+            describe("event only bubbling up", function() {
+
+                beforeEach(function(done) {
+
+                    // set handlers for testing
+                    tb( test.GreatGrandChild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
+                    tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
+
+                    // trigger event
+                    tb( test.Child )[0].trigger( 'triggerTest', null, 'u' );
+
+                    // set timeout for resolving
+                    setTimeout(
+                        function() {
+                            done();
+                        },
+                        200
+                    );
+
+                });
+
+                it("handler called", function (done) {
+                    expect( Cdone === false && GPdone === true ).toBe( true );
+                    done();
+                });
+            });
+
+            // trigger event only bubble down
+            describe("event only bubbling down", function() {
+
+                beforeEach(function(done) {
+
+                    // set handlers for testing
+                    tb( test.GreatGrandChild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
+                    tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
+
+                    // trigger event
+                    tb( test.Child )[0].trigger( 'triggerTest', null, 'd' );
+
+                    // set timeout for resolving
+                    setTimeout(
+                        function() {
+                            done();
+                        },
+                        1000
+                    );
+
+                });
+
+                it("handler called", function (done) {
+                    expect( Cdone === false && GGCdone === true ).toBe( true );
+                    done();
+                });
+            });
+
+            // trigger event only bubble up and down
+            describe("event bubbling up and down", function() {
+
+                beforeEach(function(done) {
+
+                    // set handlers for testing
+                    tb( test.GreatGrandChild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
+                    tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
+
+                    // trigger event
+                    tb( test.Child )[0].trigger( 'triggerTest', null, 'ud' );
+
+                    // set timeout for resolving
+                    setTimeout(
+                        function() {
+                            done();
+                        },
+                        1000
+                    );
+
+                });
+
+                it("handler called", function (done) {
+                    expect( GPdone === true && GGCdone === true ).toBe( true );
+                    done();
+                });
+            });
+
+            // trigger event local and bubble up and down
+            describe("event local and bubbling up and down", function() {
+
+                beforeEach(function(done) {
+
+                    // set handlers for testing
+                    tb( test.GreatGrandChild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
+                    tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
+
+                    // trigger event
+                    tb( test.Child )[0].trigger( 'triggerTest', null, 'lud' );
+
+                    // set timeout for resolving
+                    setTimeout(
+                        function() {
+                            done();
+                        },
+                        1000
+                    );
+
+                });
+
+                it("handler called", function (done) {
+                    expect( GPdone === true && Cdone === true && GGCdone === true ).toBe( true );
+                    done();
+                });
             });
 
         });

@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.1.34 - 2016-07-15 */
+/*! twobirds-core - v7.1.36 - 2016-07-15 */
 
 /**
  twoBirds V7 core functionality
@@ -504,7 +504,7 @@ tb = (function(){
             return [];
         }
 
-        
+
         return {
             // public methods and properties
 
@@ -698,37 +698,28 @@ tb = (function(){
 
                             // bubble up
                             if ( tbEvent.bubble.indexOf('u') > -1 ){
-                                tbEvent.bubble += tbEvent.bubble.indexOf('l') === -1 ? 'l' : '';
-                                var done = false,
-                                    tbObject = that;
-
-                                while ( !done && !!tbObject ){
-                                    var tbObject = tbObject.parent()[0] || false;
-
-                                    if ( !!tbObject['handlers']
-                                        && !tbEvent.__stopped__
-                                        && tbObject.handlers[ tbEvent.name ]
-                                    ){
-                                        tbObject.trigger( tbEvent );
-                                    }
-                                }
+                                that
+                                    .parent()
+                                    .trigger(
+                                        new tb.Event(
+                                            tbEvent.name,
+                                            tbEvent.data,
+                                            'lu'
+                                        ));
                             }
 
                             // bubble down
                             if ( tbEvent.bubble.indexOf('d') > -1 ){
-                                tbEvent.bubble += tbEvent.bubble.indexOf('l') === -1 ? 'l' : '';
-                                [].map.call(
+                                [].forEach.call(
                                     that.children(),
                                     function( tbObject ){
-                                        if ( tbObject.handlers[ tbEvent.name ] ){
-                                            tbObject.trigger(
-                                                new tb.Event(
-                                                    tbEvent.name,
-                                                    tbEvent.data,
-                                                    tbEvent.bubble
-                                                )
-                                            );
-                                        }
+                                        tbObject.trigger(
+                                            new tb.Event(
+                                                tbEvent.name,
+                                                tbEvent.data,
+                                                'ld'
+                                            )
+                                        );
                                     }
                                 );
                             }
@@ -2945,9 +2936,17 @@ tb.observable = function( pStartValue ){
      tb.namespace( 'app', true )     // force creation of 'app' if it is not there yet
      .Dashboard = function(){ ... }
 
+ @example
+
      // lookup namespace in any object and return value:
-     tb.namespace( 'x.y', null, { x: { y: 42 } } );     // 42
- 
+     tb.namespace( 'x.y', false, { x: { y: 42 } } );     // 42
+
+ @example
+
+     // create content in any object as denominated by namespace:
+     var obj = { x: { y: 42 } }
+     tb.namespace( 'x.z', true, obj ) = 43;     // obj => { x: { y: 42, z: 43 } }
+
  */
 tb.namespace = function( pNamespace, pForceCreation, pObject ){
 

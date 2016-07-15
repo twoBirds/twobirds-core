@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.34</em>
+            <em>API Docs for: v7.1.36</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.1.34 - 2016-07-15 */
+/*! twobirds-core - v7.1.36 - 2016-07-15 */
 
 /**
  twoBirds V7 core functionality
@@ -592,7 +592,7 @@ tb = (function(){
             return [];
         }
 
-        
+
         return {
             // public methods and properties
 
@@ -786,37 +786,28 @@ tb = (function(){
 
                             // bubble up
                             if ( tbEvent.bubble.indexOf(&#x27;u&#x27;) &gt; -1 ){
-                                tbEvent.bubble += tbEvent.bubble.indexOf(&#x27;l&#x27;) === -1 ? &#x27;l&#x27; : &#x27;&#x27;;
-                                var done = false,
-                                    tbObject = that;
-
-                                while ( !done &amp;&amp; !!tbObject ){
-                                    var tbObject = tbObject.parent()[0] || false;
-
-                                    if ( !!tbObject[&#x27;handlers&#x27;]
-                                        &amp;&amp; !tbEvent.__stopped__
-                                        &amp;&amp; tbObject.handlers[ tbEvent.name ]
-                                    ){
-                                        tbObject.trigger( tbEvent );
-                                    }
-                                }
+                                that
+                                    .parent()
+                                    .trigger(
+                                        new tb.Event(
+                                            tbEvent.name,
+                                            tbEvent.data,
+                                            &#x27;lu&#x27;
+                                        ));
                             }
 
                             // bubble down
                             if ( tbEvent.bubble.indexOf(&#x27;d&#x27;) &gt; -1 ){
-                                tbEvent.bubble += tbEvent.bubble.indexOf(&#x27;l&#x27;) === -1 ? &#x27;l&#x27; : &#x27;&#x27;;
-                                [].map.call(
+                                [].forEach.call(
                                     that.children(),
                                     function( tbObject ){
-                                        if ( tbObject.handlers[ tbEvent.name ] ){
-                                            tbObject.trigger(
-                                                new tb.Event(
-                                                    tbEvent.name,
-                                                    tbEvent.data,
-                                                    tbEvent.bubble
-                                                )
-                                            );
-                                        }
+                                        tbObject.trigger(
+                                            new tb.Event(
+                                                tbEvent.name,
+                                                tbEvent.data,
+                                                &#x27;ld&#x27;
+                                            )
+                                        );
                                     }
                                 );
                             }
@@ -3033,9 +3024,17 @@ tb.observable = function( pStartValue ){
      tb.namespace( &#x27;app&#x27;, true )     // force creation of &#x27;app&#x27; if it is not there yet
      .Dashboard = function(){ ... }
 
+ @example
+
      // lookup namespace in any object and return value:
-     tb.namespace( &#x27;x.y&#x27;, null, { x: { y: 42 } } );     // 42
- 
+     tb.namespace( &#x27;x.y&#x27;, false, { x: { y: 42 } } );     // 42
+
+ @example
+
+     // create content in any object as denominated by namespace:
+     var obj = { x: { y: 42 } }
+     tb.namespace( &#x27;x.z&#x27;, true, obj ) = 43;     // obj =&gt; { x: { y: 42, z: 43 } }
+
  */
 tb.namespace = function( pNamespace, pForceCreation, pObject ){
 
