@@ -36,13 +36,39 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
 
  @example
 
-     o = tb.observable( {} );
+     // observable data is not an object
+     var o = tb.observable( 0 );                // numeric
 
-     o(
-        { newData: 'newData' }
-     ); // change observable value
+     o.observe(
+         function( pValue ){                    // callback will be triggered when observable value changes
+             console.log( pValue );
+         },
+         true                                   // true indicates callback will be called only once
+     );
 
-     o.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once
+     o( 5 );                                    // change observable value
+
+ @example
+
+     // observable data is not an object
+     var o = tb.observable( { a: 5 } );         // object
+
+     o.observe(
+         function( pValue ){                    // callback will be triggered when observable value changes
+                     console.log( pValue );
+                 },
+         false                                  // false or no parameter indicates callback will be called
+                                                // whenever the data changes
+     );
+
+     // get data:
+     o( 'a' );       // => 5
+     o();            // => { a: 5 }
+
+     // each of these will trigger the callback since the data changed
+     o( 'a', 6 );               // => { a: 6 }
+     o( 'a.b', { c: 42 } );     // => { a: 6, b: { c: 42 } }
+
 
  */
 tb.observable = function( pStartValue ){
@@ -50,13 +76,46 @@ tb.observable = function( pStartValue ){
     var observedValue = pStartValue;
 
     // make observable function to return in the end
-    var observableFunction = function( pValue ){
+    var observableFunction = function( p1, p2 ){
 
-        if ( pValue !== undefined ){ // value has changed
-            observedValue = pValue;
-            observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-            observableFunction.notify();
+        if ( typeof p1 !== 'undefined' ){
+            if( typeof observedValue === 'object' ) {
+                if ( typeof p1 === 'string' ) {
+                    if (typeof p2 !== 'undefined') {
+                        // value has changed, p1 must be key or namespace ( key1.key2 etc ) for object property
+                        if ( p1.indexOf('.') > -1 ){ // its a namespace
+                            var containerArray = p1.split('.'),
+                                varName = containerArray.pop(),
+                                containerName = containerArray.join('.');
+
+                            tb.namespace( containerName, true, observedValue )[varName] = p2;
+                        } else { // it is a simple property
+                            observedValue[p1] = p2;
+                        }
+                        observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
+                        observableFunction.notify();
+                    } else {
+                        return tb.namespace( p1, false, observedValue );
+                    }
+                } else if ( typeof p1 === 'object' && typeof p2 === 'undefined' ){
+                    observedValue = p1;
+                    observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
+                    observableFunction.notify();
+                } else {
+                    console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!')
+                }
+                return observedValue;
+            } else {
+                if ( typeof p1 !== 'undefined' ){
+                    // value has changed
+                    observedValue = p1;
+                    observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
+                    observableFunction.notify();
+                }
+                return observedValue;
+            }
         }
+
         return observedValue;
     };
 
@@ -142,7 +201,7 @@ tb.namespace = function( pNamespace, pForceCreation, pObject ){
 
         if ( namespaceArray.length < 2 ){
 
-            return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : false;
+            return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
 
         } else {
 
@@ -151,7 +210,7 @@ tb.namespace = function( pNamespace, pForceCreation, pObject ){
                 namespaceArray.shift();
                 return walk( o, namespaceArray );
             } else {
-                return false;
+                return;
             }
 
         }

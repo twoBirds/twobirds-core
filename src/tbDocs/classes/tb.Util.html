@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.36</em>
+            <em>API Docs for: v7.1.37</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -282,7 +282,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2987"><code>src&#x2F;tb&#x2F;tb.js:2987</code></a>
+        <a href="../files/src_tb_tb.js.html#l3046"><code>src&#x2F;tb&#x2F;tb.js:3046</code></a>
         </p>
 
 
@@ -369,7 +369,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3140"><code>src&#x2F;tb&#x2F;tb.js:3140</code></a>
+        <a href="../files/src_tb_tb.js.html#l3199"><code>src&#x2F;tb&#x2F;tb.js:3199</code></a>
         </p>
 
 
@@ -450,7 +450,7 @@ always a deep copy</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3127"><code>src&#x2F;tb&#x2F;tb.js:3127</code></a>
+        <a href="../files/src_tb_tb.js.html#l3186"><code>src&#x2F;tb&#x2F;tb.js:3186</code></a>
         </p>
 
 
@@ -501,7 +501,7 @@ always a deep copy</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3062"><code>src&#x2F;tb&#x2F;tb.js:3062</code></a>
+        <a href="../files/src_tb_tb.js.html#l3121"><code>src&#x2F;tb&#x2F;tb.js:3121</code></a>
         </p>
 
 
@@ -587,7 +587,7 @@ function(){
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2919"><code>src&#x2F;tb&#x2F;tb.js:2919</code></a>
+        <a href="../files/src_tb_tb.js.html#l2978"><code>src&#x2F;tb&#x2F;tb.js:2978</code></a>
         </p>
 
 
@@ -753,13 +753,35 @@ tb.namespace( 'x.z', true, obj ) = 43;     // obj =&gt; { x: { y: 42, z: 43 } }
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>o = tb.observable( {} );
+                <pre class="code prettyprint"><code>// observable data is not an object
+var o = tb.observable( 0 );                // numeric
 
-o(
-   { newData: 'newData' }
-); // change observable value
+o.observe(
+    function( pValue ){                    // callback will be triggered when observable value changes
+        console.log( pValue );
+    },
+    true                                   // true indicates callback will be called only once
+);
 
-o.observe( function(){ ... }, true ); // will be triggered when observable value changes, true indicates only once
+o( 5 );                                    // change observable value</code></pre>
+<pre class="code prettyprint"><code>// observable data is not an object
+var o = tb.observable( { a: 5 } );         // object
+
+o.observe(
+    function( pValue ){                    // callback will be triggered when observable value changes
+                console.log( pValue );
+            },
+    false                                  // false or no parameter indicates callback will be called
+                                           // whenever the data changes
+);
+
+// get data:
+o( 'a' );       // =&gt; 5
+o();            // =&gt; { a: 5 }
+
+// each of these will trigger the callback since the data changed
+o( 'a', 6 );               // =&gt; { a: 6 }
+o( 'a.b', { c: 42 } );     // =&gt; { a: 6, b: { c: 42 } }
 </code></pre>
 
             </div>
@@ -792,7 +814,7 @@ o.observe( function(){ ... }, true ); // will be triggered when observable value
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3181"><code>src&#x2F;tb&#x2F;tb.js:3181</code></a>
+        <a href="../files/src_tb_tb.js.html#l3240"><code>src&#x2F;tb&#x2F;tb.js:3240</code></a>
         </p>
 
 
@@ -875,7 +897,7 @@ if typeof pWhat is object or array, it will be done with all strings contained t
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3237"><code>src&#x2F;tb&#x2F;tb.js:3237</code></a>
+        <a href="../files/src_tb_tb.js.html#l3296"><code>src&#x2F;tb&#x2F;tb.js:3296</code></a>
         </p>
 
 
@@ -1061,7 +1083,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3412"><code>src&#x2F;tb&#x2F;tb.js:3412</code></a>
+        <a href="../files/src_tb_tb.js.html#l3471"><code>src&#x2F;tb&#x2F;tb.js:3471</code></a>
         </p>
 
 
@@ -1100,7 +1122,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3540"><code>src&#x2F;tb&#x2F;tb.js:3540</code></a>
+        <a href="../files/src_tb_tb.js.html#l3599"><code>src&#x2F;tb&#x2F;tb.js:3599</code></a>
         </p>
 
 
@@ -1164,7 +1186,7 @@ container for twoBirds status observables</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3044"><code>src&#x2F;tb&#x2F;tb.js:3044</code></a>
+        <a href="../files/src_tb_tb.js.html#l3103"><code>src&#x2F;tb&#x2F;tb.js:3103</code></a>
         </p>
 
 
@@ -1190,7 +1212,7 @@ observable containing the number of ( script load operations + xHr requests ) cu
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3051"><code>src&#x2F;tb&#x2F;tb.js:3051</code></a>
+        <a href="../files/src_tb_tb.js.html#l3110"><code>src&#x2F;tb&#x2F;tb.js:3110</code></a>
         </p>
 
 
