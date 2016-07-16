@@ -193,8 +193,12 @@ describe("tb.utils.js", function() {
 
         describe("tb.status {}", function() {
 
-            it("tb.status {} present and typeof 'object'", function() {
+            it("tb.status present and typeof 'object'", function() {
                 expect( typeof tb.status === 'object' ).toBe(true);
+            });
+
+            it("tb.status.loadCount present and typeof 'function'", function() {
+                expect( typeof tb.status.loadCount === 'function' ).toBe(true);
             });
 
         });
@@ -205,6 +209,10 @@ describe("tb.utils.js", function() {
                 expect( typeof tb.idle === 'function' ).toBe(true);
             });
 
+            it("you wouldnt be here if it wouldnt work, since it is needed to boot the test page", function() {
+                expect( true ).toBe(true);
+            });
+
         });
 
         describe("tb.getId()", function() {
@@ -213,12 +221,40 @@ describe("tb.utils.js", function() {
                 expect( typeof tb.getId === 'function' ).toBe(true);
             });
 
+            it("returns string result", function() {
+                expect( typeof tb.getId() === 'string' ).toBe(true);
+            });
+
         });
 
         describe("tb.extend()", function() {
 
+            var o1 = {},
+                o2 = { a: 1 },
+                o3 = { b: 1 };
+
+            beforeEach(function(){
+                o1 = {};
+            });
+
             it("tb.extend() present and typeof 'function'", function() {
                 expect( typeof tb.extend === 'function' ).toBe(true);
+            });
+
+            it("return to be first parameter object", function() {
+                var t = tb.extend( o1, o2 );
+                expect( t === o1 ).toBe(true);
+            });
+
+            it("result object to be extended", function() {
+                var t = tb.extend( o1, o2 );
+                expect( o1.a === 1 ).toBe(true);
+            });
+
+            it("test for multiple objects", function() {
+                var t = tb.extend( o1, o2, o3 );
+                expect( o1.a === 1 ).toBe(true);
+                expect( o1.b === 1 ).toBe(true);
             });
 
         });
