@@ -125,6 +125,70 @@ describe("tb.utils.js", function() {
                 expect( typeof tb.bind === 'function' ).toBe(true);
             });
 
+            afterEach(function() {
+                tb.dom( 'body > .test-grandchild' ).remove();
+            });
+
+            describe("on boot", function() {
+
+                var o = {};
+
+                beforeEach(function () {
+                    o = { a: 42, b:{ c: 99 } };
+                });
+
+                it("you wouldnt be here if it wouldnt work", function() {
+                    expect( true ).toBe(true);
+                });
+
+            });
+
+            describe("on demand", function() {
+
+                it("add a tb instance to DOM *without* selector in .bind() call", function() {
+                    var d = document.createElement( 'div' );
+
+                    d.setAttribute('data-tb', 'test.GrandChild');
+
+                    document.body.appendChild( d );
+
+                    tb.bind();
+
+                    expect( !!tb('body').children().last()[0].target.tb === true ).toBe(true);
+                    expect( tb('body').children().last()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
+                });
+
+                it("add a tb instance to DOM *with* selector in .bind() call", function() {
+                    var d = document.createElement( 'div' );
+
+                    d.setAttribute('data-tb', 'test.GrandChild');
+
+                    document.body.appendChild( d );
+
+                    tb.bind( document.body.lastElementChild );
+
+                    expect( !!tb('body').children().last()[0].target.tb === true ).toBe(true);
+                    expect( tb('body').children().last()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
+                });
+
+                it("add several tb instances to DOM *without* selector in .bind() call", function() {
+                    var d1 = document.createElement( 'div' ),
+                        d2 = document.createElement( 'div' );
+
+                    d1.setAttribute('data-tb', 'test.GrandChild');
+                    d2.setAttribute('data-tb', 'test.GrandChild');
+
+                    document.body.appendChild( d1 );
+                    document.body.appendChild( d2 );
+
+                    tb.bind();
+
+                    expect( tb('body').children().last()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
+                    expect( tb('body').children().last().prev()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
+                });
+
+            });
+
         });
 
         describe("tb.status {}", function() {

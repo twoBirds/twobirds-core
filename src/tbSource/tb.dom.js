@@ -300,6 +300,7 @@ if (typeof module === 'undefined' ){
                 parent: parent,
                 parents: parents,
                 push: push,
+                remove: remove,
                 removeAttr: removeAttr,
                 show: show,
                 toArray: toArray,
@@ -439,6 +440,26 @@ if (typeof module === 'undefined' ){
                             }
 
                         }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method remove
+             @chainable
+
+             @param [pDomElements] - a tb.dom() selector result set
+
+             removes all elements in tb.dom() result set from DOM
+             */
+            function remove( pDomNodes ){
+                var that = this;
+
+                that.forEach(
+                    function( pDomNode ){
+                        pDomNode.parentNode.removeChild( pDomNode );
                     }
                 );
 
