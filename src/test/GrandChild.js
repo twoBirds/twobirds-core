@@ -1,37 +1,39 @@
-tb.namespace( 'test', true ).GrandChild = (function(){
+tb.namespace( 'test.GrandChild' ).set(
+    (function(){
 
-    // Constructor
-    function GrandChild( pConfig ){
-        var that = this;
+        // Constructor
+        function GrandChild( pConfig ){
+            var that = this;
 
-        that.handlers = {
-            init
+            that.handlers = {
+                init
+            };
+
+        }
+
+        // Prototype
+        GrandChild.prototype = {
+            namespace: 'test.GrandChild',
+
+            'tb.Require': [ // predictive load to avoid tb.loader stress
+                '/test/GreatGrandChild.js'
+            ]
         };
 
-    }
+        return GrandChild;
 
-    // Prototype
-    GrandChild.prototype = {
-        namespace: 'test.GrandChild',
+        // Methods
+        function init( e ){
+            var that = this;
 
-        'tb.Require': [ // predictive load to avoid tb.loader stress
-            '/test/GreatGrandChild.js'
-        ]
-    };
-
-    return GrandChild;
-
-    // Methods
-    function init( e ){
-        var that = this;
-
-        for ( var i=0; i<2; i++ ){
-            new tb(
-                'test.GreatGrandChild',
-                {},
-                that.target.appendChild( document.createElement("span") )
-            );
+            for ( var i=0; i<2; i++ ){
+                new tb(
+                    'test.GreatGrandChild',
+                    {},
+                    that.target.appendChild( document.createElement("span") )
+                );
+            }
         }
-    }
 
-})();
+    })()    
+);

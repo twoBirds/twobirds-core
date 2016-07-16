@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.37</em>
+            <em>API Docs for: v7.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l2828"><code>src&#x2F;tb&#x2F;tb.js:2828</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l2830"><code>src&#x2F;tb&#x2F;tb.js:2830</code></a>
         </div>
 
 
@@ -124,7 +124,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2828"><code>src&#x2F;tb&#x2F;tb.js:2828</code></a>
+        <a href="../files/src_tb_tb.js.html#l2830"><code>src&#x2F;tb&#x2F;tb.js:2830</code></a>
         </p>
 
 
@@ -282,7 +282,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3046"><code>src&#x2F;tb&#x2F;tb.js:3046</code></a>
+        <a href="../files/src_tb_tb.js.html#l3076"><code>src&#x2F;tb&#x2F;tb.js:3076</code></a>
         </p>
 
 
@@ -369,7 +369,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3199"><code>src&#x2F;tb&#x2F;tb.js:3199</code></a>
+        <a href="../files/src_tb_tb.js.html#l3229"><code>src&#x2F;tb&#x2F;tb.js:3229</code></a>
         </p>
 
 
@@ -450,7 +450,7 @@ always a deep copy</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3186"><code>src&#x2F;tb&#x2F;tb.js:3186</code></a>
+        <a href="../files/src_tb_tb.js.html#l3216"><code>src&#x2F;tb&#x2F;tb.js:3216</code></a>
         </p>
 
 
@@ -501,7 +501,7 @@ always a deep copy</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3121"><code>src&#x2F;tb&#x2F;tb.js:3121</code></a>
+        <a href="../files/src_tb_tb.js.html#l3151"><code>src&#x2F;tb&#x2F;tb.js:3151</code></a>
         </p>
 
 
@@ -566,9 +566,6 @@ function(){
                         <code>pNamespace</code>
                 </li>
                 <li class="arg">
-                        <code class="optional">[pForceCreation]</code>
-                </li>
-                <li class="arg">
                         <code class="optional">[pObject]</code>
                 </li>
             </ul><span class="paren">)</span>
@@ -613,20 +610,6 @@ function(){
 
                 </li>
                 <li class="param">
-                        <code class="param-name optional">[pForceCreation]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>true =&gt; force creation of namespace object if it didnt exist before</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
                         <code class="param-name optional">[pObject]</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                         <span class="flag optional" title="This parameter is optional.">optional</span>
@@ -648,7 +631,7 @@ function(){
 
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <p>namespaceObject</p>
+                    <p>instance of internal Namespace class</p>
 <p>tb.namespace() function</p>
 
             </div>
@@ -660,16 +643,15 @@ function(){
 
             <div class="example-content">
                 <pre class="code prettyprint"><code>// lookup [window] namespace:
-tb.namespace( 'app.Dashboard' ); // gets the constructor for dashboard
+tb.namespace( 'test.GrandParent' ); // gets the constructor for the GrandParent from DOM
 
 // in a constructor force namespace creation:
-tb.namespace( 'app', true )     // force creation of 'app' if it is not there yet
-.Dashboard = function(){ ... }</code></pre>
+tb.namespace( 'app.prop' ).set( 'testVal' );     // force creation of 'app.prop' if it doesnt exist, set value to 'testVal'</code></pre>
 <pre class="code prettyprint"><code>// lookup namespace in any object and return value:
-tb.namespace( 'x.y', false, { x: { y: 42 } } );     // 42</code></pre>
+tb.namespace( 'x.y', { x: { y: 42 } } ).get();     // 42</code></pre>
 <pre class="code prettyprint"><code>// create content in any object as denominated by namespace:
 var obj = { x: { y: 42 } }
-tb.namespace( 'x.z', true, obj ) = 43;     // obj =&gt; { x: { y: 42, z: 43 } }
+tb.namespace( 'x.z', obj ).set( 43 );     // obj =&gt; { x: { y: 42, z: 43 } }
 </code></pre>
 
             </div>
@@ -699,7 +681,7 @@ tb.namespace( 'x.z', true, obj ) = 43;     // obj =&gt; { x: { y: 42, z: 43 } }
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2846"><code>src&#x2F;tb&#x2F;tb.js:2846</code></a>
+        <a href="../files/src_tb_tb.js.html#l2848"><code>src&#x2F;tb&#x2F;tb.js:2848</code></a>
         </p>
 
 
@@ -814,7 +796,7 @@ o( 'a.b', { c: 42 } );     // =&gt; { a: 6, b: { c: 42 } }
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3240"><code>src&#x2F;tb&#x2F;tb.js:3240</code></a>
+        <a href="../files/src_tb_tb.js.html#l3270"><code>src&#x2F;tb&#x2F;tb.js:3270</code></a>
         </p>
 
 
@@ -897,7 +879,7 @@ if typeof pWhat is object or array, it will be done with all strings contained t
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3296"><code>src&#x2F;tb&#x2F;tb.js:3296</code></a>
+        <a href="../files/src_tb_tb.js.html#l3326"><code>src&#x2F;tb&#x2F;tb.js:3326</code></a>
         </p>
 
 
@@ -1083,7 +1065,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3471"><code>src&#x2F;tb&#x2F;tb.js:3471</code></a>
+        <a href="../files/src_tb_tb.js.html#l3501"><code>src&#x2F;tb&#x2F;tb.js:3501</code></a>
         </p>
 
 
@@ -1122,7 +1104,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3599"><code>src&#x2F;tb&#x2F;tb.js:3599</code></a>
+        <a href="../files/src_tb_tb.js.html#l3629"><code>src&#x2F;tb&#x2F;tb.js:3629</code></a>
         </p>
 
 
@@ -1186,7 +1168,7 @@ container for twoBirds status observables</span>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3103"><code>src&#x2F;tb&#x2F;tb.js:3103</code></a>
+        <a href="../files/src_tb_tb.js.html#l3133"><code>src&#x2F;tb&#x2F;tb.js:3133</code></a>
         </p>
 
 
@@ -1212,7 +1194,7 @@ observable containing the number of ( script load operations + xHr requests ) cu
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3110"><code>src&#x2F;tb&#x2F;tb.js:3110</code></a>
+        <a href="../files/src_tb_tb.js.html#l3140"><code>src&#x2F;tb&#x2F;tb.js:3140</code></a>
         </p>
 
 

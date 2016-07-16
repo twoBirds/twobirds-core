@@ -22,47 +22,49 @@ test.EmbeddedObject2.prototype = {
 };
 
 
-tb.namespace( 'test', true ).Child = (function(){
+tb.namespace( 'test.Child').set(
+    (function(){
 
-    // Constructor
-    function Child( pConfig ){
-        var that = this;
+        // Constructor
+        function Child( pConfig ){
+            var that = this;
 
-        that.handlers = {
-            init,
-            test
+            that.handlers = {
+                init,
+                test
+            };
+
+        }
+
+        // Prototype
+        Child.prototype = {
+            namespace: 'test.Child',
+            'test.EmbeddedObject1': {}
         };
 
-    }
+        return Child;
 
-    // Prototype
-    Child.prototype = {
-        namespace: 'test.Child',
-        'test.EmbeddedObject1': {}
-    };
+        // Methods
+        function init( e ){
+            var that = this;
 
-    return Child;
-
-    // Methods
-    function init( e ){
-        var that = this;
-
-        for ( var i=0; i<3; i++ ){
-            new tb(
-                'test.GrandChild',
-                {},
-                that.target.appendChild( document.createElement("span") )
-            );
+            for ( var i=0; i<3; i++ ){
+                new tb(
+                    'test.GrandChild',
+                    {},
+                    that.target.appendChild( document.createElement("span") )
+                );
+            }
         }
-    }
 
-    function test( e ){
-        var that = this;
+        function test( e ){
+            var that = this;
 
-        if ( e.data.namespace === 'test.EmbeddedObject2' ){
-            e.stopPropagation();
+            if ( e.data.namespace === 'test.EmbeddedObject2' ){
+                e.stopPropagation();
+            }
+            //console.info( 'child ::test()' );
         }
-        //console.info( 'child ::test()' );
-    }
 
-})();
+    })()    
+);

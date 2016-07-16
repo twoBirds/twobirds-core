@@ -99,6 +99,8 @@ tb = (function(){
                     }),
                     selector = selector.join(' ');
 
+                //console.log( pSelector, selector );
+
                 tb.dom( selector )
                     .forEach(
                         function ( pDomNode ) {
@@ -286,7 +288,7 @@ tb = (function(){
         // instanciate tb instance OR return tb.Selector result set
         if ( that instanceof tb ) {    // called as constructor, create and return tb object instance
             var isNamespace = typeof arguments[0] === 'string',
-                tbClass =  isNamespace ? tb.namespace( arguments[0] ) : arguments[0],
+                tbClass =  isNamespace ? tb.namespace( arguments[0] ).get() : arguments[0],
                 tbInstance,
                 fileName,
                 tempInstance; // empty tb object, used as handler store

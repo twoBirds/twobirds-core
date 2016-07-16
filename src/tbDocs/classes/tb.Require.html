@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.1.37</em>
+            <em>API Docs for: v7.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l3893"><code>src&#x2F;tb&#x2F;tb.js:3893</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l3923"><code>src&#x2F;tb&#x2F;tb.js:3923</code></a>
         </div>
 
 
@@ -124,7 +124,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3893"><code>src&#x2F;tb&#x2F;tb.js:3893</code></a>
+        <a href="../files/src_tb_tb.js.html#l3923"><code>src&#x2F;tb&#x2F;tb.js:3923</code></a>
         </p>
 
 
@@ -174,38 +174,39 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>tb.namespace( 'app', true ).GrandParent = (function(){
+                <pre class="code prettyprint"><code>tb.namespace( 'app.GrandParent' ).set( 
+    (function(){
 
-    // Constructor
-     function GrandParent(){
-        var that = this;
+         // Constructor
+         function GrandParent(){
+             var that = this;
 
-        that.handlers = {
-            init,
-            test
-        };
+             that.handlers = {
+                 init,
+                 test
+             };
 
-    }
+         }
 
-    // Prototype
-    GrandParent.prototype = {
+         // Prototype
+         GrandParent.prototype = {
 
-        namespace: 'app.GrandParent',
+             namespace: 'app.GrandParent',
 
-        'tb.Require': [
-             '/app/GrandParent.css'
-        ]
+             'tb.Require': [
+                  '/app/GrandParent.css'
+             ]
 
-    };
+         };
 
-    return GrandParent;
+         return GrandParent;
 
-    // Private Methods
+         // Private Methods
 
-    // ...
+         // ...
 
-})();
-</code></pre>
+    })()
+);</code></pre>
 
             </div>
         </div>

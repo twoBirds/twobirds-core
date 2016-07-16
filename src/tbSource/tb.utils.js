@@ -78,29 +78,28 @@ tb.observable = function( pStartValue ){
     // make observable function to return in the end
     var observableFunction = function( p1, p2 ){
 
+        function notify(){
+            observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
+            observableFunction.notify();
+        }
+
         if ( typeof p1 !== 'undefined' ){
             if( typeof observedValue === 'object' ) {
                 if ( typeof p1 === 'string' ) {
                     if (typeof p2 !== 'undefined') {
                         // value has changed, p1 must be key or namespace ( key1.key2 etc ) for object property
                         if ( p1.indexOf('.') > -1 ){ // its a namespace
-                            var containerArray = p1.split('.'),
-                                varName = containerArray.pop(),
-                                containerName = containerArray.join('.');
-
-                            tb.namespace( containerName, true, observedValue )[varName] = p2;
+                            tb.namespace( p1, observedValue ).set( p2 );
                         } else { // it is a simple property
                             observedValue[p1] = p2;
                         }
-                        observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-                        observableFunction.notify();
+                        notify();
                     } else {
-                        return tb.namespace( p1, false, observedValue );
+                        return tb.namespace( p1, observedValue ).get();
                     }
                 } else if ( typeof p1 === 'object' && typeof p2 === 'undefined' ){
                     observedValue = p1;
-                    observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-                    observableFunction.notify();
+                    notify();
                 } else {
                     console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!')
                 }
@@ -109,8 +108,7 @@ tb.observable = function( pStartValue ){
                 if ( typeof p1 !== 'undefined' ){
                     // value has changed
                     observedValue = p1;
-                    observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-                    observableFunction.notify();
+                    notify();
                 }
                 return observedValue;
             }
@@ -157,50 +155,68 @@ tb.observable = function( pStartValue ){
  @method  tb.namespace
 
  @param {string} pNamespace
- @param {boolean} [pForceCreation] - true => force creation of namespace object if it didnt exist before
  @param {object} [pObject] - object to scan
 
- @return {Object}        namespaceObject
+ @return {Object} instance of internal Namespace class
 
  tb.namespace() function
 
  @example
 
      // lookup [window] namespace:
-     tb.namespace( 'app.Dashboard' ); // gets the constructor for dashboard
+     tb.namespace( 'test.GrandParent' ); // gets the constructor for the GrandParent from DOM
 
      // in a constructor force namespace creation:
-     tb.namespace( 'app', true )     // force creation of 'app' if it is not there yet
-     .Dashboard = function(){ ... }
+     tb.namespace( 'app.prop' ).set( 'testVal' );     // force creation of 'app.prop' if it doesnt exist, set value to 'testVal'
 
  @example
 
      // lookup namespace in any object and return value:
-     tb.namespace( 'x.y', false, { x: { y: 42 } } );     // 42
+     tb.namespace( 'x.y', { x: { y: 42 } } ).get();     // 42
 
  @example
 
      // create content in any object as denominated by namespace:
      var obj = { x: { y: 42 } }
-     tb.namespace( 'x.z', true, obj ) = 43;     // obj => { x: { y: 42, z: 43 } }
+     tb.namespace( 'x.z', obj ).set( 43 );     // obj => { x: { y: 42, z: 43 } }
 
  */
-tb.namespace = function( pNamespace, pForceCreation, pObject ){
+tb.namespace = (function(){
 
-    if ( typeof pNamespace !== 'string' ){
-        return false;
+    // constructor
+    function Namespace( pNamespace, pObject){
+        var that = this;
+
+        that.namespace = pNamespace;
+        that.target = pObject;
+        that.namespaceArray =  pNamespace.indexOf( '.' ) ? pNamespace.split('.') : pNameSpace;
+        that.forceCreation = false;
     }
 
-    var namespaceArray = pNamespace.split('.');
+    // prototype
+    Namespace.prototype = {
+        get: get,
+        set: set,
+        _walk: _walk
+    };
 
-    var walk = function( o, namespaceArray ) {
+    return function ( pNamespace, pObject ){
+        return new Namespace( pNamespace, pObject );
+    };
 
-        if ( !o[ namespaceArray[0] ] && !!pForceCreation ) {
+    // methods
+    function _walk( o, namespaceArray ) {
+        var that = this;
+
+        if ( !o[ namespaceArray[0] ] && !!this.forceCreation ) {
             o[ namespaceArray[0] ] = {};
         }
 
         if ( namespaceArray.length < 2 ){
 
+            if( that.forceCreation && that.value ){ // if value is present it is called with set()
+                o[ namespaceArray[0] ] = that.value;
+            }
             return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
 
         } else {
@@ -208,18 +224,30 @@ tb.namespace = function( pNamespace, pForceCreation, pObject ){
             if ( o.hasOwnProperty( namespaceArray[0] ) ) {
                 o = o[ namespaceArray[0] ];
                 namespaceArray.shift();
-                return walk( o, namespaceArray );
+                return that._walk( o, namespaceArray );
             } else {
                 return;
             }
 
         }
-    };
+    }
 
-    return walk( !pObject ? window : pObject, namespaceArray );
+    function get(){
+        var that = this;
 
-};
+        that.forceCreation = false;
+        return that._walk( !that.target ? window : that.target, that.namespaceArray );
+    }
 
+    function set( pValue ){
+        var that = this;
+
+        that.value = pValue;
+        that.forceCreation = true;
+        return that._walk( !that.target ? window : that.target, that.namespaceArray );
+    }
+
+})();
 
 /**
  @method tb.bind
@@ -438,7 +466,7 @@ tb.parse = function( pWhat, pParse ){
                 .forEach(
                     function (pPropname) {
                         var propname = pPropname.substr(1, pPropname.length - 2),
-                            propValue = tb.namespace(propname, false, pParse) || propname + ' not found!';
+                            propValue = tb.namespace(propname, pParse).get() || propname + ' not found!';
 
                         pWhat = pWhat.replace( pPropname, propValue );
                     }
