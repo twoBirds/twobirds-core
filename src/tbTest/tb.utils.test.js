@@ -137,7 +137,7 @@ describe("tb.utils.js", function() {
                     o = { a: 42, b:{ c: 99 } };
                 });
 
-                it("you wouldnt be here if it wouldnt work", function() {
+                it("you wouldnt be here if it wouldnt work, since it is needed to boot the test page", function() {
                     expect( true ).toBe(true);
                 });
 
@@ -263,6 +263,38 @@ describe("tb.utils.js", function() {
 
             it("tb.parse() present and typeof 'function'", function() {
                 expect( typeof tb.parse === 'function' ).toBe(true);
+            });
+
+            it("parse a simple string", function() {
+                var t = tb.parse( '{test}', { 'test': 'result' } );
+                expect( t === 'result' ).toBe(true);
+            });
+
+            it("parse an object", function() {
+                var o = tb.parse( { s1: '{test1}', s2: '{test2}'}, { 'test1': 'result1', 'test2': 'result2' } );
+                expect( o.s1 === 'result1' && o.s2 === 'result2' ).toBe(true);
+            });
+
+            it("parse an array", function() {
+                var a = [ '{test1}', '{test2}' ],
+                    o = tb.parse( a, { 'test1': 'result1', 'test2': 'result2' } );
+                expect( a[0] === 'result1' && a[1] === 'result2' ).toBe(true);
+            });
+
+            it("parse a complex nested structure: object in array", function() {
+                var a = [ '{test1}', { s2: '{test2}' } ],
+                    a = tb.parse( a, { 'test1': 'result1', 'test2': 'result2' } );
+
+                expect( a instanceof Array ).toBe(true);
+                expect( a[0] === 'result1' && a[1].s2 === 'result2' ).toBe(true);
+            });
+
+            it("parse a complex nested structure: array in object", function() {
+                var o = { s1: '{test1}', a: [ '{test2}' ] },
+                    o = tb.parse( o, { 'test1': 'result1', 'test2': 'result2' } );
+
+                expect( typeof o === 'object' ).toBe(true);
+                expect( o.s1 === 'result1' && o.a[0] === 'result2' ).toBe(true);
             });
 
         });
