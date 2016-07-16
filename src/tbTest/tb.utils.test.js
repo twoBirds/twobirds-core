@@ -161,8 +161,8 @@ describe("tb.utils.js", function() {
 
         describe("tb.parse()", function() {
 
-            it("tb.extend() present and typeof 'function'", function() {
-                expect( typeof tb.extend === 'function' ).toBe(true);
+            it("tb.parse() present and typeof 'function'", function() {
+                expect( typeof tb.parse === 'function' ).toBe(true);
             });
 
         });
