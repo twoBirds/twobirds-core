@@ -1720,7 +1720,7 @@ if (typeof module === 'undefined' ){
                 reduce: _mapArrayMethod( 'reduce' ),
 
                 /**
-                 @method reduce
+                 @method reduceRight
 
                  @return {object} - tb.dom() result set, may be empty
 
@@ -1774,7 +1774,7 @@ if (typeof module === 'undefined' ){
                 splice: _mapArrayMethod( 'splice' ),
 
                 /**
-                 @method some
+                 @method unshift
 
                  @return {object} - tb.dom() result set, may be empty
 

@@ -1058,8 +1058,8 @@ if (typeof module === 'undefined' ){
              */
             function removeClass(pClassName) {
 
-                var that = this
-                pClasses = pClassName.split(' ');
+                var that = this,
+                    pClasses = pClassName.split(' ');
 
                 that.forEach(
                     function (pDomNode) {

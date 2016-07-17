@@ -760,7 +760,7 @@
             "file": "src/tb/tb.js",
             "line": 1722,
             "itemtype": "method",
-            "name": "reduce",
+            "name": "reduceRight",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight\">reduceRight</a>",
                 "type": "Object"
@@ -826,7 +826,7 @@
             "file": "src/tb/tb.js",
             "line": 1776,
             "itemtype": "method",
-            "name": "some",
+            "name": "unshift",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift\">unshift</a>",
                 "type": "Object"
