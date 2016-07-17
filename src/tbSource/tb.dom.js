@@ -42,7 +42,7 @@ if (typeof module === 'undefined' ){
                     var arr = this.toArray(),
                         ret = method.apply( arr, arguments );
 
-                    return (new tb.dom( ret )).unique();
+                    return tb.dom( ret ).unique();
                 };
             }
 
@@ -69,55 +69,71 @@ if (typeof module === 'undefined' ){
 
                 if (!pSelector) { // no selector given, or not a string
                     return;
-                } else if (!!pSelector['nodeType']) { // selector is a dom node
-                    [].push.call(that, pSelector);
+                } else if (!!pSelector['nodeType'] ) { // selector is a dom node
+                    if ( [].indexOf.call( that, pSelector ) === -1 ){
+                        [].push.call(that, pSelector);
+                    }
                     return;
-                } else if (!!pSelector[0] && pSelector[0] instanceof TbSelector) { // a twobirds selector result set
+                } else if ( !!pSelector['__tbSelector__'] ) { // selector is a tb.dom result set
+                    return pSelector;
+                } else if ( pSelector instanceof TbSelector && !!pSelector[0] ) { // a twobirds selector result set
                     [].forEach.call(
                         pSelector,
                         function (pElement) {   // copy only DOM nodes
-                            if (!!pElement['target']
+                            if (
+                                !!pElement['target']
                                 && !!pElement['target']['nodeType']
                             ) {
-                                [].push.call(that, pElement);
+                                if ( [].indexOf.call( that, pElement.target ) === -1 ){
+                                    [].push.call(that, pElement.target);
+                                }
                             }
                         }
                     );
                     return;
-                } else if (pSelector instanceof Array
+                } else if ( pSelector instanceof Array
+                    || !!pSelector['__tbSelector__']
                     || pSelector instanceof HTMLCollection
                     || pSelector instanceof NodeList ) {
                     [].forEach.call(
                         pSelector,
-                        function (pElement) {   // copy only DOM nodes
-                            if (!!pElement && !!pElement['nodeType']) {
-                                [].push.call(that, tb.dom( pElement )[0] );
+                        function ( pElement ) {
+                            tb.dom( pElement )
+                                .forEach(
+                                    function( pFoundDomNode ){
+                                        if ( [].indexOf.call( that, pFoundDomNode ) === -1 ){
+                                            [].push.call(
+                                                that,
+                                                pFoundDomNode
+                                            );
+                                        }
+                                    }
+                                );
                             }
-                        }
-                    );
+                        );
                     return;
                 } else if (typeof pSelector !== 'string') { // wrong selector type
                     return;
                 } else { // pSelector is a string
 
-                    var DOM = _htmlToElements( pSelector );
+                    var DOM = _htmlToElements( pSelector ); // uses 'template' element to retrieve DOM nodes
 
-                    if ( DOM.length === 1 && DOM[0].nodeType === 3 ){ // it is not an HTML string
-
+                    if ( DOM.length === 1 && DOM[0].nodeType === 3 ){
+                        // it is not a HTML string, but a simple string
+                        // nodeType 3 indicates text node
                         domNode = pDomNode && !!pDomNode['nodeType'] ? pDomNode : document;
-
                         pSelector
                             .split( ',' )
                             .forEach(
                                 function forEachTbDomSelector( pSelector ){
                                     nodeList = domNode.querySelectorAll(pSelector);
-
                                     if (!!nodeList.length) {
                                         [].forEach.call(
                                             nodeList,
                                             function (domElement) {
-                                                that[that.length] = domElement;
-                                                that.length++;
+                                                if ( [].indexOf.call( that, domElement ) === -1 ){
+                                                    [].push.call( that, domElement );
+                                                }
                                             }
                                         );
                                     }
@@ -125,10 +141,9 @@ if (typeof module === 'undefined' ){
                                 }
                             );
 
-                    } else { // it is an HTML string
-
-                        return new tb.dom( DOM );
-
+                    } else { // it is a HTML string
+                        // return html content as a set of nodes
+                        return tb.dom( DOM );
                     }
                 }
 
@@ -136,6 +151,8 @@ if (typeof module === 'undefined' ){
 
             // dom prototype, public functions
             dom.prototype = {
+
+                __tbSelector__: true,   // detection
 
                 length: 0,
 
@@ -717,7 +734,7 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
-                return new tb.dom( result );
+                return tb.dom( result );
             }
 
             /**
@@ -732,7 +749,7 @@ if (typeof module === 'undefined' ){
              */
             function not(pSelector) {
                 var that = this,
-                    result = new tb.dom(),
+                    result = tb.dom(),
                     check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
 
                 if ( !check ){
@@ -759,24 +776,38 @@ if (typeof module === 'undefined' ){
              add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
              */
             function add(pElements) {
-                var that = this,
-                    result;
+                var that = this;
 
-                if (pElements instanceof Array) { // if array given add each of its elements
-                    pElements.forEach(
+                if ( !!pElements.length ) { // if array given add each of its elements
+                    [].forEach.call(
+                        pElements,
                         function (pElement) {
-                            that.add(pElement);
+                            if ( !!pElement.nodeType ){
+                                [].push.call(
+                                    that,
+                                    pElement
+                                );
+                            }
                         }
                     );
                 } else if (!!pElements['nodeType']) { // if DOM node given add it
-                    that.push(pElements);
+                    [].push.call(
+                        that,
+                        pElements
+                    );
                 } else if (typeof pElements === 'string') { // DOM selector given add its results
-                    that.add(new tb.dom(pElements).toArray());
+                    tb.dom(pElements)
+                        .forEach(
+                            function( pElement ){
+                                [].push.call(
+                                    that,
+                                    pElement
+                                );
+                            }
+                        );
                 }
 
-                result = that.unique();
-
-                return result;
+                return that.unique();
             }
 
             /**
@@ -792,7 +823,7 @@ if (typeof module === 'undefined' ){
             function parents(pSelector) {
 
                 var that = this,
-                    result = new tb.dom(),
+                    result = tb.dom(),
                     check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false,
                     nextNode;
 
@@ -830,7 +861,7 @@ if (typeof module === 'undefined' ){
              */
             function parent(pSelector){
                 var that = this,
-                    result = new tb.dom(),
+                    result = tb.dom(),
                     check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
 
                 that.forEach(
@@ -861,7 +892,7 @@ if (typeof module === 'undefined' ){
             function children(pSelector) {
 
                 var that = this,
-                    result = new tb.dom();
+                    result = tb.dom();
 
                 that.forEach(
                     function (pDomNode) {
@@ -896,7 +927,7 @@ if (typeof module === 'undefined' ){
             function descendants(pSelector) {
 
                 var that = this,
-                    result = new tb.dom();
+                    result = tb.dom();
 
                 that.forEach(
                     function (pDomNode) {
@@ -1126,7 +1157,7 @@ if (typeof module === 'undefined' ){
             function filter( pSelector ) {
 
                 var that = this,
-                    compare = new tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
+                    compare = tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
                     result;
 
                 if ( pSelector === 'undefined' ) return that;    // unchanged
@@ -1146,7 +1177,7 @@ if (typeof module === 'undefined' ){
                     return result;
                 }
 
-                return new tb.dom(result);
+                return tb.dom(result);
 
             }
 
@@ -1162,23 +1193,23 @@ if (typeof module === 'undefined' ){
              */
             function push(pSelector) {
 
-                var that = this,
-                    result = [];
-
-                // todo: is this necessary? see .add()
+                var that = this;
 
                 if (typeof pSelector === 'undefined') return that;    // unchanged
 
-                if (pSelector instanceof Array) { // if array given add each of its elements
-                    pSelector.forEach(
+                if ( !!pSelector.length ) { // if array or like given add each of its elements
+                    [].forEach.call(
+                        pSelector,
                         function (pElement) {
-                            that.push(pElement);
+                            if ( !!pElement['nodeType'] ){
+                                that.push(pElement);
+                            }
                         }
                     );
                 } else if (!!pSelector['nodeType']) { // if DOM node given add it
                     [].push.call(that, pSelector);
                 } else if (typeof pSelector === 'string') { // DOM selector given add its results
-                    that.push(new tb.dom(pSelector).toArray());
+                    that.push( tb.dom(pSelector).toArray() );
                 }
 
                 result = that.unique();

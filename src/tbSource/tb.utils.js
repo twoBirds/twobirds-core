@@ -120,21 +120,21 @@ tb.observable = function( pStartValue ){
     observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
 
     // list of all callbacks to trigger on observedValue change
-    observableFunction.list = [];
+    observableFunction.notifiers = [];
 
     // function used to execute all callbacks
     observableFunction.notify = function(){
 
         // execute all callbacks
-        observableFunction.list.forEach(
+        observableFunction.notifiers.forEach(
             function( func, key ){
                 if ( typeof func === 'function' ){
                     func( observedValue );
                     if ( func.once ){
-                        observableFunction.list.splice(key,1);
+                        observableFunction.notifiers.splice(key,1);
                     }
                 } else {
-                    observableFunction.list.splice(key,1);
+                    observableFunction.notifiers.splice(key,1);
                 }
             }
         );
@@ -144,7 +144,7 @@ tb.observable = function( pStartValue ){
     // function used to add a callbacks
     observableFunction.observe = function( pFunction, pOnce ){
         pFunction.once = pOnce || false;
-        observableFunction.list.push( pFunction );
+        observableFunction.notifiers.push( pFunction );
     };
 
     return observableFunction;

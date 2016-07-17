@@ -98,12 +98,10 @@ describe("tb.core.js", function() {
             });
 
             it("tb( [ test.GrandParent ] ) to have .length 1", function() {
-                // should be 6, not 7 due to uniqueness of result ( 'body' === test.GrandParent )
                 expect( tb([ test.GrandParent, 'div', 'body' ]).length === 6 ).toBe( true );
             });
 
             it("tb( [ test.GrandParent, 'div' ] ) to have .length 6", function() {
-                // should be 6, not 7 due to uniqueness of result ( 'body' === test.GrandParent )
                 expect( tb([ test.GrandParent, 'div' ]).length === 6 ).toBe( true );
             });
 

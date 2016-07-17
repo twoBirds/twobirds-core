@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.3</em>
+            <em>API Docs for: v7.2.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.3 - 2016-07-16 */
+/*! twobirds-core - v7.2.5 - 2016-07-17 */
 
 /**
  twoBirds V7 core functionality
@@ -239,10 +239,10 @@ tb = (function(){
 
                 } else if ( !!pSelector[&#x27;nodeType&#x27;] &amp;&amp; !!pSelector[&#x27;tb&#x27;] ){ // it is a dom node containing tb elements
                     Object
-                        .keys( pDomNode.tb )
+                        .keys( pSelector.tb )
                         .forEach(
                             function( pKey ){
-                                [].push.call( that, pDomNode.tb[ pKey ] );
+                                [].push.call( that, pSelector.tb[ pKey ] );
                             }
                         )
 
@@ -1617,7 +1617,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                     var arr = this.toArray(),
                         ret = method.apply( arr, arguments );
 
-                    return (new tb.dom( ret )).unique();
+                    return tb.dom( ret ).unique();
                 };
             }
 
@@ -1644,55 +1644,71 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                 if (!pSelector) { // no selector given, or not a string
                     return;
-                } else if (!!pSelector[&#x27;nodeType&#x27;]) { // selector is a dom node
-                    [].push.call(that, pSelector);
+                } else if (!!pSelector[&#x27;nodeType&#x27;] ) { // selector is a dom node
+                    if ( [].indexOf.call( that, pSelector ) === -1 ){
+                        [].push.call(that, pSelector);
+                    }
                     return;
-                } else if (!!pSelector[0] &amp;&amp; pSelector[0] instanceof TbSelector) { // a twobirds selector result set
+                } else if ( !!pSelector[&#x27;__tbSelector__&#x27;] ) { // selector is a tb.dom result set
+                    return pSelector;
+                } else if ( pSelector instanceof TbSelector &amp;&amp; !!pSelector[0] ) { // a twobirds selector result set
                     [].forEach.call(
                         pSelector,
                         function (pElement) {   // copy only DOM nodes
-                            if (!!pElement[&#x27;target&#x27;]
+                            if (
+                                !!pElement[&#x27;target&#x27;]
                                 &amp;&amp; !!pElement[&#x27;target&#x27;][&#x27;nodeType&#x27;]
                             ) {
-                                [].push.call(that, pElement);
+                                if ( [].indexOf.call( that, pElement.target ) === -1 ){
+                                    [].push.call(that, pElement.target);
+                                }
                             }
                         }
                     );
                     return;
-                } else if (pSelector instanceof Array
+                } else if ( pSelector instanceof Array
+                    || !!pSelector[&#x27;__tbSelector__&#x27;]
                     || pSelector instanceof HTMLCollection
                     || pSelector instanceof NodeList ) {
                     [].forEach.call(
                         pSelector,
-                        function (pElement) {   // copy only DOM nodes
-                            if (!!pElement &amp;&amp; !!pElement[&#x27;nodeType&#x27;]) {
-                                [].push.call(that, tb.dom( pElement )[0] );
+                        function ( pElement ) {
+                            tb.dom( pElement )
+                                .forEach(
+                                    function( pFoundDomNode ){
+                                        if ( [].indexOf.call( that, pFoundDomNode ) === -1 ){
+                                            [].push.call(
+                                                that,
+                                                pFoundDomNode
+                                            );
+                                        }
+                                    }
+                                );
                             }
-                        }
-                    );
+                        );
                     return;
                 } else if (typeof pSelector !== &#x27;string&#x27;) { // wrong selector type
                     return;
                 } else { // pSelector is a string
 
-                    var DOM = _htmlToElements( pSelector );
+                    var DOM = _htmlToElements( pSelector ); // uses &#x27;template&#x27; element to retrieve DOM nodes
 
-                    if ( DOM.length === 1 &amp;&amp; DOM[0].nodeType === 3 ){ // it is not an HTML string
-
+                    if ( DOM.length === 1 &amp;&amp; DOM[0].nodeType === 3 ){
+                        // it is not a HTML string, but a simple string
+                        // nodeType 3 indicates text node
                         domNode = pDomNode &amp;&amp; !!pDomNode[&#x27;nodeType&#x27;] ? pDomNode : document;
-
                         pSelector
                             .split( &#x27;,&#x27; )
                             .forEach(
                                 function forEachTbDomSelector( pSelector ){
                                     nodeList = domNode.querySelectorAll(pSelector);
-
                                     if (!!nodeList.length) {
                                         [].forEach.call(
                                             nodeList,
                                             function (domElement) {
-                                                that[that.length] = domElement;
-                                                that.length++;
+                                                if ( [].indexOf.call( that, domElement ) === -1 ){
+                                                    [].push.call( that, domElement );
+                                                }
                                             }
                                         );
                                     }
@@ -1700,10 +1716,9 @@ if (typeof module === &#x27;undefined&#x27; ){
                                 }
                             );
 
-                    } else { // it is an HTML string
-
-                        return new tb.dom( DOM );
-
+                    } else { // it is a HTML string
+                        // return html content as a set of nodes
+                        return tb.dom( DOM );
                     }
                 }
 
@@ -1711,6 +1726,8 @@ if (typeof module === &#x27;undefined&#x27; ){
 
             // dom prototype, public functions
             dom.prototype = {
+
+                __tbSelector__: true,   // detection
 
                 length: 0,
 
@@ -2292,7 +2309,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                     }
                 );
 
-                return new tb.dom( result );
+                return tb.dom( result );
             }
 
             /**
@@ -2307,7 +2324,7 @@ if (typeof module === &#x27;undefined&#x27; ){
              */
             function not(pSelector) {
                 var that = this,
-                    result = new tb.dom(),
+                    result = tb.dom(),
                     check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
 
                 if ( !check ){
@@ -2334,24 +2351,38 @@ if (typeof module === &#x27;undefined&#x27; ){
              add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
              */
             function add(pElements) {
-                var that = this,
-                    result;
+                var that = this;
 
-                if (pElements instanceof Array) { // if array given add each of its elements
-                    pElements.forEach(
+                if ( !!pElements.length ) { // if array given add each of its elements
+                    [].forEach.call(
+                        pElements,
                         function (pElement) {
-                            that.add(pElement);
+                            if ( !!pElement.nodeType ){
+                                [].push.call(
+                                    that,
+                                    pElement
+                                );
+                            }
                         }
                     );
                 } else if (!!pElements[&#x27;nodeType&#x27;]) { // if DOM node given add it
-                    that.push(pElements);
+                    [].push.call(
+                        that,
+                        pElements
+                    );
                 } else if (typeof pElements === &#x27;string&#x27;) { // DOM selector given add its results
-                    that.add(new tb.dom(pElements).toArray());
+                    tb.dom(pElements)
+                        .forEach(
+                            function( pElement ){
+                                [].push.call(
+                                    that,
+                                    pElement
+                                );
+                            }
+                        );
                 }
 
-                result = that.unique();
-
-                return result;
+                return that.unique();
             }
 
             /**
@@ -2367,7 +2398,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             function parents(pSelector) {
 
                 var that = this,
-                    result = new tb.dom(),
+                    result = tb.dom(),
                     check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false,
                     nextNode;
 
@@ -2405,7 +2436,7 @@ if (typeof module === &#x27;undefined&#x27; ){
              */
             function parent(pSelector){
                 var that = this,
-                    result = new tb.dom(),
+                    result = tb.dom(),
                     check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
 
                 that.forEach(
@@ -2436,7 +2467,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             function children(pSelector) {
 
                 var that = this,
-                    result = new tb.dom();
+                    result = tb.dom();
 
                 that.forEach(
                     function (pDomNode) {
@@ -2471,7 +2502,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             function descendants(pSelector) {
 
                 var that = this,
-                    result = new tb.dom();
+                    result = tb.dom();
 
                 that.forEach(
                     function (pDomNode) {
@@ -2701,7 +2732,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             function filter( pSelector ) {
 
                 var that = this,
-                    compare = new tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
+                    compare = tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
                     result;
 
                 if ( pSelector === &#x27;undefined&#x27; ) return that;    // unchanged
@@ -2721,7 +2752,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                     return result;
                 }
 
-                return new tb.dom(result);
+                return tb.dom(result);
 
             }
 
@@ -2737,23 +2768,23 @@ if (typeof module === &#x27;undefined&#x27; ){
              */
             function push(pSelector) {
 
-                var that = this,
-                    result = [];
-
-                // todo: is this necessary? see .add()
+                var that = this;
 
                 if (typeof pSelector === &#x27;undefined&#x27;) return that;    // unchanged
 
-                if (pSelector instanceof Array) { // if array given add each of its elements
-                    pSelector.forEach(
+                if ( !!pSelector.length ) { // if array or like given add each of its elements
+                    [].forEach.call(
+                        pSelector,
                         function (pElement) {
-                            that.push(pElement);
+                            if ( !!pElement[&#x27;nodeType&#x27;] ){
+                                that.push(pElement);
+                            }
                         }
                     );
                 } else if (!!pSelector[&#x27;nodeType&#x27;]) { // if DOM node given add it
                     [].push.call(that, pSelector);
                 } else if (typeof pSelector === &#x27;string&#x27;) { // DOM selector given add its results
-                    that.push(new tb.dom(pSelector).toArray());
+                    that.push( tb.dom(pSelector).toArray() );
                 }
 
                 result = that.unique();
@@ -3053,21 +3084,21 @@ tb.observable = function( pStartValue ){
     observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
 
     // list of all callbacks to trigger on observedValue change
-    observableFunction.list = [];
+    observableFunction.notifiers = [];
 
     // function used to execute all callbacks
     observableFunction.notify = function(){
 
         // execute all callbacks
-        observableFunction.list.forEach(
+        observableFunction.notifiers.forEach(
             function( func, key ){
                 if ( typeof func === &#x27;function&#x27; ){
                     func( observedValue );
                     if ( func.once ){
-                        observableFunction.list.splice(key,1);
+                        observableFunction.notifiers.splice(key,1);
                     }
                 } else {
-                    observableFunction.list.splice(key,1);
+                    observableFunction.notifiers.splice(key,1);
                 }
             }
         );
@@ -3077,7 +3108,7 @@ tb.observable = function( pStartValue ){
     // function used to add a callbacks
     observableFunction.observe = function( pFunction, pOnce ){
         pFunction.once = pOnce || false;
-        observableFunction.list.push( pFunction );
+        observableFunction.notifiers.push( pFunction );
     };
 
     return observableFunction;

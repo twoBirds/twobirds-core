@@ -149,10 +149,10 @@ tb = (function(){
 
                 } else if ( !!pSelector['nodeType'] && !!pSelector['tb'] ){ // it is a dom node containing tb elements
                     Object
-                        .keys( pDomNode.tb )
+                        .keys( pSelector.tb )
                         .forEach(
                             function( pKey ){
-                                [].push.call( that, pDomNode.tb[ pKey ] );
+                                [].push.call( that, pSelector.tb[ pKey ] );
                             }
                         )
 
