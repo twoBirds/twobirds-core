@@ -1700,14 +1700,14 @@ if (typeof module === &#x27;undefined&#x27; ){
                         pSelector
                             .split( &#x27;,&#x27; )
                             .forEach(
-                                function forEachTbDomSelector( pSelector ){
-                                    nodeList = domNode.querySelectorAll(pSelector);
-                                    if (!!nodeList.length) {
+                                function forEachTbDomSelector( pThisSelector ){
+                                    nodeList = domNode.querySelectorAll(pThisSelector);
+                                    if (!!nodeList[&#x27;0&#x27;]) {
                                         [].forEach.call(
                                             nodeList,
-                                            function (domElement) {
-                                                if ( [].indexOf.call( that, domElement ) === -1 ){
-                                                    [].push.call( that, domElement );
+                                            function (pDomElement) {
+                                                if ( [].indexOf.call( that, pDomElement ) === -1 ){
+                                                    [].push.call( that, pDomElement );
                                                 }
                                             }
                                         );
@@ -1883,7 +1883,6 @@ if (typeof module === &#x27;undefined&#x27; ){
                 html: html,
                 insertBefore: insertBefore,
                 insertAfter: insertAfter,
-                removeClass: removeClass,
                 filter: filter,
                 not: not,
                 off: off,
@@ -1894,6 +1893,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                 push: push,
                 remove: remove,
                 removeAttr: removeAttr,
+                removeClass: removeClass,
                 show: show,
                 toArray: toArray,
                 trigger: trigger,
@@ -1904,6 +1904,54 @@ if (typeof module === &#x27;undefined&#x27; ){
             return new dom( pSelector, pDomNode );
 
             // Private Functions, exposed
+
+            /**
+             @method add
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
+             */
+            function add( pSelector ) {
+                var that = this,
+                    res;
+
+                if ( typeof pSelector !== &#x27;string&#x27; &amp;&amp; !!pSelector[&#x27;length&#x27;] ) { // if array given add each of its elements
+                    [].forEach.call(
+                        pSelector,
+                        function ( pSelected ) {
+                            res = tb.dom( pSelected ).toArray();
+                            res.forEach(
+                               function( pDomNode ){
+                                   if ( [].indexOf.call( that, pDomNode ) === -1 ){
+                                       [].push.call(
+                                           that,
+                                           pDomNode
+                                       );
+                                   }
+                               }
+                            );
+                        }
+                    );
+                } else { // pSelector not an array
+                    res = tb.dom( pSelector ).toArray();
+                    res.forEach(
+                        function( pDomNode ){
+                            if ( [].indexOf.call( that, pDomNode ) === -1 ){
+                                [].push.call(
+                                    that,
+                                    pDomNode
+                                );
+                            }
+                        }
+                    );
+                }
+
+                return that.unique();
+            }
 
             /**
              @method appendTo
@@ -2341,51 +2389,6 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             /**
-             @method add
-             @chainable
-
-             @param  pSelector - any valid tb.dom() constructor parameter
-
-             @return {object} - tb.dom() result set, may be empty
-
-             add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
-             */
-            function add(pElements) {
-                var that = this;
-
-                if ( !!pElements.length ) { // if array given add each of its elements
-                    [].forEach.call(
-                        pElements,
-                        function (pElement) {
-                            if ( !!pElement.nodeType ){
-                                [].push.call(
-                                    that,
-                                    pElement
-                                );
-                            }
-                        }
-                    );
-                } else if (!!pElements[&#x27;nodeType&#x27;]) { // if DOM node given add it
-                    [].push.call(
-                        that,
-                        pElements
-                    );
-                } else if (typeof pElements === &#x27;string&#x27;) { // DOM selector given add its results
-                    tb.dom(pElements)
-                        .forEach(
-                            function( pElement ){
-                                [].push.call(
-                                    that,
-                                    pElement
-                                );
-                            }
-                        );
-                }
-
-                return that.unique();
-            }
-
-            /**
              @method parents
              @chainable
 
@@ -2566,34 +2569,39 @@ if (typeof module === &#x27;undefined&#x27; ){
              */
             function removeClass(pClassName) {
 
-                var that = this;
+                var that = this
+                    pClasses = pClassName.split(&#x27; &#x27;);
 
                 that.forEach(
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute(&#x27;class&#x27;) || &#x27;&#x27;;
 
-                        if ( classes ){
-                            if ( !!(classes.indexOf(&#x27; &#x27;) + 1) ){
-                                classes = classes.split(&#x27; &#x27;)
-                            } else {
-                                classes = [ classes ];
-                            }
-
-                            pClassName.split(&#x27; &#x27;)
-                                .forEach(
-                                    function( pRemoveClass ){
-                                        while ( classes.indexOf(pRemoveClass) &gt; -1 ){
-                                            classes.splice(classes.indexOf(pRemoveClass), 1)
-                                        }
+                        pClasses.forEach(
+                            function( pClass ){
+                                if ( classes ){
+                                    if ( !!(classes.indexOf(&#x27; &#x27;) + 1) ){
+                                        classes = classes.split(&#x27; &#x27;)
+                                    } else {
+                                        classes = [ classes ];
                                     }
-                                );
 
-                            if ( !!classes.length ){
-                                tb.dom( pDomNode ).attr(&#x27;class&#x27;, classes.join(&#x27; &#x27;) )
-                            } else {
-                                tb.dom( pDomNode ).removeAttr(&#x27;class&#x27;);
+                                    pClassName.split(&#x27; &#x27;)
+                                        .forEach(
+                                            function( pRemoveClass ){
+                                                while ( classes.indexOf(pRemoveClass) &gt; -1 ){
+                                                    classes.splice(classes.indexOf(pRemoveClass), 1)
+                                                }
+                                            }
+                                        );
+
+                                    if ( !!classes.length ){
+                                        tb.dom( pDomNode ).attr(&#x27;class&#x27;, classes.join(&#x27; &#x27;) )
+                                    } else {
+                                        tb.dom( pDomNode ).removeAttr(&#x27;class&#x27;);
+                                    }
+                                }
                             }
-                        }
+                        );
 
                     }
                 );

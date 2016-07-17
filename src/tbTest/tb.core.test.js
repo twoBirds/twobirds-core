@@ -73,20 +73,20 @@ describe("tb.core.js", function() {
 
         describe("tb( classNamespace ) regEx selector tests", function() {
 
-            it("tb( test.Body ) is a tb instance", function() {
-                expect( tb('body') instanceof tb.Selector ).toBe( true );
+            it("tb( test.GrandParent ) is a tb instance", function() {
+                expect( tb( test.GrandParent ) instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb( test.Body ) to have .length 1", function() {
-                expect( tb('body').length === 1 ).toBe( true );
+            it("tb( test.GrandParent ) to have .length 1", function() {
+                expect( tb( test.GrandParent ).length === 1 ).toBe( true );
             });
 
-            it("tb( test.Body )[0] instanceof tb", function() {
-                expect( tb('body')[0] instanceof tb ).toBe( true );
+            it("tb( test.GrandParent )[0] instanceof tb", function() {
+                expect( tb( test.GrandParent )[0] instanceof tb ).toBe( true );
             });
 
-            it("tb( test.Body )[0].target to be document.body DOM node", function() {
-                expect( tb('body')[0].target === document.body ).toBe( true );
+            it("tb( test.GrandParent )[0].target to be document.body DOM node", function() {
+                expect( tb( test.GrandParent )[0].target === document.body ).toBe( true );
             });
 
         });
@@ -98,7 +98,7 @@ describe("tb.core.js", function() {
             });
 
             it("tb( [ test.GrandParent ] ) to have .length 1", function() {
-                expect( tb([ test.GrandParent, 'div', 'body' ]).length === 6 ).toBe( true );
+                expect( tb([ test.GrandParent ]).length === 1 ).toBe( true );
             });
 
             it("tb( [ test.GrandParent, 'div' ] ) to have .length 6", function() {

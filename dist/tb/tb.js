@@ -1612,14 +1612,14 @@ if (typeof module === 'undefined' ){
                         pSelector
                             .split( ',' )
                             .forEach(
-                                function forEachTbDomSelector( pSelector ){
-                                    nodeList = domNode.querySelectorAll(pSelector);
-                                    if (!!nodeList.length) {
+                                function forEachTbDomSelector( pThisSelector ){
+                                    nodeList = domNode.querySelectorAll(pThisSelector);
+                                    if (!!nodeList['0']) {
                                         [].forEach.call(
                                             nodeList,
-                                            function (domElement) {
-                                                if ( [].indexOf.call( that, domElement ) === -1 ){
-                                                    [].push.call( that, domElement );
+                                            function (pDomElement) {
+                                                if ( [].indexOf.call( that, pDomElement ) === -1 ){
+                                                    [].push.call( that, pDomElement );
                                                 }
                                             }
                                         );
@@ -1795,7 +1795,6 @@ if (typeof module === 'undefined' ){
                 html: html,
                 insertBefore: insertBefore,
                 insertAfter: insertAfter,
-                removeClass: removeClass,
                 filter: filter,
                 not: not,
                 off: off,
@@ -1806,6 +1805,7 @@ if (typeof module === 'undefined' ){
                 push: push,
                 remove: remove,
                 removeAttr: removeAttr,
+                removeClass: removeClass,
                 show: show,
                 toArray: toArray,
                 trigger: trigger,
@@ -1816,6 +1816,54 @@ if (typeof module === 'undefined' ){
             return new dom( pSelector, pDomNode );
 
             // Private Functions, exposed
+
+            /**
+             @method add
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
+             */
+            function add( pSelector ) {
+                var that = this,
+                    res;
+
+                if ( typeof pSelector !== 'string' && !!pSelector['length'] ) { // if array given add each of its elements
+                    [].forEach.call(
+                        pSelector,
+                        function ( pSelected ) {
+                            res = tb.dom( pSelected ).toArray();
+                            res.forEach(
+                               function( pDomNode ){
+                                   if ( [].indexOf.call( that, pDomNode ) === -1 ){
+                                       [].push.call(
+                                           that,
+                                           pDomNode
+                                       );
+                                   }
+                               }
+                            );
+                        }
+                    );
+                } else { // pSelector not an array
+                    res = tb.dom( pSelector ).toArray();
+                    res.forEach(
+                        function( pDomNode ){
+                            if ( [].indexOf.call( that, pDomNode ) === -1 ){
+                                [].push.call(
+                                    that,
+                                    pDomNode
+                                );
+                            }
+                        }
+                    );
+                }
+
+                return that.unique();
+            }
 
             /**
              @method appendTo
@@ -2253,51 +2301,6 @@ if (typeof module === 'undefined' ){
             }
 
             /**
-             @method add
-             @chainable
-
-             @param  pSelector - any valid tb.dom() constructor parameter
-
-             @return {object} - tb.dom() result set, may be empty
-
-             add all nodes in tb.dom( pSelector ) result set to tb.dom() result set
-             */
-            function add(pElements) {
-                var that = this;
-
-                if ( !!pElements.length ) { // if array given add each of its elements
-                    [].forEach.call(
-                        pElements,
-                        function (pElement) {
-                            if ( !!pElement.nodeType ){
-                                [].push.call(
-                                    that,
-                                    pElement
-                                );
-                            }
-                        }
-                    );
-                } else if (!!pElements['nodeType']) { // if DOM node given add it
-                    [].push.call(
-                        that,
-                        pElements
-                    );
-                } else if (typeof pElements === 'string') { // DOM selector given add its results
-                    tb.dom(pElements)
-                        .forEach(
-                            function( pElement ){
-                                [].push.call(
-                                    that,
-                                    pElement
-                                );
-                            }
-                        );
-                }
-
-                return that.unique();
-            }
-
-            /**
              @method parents
              @chainable
 
@@ -2478,34 +2481,39 @@ if (typeof module === 'undefined' ){
              */
             function removeClass(pClassName) {
 
-                var that = this;
+                var that = this
+                    pClasses = pClassName.split(' ');
 
                 that.forEach(
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute('class') || '';
 
-                        if ( classes ){
-                            if ( !!(classes.indexOf(' ') + 1) ){
-                                classes = classes.split(' ')
-                            } else {
-                                classes = [ classes ];
-                            }
-
-                            pClassName.split(' ')
-                                .forEach(
-                                    function( pRemoveClass ){
-                                        while ( classes.indexOf(pRemoveClass) > -1 ){
-                                            classes.splice(classes.indexOf(pRemoveClass), 1)
-                                        }
+                        pClasses.forEach(
+                            function( pClass ){
+                                if ( classes ){
+                                    if ( !!(classes.indexOf(' ') + 1) ){
+                                        classes = classes.split(' ')
+                                    } else {
+                                        classes = [ classes ];
                                     }
-                                );
 
-                            if ( !!classes.length ){
-                                tb.dom( pDomNode ).attr('class', classes.join(' ') )
-                            } else {
-                                tb.dom( pDomNode ).removeAttr('class');
+                                    pClassName.split(' ')
+                                        .forEach(
+                                            function( pRemoveClass ){
+                                                while ( classes.indexOf(pRemoveClass) > -1 ){
+                                                    classes.splice(classes.indexOf(pRemoveClass), 1)
+                                                }
+                                            }
+                                        );
+
+                                    if ( !!classes.length ){
+                                        tb.dom( pDomNode ).attr('class', classes.join(' ') )
+                                    } else {
+                                        tb.dom( pDomNode ).removeAttr('class');
+                                    }
+                                }
                             }
-                        }
+                        );
 
                     }
                 );
