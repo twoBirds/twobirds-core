@@ -379,6 +379,36 @@ if (typeof module === 'undefined' ){
             }
 
             /**
+             @method addClass
+             @chainable
+
+             @param  {string} pClassName - class name(s) to add, separated by ' '
+
+             @return {object} - tb.dom() result set, may be empty
+
+             add class name to each of tb.dom() result set
+             */
+            function addClass(pClassName) {
+
+                var that = this;
+
+                that.forEach(
+                    function (pDomNode) {
+                        var classes = pDomNode.getAttribute('class') || '',
+                            classes = !!classes.length ? classes.split(' ') : [],
+                            index = classes.indexOf(pClassName);
+
+                        if (index === -1) {
+                            classes.push( pClassName );
+                            pDomNode.setAttribute('class', classes.join(' ') );
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
              @method append
              @chainable
 
@@ -431,6 +461,79 @@ if (typeof module === 'undefined' ){
                 }
 
                 return that;
+            }
+
+            /**
+             @method children
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             return child nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+             */
+            function children(pSelector) {
+
+                var that = this,
+                    result = tb.dom();
+
+                that.forEach(
+                    function (pDomNode) {
+                        var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
+
+                        [].forEach.call(
+                            pDomNode.children,
+                            function( pChildNode ){
+                                if ( -1 === [].indexOf.call( result, pChildNode )
+                                    && ( !check || -1 < [].indexOf.call( check, pChildNode ) )
+                                ){
+                                    result.push( pChildNode );
+                                }
+                            }
+                        );
+                    }
+                );
+
+                return result;
+            }
+
+            /**
+             @method descendants
+             @chainable
+
+             @param  pSelector - any valid tb.dom() constructor parameter
+
+             @return {object} - tb.dom() result set, may be empty
+
+             return all descendant nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+             */
+            function descendants( pSelector ) {
+
+                var that = this,
+                    result = [],
+                    ret,
+                    check = !!pSelector ? tb.dom( pSelector ) : false;
+
+                that
+                    .forEach(
+                        function( pDomNode ){
+                            result = result.concat( tb.dom( pDomNode.querySelectorAll( '*' ) ).toArray() );
+                        }
+                    );
+
+                result = tb.dom( result ).unique().toArray();
+
+                if ( check ){
+                    ret = result
+                        .filter(
+                            function( pDomNode ){
+                                return -1 < [].indexOf.call( check, pDomNode );
+                            }
+                        );
+                }
+
+                return tb.dom( check ? ret : result );
             }
 
             /**
@@ -866,106 +969,6 @@ if (typeof module === 'undefined' ){
                 );
 
                 return result;
-            }
-
-            /**
-             @method children
-             @chainable
-
-             @param  pSelector - any valid tb.dom() constructor parameter
-
-             @return {object} - tb.dom() result set, may be empty
-
-             return child nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
-             */
-            function children(pSelector) {
-
-                var that = this,
-                    result = tb.dom();
-
-                that.forEach(
-                    function (pDomNode) {
-                        var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
-
-                        [].forEach.call(
-                            pDomNode.children,
-                            function( pChildNode ){
-                                if ( -1 === [].indexOf.call( result, pChildNode )
-                                    && ( !check || -1 < [].indexOf.call( check, pChildNode ) )
-                                ){
-                                    result.push( pChildNode );
-                                }
-                            }
-                        );
-                    }
-                );
-
-                return result;
-            }
-
-            /**
-             @method descendants
-             @chainable
-
-             @param  pSelector - any valid tb.dom() constructor parameter
-
-             @return {object} - tb.dom() result set, may be empty
-
-             return all descendant nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
-             */
-            function descendants(pSelector) {
-
-                var that = this,
-                    result = tb.dom();
-
-                that.forEach(
-                    function (pDomNode) {
-                        var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
-
-                        [].forEach.call(
-                            pDomNode.querySelectorAll( pSelector || '*' ),
-                            function( pDescendantNode ){
-                                if ( -1 === [].indexOf.call( result, pDescendantNode )
-                                    && ( !check || -1 < [].indexOf.call( check, pDescendantNode ) )
-                                ){
-                                    result.push( pDescendantNode );
-                                }
-                            }
-                        );
-                    }
-                );
-
-                return result;
-            }
-
-            /**
-             @method addClass
-             @chainable
-
-             @param  {string} pClassName - class name(s) to add, separated by ' '
-
-             @return {object} - tb.dom() result set, may be empty
-
-             add class name to each of tb.dom() result set
-             */
-            function addClass(pClassName) {
-
-                var that = this;
-
-                that.forEach(
-                    function (pDomNode) {
-                        var classes = pDomNode.getAttribute('class') || '',
-                            classes = !!classes.length ? classes.split(' ') : [],
-                            index = classes.indexOf(pClassName);
-
-                        if (index === -1) {
-                            classes.push( pClassName );
-                            pDomNode.setAttribute('class', classes.join(' ') );
-                        }
-                    }
-                );
-
-                return that;
             }
 
             /**

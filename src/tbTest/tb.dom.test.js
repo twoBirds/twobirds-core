@@ -101,7 +101,7 @@ describe("tb.dom() selector tests", function() {
 
     describe("tb.dom() chained", function() {
 
-        describe("add()", function() {
+        describe(".add()", function() {
 
             it("tb.dom('body').add('div.test-parent').length === 6", function() {
                 expect( tb.dom('body').add('div.test-parent').length === 6 ).toBe( true );
@@ -113,14 +113,14 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("addClass() / removeClass()", function() {
+        describe(".addClass() / .removeClass()", function() {
 
             it("tb.dom('body').addClass('test1class') contains test1class", function() {
                 tb.dom('body').addClass('test1class');
                 expect( tb.dom('body')[0].getAttribute('class').indexOf( 'test1class' ) > -1 ).toBe( true );
             });
 
-            it("tb.dom('body').addClass('test2class test3class') contains 4 classes now", function() {
+            it("tb.dom('body').addClass('test2class test3class') contains 2 new classes now", function() {
                 tb.dom('body').addClass('test2class test3class');
                 expect( tb.dom('body')[0].getAttribute('class').indexOf( 'test2class' ) > -1 ).toBe( true );
                 expect( tb.dom('body')[0].getAttribute('class').indexOf( 'test3class' ) > -1 ).toBe( true );
@@ -137,7 +137,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("append() / remove()", function() {
+        describe(".append() / .remove()", function() {
 
             it("tb.dom('body').append('<a></a>')", function() {
                 tb.dom('body').append('<a></a>');
@@ -156,7 +156,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("appendTo()", function() {
+        describe(".appendTo()", function() {
 
             it("tb.dom('<a></a><b></b><input />').appendTo('body')", function() {
                 tb.dom('<a></a><b></b><input />').appendTo('body');
@@ -166,6 +166,85 @@ describe("tb.dom() selector tests", function() {
             it("tb.dom('body > a,body > b, body > input').remove()", function() {
                 tb.dom('body > a,body > b, body > input').remove();
                 expect( document.body.lastChild.tagName === 'DIV' ).toBe( true );
+            });
+
+        });
+
+        describe(".attr() / .removeAttr()", function() {
+
+            it("tb.dom('body').attr('data-test', 'test')", function() {
+                tb.dom('body').attr('data-test', 'test');
+                expect( document.body.getAttribute('data-test') === 'test' ).toBe( true );
+            });
+
+            it("tb.dom('body').removeAttr('data-test')", function() {
+                tb.dom('body').removeAttr('data-test');
+                var hasAttribute = [].some.call(
+                    document.body.attributes,
+                    function(e){
+                        return e.name === 'data-test';
+                    }
+                );
+                expect( hasAttribute === false ).toBe( true );
+            });
+
+            it("tb.dom('body').attr({ 'data-test1': 'test1', 'data-test2': 'test2' })", function() {
+                tb.dom('body').attr({ 'data-test1': 'test1', 'data-test2': 'test2' });
+                expect( document.body.getAttribute('data-test1') === 'test1' ).toBe( true );
+                expect( document.body.getAttribute('data-test2') === 'test2' ).toBe( true );
+            });
+
+            it("tb.dom('body').removeAttr('data-test1 data-test2')", function() {
+                tb.dom('body').removeAttr('data-test1 data-test2');
+                var hasAttribute = [].some.call(
+                    document.body.attributes,
+                    function(e){
+                        return e.name === 'data-test1' || e.name === 'data-test2';
+                    }
+                );
+                expect( hasAttribute === false ).toBe( true );
+            });
+
+        });
+
+        describe("children()", function() {
+
+            it("tb.dom('body').children().length === 6", function() {
+                // includes jasmine din tag
+                expect( tb.dom('body').children().length === 6 ).toBe( true );
+            });
+
+            it("tb.dom('body').children('div.test-parent').length === 5", function() {
+                expect( tb.dom('body').children('div.test-parent').length === 5 ).toBe( true );
+            });
+
+            it("tb.dom('body').children('span').length === 0", function() {
+                expect( tb.dom('body').children('span').length === 0 ).toBe( true );
+            });
+
+        });
+
+        describe("concat()", function() {
+
+            it("tb.dom('body').concat( tb.dom( 'div.test-parent' ) ).length === 6", function() {
+                var a = tb.dom('body').concat( tb.dom( 'div.test-parent' ) );
+                expect( a.length === 6 ).toBe( true );
+            });
+
+        });
+
+        describe("descendants()", function() {
+
+            it("tb.dom('div.test-parent').descendants().length === 500", function() {
+                expect( tb.dom('div.test-parent').descendants().length === 500 ).toBe( true );
+            });
+
+            it("tb.dom('div.test-parent').descendants('div').length === 0", function() {
+                expect( tb.dom('div.test-parent').descendants('div').length === 0 ).toBe( true );
+            });
+
+            it("tb.dom('div.test-parent').descendants('span').length === 500", function() {
+                expect( tb.dom('div.test-parent').descendants('span').length === 500 ).toBe( true );
             });
 
         });
