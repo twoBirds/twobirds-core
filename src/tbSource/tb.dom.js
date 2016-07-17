@@ -1212,9 +1212,7 @@ if (typeof module === 'undefined' ){
                     that.push( tb.dom(pSelector).toArray() );
                 }
 
-                result = that.unique();
-
-                return result;
+                return that.unique();
             }
 
             /**

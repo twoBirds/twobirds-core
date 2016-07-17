@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.5 - 2016-07-17 */
+/*! twobirds-core - v7.2.6 - 2016-07-17 */
 
 /**
  twoBirds V7 core functionality
@@ -1484,7 +1484,7 @@ if (typeof module !== 'undefined' && module.exports) {
     })();
 }
 
-;
+
 if (typeof module === 'undefined' ){
     tb.dom = (function () {
 
@@ -2699,9 +2699,7 @@ if (typeof module === 'undefined' ){
                     that.push( tb.dom(pSelector).toArray() );
                 }
 
-                result = that.unique();
-
-                return result;
+                return that.unique();
             }
 
             /**
@@ -2873,7 +2871,7 @@ if (typeof module === 'undefined' ){
     })();
 }
 
-;
+
 /*
 YOU MUST KEEP THE ORDER IN THIS FILE!
 -functions depend on sequence of appearence partly
@@ -3697,7 +3695,7 @@ tb.stop = (function(pStopIt){
 
 
 
-;
+
 /**
  @class tb.Model
  @constructor
@@ -3971,7 +3969,7 @@ if (typeof module === 'undefined' ){ // will not work as a module
     })();
 }
 
-;
+
 /**
  @class tb.Require
  @constructor

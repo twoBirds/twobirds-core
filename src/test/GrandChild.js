@@ -13,11 +13,7 @@ tb.namespace( 'test.GrandChild' ).set(
 
         // Prototype
         GrandChild.prototype = {
-            namespace: 'test.GrandChild',
-
-            'tb.Require': [ // predictive load to avoid tb.loader stress
-                '/test/GreatGrandChild.js'
-            ]
+            namespace: 'test.GrandChild'
         };
 
         return GrandChild;

@@ -49,6 +49,24 @@ module.exports = function(grunt) {
                         cwd: 'node_modules/jasmine-core/lib/jasmine-core',
                         src: [ '*.js', '*.css' ],
                         dest: 'src/jasmine'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/tbJasmine',
+                        src: '*.css',
+                        dest: 'dist/jasmine'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/test',
+                        src: '**/*.css',
+                        dest: 'dist/test'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src',
+                        src: [ 'test-min.html', 'repo.js' ],
+                        dest: 'dist'
                     }
                 ]
             }
@@ -56,7 +74,7 @@ module.exports = function(grunt) {
 
         concat: {
             options: {
-                separator: '\n;\n',
+                separator: '\n\n',
                 //stripBanners: true,
                 banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n\n'
             },
@@ -78,6 +96,13 @@ module.exports = function(grunt) {
                         'src/tbTest/tb.Model.test.js',
                         'src/tbTest/tb.Require.test.js',
                         'src/tbTest/tb.utils.test.js'
+                    ],
+                    'src/repo.js': [
+                        'src/test/GrandParent.js',
+                        'src/test/Parent.js',
+                        'src/test/Child.js',
+                        'src/test/GrandChild.js',
+                        'src/test/GreatGrandChild.js'
                     ]
                 },
                 nonull: true
@@ -98,6 +123,11 @@ module.exports = function(grunt) {
                     {
                         'src/tbMin/tb.min.js': [
                             'src/tb/tb.js'
+                        ]
+                    },
+                    {
+                        'dist/tbTest.js': [
+                            'src/tbTest.js'
                         ]
                     }
                 ]

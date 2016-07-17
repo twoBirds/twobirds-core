@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>tb manual testing</title>
+
+        <link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
+        <link rel="stylesheet" type="text/css" href="test/GrandParent.css">
+
+        <script type="text/javascript" src="tb/tb.min.js"></script>
+
+        <script type="text/javascript" src="repo.js"></script>
+
+        <script>
+            tb.idle(
+                function(){
+                    tb.Require([
+                        'tbTest.js'
+                    ]);
+                }
+            );
+        </script>
+    </head>
+    <body data-tb="test.GrandParent">
+    </body>
+</html>

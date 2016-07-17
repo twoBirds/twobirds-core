@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.5</em>
+            <em>API Docs for: v7.2.6</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.5 - 2016-07-17 */
+/*! twobirds-core - v7.2.6 - 2016-07-17 */
 
 /**
  twoBirds V7 core functionality
@@ -1572,7 +1572,7 @@ if (typeof module !== &#x27;undefined&#x27; &amp;&amp; module.exports) {
     })();
 }
 
-;
+
 if (typeof module === &#x27;undefined&#x27; ){
     tb.dom = (function () {
 
@@ -2787,9 +2787,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                     that.push( tb.dom(pSelector).toArray() );
                 }
 
-                result = that.unique();
-
-                return result;
+                return that.unique();
             }
 
             /**
@@ -2961,7 +2959,7 @@ if (typeof module === &#x27;undefined&#x27; ){
     })();
 }
 
-;
+
 /*
 YOU MUST KEEP THE ORDER IN THIS FILE!
 -functions depend on sequence of appearence partly
@@ -3785,7 +3783,7 @@ tb.stop = (function(pStopIt){
 
 
 
-;
+
 /**
  @class tb.Model
  @constructor
@@ -4059,7 +4057,7 @@ if (typeof module === &#x27;undefined&#x27; ){ // will not work as a module
     })();
 }
 
-;
+
 /**
  @class tb.Require
  @constructor
