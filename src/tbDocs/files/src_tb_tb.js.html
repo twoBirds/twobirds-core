@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.10</em>
+            <em>API Docs for: v7.2.11</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.10 - 2016-07-17 */
+/*! twobirds-core - v7.2.11 - 2016-07-18 */
 
 /**
  twoBirds V7 core functionality
@@ -2039,6 +2039,67 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             /**
+             @method attr
+             @chainable
+
+             @param pKey - if string: DOM node attribute name; if object: hash of attributeName: attributeValue
+             @param {string} [pValue] - value to set in DOM node(s)
+
+             @return {object} - tb.dom() result set, may be empty
+
+             set of get attribute values to each DOM node in give tb.dom() result set
+
+             HINT:
+             if pKey is a string and pValue is not given its a GET
+             if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. ONLY THEN this is CHAINABLE.
+             */
+            function attr(pKey, pValue) {
+
+                var that = this,
+                    rootNodes;
+
+                if ( pKey.constructor === Object ){ // hash given
+
+                    Object
+                        .keys( pKey )
+                        .forEach(
+                            function( thisKey ){
+                                that.attr( thisKey, pKey[thisKey] );
+                            }
+                        );
+
+                } else { // key/value pair expected
+
+                    // if no value is given and there are elements, return attribute value of first in list
+                    if (!pValue &amp;&amp; that.length &gt; 0) {
+                        return that[0].getAttribute(pKey);
+                    }
+
+                    // if a value to set is given, apply to all nodes in list
+                    rootNodes = that.toArray();
+                    rootNodes.forEach(
+                        function (pNode) {
+                            if ( pKey.constructor === Object ){
+                                Object
+                                    .keys( pKey )
+                                    .forEach(
+                                        function( thisKey ){
+                                            pNode.setAttribute( thisKey, pKey[thisKey] );
+                                        }
+                                    );
+                                return;
+                            } else {
+                                pNode.setAttribute(pKey, pValue);
+                            }
+                        }
+                    );
+
+                }
+
+                return that;
+            }
+
+            /**
              @method children
              @chainable
 
@@ -2599,67 +2660,6 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             /**
-             @method attr
-             @chainable
-
-             @param pKey - if string: DOM node attribute name; if object: hash of attributeName: attributeValue
-             @param {string} [pValue] - value to set in DOM node(s)
-
-             @return {object} - tb.dom() result set, may be empty
-
-             set of get attribute values to each DOM node in give tb.dom() result set
-
-             HINT:
-             if pKey is a string and pValue is not given its a GET
-             if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. ONLY THEN this is CHAINABLE.
-             */
-            function attr(pKey, pValue) {
-
-                var that = this,
-                    rootNodes;
-
-                if ( pKey.constructor === Object ){ // hash given
-
-                    Object
-                        .keys( pKey )
-                        .forEach(
-                            function( thisKey ){
-                                that.attr( thisKey, pKey[thisKey] );
-                            }
-                        );
-
-                } else { // key/value pair expected
-
-                    // if no value is given and there are elements, return attribute value of first in list
-                    if (!pValue &amp;&amp; that.length &gt; 0) {
-                        return that[0].getAttribute(pKey);
-                    }
-
-                    // if a value to set is given, apply to all nodes in list
-                    rootNodes = that.toArray();
-                    rootNodes.forEach(
-                        function (pNode) {
-                            if ( pKey.constructor === Object ){
-                                Object
-                                    .keys( pKey )
-                                    .forEach(
-                                        function( thisKey ){
-                                            pNode.setAttribute( thisKey, pKey[thisKey] );
-                                        }
-                                    );
-                                return;
-                            } else {
-                                pNode.setAttribute(pKey, pValue);
-                            }
-                        }
-                    );
-
-                }
-
-                return that;
-            }
-
-            /**
              @method removeAttr
              @chainable
 
@@ -2741,12 +2741,11 @@ if (typeof module === &#x27;undefined&#x27; ){
                             return -1 &lt; compare.indexOf(pElement);
                         }
                     );
-                } else if ( typeof pSelector === &#x27;function&#x27; ) { // function given
+                } else if ( pSelector instanceof Function ) { // function given
                     result = [].filter.call(
                         that,
                         pSelector
                     );
-                    return result;
                 }
 
                 return tb.dom(result);
