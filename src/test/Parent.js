@@ -6,7 +6,7 @@ tb.namespace( 'test.Parent' ).set(
             var that = this;
 
             that.handlers = {
-                init
+                init: init
             };
 
         }

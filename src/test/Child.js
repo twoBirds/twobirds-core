@@ -30,8 +30,8 @@ tb.namespace( 'test.Child').set(
             var that = this;
 
             that.handlers = {
-                init,
-                test
+                init: init,
+                test: test
             };
 
         }
