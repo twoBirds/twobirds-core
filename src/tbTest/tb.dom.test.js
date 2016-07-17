@@ -163,7 +163,7 @@ describe("tb.dom() selector tests", function() {
                 expect( document.body.lastChild.tagName === 'INPUT' ).toBe( true );
             });
 
-            it("tb.dom('body > a,body > b').remove()", function() {
+            it("tb.dom('body > a,body > b, body > input').remove()", function() {
                 tb.dom('body > a,body > b, body > input').remove();
                 expect( document.body.lastChild.tagName === 'DIV' ).toBe( true );
             });
