@@ -8,8 +8,8 @@ tb.namespace( 'test.GrandParent' ).set(
             var that = this;
 
             that.handlers = {
-                init,
-                test
+                init: init,
+                test: test
             };
 
         }
@@ -57,7 +57,7 @@ tb.namespace( 'test.Parent' ).set(
             var that = this;
 
             that.handlers = {
-                init
+                init: init
             };
 
         }
@@ -118,8 +118,8 @@ tb.namespace( 'test.Child').set(
             var that = this;
 
             that.handlers = {
-                init,
-                test
+                init: init,
+                test: test
             };
 
         }
@@ -166,7 +166,7 @@ tb.namespace( 'test.GrandChild' ).set(
             var that = this;
 
             that.handlers = {
-                init
+                init: init
             };
 
         }
@@ -203,7 +203,7 @@ tb.namespace( 'test.GreatGrandChild' ).set(
             var that = this;
 
             that.handlers = {
-                init
+                init: init
             };
 
         }

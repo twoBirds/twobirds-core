@@ -23,7 +23,7 @@
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-contrib-yuidoc": "^1.0.0",
-    "jasmine": "^2.4.1"
+    "jasmine-core": "^2.4.1"
   },
   "repository": {
     "type": "git",
