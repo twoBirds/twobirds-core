@@ -379,31 +379,30 @@ if (typeof module === 'undefined' ){
             }
 
             /**
-             @method appendTo
+             @method append
+             @chainable
 
-             @param [pElement] a .querySelectorAll() selector string, a dom node or an array of dom nodes
+             @param pElement - an array like set of DOM nodes, or a single DOM node
 
-             appends all elements in tb.dom() result set to given DOM nodes
+             @return {object} - tb.dom() result set, may be empty
+
+             appends given DOM nodes to every node in tb.dom() result set
              */
-            function appendTo( pElement ){
-                var that = this;
+            function append( pElement ){
+                var that = this,
+                    nodes;
 
                 that.forEach(
                     function( pDomNode ){
-                        if ( !!pDomNode['nodeType'] ){
-                            if ( !pElement.length ){
-                                pElement= [ pElement ];
-                            }
-
-                            [].forEach.call(
-                                pElement,
-                                function( pThisElement ){
-                                    if ( !!pThisElement['nodeType'] ){
-                                        pThisElement.appendChild( pDomNode );
-                                    }
+                        nodes = tb.dom( pElement );
+                        [].forEach.call(
+                            nodes,
+                            function( pThisElement ){
+                                if ( !!pThisElement['nodeType'] ){
+                                    pDomNode.appendChild( pThisElement );
                                 }
-                            );
-                        }
+                            }
+                        );
                     }
                 );
 
@@ -411,38 +410,25 @@ if (typeof module === 'undefined' ){
             }
 
             /**
-             @method append
-             @chainable
+             @method appendTo
 
-             @param [pElement] an array like set of DOM nodes, or a single DOM node
+             @param pElement - a dom node or tb.dom() result set
 
-             @return {object} - tb.dom() result set, may be empty
-
-             appends given DOM nodes to every node in tb.dom() result set
+             appends all elements in this result set to DOM node or tb.dom(...)[0] first element of result set
              */
-            function append( pElement ){
+            function appendTo( pElement ){
                 var that = this;
 
-                that.forEach(
-                    function( pDomNode ){
-                        if ( !!pDomNode.nodeType ){
-                            if ( !pElement.length ){
-                                pElement= [ pElement ];
-                            }
+                pElement = tb.dom( pElement ); // all types of selectors, only first result
 
-                            [].forEach.call(
-                                pElement,
-                                function( pThisElement ){
-                                    if ( !!pThisElement['nodeType'] ){
-                                        pDomNode.appendChild( pThisElement );
-                                    }
-                                }
-                            );
-                        } else if ( typeof pElement === 'string' && regExHtml.match(pElement) ){
-                            tb.dom( pDomNode ).append( tb.dom( pElement ) );
+                if ( !!pElement['0'] ){
+                    pElement = pElement[0];
+                    that.forEach(
+                        function( pDomNode ){
+                            pElement.appendChild( pDomNode );
                         }
-                    }
-                );
+                    );
+                }
 
                 return that;
             }
