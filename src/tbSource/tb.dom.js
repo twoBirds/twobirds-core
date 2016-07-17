@@ -32,7 +32,7 @@ if (typeof module === 'undefined' ){
             function _htmlToElements(html) {
                 var template = document.createElement('template');
                 template.innerHTML = html;
-                return template.content.childNodes;
+                return !template['content']['childNodes'] ? template.childNodes : template.content.childNodes;
             }
 
             function _mapArrayMethod( pMethodName ){

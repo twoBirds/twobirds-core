@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.6 - 2016-07-17 */
+/*! twobirds-core - v7.2.7 - 2016-07-17 */
 
 /**
  twoBirds V7 core functionality
@@ -1519,7 +1519,7 @@ if (typeof module === 'undefined' ){
             function _htmlToElements(html) {
                 var template = document.createElement('template');
                 template.innerHTML = html;
-                return template.content.childNodes;
+                return !template['content']['childNodes'] ? template.childNodes : template.content.childNodes;
             }
 
             function _mapArrayMethod( pMethodName ){
