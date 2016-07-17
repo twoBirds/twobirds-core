@@ -249,6 +249,51 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe("empty()", function() {
+
+            it("tb.dom('body').concat( tb.dom( 'div.test-parent' ) ).length === 6", function() {
+                tb.dom('body').append( '<div class="test1"><div class="test2"></div></div>' );
+                tb.dom('div.test1').empty();
+                expect( tb.dom('div.test2').length === 0 ).toBe( true );
+                tb.dom('div.test1').remove();
+            });
+
+        });
+
+        describe("every()", function() {
+
+            it("tb.dom( 'div.test-parent' ).every()", function() {
+                var f = function(e){
+                        return e.tagName === 'DIV';
+                    },
+                    a = tb.dom( 'div.test-parent' ).every( f );
+                expect( a ).toBe( true );
+            });
+
+        });
+
+        describe("filter()", function() {
+
+            it("tb.dom( 'div.test-parent' ).filter( 'div' ) has .length 5", function() {
+                var a = tb.dom( 'div.test-parent' ).filter( 'div' );
+                expect( a.length === 5 ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).filter( 'span' ) has .length 0", function() {
+                var a = tb.dom( 'div.test-parent' ).filter( 'span' );
+                expect( a.length === 0 ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).filter( function )", function() {
+                var f = function(e){
+                        return e.tagName === 'DIV';
+                    },
+                    a = tb.dom( 'div.test-parent' ).filter( f );
+                expect( a.length === 5 ).toBe( true );
+            });
+
+        });
+
     });
 
 });

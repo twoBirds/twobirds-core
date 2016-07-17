@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.2.11",
+        "version": "v7.2.12",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -965,6 +965,68 @@
             "file": "src/tb/tb.js",
             "line": 2087,
             "itemtype": "method",
+            "name": "empty",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nremoves one or all DOM event handlers from each element in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2107,
+            "itemtype": "method",
+            "name": "filter",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- tb.dom() selector to match against or [].filter.call( this, function() )",
+                    "type": "..."
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set\n\nmatch tb.dom() result set against pSelector filter",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2143,
+            "itemtype": "method",
+            "name": "hide",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nhide all nodes in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2166,
+            "itemtype": "method",
+            "name": "html",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pHtml",
+                    "description": "- html string or empty string",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreplace all nodes .innerHTML with pHtml",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2194,
+            "itemtype": "method",
             "name": "insertBefore",
             "params": [
                 {
@@ -977,7 +1039,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2114,
+            "line": 2221,
             "itemtype": "method",
             "name": "insertAfter",
             "params": [
@@ -991,94 +1053,61 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2151,
+            "line": 2258,
             "itemtype": "method",
-            "name": "remove",
+            "name": "not",
             "chainable": 1,
             "params": [
                 {
-                    "name": "pDomElements",
-                    "description": "- a tb.dom() selector result set\n\nremoves all elements in tb.dom() result set from DOM",
-                    "optional": true
-                }
-            ],
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2171,
-            "itemtype": "method",
-            "name": "trigger",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pEventName",
-                    "description": "- name of the event",
-                    "type": "String"
-                },
-                {
-                    "name": "pData",
-                    "description": "- optional data",
-                    "optional": true
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
                 }
             ],
             "return": {
-                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event for each element in tb.dom() result set",
+                "description": "- tb.dom() result set, may be empty\n\nremove all nodes from this tb.dom() result set, that are in tb.dom( pSelector ) result set",
                 "type": "Object"
             },
             "class": "tb.dom"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2211,
+            "line": 2286,
             "itemtype": "method",
-            "name": "on",
+            "name": "parents",
             "chainable": 1,
             "params": [
                 {
-                    "name": "pEventName(s)",
-                    "description": "- name(s) of the event separated by ' '",
-                    "type": "String"
-                },
-                {
-                    "name": "pHandler",
-                    "description": "- callback far event",
-                    "type": "Function"
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
                 }
             ],
             "return": {
-                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event handler for each element in tb.dom() result set",
+                "description": "- tb.dom() result set, may be empty\n\nreturn all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
                 "type": "Object"
             },
             "class": "tb.dom"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2252,
+            "line": 2325,
             "itemtype": "method",
-            "name": "one",
+            "name": "parent",
             "chainable": 1,
             "params": [
                 {
-                    "name": "pEventName(s)",
-                    "description": "- name(s) of the event separated by ' '",
-                    "type": "String"
-                },
-                {
-                    "name": "pHandler",
-                    "description": "- callback far event",
-                    "type": "Function"
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
                 }
             ],
             "return": {
-                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event handler for each element in tb.dom() result set (to be called only once)",
+                "description": "- tb.dom() result set, may be empty\n\nreturn closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
                 "type": "Object"
             },
             "class": "tb.dom"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2273,
+            "line": 2355,
             "itemtype": "method",
             "name": "off",
             "chainable": 1,
@@ -1102,147 +1131,88 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2307,
+            "line": 2389,
             "itemtype": "method",
-            "name": "empty",
-            "chainable": 1,
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nremoves one or all DOM event handlers from each element in tb.dom() result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2327,
-            "itemtype": "method",
-            "name": "html",
+            "name": "on",
             "chainable": 1,
             "params": [
                 {
-                    "name": "pHtml",
-                    "description": "- html string or empty string",
+                    "name": "pEventName(s)",
+                    "description": "- name(s) of the event separated by ' '",
                     "type": "String"
+                },
+                {
+                    "name": "pHandler",
+                    "description": "- callback far event",
+                    "type": "Function"
                 }
             ],
             "return": {
-                "description": "- tb.dom() result set, may be empty\n\nreplace all nodes .innerHTML with pHtml",
+                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event handler for each element in tb.dom() result set",
                 "type": "Object"
             },
             "class": "tb.dom"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2355,
+            "line": 2430,
             "itemtype": "method",
-            "name": "hide",
-            "chainable": 1,
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nhide all nodes in tb.dom() result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2378,
-            "itemtype": "method",
-            "name": "show",
-            "chainable": 1,
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nshow all nodes in tb.dom() result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2398,
-            "itemtype": "method",
-            "name": "unique",
-            "chainable": 1,
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nforce this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,\nand we would like to hear about it... )\n\nmethod is called internally though to force result set uniqueness",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2425,
-            "itemtype": "method",
-            "name": "not",
+            "name": "one",
             "chainable": 1,
             "params": [
                 {
-                    "name": "pSelector",
-                    "description": "- any valid tb.dom() constructor parameter"
-                }
-            ],
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nremove all nodes from this tb.dom() result set, that are in tb.dom( pSelector ) result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2453,
-            "itemtype": "method",
-            "name": "parents",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any valid tb.dom() constructor parameter"
-                }
-            ],
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nreturn all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2492,
-            "itemtype": "method",
-            "name": "parent",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any valid tb.dom() constructor parameter"
-                }
-            ],
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nreturn closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2522,
-            "itemtype": "method",
-            "name": "removeClass",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pClassName",
-                    "description": "- class name(s) to remove, separated by ' '",
+                    "name": "pEventName(s)",
+                    "description": "- name(s) of the event separated by ' '",
                     "type": "String"
+                },
+                {
+                    "name": "pHandler",
+                    "description": "- callback far event",
+                    "type": "Function"
                 }
             ],
             "return": {
-                "description": "- tb.dom() result set, may be empty\n\nremove class name from each of tb.dom() result set",
+                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event handler for each element in tb.dom() result set (to be called only once)",
                 "type": "Object"
             },
             "class": "tb.dom"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2574,
+            "line": 2451,
+            "itemtype": "method",
+            "name": "push",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- tb.dom() selector or DOM node"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set\n\nadd given pSelector result set to tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2485,
+            "itemtype": "method",
+            "name": "remove",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pDomElements",
+                    "description": "- a tb.dom() selector result set\n\nremoves all elements in tb.dom() result set from DOM",
+                    "optional": true
+                }
+            ],
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2505,
             "itemtype": "method",
             "name": "removeAttr",
             "chainable": 1,
@@ -1261,7 +1231,38 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2605,
+            "line": 2536,
+            "itemtype": "method",
+            "name": "removeClass",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pClassName",
+                    "description": "- class name(s) to remove, separated by ' '",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nremove class name from each of tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2588,
+            "itemtype": "method",
+            "name": "show",
+            "chainable": 1,
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nshow all nodes in tb.dom() result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2608,
             "itemtype": "method",
             "name": "toArray",
             "chainable": 1,
@@ -1273,37 +1274,36 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2631,
+            "line": 2634,
             "itemtype": "method",
-            "name": "filter",
+            "name": "trigger",
             "chainable": 1,
             "params": [
                 {
-                    "name": "pSelector",
-                    "description": "- tb.dom() selector to match against or [].filter.call( this, function() )",
-                    "type": "..."
+                    "name": "pEventName",
+                    "description": "- name of the event",
+                    "type": "String"
+                },
+                {
+                    "name": "pData",
+                    "description": "- optional data",
+                    "optional": true
                 }
             ],
             "return": {
-                "description": "- tb.dom() result set\n\nmatch tb.dom() result set against pSelector filter",
+                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event for each element in tb.dom() result set",
                 "type": "Object"
             },
             "class": "tb.dom"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2667,
+            "line": 2674,
             "itemtype": "method",
-            "name": "push",
+            "name": "unique",
             "chainable": 1,
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- tb.dom() selector or DOM node"
-                }
-            ],
             "return": {
-                "description": "- tb.dom() result set\n\nadd given pSelector result set to tb.dom() result set",
+                "description": "- tb.dom() result set, may be empty\n\nforce this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,\nand we would like to hear about it... )\n\nmethod is called internally though to force result set uniqueness",
                 "type": "Object"
             },
             "class": "tb.dom"

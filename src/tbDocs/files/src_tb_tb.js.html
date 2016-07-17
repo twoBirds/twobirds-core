@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.11</em>
+            <em>API Docs for: v7.2.12</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.11 - 2016-07-18 */
+/*! twobirds-core - v7.2.12 - 2016-07-18 */
 
 /**
  twoBirds V7 core functionality
@@ -1617,7 +1617,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                     var arr = this.toArray(),
                         ret = method.apply( arr, arguments );
 
-                    return tb.dom( ret ).unique();
+                    return ret instanceof Array ? tb.dom( ret ).unique() : ret;
                 };
             }
 
@@ -2173,6 +2173,113 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             /**
+             @method empty
+             @chainable
+
+             @return {object} - tb.dom() result set, may be empty
+
+             removes one or all DOM event handlers from each element in tb.dom() result set
+             */
+            function empty() {
+                var that = this;
+
+                that.forEach(
+                    function( pNode ){
+                        pNode.innerHTML = &#x27;&#x27;;
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method filter
+             @chainable
+
+             @param pSelector - tb.dom() selector to match against or [].filter.call( this, function(){ ... } )
+
+             @return {object} - tb.dom() result set
+
+             match tb.dom() result set against pSelector filter
+             */
+            function filter( pSelector ) {
+
+                var that = this,
+                    compare = tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
+                    result;
+
+                if ( pSelector === &#x27;undefined&#x27; ) return that;    // unchanged
+
+                if ( typeof pSelector === &#x27;string&#x27; ) { // DOM selector given
+                    result = [].filter.call(
+                        that,
+                        function (pElement) {
+                            return -1 &lt; compare.indexOf(pElement);
+                        }
+                    );
+                } else if ( pSelector instanceof Function ) { // function given
+                    result = [].filter.call(
+                        that,
+                        pSelector
+                    );
+                }
+
+                return tb.dom(result);
+
+            }
+
+            /**
+             @method hide
+             @chainable
+
+             @return {object} - tb.dom() result set, may be empty
+
+             hide all nodes in tb.dom() result set
+             */
+            function hide() {
+                var that = this;
+
+                that.forEach(
+                    function( pNode ){
+                        pNode.style.prevDisplay = ([ &#x27;&#x27;, &#x27;none&#x27;]).indexOf( pNode.style.display ) === -1
+                            ? pNode.style.display
+                            : &#x27;&#x27;;
+                        pNode.style.display = &#x27;none&#x27;;
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method html
+             @chainable
+
+             @param {string} pHtml - html string or empty string
+
+             @return {object} - tb.dom() result set, may be empty
+
+             replace all nodes .innerHTML with pHtml
+             */
+            function html( pHtml ) {
+                var that = this;
+
+                if ( !!pHtml ){
+                    if ( typeof pHtml === &#x27;string&#x27; ) {
+                        that.forEach(
+                            function (pNode) {
+                                pNode.innerHTML = pHtml;
+                            }
+                        )
+                    }
+                } else {
+                    return !!that[0] ? that[0].innerHTML : &#x27;&#x27;;
+                }
+
+                return that;
+            }
+
+            /**
              @method insertBefore
 
              @param [pElement] - a single DOM node
@@ -2234,280 +2341,6 @@ if (typeof module === &#x27;undefined&#x27; ){
                 );
 
                 return that;
-            }
-
-            /**
-             @method remove
-             @chainable
-
-             @param [pDomElements] - a tb.dom() selector result set
-
-             removes all elements in tb.dom() result set from DOM
-             */
-            function remove( pDomNodes ){
-                var that = this;
-
-                that.forEach(
-                    function( pDomNode ){
-                        pDomNode.parentNode.removeChild( pDomNode );
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method trigger
-             @chainable
-
-             @param {string} pEventName - name of the event
-             @param [pData] - optional data
-
-             @return {object} - tb.dom() result set, may be empty
-
-             creates a DOM event for each element in tb.dom() result set
-             */
-            function trigger( pEventName, pData ){
-                var that = this,
-                    eventNames = pEventName.split(&#x27; &#x27;);
-
-                that.forEach(
-                    function( pDomNode ){
-                        if ( !!pDomNode.nodeType ){
-                            eventNames.forEach(
-                                function( pThisEventName ){
-                                    if (&#x27;createEvent&#x27; in document) {
-                                        var e = document.createEvent(&#x27;HTMLEvents&#x27;);
-                                        e.data = pData;
-                                        e.initEvent(pThisEventName, false, true);
-                                        pDomNode.dispatchEvent(e);
-                                    } else {
-                                        var e = document.createEventObject();
-                                        e.data = pData;
-                                        e.eventType = pThisEventName;
-                                        pDomNode.fireEvent(&#x27;on&#x27;+e.pThisEventName, e);
-                                    }
-                                }
-                            );
-                        }
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method on
-             @chainable
-
-             @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
-             @param {function} pHandler - callback far event
-
-             @return {object} - tb.dom() result set, may be empty
-
-             creates a DOM event handler for each element in tb.dom() result set
-             */
-            function on( pEventName, pHandler ){
-                var that = this,
-                    eventNames = pEventName.indexOf(&#x27; &#x27;) &gt; -1 ? pEventName.split(&#x27; &#x27;) : [ pEventName ],
-                    onceHandler;
-
-                that.forEach(
-                    function( pDomNode ){
-                        if ( !!pDomNode.nodeType ){
-                            eventNames.forEach(
-                                function( pThisEventName ){
-
-                                    if ( !!pHandler[&#x27;once&#x27;] ){
-                                        onceHandler = (function(pDomNode, pThisEventName, pHandler) {
-                                            return function(){
-                                                _removeEvent( pDomNode, pThisEventName, onceHandler );
-                                                pHandler.apply( pDomNode, arguments );
-                                            }
-                                        })(pDomNode, pThisEventName, pHandler);
-                                    }
-
-                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler );
-                                }
-                            );
-                        }
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method one
-             @chainable
-
-             @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
-             @param {function} pHandler - callback far event
-
-             @return {object} - tb.dom() result set, may be empty
-
-             creates a DOM event handler for each element in tb.dom() result set (to be called only once)
-             */
-            function one( pEventName, pHandler ){
-                var that = this;
-
-                pHandler.once = true;
-
-                that.on( pEventName, pHandler );
-
-                return that;
-            }
-
-            /**
-             @method off
-             @chainable
-
-             @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
-             @param {function} pHandler - callback far event
-
-             @return {object} - tb.dom() result set, may be empty
-
-             removes one or all DOM event handlers from each element in tb.dom() result set
-             */
-            function off( pEventName, pHandler ){
-                var that = this,
-                    eventNames = pEventName.indexOf(&#x27; &#x27;) &gt; -1 ? pEventName.split(&#x27; &#x27;) : [ pEventName ];
-
-                that.forEach(
-                    function( pDomNode ){
-                        if ( !!pDomNode.nodeType ){
-                            if ( !!pHandler ){
-                                eventNames.forEach(
-                                    function( pThisEventName ){
-                                        _removeEvent( pDomNode, pThisEventName, pHandler );
-                                    }
-                                );
-                            } else {
-                                // todo: remove all event handlers
-                            }
-                        }
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method empty
-             @chainable
-
-             @return {object} - tb.dom() result set, may be empty
-
-             removes one or all DOM event handlers from each element in tb.dom() result set
-             */
-            function empty() {
-                var that = this;
-
-                that.forEach(
-                    function( pNode ){
-                        pNode.innerHTML = &#x27;&#x27;;
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method html
-             @chainable
-
-             @param {string} pHtml - html string or empty string
-
-             @return {object} - tb.dom() result set, may be empty
-
-             replace all nodes .innerHTML with pHtml
-             */
-            function html( pHtml ) {
-                var that = this;
-
-                if ( !!pHtml ){
-                    if ( typeof pHtml === &#x27;string&#x27; ) {
-                        that.forEach(
-                            function (pNode) {
-                                pNode.innerHTML = pHtml;
-                            }
-                        )
-                    }
-                } else {
-                    return !!that[0] ? that[0].innerHTML : &#x27;&#x27;;
-                }
-
-                return that;
-            }
-
-            /**
-             @method hide
-             @chainable
-
-             @return {object} - tb.dom() result set, may be empty
-
-             hide all nodes in tb.dom() result set
-             */
-            function hide() {
-                var that = this;
-
-                that.forEach(
-                    function( pNode ){
-                        pNode.style.prevDisplay = ([ &#x27;&#x27;, &#x27;none&#x27;]).indexOf( pNode.style.display ) === -1
-                            ? pNode.style.display
-                            : &#x27;&#x27;;
-                        pNode.style.display = &#x27;none&#x27;;
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method show
-             @chainable
-
-             @return {object} - tb.dom() result set, may be empty
-
-             show all nodes in tb.dom() result set
-             */
-            function show() {
-                var that = this;
-
-                that.forEach(
-                    function( pNode ){
-                        pNode.style.display = pNode.style.prevDisplay;
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method unique
-             @chainable
-
-             @return {object} - tb.dom() result set, may be empty
-
-             force this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,
-             and we would like to hear about it... )
-
-             method is called internally though to force result set uniqueness
-             */
-            function unique() {
-                var that = this,
-                    result = [];
-
-                [].forEach.call(
-                    that,
-                    function ( pElement ) {
-                        if ( result.indexOf( pElement ) === -1 ){
-                            result.push( pElement );
-                        }
-                    }
-                );
-
-                return tb.dom( result );
             }
 
             /**
@@ -2608,6 +2441,187 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             /**
+             @method off
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
+             @param {function} pHandler - callback far event
+
+             @return {object} - tb.dom() result set, may be empty
+
+             removes one or all DOM event handlers from each element in tb.dom() result set
+             */
+            function off( pEventName, pHandler ){
+                var that = this,
+                    eventNames = pEventName.indexOf(&#x27; &#x27;) &gt; -1 ? pEventName.split(&#x27; &#x27;) : [ pEventName ];
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            if ( !!pHandler ){
+                                eventNames.forEach(
+                                    function( pThisEventName ){
+                                        _removeEvent( pDomNode, pThisEventName, pHandler );
+                                    }
+                                );
+                            } else {
+                                // todo: remove all event handlers
+                            }
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method on
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
+             @param {function} pHandler - callback far event
+
+             @return {object} - tb.dom() result set, may be empty
+
+             creates a DOM event handler for each element in tb.dom() result set
+             */
+            function on( pEventName, pHandler ){
+                var that = this,
+                    eventNames = pEventName.indexOf(&#x27; &#x27;) &gt; -1 ? pEventName.split(&#x27; &#x27;) : [ pEventName ],
+                    onceHandler;
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            eventNames.forEach(
+                                function( pThisEventName ){
+
+                                    if ( !!pHandler[&#x27;once&#x27;] ){
+                                        onceHandler = (function(pDomNode, pThisEventName, pHandler) {
+                                            return function(){
+                                                _removeEvent( pDomNode, pThisEventName, onceHandler );
+                                                pHandler.apply( pDomNode, arguments );
+                                            }
+                                        })(pDomNode, pThisEventName, pHandler);
+                                    }
+
+                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler );
+                                }
+                            );
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method one
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
+             @param {function} pHandler - callback far event
+
+             @return {object} - tb.dom() result set, may be empty
+
+             creates a DOM event handler for each element in tb.dom() result set (to be called only once)
+             */
+            function one( pEventName, pHandler ){
+                var that = this;
+
+                pHandler.once = true;
+
+                that.on( pEventName, pHandler );
+
+                return that;
+            }
+
+            /**
+             @method push
+             @chainable
+
+             @param pSelector - tb.dom() selector or DOM node
+
+             @return {object} - tb.dom() result set
+
+             add given pSelector result set to tb.dom() result set
+             */
+            function push(pSelector) {
+
+                var that = this;
+
+                if (typeof pSelector === &#x27;undefined&#x27;) return that;    // unchanged
+
+                if ( !!pSelector.length ) { // if array or like given add each of its elements
+                    [].forEach.call(
+                        pSelector,
+                        function (pElement) {
+                            if ( !!pElement[&#x27;nodeType&#x27;] ){
+                                that.push(pElement);
+                            }
+                        }
+                    );
+                } else if (!!pSelector[&#x27;nodeType&#x27;]) { // if DOM node given add it
+                    [].push.call(that, pSelector);
+                } else if (typeof pSelector === &#x27;string&#x27;) { // DOM selector given add its results
+                    that.push( tb.dom(pSelector).toArray() );
+                }
+
+                return that.unique();
+            }
+
+            /**
+             @method remove
+             @chainable
+
+             @param [pDomElements] - a tb.dom() selector result set
+
+             removes all elements in tb.dom() result set from DOM
+             */
+            function remove( pDomNodes ){
+                var that = this;
+
+                that.forEach(
+                    function( pDomNode ){
+                        pDomNode.parentNode.removeChild( pDomNode );
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method removeAttr
+             @chainable
+
+             @param {string} pKeys - attribute name(s) separated by &#x27; &#x27;
+
+             @return {object} - tb.dom() result set, may be empty
+
+             remove attribute(s) completely from tb.dom() result set
+             */
+            function removeAttr(pKeys) {
+
+                var that = this,
+                    attrNames = pKeys &amp;&amp; pKeys.match(regExWord),
+                    name,
+                    i;
+
+                that.forEach(
+                    function (pDomNode) {
+                        i = 0;
+                        if (attrNames &amp;&amp; !!pDomNode[&#x27;nodeType&#x27;] &amp;&amp; pDomNode.nodeType === 1) {
+                            while ((name = attrNames[i++])) {
+                                pDomNode.removeAttribute(name);
+                            }
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
              @method removeClass
              @chainable
 
@@ -2620,7 +2634,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             function removeClass(pClassName) {
 
                 var that = this
-                    pClasses = pClassName.split(&#x27; &#x27;);
+                pClasses = pClassName.split(&#x27; &#x27;);
 
                 that.forEach(
                     function (pDomNode) {
@@ -2660,30 +2674,19 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             /**
-             @method removeAttr
+             @method show
              @chainable
-
-             @param {string} pKeys - attribute name(s) separated by &#x27; &#x27;
 
              @return {object} - tb.dom() result set, may be empty
 
-             remove attribute(s) completely from tb.dom() result set
+             show all nodes in tb.dom() result set
              */
-            function removeAttr(pKeys) {
-
-                var that = this,
-                    attrNames = pKeys &amp;&amp; pKeys.match(regExWord),
-                    name,
-                    i;
+            function show() {
+                var that = this;
 
                 that.forEach(
-                    function (pDomNode) {
-                        i = 0;
-                        if (attrNames &amp;&amp; !!pDomNode[&#x27;nodeType&#x27;] &amp;&amp; pDomNode.nodeType === 1) {
-                            while ((name = attrNames[i++])) {
-                                pDomNode.removeAttribute(name);
-                            }
-                        }
+                    function( pNode ){
+                        pNode.style.display = pNode.style.prevDisplay;
                     }
                 );
 
@@ -2717,73 +2720,70 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             /**
-             @method filter
+             @method trigger
              @chainable
 
-             @param pSelector - tb.dom() selector to match against or [].filter.call( this, function(){ ... } )
+             @param {string} pEventName - name of the event
+             @param [pData] - optional data
 
-             @return {object} - tb.dom() result set
+             @return {object} - tb.dom() result set, may be empty
 
-             match tb.dom() result set against pSelector filter
+             creates a DOM event for each element in tb.dom() result set
              */
-            function filter( pSelector ) {
-
+            function trigger( pEventName, pData ){
                 var that = this,
-                    compare = tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
-                    result;
+                    eventNames = pEventName.split(&#x27; &#x27;);
 
-                if ( pSelector === &#x27;undefined&#x27; ) return that;    // unchanged
-
-                if ( typeof pSelector === &#x27;string&#x27; ) { // DOM selector given
-                    result = [].filter.call(
-                        that,
-                        function (pElement) {
-                            return -1 &lt; compare.indexOf(pElement);
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            eventNames.forEach(
+                                function( pThisEventName ){
+                                    if (&#x27;createEvent&#x27; in document) {
+                                        var e = document.createEvent(&#x27;HTMLEvents&#x27;);
+                                        e.data = pData;
+                                        e.initEvent(pThisEventName, false, true);
+                                        pDomNode.dispatchEvent(e);
+                                    } else {
+                                        var e = document.createEventObject();
+                                        e.data = pData;
+                                        e.eventType = pThisEventName;
+                                        pDomNode.fireEvent(&#x27;on&#x27;+e.pThisEventName, e);
+                                    }
+                                }
+                            );
                         }
-                    );
-                } else if ( pSelector instanceof Function ) { // function given
-                    result = [].filter.call(
-                        that,
-                        pSelector
-                    );
-                }
+                    }
+                );
 
-                return tb.dom(result);
-
+                return that;
             }
 
             /**
-             @method push
+             @method unique
              @chainable
 
-             @param pSelector - tb.dom() selector or DOM node
+             @return {object} - tb.dom() result set, may be empty
 
-             @return {object} - tb.dom() result set
+             force this tb.dom() result set to be unique ( HINT: if this is necessary, there is an error in twoBirds,
+             and we would like to hear about it... )
 
-             add given pSelector result set to tb.dom() result set
+             method is called internally though to force result set uniqueness
              */
-            function push(pSelector) {
+            function unique() {
+                var that = this,
+                    result = [];
 
-                var that = this;
-
-                if (typeof pSelector === &#x27;undefined&#x27;) return that;    // unchanged
-
-                if ( !!pSelector.length ) { // if array or like given add each of its elements
-                    [].forEach.call(
-                        pSelector,
-                        function (pElement) {
-                            if ( !!pElement[&#x27;nodeType&#x27;] ){
-                                that.push(pElement);
-                            }
+                [].forEach.call(
+                    that,
+                    function ( pElement ) {
+                        if ( result.indexOf( pElement ) === -1 ){
+                            result.push( pElement );
                         }
-                    );
-                } else if (!!pSelector[&#x27;nodeType&#x27;]) { // if DOM node given add it
-                    [].push.call(that, pSelector);
-                } else if (typeof pSelector === &#x27;string&#x27;) { // DOM selector given add its results
-                    that.push( tb.dom(pSelector).toArray() );
-                }
+                    }
+                );
 
-                return that.unique();
+                return tb.dom( result );
             }
 
             /**
