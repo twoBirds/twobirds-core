@@ -207,7 +207,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("children()", function() {
+        describe(".children()", function() {
 
             it("tb.dom('body').children().length === 6", function() {
                 // includes jasmine din tag
@@ -224,7 +224,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("concat()", function() {
+        describe(".concat()", function() {
 
             it("tb.dom('body').concat( tb.dom( 'div.test-parent' ) ).length === 6", function() {
                 var a = tb.dom('body').concat( tb.dom( 'div.test-parent' ) );
@@ -233,7 +233,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("descendants()", function() {
+        describe(".descendants()", function() {
 
             it("tb.dom('div.test-parent').descendants().length === 500", function() {
                 expect( tb.dom('div.test-parent').descendants().length === 500 ).toBe( true );
@@ -249,7 +249,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("empty()", function() {
+        describe(".empty()", function() {
 
             it("tb.dom('body').concat( tb.dom( 'div.test-parent' ) ).length === 6", function() {
                 tb.dom('body').append( '<div class="test1"><div class="test2"></div></div>' );
@@ -260,7 +260,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("every()", function() {
+        describe(".every()", function() {
 
             it("tb.dom( 'div.test-parent' ).every()", function() {
                 var f = function(e){
@@ -272,7 +272,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("filter()", function() {
+        describe(".filter()", function() {
 
             it("tb.dom( 'div.test-parent' ).filter( 'div' ) has .length 5", function() {
                 var a = tb.dom( 'div.test-parent' ).filter( 'div' );
@@ -290,6 +290,43 @@ describe("tb.dom() selector tests", function() {
                     },
                     a = tb.dom( 'div.test-parent' ).filter( f );
                 expect( a.length === 5 ).toBe( true );
+            });
+
+        });
+
+        describe(".forEach()", function() {
+
+            it("forEach()", function() {
+                var a = tb.dom( 'div.test-parent' );
+                a.forEach(function(e){
+                    tb.dom(e).addClass('testForEach');
+                });
+                expect( tb.dom( 'div.testForEach' ).length === 5 ).toBe( true );
+                a.forEach(function(e){
+                    tb.dom(e).removeClass('testForEach');
+                });
+            });
+
+        });
+
+        describe(".hide() / .show()", function() {
+
+            it("hide()", function() {
+                var a = tb.dom( 'div.test-parent' ).hide();
+                expect( a[0].style.display === 'none' && a[4].style.display === 'none' ).toBe( true );
+            });
+
+            it("show()", function() {
+                var a = tb.dom( 'div.test-parent' ).show();
+                expect( a[0].style.display !== 'none' && a[4].style.display !== 'none' ).toBe( true );
+            });
+
+        });
+
+        describe(".indexOf()", function() {
+
+            it("tb.dom( 'div.test-parent').indexOf( 'div.test-parent')[0] === 0", function() {
+                expect( tb.dom( 'div.test-parent').indexOf( tb.dom( 'div.test-parent')[0] ) === 0 ).toBe( true );
             });
 
         });

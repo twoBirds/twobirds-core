@@ -377,19 +377,27 @@ php -S 0.0.0.0:3000 &
 
 #### Example
 
-browser > localhost:3000/index.html
+```browser
 
-browser > ( select "test" )
+// in your browser goto
+localhost:3000/index.html
 
-( open dev tools, e.g. firebug )
+// -> select test page to see it at work
+// -> select API docs to see how it works
+
+```
+
+-> open dev tools, e.g. firebug
 
 - inspect DOM to see how twoBirds instances reside in DOM structure, on HTML tab right-click on a div and select 'inspect in DOM' 
 - right-click on an "app.child" div, select 'inspect in DOM' to see how twoBirds instances can also reside inside each other
 - go to the 'network' tab and reload to see the sequence of requirement loading
 
-( in the file system )
+-> in the file system
 
 - view 'test.html' file to see the app code ( in this case, its lack of ;-) )
 - view js files in /src/app/ to see the app code for those objects that are lazy loaded
 
 In case of questions contact [me](mailTo:fthuerigen@googlemail.com).
+
+It it helped you getting better you can donate to: 
