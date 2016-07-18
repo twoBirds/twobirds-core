@@ -345,7 +345,54 @@ describe("tb.dom() selector tests", function() {
             });
 
         });
-        
+
+        describe(".insertAfter() / .insertBefore()", function() {
+
+            it("tb.dom( '<b></b>' ).insertBefore( tb.dom( 'div.test-parent' )[2] )", function() {
+                tb.dom( '<b></b>' ).insertBefore( tb.dom( 'div.test-parent' )[2] );
+                expect( tb.dom( 'body').children()[2].tagName === 'B' ).toBe( true );
+            });
+
+            it("tb.dom( '<b></b>' ).insertAfter( tb.dom( 'div.test-parent' )[2] )", function() {
+                tb.dom( '<b></b>' ).insertAfter( tb.dom( 'div.test-parent' )[2] );
+                expect( tb.dom( 'body').children()[4].tagName === 'B' ).toBe( true );
+                tb.dom( 'body > b' ).remove();
+            });
+
+        });
+
+        describe(".map()", function() {
+
+            it("tb.dom( 'div.test-parent' ).map( function( e, i ){ s += i; return i; } )", function() {
+                var s = 0,
+                    a;
+                a = tb.dom( 'div.test-parent' ).map( function( e, i ){ s += i; return i; } );
+                expect( a instanceof Array && s === 10 && a[0] === 0 ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).map( function( e, i ){ return e; } )", function() {
+                var s = 0,
+                    a;
+                a = tb.dom( 'div.test-parent' ).map( function( e, i ){ return e; } );
+                expect( !( a instanceof Array ) && !!a['0'] && !!a['0']['nodeType'] ).toBe( true );
+            });
+
+        });
+
+        describe(".not()", function() {
+
+            it("tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4)' )", function() {
+                var a = tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4)' );
+                expect( a.length === 4 ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4), div.test-parent:nth-child(5)' )", function() {
+                var a = tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4), div.test-parent:nth-child(5)' );
+                expect( a.length === 3 ).toBe( true );
+            });
+
+        });
+
     });
 
 });

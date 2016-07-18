@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.14 - 2016-07-18 */
+/*! twobirds-core - v7.2.17 - 2016-07-19 */
 
 /**
  twoBirds V7 core functionality
@@ -1529,7 +1529,7 @@ if (typeof module === 'undefined' ){
                     var arr = this.toArray(),
                         ret = method.apply( arr, arguments );
 
-                    return ret instanceof Array ? tb.dom( ret ).unique() : ret;
+                    return ret instanceof Array && !!ret['0'] && !!ret['0']['nodeType'] ? tb.dom( ret ).unique() : ret;
                 };
             }
 
@@ -1682,15 +1682,6 @@ if (typeof module === 'undefined' ){
                  inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a>
                  */
                 indexOf: _mapArrayMethod( 'indexOf' ),
-
-                /**
-                 @method lastIndexOf
-
-                 @return {object} - tb.dom() result set, may be empty
-
-                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf">lastIndexOf</a>
-                 */
-                lastIndexOf: _mapArrayMethod( 'lastIndexOf' ),
 
                 /**
                  @method map
@@ -2028,7 +2019,7 @@ if (typeof module === 'undefined' ){
 
                 that.forEach(
                     function (pDomNode) {
-                        var check = pSelector !== undefined ? pDomNode.querySelectorAll( pSelector ) : false;
+                        var check = pSelector !== undefined ? tb.dom( pSelector ) : false;
 
                         [].forEach.call(
                             pDomNode.children,
@@ -2194,18 +2185,21 @@ if (typeof module === 'undefined' ){
             /**
              @method insertBefore
 
-             @param [pElement] - a single DOM node
+             @param pElement - a single DOM node or tb.dom() selector result set, [0] is taken
 
              prepends all elements in tb.dom() result set to given DOM node
              */
             function insertBefore( pTarget ){
-                var that = this;
+                var that = this,
+                    target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false;
+
+                if ( !target ) return;
 
                 that.forEach(
                     function( pDomNode ){
-                        if ( !!pDomNode.nodeType && !!pTarget.nodeType ){
+                        if ( !!pDomNode.nodeType ){
 
-                            pTarget.parentElement
+                            target.parentElement
                                 .insertBefore(
                                     pDomNode.cloneNode( true ),
                                     pTarget
@@ -2215,33 +2209,36 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
-                return that;
+                return;
             }
 
             /**
              @method insertAfter
 
-             @param [pElement] - a single DOM node
+             @param pElement - a single DOM node or tb.dom() selector result set, [0] is taken
 
              inserts all elements in tb.dom() result set after given DOM node
              */
             function insertAfter( pTarget ){
                 var that = this,
-                    nextDomNode = pTarget.nextSibling || false;
+                    target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false,
+                    nextDomNode = target.nextSibling || false;
+
+                if ( !target ) return;
 
                 that.forEach(
                     function( pDomNode ){
                         if ( !!pDomNode.nodeType ){
 
                             if ( nextDomNode ){
-                                pTarget
+                                target
                                     .parentElement
                                     .insertBefore(
                                         pDomNode.cloneNode( true ),
                                         nextDomNode
                                     );
                             } else {
-                                pTarget
+                                target
                                     .parentElement
                                     .appendChild(
                                         pDomNode.cloneNode( true )
@@ -2252,7 +2249,7 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
-                return that;
+                return;
             }
 
             /**
