@@ -689,7 +689,7 @@ if (typeof module === 'undefined' ){
             function html( pHtml ) {
                 var that = this;
 
-                if ( !!pHtml ){
+                if ( typeof pHtml !== 'undefined' ){
                     if ( typeof pHtml === 'string' ) {
                         that.forEach(
                             function (pNode) {

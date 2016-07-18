@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.13 - 2016-07-18 */
+/*! twobirds-core - v7.2.14 - 2016-07-18 */
 
 /**
  twoBirds V7 core functionality
@@ -2176,7 +2176,7 @@ if (typeof module === 'undefined' ){
             function html( pHtml ) {
                 var that = this;
 
-                if ( !!pHtml ){
+                if ( typeof pHtml !== 'undefined' ){
                     if ( typeof pHtml === 'string' ) {
                         that.forEach(
                             function (pNode) {

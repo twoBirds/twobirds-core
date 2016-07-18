@@ -323,6 +323,21 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe(".html()", function() {
+
+            it("tb.dom( document.body ).append('<b></b>').children('b').html('just a test')", function() {
+                tb.dom( document.body ).append('<b></b>').children('b').html('just a test');
+                expect( tb.dom( 'body > b')[0].innerHTML === 'just a test' ).toBe( true );
+            });
+
+            it("tb.dom( 'body > b' ).html('')", function() {
+                tb.dom( 'body > b' ).html('');
+                expect( tb.dom( 'body > b')[0].innerHTML === '' ).toBe( true );
+                tb.dom( 'body > b' ).remove();
+            });
+
+        });
+
         describe(".indexOf()", function() {
 
             it("tb.dom( 'div.test-parent').indexOf( 'div.test-parent')[0] === 0", function() {
