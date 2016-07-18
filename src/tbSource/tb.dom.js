@@ -197,15 +197,6 @@ if (typeof module === 'undefined' ){
                 indexOf: _mapArrayMethod( 'indexOf' ),
 
                 /**
-                 @method lastIndexOf
-
-                 @return {object} - tb.dom() result set, may be empty
-
-                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf">lastIndexOf</a>
-                 */
-                lastIndexOf: _mapArrayMethod( 'lastIndexOf' ),
-
-                /**
                  @method map
 
                  @return {object} - tb.dom() result set, may be empty

@@ -340,12 +340,12 @@ describe("tb.dom() selector tests", function() {
 
         describe(".indexOf()", function() {
 
-            it("tb.dom( 'div.test-parent').indexOf( 'div.test-parent')[0] === 0", function() {
+            it("tb.dom( 'div.test-parent').indexOf( tb.dom('div.test-parent')[0] ) === 0", function() {
                 expect( tb.dom( 'div.test-parent').indexOf( tb.dom( 'div.test-parent')[0] ) === 0 ).toBe( true );
             });
 
         });
-
+        
     });
 
 });
