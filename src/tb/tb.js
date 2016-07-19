@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.17 - 2016-07-19 */
+/*! twobirds-core - v7.2.18 - 2016-07-19 */
 
 /**
  twoBirds V7 core functionality
@@ -2294,24 +2294,23 @@ if (typeof module === 'undefined' ){
 
                 var that = this,
                     result = tb.dom(),
-                    check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false,
-                    nextNode;
+                    check = pSelector !== undefined ? tb.dom( pSelector ) : false,
+                    domNode;
 
                 that.forEach(
                     function (pDomNode) {
-                        var domNode = pDomNode.parentNode;
+                        domNode = pDomNode.parentNode;
 
                         while (!!domNode
                         && !!domNode['tagName']
-                        && domNode['tagName'] !== 'html'
+                        && domNode['tagName'] !== 'HTML'
                             ){
-                            nextNode = domNode.parentNode;
                             if ([].indexOf.call(result, domNode) === -1
                                 && ( !check || -1 < [].indexOf.call( check, domNode ) )
                             ) {
                                 result.push(domNode);
                             }
-                            domNode = nextNode;
+                            domNode = domNode.parentNode;
                         }
                     }
                 );
@@ -2332,7 +2331,7 @@ if (typeof module === 'undefined' ){
             function parent(pSelector){
                 var that = this,
                     result = tb.dom(),
-                    check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
+                    check = pSelector !== undefined ? tb.dom( pSelector ) : false;
 
                 that.forEach(
                     function (pDomNode) {

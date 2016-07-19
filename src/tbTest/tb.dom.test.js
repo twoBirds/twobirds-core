@@ -393,6 +393,38 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe("parent()", function() {
+
+            it("tb.dom( 'span.test-child' ).parent().length === 5", function() {
+                expect( tb.dom( 'span.test-child' ).parent().length === 5 ).toBe( true );
+            });
+
+            it("tb.dom( 'span.test-child' ).parent('div').length === 5", function() {
+                expect( tb.dom( 'span.test-child' ).parent('div').length === 5 ).toBe( true );
+            });
+
+            it("tb.dom( 'span.test-child' ).parent('span').length === 0", function() {
+                expect( tb.dom( 'span.test-child' ).parent('span').length === 0 ).toBe( true );
+            });
+
+        });
+
+        describe("parents()", function() {
+
+            it("tb.dom( 'span.test-child' ).parents().length === 6", function() {
+                expect( tb.dom( 'span.test-child' ).parents().length === 6 ).toBe( true );
+            });
+
+            it("tb.dom( 'span.test-child' ).parents('div').length === 5", function() {
+                expect( tb.dom( 'span.test-child' ).parents('div').length === 5 ).toBe( true );
+            });
+
+            it("tb.dom( 'span.test-child' ).parents('span').length === 0", function() {
+                expect( tb.dom( 'span.test-child' ).parents('span').length === 0 ).toBe( true );
+            });
+
+        });
+
     });
 
 });

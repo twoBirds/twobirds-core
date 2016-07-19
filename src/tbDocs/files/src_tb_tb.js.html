@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.17</em>
+            <em>API Docs for: v7.2.18</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.17 - 2016-07-19 */
+/*! twobirds-core - v7.2.18 - 2016-07-19 */
 
 /**
  twoBirds V7 core functionality
@@ -2382,24 +2382,23 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                 var that = this,
                     result = tb.dom(),
-                    check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false,
-                    nextNode;
+                    check = pSelector !== undefined ? tb.dom( pSelector ) : false,
+                    domNode;
 
                 that.forEach(
                     function (pDomNode) {
-                        var domNode = pDomNode.parentNode;
+                        domNode = pDomNode.parentNode;
 
                         while (!!domNode
                         &amp;&amp; !!domNode[&#x27;tagName&#x27;]
-                        &amp;&amp; domNode[&#x27;tagName&#x27;] !== &#x27;html&#x27;
+                        &amp;&amp; domNode[&#x27;tagName&#x27;] !== &#x27;HTML&#x27;
                             ){
-                            nextNode = domNode.parentNode;
                             if ([].indexOf.call(result, domNode) === -1
                                 &amp;&amp; ( !check || -1 &lt; [].indexOf.call( check, domNode ) )
                             ) {
                                 result.push(domNode);
                             }
-                            domNode = nextNode;
+                            domNode = domNode.parentNode;
                         }
                     }
                 );
@@ -2420,7 +2419,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             function parent(pSelector){
                 var that = this,
                     result = tb.dom(),
-                    check = pSelector !== undefined ? document.querySelectorAll( pSelector ) : false;
+                    check = pSelector !== undefined ? tb.dom( pSelector ) : false;
 
                 that.forEach(
                     function (pDomNode) {
