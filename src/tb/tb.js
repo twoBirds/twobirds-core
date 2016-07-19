@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.18 - 2016-07-19 */
+/*! twobirds-core - v7.2.19 - 2016-07-19 */
 
 /**
  twoBirds V7 core functionality
@@ -80,10 +80,10 @@ tb = (function(){
 
         that.length = 0;
 
-        if ( !pSelector ){
+        if ( !pSelector || pSelector instanceof tb.Selector ){
             return that;
         } else if( pSelector instanceof tb ){
-            [].concat.call( that, [ pSelector ] );
+            [].push.call( that, pSelector );
             return that;
         }
 
@@ -491,21 +491,19 @@ tb = (function(){
         return ret;
     }
 
+    function _mapArrayMethod( pMethodName ){
+        var method = [][pMethodName];
+        return function(){
+            var ret;
+
+            ret = method.apply( this.toArray(), arguments );
+
+            return ret instanceof Array && !!ret['0'] && !!ret['0'] instanceof tb ? tb( ret ).unique() : ret;
+        };
+    }
+
     tb.prototype = (function(){
         // private static
-
-        function _toArray( pTbSelector ){
-            if ( pTbSelector && pTbSelector instanceof tb ){
-                return [].map.call(
-                    pTbSelector,
-                    function ( pElement ){
-                        return pElement;
-                    }
-                );
-            }
-            return [];
-        }
-
 
         return {
             // public methods and properties
@@ -1269,10 +1267,7 @@ tb = (function(){
              toArray() method
              */
             toArray: function(){
-                var that = this,
-                    result = [].filter.call( that, function(){ return true; } );
-
-                return result;
+                return [].filter.call( this, function(){ return true; } );
             },
 
             /**
@@ -1366,38 +1361,181 @@ tb = (function(){
             add: function( pSelector ){
 
                 var that = this,
-                    check = tb( pSelector ).toArray(), // object array to check against
-                    ret;
+                    add = tb( pSelector ).toArray(), // object array to check against
+                    ret = that.toArray();
 
-
-                if ( that instanceof TbSelector ) {
-                    ret = that;
-                } else {
-                    ret = tb( '' );
-                    [].push.call( ret, that );
-                }
-
-                check.forEach(
-                    function( tbObject ) {
-
-                        if (  -1 === [].indexOf.call( ret, tbObject ) ){ // unique result set...
-                            [].push.call( ret, tbObject );
-                        }
-
-                    }
-                );
-
-                return ret;
+                return tb( ret.concat( add ) );
             }
 
-        };
+        }
 
     })();
 
-    TbSelector.prototype = {};
-    for ( var i in tb.prototype ) if ( tb.prototype.hasOwnProperty(i)){
-        TbSelector.prototype[i] = tb.prototype[i];
-    }
+    TbSelector.prototype = {
+        /**
+         @method concat
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat">concat</a>
+         */
+        concat: _mapArrayMethod( 'concat' ),
+
+        /**
+         @method every
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/every">every</a>
+         */
+        every: _mapArrayMethod( 'every' ),
+
+        /**
+         @method forEach
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">forEach</a>
+         */
+        forEach: _mapArrayMethod( 'forEach' ),
+
+        /**
+         @method indexOf
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a>
+         */
+        indexOf: _mapArrayMethod( 'indexOf' ),
+
+        /**
+         @method map
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map">map</a>
+         */
+        map: _mapArrayMethod( 'map' ),
+
+        /**
+         @method pop
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
+         */
+        pop: _mapArrayMethod( 'pop' ),
+
+        /**
+         @method reduce
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce">reduce</a>
+         */
+        reduce: _mapArrayMethod( 'reduce' ),
+
+        /**
+         @method reduceRight
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight">reduceRight</a>
+         */
+        reduceRight: _mapArrayMethod( 'reduceRight' ),
+
+        /**
+         @method reverse
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse">reverse</a>
+         */
+        reverse: _mapArrayMethod( 'reverse' ),
+
+        /**
+         @method shift
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">shift</a>
+         */
+        shift: _mapArrayMethod( 'shift' ),
+
+        /**
+         @method slice
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">slice</a>
+         */
+        slice: _mapArrayMethod( 'slice' ),
+
+        /**
+         @method some
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some">some</a>
+         */
+        some: _mapArrayMethod( 'some' ),
+
+        /**
+         @method splice
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">splice</a>
+         */
+        splice: _mapArrayMethod( 'splice' ),
+
+        /**
+         @method unshift
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift">unshift</a>
+         */
+        unshift: _mapArrayMethod( 'unshift' ),
+
+    };
+
+    Object
+        .keys( tb.prototype )
+        .forEach(
+            function( pMethodOrStaticProperty ){
+                TbSelector.prototype[ pMethodOrStaticProperty ] = tb.prototype[ pMethodOrStaticProperty ];
+            }
+        );
+
+    /**
+     @method unique
+     @chainable
+
+     @return {object} - tb.dom() result set, may be empty
+
+     force this tb() result set to be unique
+
+     ( being called after using methods inherited from array, force uniqueness )
+     */
+    TbSelector.prototype['unique'] = function() {
+        var that = this,
+            result = [];
+
+        [].forEach.call(
+            that,
+            function ( pElement ) {
+                if ( result.indexOf( pElement ) === -1 ){
+                    result.push( pElement );
+                }
+            }
+        );
+
+        return tb.dom( result );
+    };
 
     return tb;
 
@@ -1524,10 +1662,8 @@ if (typeof module === 'undefined' ){
 
             function _mapArrayMethod( pMethodName ){
                 var method = [][pMethodName];
-
                 return function(){
-                    var arr = this.toArray(),
-                        ret = method.apply( arr, arguments );
+                    var ret = method.apply( this.toArray(), arguments );
 
                     return ret instanceof Array && !!ret['0'] && !!ret['0']['nodeType'] ? tb.dom( ret ).unique() : ret;
                 };
@@ -2609,22 +2745,8 @@ if (typeof module === 'undefined' ){
 
              convert tb.dom() result set converted to a plain array of DOM nodes
              */
-            function toArray() {
-
-                var that = this,
-                    result = [];
-
-                if (!!that.length) {
-                    [].map.call(
-                        that,
-                        function (pElement) {
-                            result.push(pElement);
-                        }
-                    );
-                }
-
-                return result;
-
+            function toArray(){
+                return [].filter.call( this, function(){ return true; } );
             }
 
             /**

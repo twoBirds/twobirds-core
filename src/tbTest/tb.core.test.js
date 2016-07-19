@@ -134,7 +134,7 @@ describe("tb.core.js", function() {
 
         describe("add()", function() {
 
-            it("tb('body').add('div') is a tb instance", function() {
+            it("tb('body').add('div') is a tb selector instance", function() {
                 expect( tb('body').add('div') instanceof tb.Selector ).toBe( true );
             });
 

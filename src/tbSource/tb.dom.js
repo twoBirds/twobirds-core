@@ -37,10 +37,8 @@ if (typeof module === 'undefined' ){
 
             function _mapArrayMethod( pMethodName ){
                 var method = [][pMethodName];
-
                 return function(){
-                    var arr = this.toArray(),
-                        ret = method.apply( arr, arguments );
+                    var ret = method.apply( this.toArray(), arguments );
 
                     return ret instanceof Array && !!ret['0'] && !!ret['0']['nodeType'] ? tb.dom( ret ).unique() : ret;
                 };
@@ -1122,22 +1120,8 @@ if (typeof module === 'undefined' ){
 
              convert tb.dom() result set converted to a plain array of DOM nodes
              */
-            function toArray() {
-
-                var that = this,
-                    result = [];
-
-                if (!!that.length) {
-                    [].map.call(
-                        that,
-                        function (pElement) {
-                            result.push(pElement);
-                        }
-                    );
-                }
-
-                return result;
-
+            function toArray(){
+                return [].filter.call( this, function(){ return true; } );
             }
 
             /**
