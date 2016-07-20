@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.19 - 2016-07-19 */
+/*! twobirds-core - v7.2.20 - 2016-07-20 */
 
 /**
  twoBirds V7 core functionality
@@ -1663,7 +1663,7 @@ if (typeof module === 'undefined' ){
             function _mapArrayMethod( pMethodName ){
                 var method = [][pMethodName];
                 return function(){
-                    var ret = method.apply( this.toArray(), arguments );
+                    var ret = method.apply( this, arguments );
 
                     return ret instanceof Array && !!ret['0'] && !!ret['0']['nodeType'] ? tb.dom( ret ).unique() : ret;
                 };

@@ -226,8 +226,8 @@ describe("tb.dom() selector tests", function() {
 
         describe(".concat()", function() {
 
-            it("tb.dom('body').concat( tb.dom( 'div.test-parent' ) ).length === 6", function() {
-                var a = tb.dom('body').concat( tb.dom( 'div.test-parent' ) );
+            it("tb.dom('body').concat( tb.dom( 'div.test-parent' ).toArray() ).length === 6", function() {
+                var a = tb.dom('body').concat( tb.dom( 'div.test-parent' ).toArray() );
                 expect( a.length === 6 ).toBe( true );
             });
 
@@ -393,7 +393,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("parent()", function() {
+        describe(".parent()", function() {
 
             it("tb.dom( 'span.test-child' ).parent().length === 5", function() {
                 expect( tb.dom( 'span.test-child' ).parent().length === 5 ).toBe( true );
@@ -409,7 +409,7 @@ describe("tb.dom() selector tests", function() {
 
         });
 
-        describe("parents()", function() {
+        describe(".parents()", function() {
 
             it("tb.dom( 'span.test-child' ).parents().length === 6", function() {
                 expect( tb.dom( 'span.test-child' ).parents().length === 6 ).toBe( true );
@@ -421,6 +421,32 @@ describe("tb.dom() selector tests", function() {
 
             it("tb.dom( 'span.test-child' ).parents('span').length === 0", function() {
                 expect( tb.dom( 'span.test-child' ).parents('span').length === 0 ).toBe( true );
+            });
+
+        });
+
+        describe(".pop()", function() {
+
+            it("tb.dom( 'div.test-parent' ).pop() has .length 4", function() {
+                var a = tb.dom( 'div.test-parent' );
+                a.pop();
+                
+                expect( a.length === 4 ).toBe( true );
+            });
+
+            it("!!tb.dom( 'div.test-parent' ).pop()['nodeType']", function() {
+                var a = tb.dom( 'div.test-parent' ),
+                    b = a.pop();
+                expect( !!b['nodeType'] ).toBe( true );
+            });
+
+        });
+
+        describe(".push()", function() {
+
+            it("!!tb.dom( 'div.test-parent' ).pop()['nodeType']", function() {
+                var a = tb.dom( 'div.test-parent' ).push( document.body );
+                expect( a.length === 6 ).toBe( true );
             });
 
         });

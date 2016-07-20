@@ -38,7 +38,7 @@ if (typeof module === 'undefined' ){
             function _mapArrayMethod( pMethodName ){
                 var method = [][pMethodName];
                 return function(){
-                    var ret = method.apply( this.toArray(), arguments );
+                    var ret = method.apply( this, arguments );
 
                     return ret instanceof Array && !!ret['0'] && !!ret['0']['nodeType'] ? tb.dom( ret ).unique() : ret;
                 };
