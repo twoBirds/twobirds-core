@@ -565,6 +565,58 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe(".toArray()", function() {
+
+            it("tb.dom( 'div.test-parent' ).toArray() instanceof Array", function() {
+                expect( tb.dom( 'div.test-parent' ).toArray() instanceof Array ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).toArray().length === tb.dom( 'div.test-parent' ).length", function() {
+                expect( tb.dom( 'div.test-parent' ).toArray().length === tb.dom( 'div.test-parent' ).length ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).toArray()[0] === tb.dom( 'div.test-parent' )[0]", function() {
+                expect( tb.dom( 'div.test-parent' ).toArray()[0] === tb.dom( 'div.test-parent' )[0] ).toBe( true );
+            });
+
+        });
+
+        describe(".unique()", function() {
+
+            it("tb.dom( [ document.body, 'body' ] ).length === 1", function() {
+                expect( tb.dom( [ document.body, 'body' ] ).length === 1 ).toBe( true );
+            });
+
+        });
+
+        describe(".unshift()", function() {
+
+            it("tb.dom( 'div.test-parent' ).unshift( document.body, tb.dom( test.Child )[0] )", function() {
+                var a = tb.dom( 'div.test-parent' );
+
+                a.unshift( document.body, tb.dom( test.Child )[0] );
+
+                expect( a.length === 7 ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).unshift( document.body, tb.dom( test.Child )[0] )[0]", function() {
+                var a = tb.dom( 'div.test-parent' );
+
+                a.unshift( document.body, tb.dom( test.Child )[0] );
+
+                expect( a[0] === document.body ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).unshift( document.body, tb.dom( test.Child )[0] )[1]", function() {
+                var a = tb.dom( 'div.test-parent' );
+
+                a.unshift( document.body, tb.dom( test.Child )[0] );
+
+                expect( a[1] === tb.dom( test.Child )[0] ).toBe( true );
+            });
+
+        });
+
     });
 
 });
