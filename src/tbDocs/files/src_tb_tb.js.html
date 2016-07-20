@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.22</em>
+            <em>API Docs for: v7.2.23</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.22 - 2016-07-20 */
+/*! twobirds-core - v7.2.23 - 2016-07-20 */
 
 /**
  twoBirds V7 core functionality
@@ -584,7 +584,7 @@ tb = (function(){
         return function(){
             var ret;
 
-            ret = method.apply( this.toArray(), arguments );
+            ret = method.apply( this, arguments );
 
             return ret instanceof Array &amp;&amp; !!ret[&#x27;0&#x27;] &amp;&amp; !!ret[&#x27;0&#x27;] instanceof tb ? tb( ret ).unique() : ret;
         };

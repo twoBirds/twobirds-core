@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.22 - 2016-07-20 */
+/*! twobirds-core - v7.2.23 - 2016-07-20 */
 
 /**
  twoBirds V7 core functionality
@@ -496,7 +496,7 @@ tb = (function(){
         return function(){
             var ret;
 
-            ret = method.apply( this.toArray(), arguments );
+            ret = method.apply( this, arguments );
 
             return ret instanceof Array && !!ret['0'] && !!ret['0'] instanceof tb ? tb( ret ).unique() : ret;
         };

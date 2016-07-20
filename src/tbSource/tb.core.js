@@ -494,7 +494,7 @@ tb = (function(){
         return function(){
             var ret;
 
-            ret = method.apply( this.toArray(), arguments );
+            ret = method.apply( this, arguments );
 
             return ret instanceof Array && !!ret['0'] && !!ret['0'] instanceof tb ? tb( ret ).unique() : ret;
         };

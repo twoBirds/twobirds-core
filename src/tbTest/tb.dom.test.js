@@ -509,6 +509,62 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe(".slice()", function() {
+
+            it("tb.dom( 'div.test-parent' ).slice(...) instanceof tb.dom", function() {
+                expect( tb.dom( 'div.test-parent' ).slice( 1, 3 )['__tbSelector__'] ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).slice( 1, 2 )[0] === tb.dom( 'div.test-parent' )[1]", function() {
+                expect( tb.dom( 'div.test-parent' ).slice( 1, 3 )[0] === tb.dom( 'div.test-parent' )[1] ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).slice( 1, 2 )[1] === tb.dom( 'div.test-parent' )[2]", function() {
+                expect( tb.dom( 'div.test-parent' ).slice( 1, 3 )[1] === tb.dom( 'div.test-parent' )[2] ).toBe( true );
+            });
+
+        });
+
+        describe(".some()", function() {
+
+            it("tb.dom( 'div.test-parent' ).some(...)", function() {
+                var f = function(e, i){
+                        return i === 3;
+                    },
+                    a = tb.dom( 'div.test-parent' ).some( f );
+                expect( a ).toBe( true );
+            });
+
+        });
+
+        describe(".splice()", function() {
+
+            it("tb.dom( 'div.test-parent' ).slice(...) instanceof tb.dom", function() {
+                var a = tb.dom( 'div.test-parent' ),
+                    b = a.splice( 1, 1 , document.body);
+                expect( a['__tbSelector__'] ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).splice( 1, 1 , document.body) deleted element", function() {
+                var a = tb.dom( 'div.test-parent' ),
+                    b = a.splice( 1, 1 , document.body)[0];
+                expect( b === tb.dom( 'div.test-parent' )[1] ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).splice( 1, 1 , document.body).length === 5", function() {
+                var a = tb.dom( 'div.test-parent' ),
+                    b = a.splice( 1, 1 , document.body);
+                expect( a.length === 5 ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).splice( 1, 1 , document.body) inserted element", function() {
+                var a = tb.dom( 'div.test-parent' ),
+                    b = a.splice( 1, 1 , document.body);
+                expect( a[1] === document.body ).toBe( true );
+            });
+
+        });
+
     });
 
 });
