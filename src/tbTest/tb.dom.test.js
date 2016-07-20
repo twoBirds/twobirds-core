@@ -451,6 +451,42 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe(".reduce()", function() {
+
+            it("!!tb.dom( 'div.test-parent' ).reduce(...)", function() {
+                var x,
+                    f = function( p, t, i ){
+                        var y = p;
+                        y += i;
+                        return y;
+                    },
+                    a = tb.dom( 'div.test-parent' );
+
+                x = a.reduce( f, 0 );
+
+                expect( x === 10 ).toBe( true );
+            });
+
+        });
+
+        describe(".reduceRight()", function() {
+
+            it("!!tb.dom( 'div.test-parent' ).reduceRight(...)", function() {
+                var x,
+                    f = function( p, t, i ){
+                        var y = p;
+                        y += i*2;
+                        return y;
+                    },
+                    a = tb.dom( 'div.test-parent' );
+
+                x = a.reduceRight( f, 0 );
+
+                expect( x === 20 ).toBe( true );
+            });
+
+        });
+
     });
 
 });
