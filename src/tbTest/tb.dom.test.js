@@ -444,7 +444,7 @@ describe("tb.dom() selector tests", function() {
 
         describe(".push()", function() {
 
-            it("!!tb.dom( 'div.test-parent' ).pop()['nodeType']", function() {
+            it("tb.dom( 'div.test-parent' ).pop()['nodeType']", function() {
                 var a = tb.dom( 'div.test-parent' ).push( document.body );
                 expect( a.length === 6 ).toBe( true );
             });
@@ -453,7 +453,7 @@ describe("tb.dom() selector tests", function() {
 
         describe(".reduce()", function() {
 
-            it("!!tb.dom( 'div.test-parent' ).reduce(...)", function() {
+            it("tb.dom( 'div.test-parent' ).reduce(...)", function() {
                 var x,
                     f = function( p, t, i ){
                         var y = p;
@@ -471,7 +471,7 @@ describe("tb.dom() selector tests", function() {
 
         describe(".reduceRight()", function() {
 
-            it("!!tb.dom( 'div.test-parent' ).reduceRight(...)", function() {
+            it("tb.dom( 'div.test-parent' ).reduceRight(...)", function() {
                 var x,
                     f = function( p, t, i ){
                         var y = p;
@@ -483,6 +483,28 @@ describe("tb.dom() selector tests", function() {
                 x = a.reduceRight( f, 0 );
 
                 expect( x === 20 ).toBe( true );
+            });
+
+        });
+
+        describe(".reverse()", function() {
+
+            it("tb.dom( 'div.test-parent' ).reverse()", function() {
+                expect( tb.dom( 'div.test-parent' ).reverse()[0] === tb.dom( 'div.test-parent' )[4] ).toBe( true );
+            });
+
+        });
+
+        describe(".shift()", function() {
+
+            it("tb.dom( 'div.test-parent' ).shift()['nodeType']", function() {
+                expect( !!tb.dom( 'div.test-parent' ).shift()['nodeType'] ).toBe( true );
+            });
+
+            it("tb.dom( 'div.test-parent' ).shift()[0] === tb.dom( 'div.test-parent' )[1]", function() {
+                var a = tb.dom( 'div.test-parent' );
+                a.shift();
+                expect( a[0] === tb.dom( 'div.test-parent' )[1] ).toBe( true );
             });
 
         });
