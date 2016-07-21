@@ -37,11 +37,20 @@ if (typeof module === 'undefined' ){
 
             function _mapArrayMethod( pMethodName ){
                 var method = [][pMethodName];
-                return function(){
-                    var ret = method.apply( this, arguments );
 
-                    return ret instanceof Array && !!ret['0'] && !!ret['0']['nodeType'] ? tb.dom( ret ).unique() : ret;
-                };
+                if ( -1 < ([ 'push', 'unshift' ]).indexOf( pMethodName ) ){ // make these array methods chainable
+                    return function(){
+                        method.apply( this, arguments );
+
+                        return this.unique();
+                    };
+                } else {
+                    return function(){
+                        var ret = method.apply( this, arguments );
+
+                        return ret instanceof Array && !!ret['0'] && !!ret['0']['nodeType'] ? tb.dom( ret ).unique() : ret;
+                    };
+                }
             }
 
             /**
@@ -213,6 +222,15 @@ if (typeof module === 'undefined' ){
                 pop: _mapArrayMethod( 'pop' ),
 
                 /**
+                 @method push
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push">push</a>
+                 */
+                push: _mapArrayMethod( 'push' ),
+
+                /**
                  @method reduce
 
                  @return {object} - tb.dom() result set, may be empty
@@ -304,7 +322,6 @@ if (typeof module === 'undefined' ){
                 one: one,
                 parent: parent,
                 parents: parents,
-                push: push,
                 remove: remove,
                 removeAttr: removeAttr,
                 removeClass: removeClass,
@@ -953,40 +970,6 @@ if (typeof module === 'undefined' ){
                 that.on( pEventName, pHandler );
 
                 return that;
-            }
-
-            /**
-             @method push
-             @chainable
-
-             @param pSelector - tb.dom() selector or DOM node
-
-             @return {object} - tb.dom() result set
-
-             add given pSelector result set to tb.dom() result set
-             */
-            function push(pSelector) {
-
-                var that = this;
-
-                if (typeof pSelector === 'undefined') return that;    // unchanged
-
-                if ( !!pSelector.length ) { // if array or like given add each of its elements
-                    [].forEach.call(
-                        pSelector,
-                        function (pElement) {
-                            if ( !!pElement['nodeType'] ){
-                                that.push(pElement);
-                            }
-                        }
-                    );
-                } else if (!!pSelector['nodeType']) { // if DOM node given add it
-                    [].push.call(that, pSelector);
-                } else if (typeof pSelector === 'string') { // DOM selector given add its results
-                    that.push( tb.dom(pSelector).toArray() );
-                }
-
-                return that.unique();
             }
 
             /**

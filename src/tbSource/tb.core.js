@@ -491,13 +491,21 @@ tb = (function(){
 
     function _mapArrayMethod( pMethodName ){
         var method = [][pMethodName];
-        return function(){
-            var ret;
 
-            ret = method.apply( this, arguments );
+        if ( -1 < ([ 'push', 'unshift' ]).indexOf( pMethodName ) ){ // force these array methods to be chainable
+            return function(){
+                method.apply( this, arguments );
 
-            return ret instanceof Array && !!ret['0'] && !!ret['0'] instanceof tb ? tb( ret ).unique() : ret;
-        };
+                return this.unique();
+            };
+        } else {
+            return function(){
+                var ret = method.apply( this, arguments );
+
+                return ret instanceof Array && !!ret['0'] && !!ret['0'] instanceof tb ? tb.dom( ret ).unique() : ret;
+            };
+        }
+
     }
 
     tb.prototype = (function(){

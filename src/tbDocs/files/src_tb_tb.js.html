@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.24</em>
+            <em>API Docs for: v7.2.25</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.24 - 2016-07-21 */
+/*! twobirds-core - v7.2.25 - 2016-07-21 */
 
 /**
  twoBirds V7 core functionality
@@ -581,13 +581,21 @@ tb = (function(){
 
     function _mapArrayMethod( pMethodName ){
         var method = [][pMethodName];
-        return function(){
-            var ret;
 
-            ret = method.apply( this, arguments );
+        if ( -1 &lt; ([ &#x27;push&#x27;, &#x27;unshift&#x27; ]).indexOf( pMethodName ) ){ // force these array methods to be chainable
+            return function(){
+                method.apply( this, arguments );
 
-            return ret instanceof Array &amp;&amp; !!ret[&#x27;0&#x27;] &amp;&amp; !!ret[&#x27;0&#x27;] instanceof tb ? tb( ret ).unique() : ret;
-        };
+                return this.unique();
+            };
+        } else {
+            return function(){
+                var ret = method.apply( this, arguments );
+
+                return ret instanceof Array &amp;&amp; !!ret[&#x27;0&#x27;] &amp;&amp; !!ret[&#x27;0&#x27;] instanceof tb ? tb.dom( ret ).unique() : ret;
+            };
+        }
+
     }
 
     tb.prototype = (function(){
@@ -1522,7 +1530,7 @@ tb = (function(){
 
          @return {object} - tb.dom() result set, may be empty
 
-         inherited from Array, see &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop&quot;&gt;pop&lt;/a&gt;
+         inherited from Array, see &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push&quot;&gt;push&lt;/a&gt;
          */
         push: _mapArrayMethod( &#x27;push&#x27; ),
 
@@ -1759,11 +1767,20 @@ if (typeof module === &#x27;undefined&#x27; ){
 
             function _mapArrayMethod( pMethodName ){
                 var method = [][pMethodName];
-                return function(){
-                    var ret = method.apply( this, arguments );
 
-                    return ret instanceof Array &amp;&amp; !!ret[&#x27;0&#x27;] &amp;&amp; !!ret[&#x27;0&#x27;][&#x27;nodeType&#x27;] ? tb.dom( ret ).unique() : ret;
-                };
+                if ( -1 &lt; ([ &#x27;push&#x27;, &#x27;unshift&#x27; ]).indexOf( pMethodName ) ){ // make these array methods chainable
+                    return function(){
+                        method.apply( this, arguments );
+
+                        return this.unique();
+                    };
+                } else {
+                    return function(){
+                        var ret = method.apply( this, arguments );
+
+                        return ret instanceof Array &amp;&amp; !!ret[&#x27;0&#x27;] &amp;&amp; !!ret[&#x27;0&#x27;][&#x27;nodeType&#x27;] ? tb.dom( ret ).unique() : ret;
+                    };
+                }
             }
 
             /**
@@ -1935,6 +1952,15 @@ if (typeof module === &#x27;undefined&#x27; ){
                 pop: _mapArrayMethod( &#x27;pop&#x27; ),
 
                 /**
+                 @method push
+
+                 @return {object} - tb.dom() result set, may be empty
+
+                 inherited from Array, see &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push&quot;&gt;push&lt;/a&gt;
+                 */
+                push: _mapArrayMethod( &#x27;push&#x27; ),
+
+                /**
                  @method reduce
 
                  @return {object} - tb.dom() result set, may be empty
@@ -2026,7 +2052,6 @@ if (typeof module === &#x27;undefined&#x27; ){
                 one: one,
                 parent: parent,
                 parents: parents,
-                push: push,
                 remove: remove,
                 removeAttr: removeAttr,
                 removeClass: removeClass,
@@ -2675,40 +2700,6 @@ if (typeof module === &#x27;undefined&#x27; ){
                 that.on( pEventName, pHandler );
 
                 return that;
-            }
-
-            /**
-             @method push
-             @chainable
-
-             @param pSelector - tb.dom() selector or DOM node
-
-             @return {object} - tb.dom() result set
-
-             add given pSelector result set to tb.dom() result set
-             */
-            function push(pSelector) {
-
-                var that = this;
-
-                if (typeof pSelector === &#x27;undefined&#x27;) return that;    // unchanged
-
-                if ( !!pSelector.length ) { // if array or like given add each of its elements
-                    [].forEach.call(
-                        pSelector,
-                        function (pElement) {
-                            if ( !!pElement[&#x27;nodeType&#x27;] ){
-                                that.push(pElement);
-                            }
-                        }
-                    );
-                } else if (!!pSelector[&#x27;nodeType&#x27;]) { // if DOM node given add it
-                    [].push.call(that, pSelector);
-                } else if (typeof pSelector === &#x27;string&#x27;) { // DOM selector given add its results
-                    that.push( tb.dom(pSelector).toArray() );
-                }
-
-                return that.unique();
             }
 
             /**
