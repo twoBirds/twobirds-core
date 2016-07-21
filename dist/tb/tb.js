@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.23 - 2016-07-20 */
+/*! twobirds-core - v7.2.24 - 2016-07-21 */
 
 /**
  twoBirds V7 core functionality
@@ -1428,6 +1428,15 @@ tb = (function(){
          inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
          */
         pop: _mapArrayMethod( 'pop' ),
+
+        /**
+         @method push
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
+         */
+        push: _mapArrayMethod( 'push' ),
 
         /**
          @method reduce

@@ -132,7 +132,7 @@ describe("tb.core.js", function() {
 
     describe("tb() chained", function() {
 
-        describe("add()", function() {
+        describe(".add()", function() {
 
             it("tb('body').add('div') is a tb selector instance", function() {
                 expect( tb('body').add('div') instanceof tb.Selector ).toBe( true );
@@ -144,7 +144,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("children()", function() {
+        describe(".children()", function() {
 
             it("tb('body').children() instanceof tb.Selector", function() {
                 expect( tb('body').children() instanceof tb.Selector ).toBe( true );
@@ -172,7 +172,16 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("descendants()", function() {
+        describe(".concat()", function() {
+
+            it("tb('body').concat( tb( 'div.test-parent' ).toArray() ).length === 6", function() {
+                var a = tb('body').concat( tb( 'div.test-parent' ).toArray() );
+                expect( a.length === 6 ).toBe( true );
+            });
+
+        });
+
+        describe(".descendants()", function() {
 
             it("tb('body').descendants() instanceof tb.Selector", function() {
                 expect( tb('body').descendants() instanceof tb.Selector ).toBe( true );
@@ -200,7 +209,19 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("filter()", function() {
+        describe(".every()", function() {
+
+            it("tb( 'div.test-parent' ).every()", function() {
+                var f = function(e){
+                        return e.namespace === 'test.Parent';
+                    },
+                    a = tb( 'div.test-parent' ).every( f );
+                expect( a ).toBe( true );
+            });
+
+        });
+
+        describe(".filter()", function() {
 
             it("tb('div').filter( 'body' ) instanceof tb.Selector", function() {
                 expect( tb('div').filter( 'body' ) instanceof tb.Selector ).toBe( true );
@@ -216,7 +237,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("first()", function() {
+        describe(".first()", function() {
 
             it("tb('div').first() instanceof tb.Selector", function() {
                 expect( tb('div').first() instanceof tb.Selector ).toBe( true );
@@ -232,7 +253,22 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("get()", function() {
+        describe(".forEach()", function() {
+
+            it("forEach()", function() {
+                var a = tb( 'div.test-parent' );
+                a.forEach(function(e){
+                    e.set('testProp', 'testForEach');
+                });
+                expect( a[4].testProp === 'testForEach' ).toBe( true );
+                a.forEach(function(e){
+                    delete e.testProp;
+                });
+            });
+
+        });
+
+        describe(".get()", function() {
 
             it("tb('div').get('target')", function() {
                 expect( tb('div')[0].get('target').tagName === "DIV" ).toBe( true );
@@ -240,7 +276,15 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("last()", function() {
+        describe(".indexOf()", function() {
+
+            it("tb( 'div.test-parent').indexOf( tb('div.test-parent')[0] ) === 0", function() {
+                expect( tb( 'div.test-parent').indexOf( tb( 'div.test-parent')[0] ) === 0 ).toBe( true );
+            });
+
+        });
+
+        describe(".last()", function() {
 
             it("tb('div').last() instanceof tb.Selector", function() {
                 expect( tb('div').last() instanceof tb.Selector ).toBe( true );
@@ -256,7 +300,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("next()", function() {
+        describe(".next()", function() {
 
             it("tb('div').next() instanceof tb.Selector", function() {
                 expect( tb('div').next() instanceof tb.Selector ).toBe( true );
@@ -276,7 +320,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("not()", function() {
+        describe(".not()", function() {
 
             it("tb('div').not('div').length === 0", function() {
                 expect( tb('div').not('div').length === 0).toBe( true );
@@ -288,7 +332,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("off()", function() {
+        describe(".off()", function() {
 
             it("tb('div').off( 'testEventName', pHandler ) remove one handler at a time", function() {
 
@@ -332,7 +376,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("on()", function() {
+        describe(".on()", function() {
 
             it("tb('div').on( 'testEventName', pHandler ) add handler(s)", function() {
 
@@ -357,7 +401,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("one()", function() {
+        describe(".one()", function() {
 
             it("tb('div').one( 'testEventName', pHandler ) add mixed handlers", function() {
 
@@ -412,7 +456,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("parent()", function() {
+        describe(".parent()", function() {
 
             it("tb('body').parent() instanceof tb.Selector", function() {
                 expect( tb('body').parent() instanceof tb.Selector ).toBe( true );
@@ -440,7 +484,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("parents()", function() {
+        describe(".parents()", function() {
 
             it("tb('body').parents() instanceof tb.Selector", function() {
                 expect( tb('body').parents() instanceof tb.Selector ).toBe( true );
@@ -468,7 +512,24 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("prev()", function() {
+        describe(".pop()", function() {
+
+            it("tb( 'div.test-parent' ).pop() result has .length 4 afterwards", function() {
+                var a = tb( 'div.test-parent' );
+                a.pop();
+
+                expect( a.length === 4 ).toBe( true );
+            });
+
+            it("!!tb( 'div.test-parent' ).pop() instanceof tb", function() {
+                var a = tb( 'div.test-parent' ),
+                    b = a.pop();
+                expect( b instanceof tb ).toBe( true );
+            });
+
+        });
+
+        describe(".prev()", function() {
 
             it("tb('div').prev() instanceof tb.Selector", function() {
                 expect( tb('div').prev() instanceof tb.Selector ).toBe( true );
@@ -484,6 +545,56 @@ describe("tb.core.js", function() {
 
             it("tb('div')[1].prev( 'span' ).length === 0", function() {
                 expect( tb('div')[1].prev( 'span' ).length === 0 ).toBe( true );
+            });
+
+        });
+
+        describe(".push()", function() {
+
+            it("tb( 'div.test-parent' ).push( tb( document.body )[0] )", function() {
+                var a = tb( 'div.test-parent' );
+                a.push( tb( document.body )[0] );
+                expect( a.length === 6 ).toBe( true );
+            });
+
+        });
+
+        describe(".reduce()", function() {
+
+            it("tb( 'div.test-parent' ).reduce(...)", function() {
+                var x,
+                    f = function( p ){
+                        return p+1;
+                    },
+                    a = tb( 'div.test-parent' );
+
+                x = a.reduce( f, 0 );
+
+                expect( x === 5 ).toBe( true );
+            });
+
+        });
+
+        describe(".reduceRight()", function() {
+
+            it("tb( 'div.test-parent' ).reduceRight(...)", function() {
+                var x,
+                    f = function( p ){
+                        return p+2;
+                    },
+                    a = tb( 'div.test-parent' );
+
+                x = a.reduceRight( f, 0 );
+
+                expect( x === 10 ).toBe( true );
+            });
+
+        });
+
+        describe(".reverse()", function() {
+
+            it("tb( 'div.test-parent' ).reverse()", function() {
+                expect( tb( 'div.test-parent' ).reverse()[0] === tb( 'div.test-parent' )[4] ).toBe( true );
             });
 
         });
@@ -509,7 +620,69 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("toArray()", function() {
+        describe(".shift()", function() {
+
+            it("tb( 'div.test-parent' ).shift()[0] === tb( 'div.test-parent' )[1]", function() {
+                var a = tb( 'div.test-parent' );
+                a.shift();
+                expect( a[0] === tb( 'div.test-parent' )[1] ).toBe( true );
+            });
+
+        });
+
+        describe(".slice()", function() {
+
+            it("tb( 'div.test-parent' ).slice( 1, 3 )[0] === tb( 'div.test-parent' )[1]", function() {
+                expect( tb( 'div.test-parent' ).slice( 1, 3 )[0] === tb( 'div.test-parent' )[1] ).toBe( true );
+            });
+
+            it("tb( 'div.test-parent' ).slice( 1, 3 )[1] === tb( 'div.test-parent' )[2]", function() {
+                expect( tb( 'div.test-parent' ).slice( 1, 3 )[1] === tb( 'div.test-parent' )[2] ).toBe( true );
+            });
+
+        });
+
+        describe(".some()", function() {
+
+            it("tb( 'div.test-parent' ).some(...)", function() {
+                var f = function(e, i){
+                        return i === 3;
+                    },
+                    a = tb( 'div.test-parent' ).some( f );
+                expect( a ).toBe( true );
+            });
+
+        });
+
+        describe(".splice()", function() {
+
+            it("tb( 'div.test-parent' ).slice(...) instanceof tb.Selector", function() {
+                var a = tb( 'div.test-parent' );
+                a.splice( 1, 1 , tb( document.body )[0]);
+                expect( a instanceof tb.Selector ).toBe( true );
+            });
+
+            it("tb( 'div.test-parent' ).splice( 1, 1 , tb( document.body )[0] ) deleted element", function() {
+                var a = tb( 'div.test-parent' ),
+                    b = a.splice( 1, 1 , tb( document.body )[0] )[0];
+                expect( b === tb( 'div.test-parent' )[1] ).toBe( true );
+            });
+
+            it("tb( 'div.test-parent' ).splice( 1, 1 , tb( document.body )[0] ).length === 5", function() {
+                var a = tb( 'div.test-parent' );
+                a.splice( 1, 1 , tb( document.body )[0]);
+                expect( a.length === 5 ).toBe( true );
+            });
+
+            it("tb( 'div.test-parent' ).splice( 1, 1 , tb( document.body )[0] ) inserted element", function() {
+                var a = tb( 'div.test-parent' );
+                a.splice( 1, 1 , tb( document.body )[0]);
+                expect( a[1] === tb( document.body )[0] ).toBe( true );
+            });
+
+        });
+
+        describe(".toArray()", function() {
 
             it("tb('body').toArray() instanceof Array", function() {
                 expect( tb('body').toArray() instanceof Array ).toBe( true );
@@ -529,7 +702,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("trigger()", function() {
+        describe(".trigger()", function() {
 
             var GPdone = false,
                 Cdone = false,
@@ -732,6 +905,28 @@ describe("tb.core.js", function() {
                     expect( GPdone === true && Cdone === true && GGCdone === true ).toBe( true );
                     done();
                 });
+            });
+
+        });
+
+        describe(".unshift()", function() {
+
+            it("tb( 'div.test-parent' ).unshift( tb( document.body )[0], tb( test.Child )[0] )", function() {
+                var a = tb( 'div.test-parent' );
+                a.unshift( tb( document.body )[0], tb( test.Child )[0] );
+                expect( a.length === 7 ).toBe( true );
+            });
+
+            it("tb( 'div.test-parent' ).unshift( tb( document.body )[0], tb( test.Child )[0] )[0]", function() {
+                var a = tb( 'div.test-parent' );
+                a.unshift( tb( document.body )[0], tb( test.Child )[0] );
+                expect( a[0] === tb( document.body )[0] ).toBe( true );
+            });
+
+            it("tb( 'div.test-parent' ).unshift(tb( document.body )[0], tb( test.Child )[0] )[1]", function() {
+                var a = tb( 'div.test-parent' );
+                a.unshift( tb( document.body )[0], tb( test.Child )[0] );
+                expect( a[1] === tb( test.Child )[0] ).toBe( true );
             });
 
         });

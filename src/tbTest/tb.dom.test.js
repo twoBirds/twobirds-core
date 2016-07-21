@@ -444,7 +444,7 @@ describe("tb.dom() selector tests", function() {
 
         describe(".push()", function() {
 
-            it("tb.dom( 'div.test-parent' ).pop()['nodeType']", function() {
+            it("tb.dom( 'div.test-parent' ).push( document.body )", function() {
                 var a = tb.dom( 'div.test-parent' ).push( document.body );
                 expect( a.length === 6 ).toBe( true );
             });

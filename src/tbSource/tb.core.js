@@ -1428,6 +1428,15 @@ tb = (function(){
         pop: _mapArrayMethod( 'pop' ),
 
         /**
+         @method push
+
+         @return {object} - tb.dom() result set, may be empty
+
+         inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
+         */
+        push: _mapArrayMethod( 'push' ),
+
+        /**
          @method reduce
 
          @return {object} - tb.dom() result set, may be empty
