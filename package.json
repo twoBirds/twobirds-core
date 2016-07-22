@@ -1,7 +1,7 @@
 {
   "name": "twobirds-core",
   "description": "twoBirds Web Component Framework",
-  "version": "7.2.26",
+  "version": "7.2.27",
   "license": "GPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",

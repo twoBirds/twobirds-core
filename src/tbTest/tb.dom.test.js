@@ -589,6 +589,121 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe(".trigger(), .off(), .on(), .one()", function() {
+
+            var GPdone = false,
+                Cdone = false,
+                firstCalled = '',
+                handlers = {
+                    GPtestHandler: function(e){    // test handler for Grandparent
+                        console.log('GPtestHandler');
+                        firstCalled = firstCalled || 'GP';
+                        GPdone = true;
+                    },
+                    CtestHandler: function(e){     // test handler for Child
+                        console.log('CtestHandler');
+                        firstCalled = firstCalled || 'C';
+                        Cdone = true;
+                    }
+                };
+
+            beforeEach(function() {
+                // reset done vars
+                GPdone = false;
+                Cdone = false;
+                firstCalled = false;
+            });
+
+            afterEach(function() {
+                // clear all handlers from all tb() instances
+                tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                    .off( 'triggerTest', handlers.GPtestHandler )
+                    .off( 'triggerTest', handlers.CtestHandler );
+            });
+
+            // trigger a simple local event, no bubbling
+            describe(".trigger() + .on()", function() {
+
+                beforeEach(function() {
+
+                    // set handlers for testing - capture = false
+                    tb.dom( '.test-grandparent' ).on( 'triggerTest', handlers.GPtestHandler );
+                    tb.dom( tb.dom( '.test-child')[0] ).on( 'triggerTest', handlers.CtestHandler );
+
+                    // trigger event
+                    tb.dom( tb.dom( '.test-child')[0] ).trigger( 'triggerTest', {}, true, true );
+
+                });
+
+                afterEach(function() {
+                    // clear all handlers from all tb() instances
+                    tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                        .off( 'triggerTest', handlers.GPtestHandler )
+                        .off( 'triggerTest', handlers.CtestHandler );
+                });
+
+                it("handler called - no bubbling, synchronous and in correct order", function () {
+                    console.log( Cdone, GPdone, firstCalled );
+                    expect( Cdone === true && GPdone === true && firstCalled === 'C' ).toBe( true );
+                });
+            });
+
+            // trigger a simple local event, with capture
+            describe(".trigger() + .on(), pCapture = true", function() {
+
+                beforeEach(function() {
+
+                    // set handlers for testing - capture = false
+                    tb.dom( '.test-grandparent' ).on( 'triggerTest', handlers.GPtestHandler, true );
+                    tb.dom( tb.dom( '.test-child')[0] ).on( 'triggerTest', handlers.CtestHandler );
+
+                    // trigger event
+                    tb.dom( tb.dom( '.test-child')[0] ).trigger( 'triggerTest', {}, true, true );
+
+                });
+
+                afterEach(function() {
+                    // clear all handlers from all tb() instances
+                    tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                        .off( 'triggerTest', handlers.GPtestHandler, true )
+                        .off( 'triggerTest', handlers.CtestHandler );
+                });
+
+                it("handler called - with caption, synchronous and in correct order", function () {
+                    console.log( Cdone, GPdone, firstCalled );
+                    expect( Cdone === true && GPdone === true && firstCalled === 'GP' ).toBe( true );
+                });
+            });
+
+            // trigger a simple local event, no bubbling
+            describe(".trigger() + .on(), no bubbling", function() {
+
+                beforeEach(function() {
+
+                    // set handlers for testing - capture = false
+                    tb.dom( '.test-grandparent' ).on( 'triggerTest', handlers.GPtestHandler );
+                    tb.dom( tb.dom( '.test-child')[0] ).on( 'triggerTest', handlers.CtestHandler );
+
+                    // trigger event
+                    tb.dom( tb.dom( '.test-child')[0] ).trigger( 'triggerTest', {}, false, true );
+
+                });
+
+                afterEach(function() {
+                    // clear all handlers from all tb() instances
+                    tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                        .off( 'triggerTest', handlers.GPtestHandler )
+                        .off( 'triggerTest', handlers.CtestHandler );
+                });
+
+                it("handler called - no bubbling, synchronous and in correct order", function () {
+                    console.log( Cdone, GPdone, firstCalled );
+                    expect( Cdone === true && GPdone === false && firstCalled === 'C' ).toBe( true );
+                });
+            });
+
+        });
+
         describe(".unshift()", function() {
 
             it("tb.dom( 'div.test-parent' ).unshift( document.body, tb.dom( test.Child )[0] )", function() {

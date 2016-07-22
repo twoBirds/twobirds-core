@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.2.26",
+        "version": "v7.2.27",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -166,7 +166,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3003,
+            "line": 3016,
             "is_constructor": 1,
             "params": [
                 {
@@ -192,7 +192,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3822,
+            "line": 3835,
             "is_constructor": 1,
             "params": [
                 {
@@ -219,7 +219,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4096,
+            "line": 4109,
             "is_constructor": 1,
             "params": [
                 {
@@ -1251,42 +1251,6 @@
             "file": "src/tb/tb.js",
             "line": 2453,
             "itemtype": "method",
-            "name": "parents",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any valid tb.dom() constructor parameter"
-                }
-            ],
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nreturn all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2491,
-            "itemtype": "method",
-            "name": "parent",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pSelector",
-                    "description": "- any valid tb.dom() constructor parameter"
-                }
-            ],
-            "return": {
-                "description": "- tb.dom() result set, may be empty\n\nreturn closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
-                "type": "Object"
-            },
-            "class": "tb.dom"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 2521,
-            "itemtype": "method",
             "name": "off",
             "chainable": 1,
             "params": [
@@ -1299,6 +1263,12 @@
                     "name": "pHandler",
                     "description": "- callback far event",
                     "type": "Function"
+                },
+                {
+                    "name": "pCapture",
+                    "description": "- callback far event",
+                    "type": "Boolean",
+                    "optional": true
                 }
             ],
             "return": {
@@ -1309,7 +1279,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2555,
+            "line": 2495,
             "itemtype": "method",
             "name": "on",
             "chainable": 1,
@@ -1338,7 +1308,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2598,
+            "line": 2538,
             "itemtype": "method",
             "name": "one",
             "chainable": 1,
@@ -1367,7 +1337,43 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2620,
+            "line": 2560,
+            "itemtype": "method",
+            "name": "parents",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreturn all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2598,
+            "itemtype": "method",
+            "name": "parent",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pSelector",
+                    "description": "- any valid tb.dom() constructor parameter"
+                }
+            ],
+            "return": {
+                "description": "- tb.dom() result set, may be empty\n\nreturn closest parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set",
+                "type": "Object"
+            },
+            "class": "tb.dom"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2628,
             "itemtype": "method",
             "name": "remove",
             "chainable": 1,
@@ -1382,7 +1388,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2640,
+            "line": 2648,
             "itemtype": "method",
             "name": "removeAttr",
             "chainable": 1,
@@ -1401,7 +1407,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2671,
+            "line": 2679,
             "itemtype": "method",
             "name": "removeClass",
             "chainable": 1,
@@ -1420,7 +1426,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2723,
+            "line": 2731,
             "itemtype": "method",
             "name": "show",
             "chainable": 1,
@@ -1432,7 +1438,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2743,
+            "line": 2751,
             "itemtype": "method",
             "name": "toArray",
             "chainable": 1,
@@ -1444,7 +1450,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2755,
+            "line": 2763,
             "itemtype": "method",
             "name": "trigger",
             "chainable": 1,
@@ -1457,6 +1463,19 @@
                 {
                     "name": "pData",
                     "description": "- optional data",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "pBubble",
+                    "description": "- bubble event, default = true",
+                    "type": "Boolean",
+                    "optional": true
+                },
+                {
+                    "name": "pCancel",
+                    "description": "- cancelable event, default = true, if false e.preventDefault() in handler will have no effect",
+                    "type": "Boolean",
                     "optional": true
                 }
             ],
@@ -1468,7 +1487,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2801,
+            "line": 2814,
             "itemtype": "method",
             "name": "unique",
             "chainable": 1,
@@ -1480,7 +1499,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2828,
+            "line": 2841,
             "itemtype": "method",
             "name": "val",
             "chainable": 1,
@@ -1499,7 +1518,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3021,
+            "line": 3034,
             "itemtype": "method",
             "name": "tb.observable",
             "params": [
@@ -1520,7 +1539,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3151,
+            "line": 3164,
             "itemtype": "method",
             "name": "tb.namespace",
             "params": [
@@ -1549,7 +1568,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3249,
+            "line": 3262,
             "itemtype": "method",
             "name": "tb.bind",
             "params": [
@@ -1570,7 +1589,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3306,
+            "line": 3319,
             "itemtype": "property",
             "name": "tb.status",
             "type": "Object\n\ncontainer for twoBirds status observables",
@@ -1578,7 +1597,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3313,
+            "line": 3326,
             "itemtype": "property",
             "name": "tb.status.loadCount",
             "type": "Function\n\nobservable containing the number of ( script load operations + xHr requests ) currently pending",
@@ -1586,7 +1605,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3324,
+            "line": 3337,
             "itemtype": "method",
             "name": "tb.idle",
             "params": [
@@ -1607,7 +1626,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3389,
+            "line": 3402,
             "itemtype": "method",
             "name": "tb.getId",
             "return": {
@@ -1618,7 +1637,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3402,
+            "line": 3415,
             "itemtype": "method",
             "name": "tb.extend",
             "params": [
@@ -1642,7 +1661,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3443,
+            "line": 3456,
             "itemtype": "method",
             "name": "tb.parse",
             "params": [
@@ -1664,7 +1683,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3499,
+            "line": 3512,
             "itemtype": "method",
             "name": "tb.request",
             "params": [
@@ -1741,44 +1760,44 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3522,
+            "line": 3535,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3566,
+            "line": 3579,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3583,
+            "line": 3596,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3605,
+            "line": 3618,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3630,
+            "line": 3643,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3644,
+            "line": 3657,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3674,
+            "line": 3687,
             "name": "",
             "itemtype": "method",
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3802,
+            "line": 3815,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -1796,7 +1815,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3969,
+            "line": 3982,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -1811,7 +1830,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3999,
+            "line": 4012,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1826,7 +1845,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4030,
+            "line": 4043,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1841,7 +1860,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4060,
+            "line": 4073,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1856,7 +1875,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4176,
+            "line": 4189,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1884,19 +1903,19 @@
         },
         {
             "message": "param name missing: {void}",
-            "line": " src/tb/tb.js:3003"
+            "line": " src/tb/tb.js:3016"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/tb/tb.js:3499"
+            "line": " src/tb/tb.js:3512"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:3674"
+            "line": " src/tb/tb.js:3687"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:3674"
+            "line": " src/tb/tb.js:3687"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1908,31 +1927,31 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3522"
+            "line": " src/tb/tb.js:3535"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3566"
+            "line": " src/tb/tb.js:3579"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3583"
+            "line": " src/tb/tb.js:3596"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3605"
+            "line": " src/tb/tb.js:3618"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3630"
+            "line": " src/tb/tb.js:3643"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3644"
+            "line": " src/tb/tb.js:3657"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:4176"
+            "line": " src/tb/tb.js:4189"
         }
     ]
 }

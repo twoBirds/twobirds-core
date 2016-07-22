@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.26 - 2016-07-22 */
+/*! twobirds-core - v7.2.27 - 2016-07-22 */
 
 /**
  twoBirds V7 core functionality
@@ -1663,11 +1663,11 @@ if (typeof module === 'undefined' ){
                 }
             }
 
-            function _removeEvent( pDomNode, pEventName, pHandler ) {
+            function _removeEvent( pDomNode, pEventName, pHandler, pCapture ) {
                 if (pDomNode.detachEvent){
-                    pDomNode.detachEvent('on'+pEventName, pHandler);
+                    pDomNode.detachEvent('on'+pEventName, pHandler, pCapture );
                 } else {
-                    pDomNode.removeEventListener(pEventName, pHandler);
+                    pDomNode.removeEventListener(pEventName, pHandler, pCapture );
                 }
             }
 
@@ -2451,6 +2451,113 @@ if (typeof module === 'undefined' ){
             }
 
             /**
+             @method off
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by ' '
+             @param {function} pHandler - callback far event
+             @param {boolean} [pCapture] - callback far event
+
+             @return {object} - tb.dom() result set, may be empty
+
+             removes one or all DOM event handlers from each element in tb.dom() result set
+             */
+            function off( pEventName, pHandler, pCapture ){
+                var that = this,
+                    eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ],
+                    capture = typeof pCapture === 'boolean' ? pCapture : false;
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            if ( !!pHandler ){
+                                eventNames.forEach(
+                                    function( pThisEventName ){
+                                        _removeEvent( pDomNode, pThisEventName, pHandler, capture );
+                                    }
+                                );
+                            } else {
+                                eventNames.forEach(
+                                    function( pThisEventName ){
+                                        // todo: refactor this, doesnt seem to work
+                                        pDomNode['on' + pThisEventName] = null;
+                                        pDomNode.removeAttribute( 'on' + pThisEventName );
+                                    }
+                                );
+                            }
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method on
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by ' '
+             @param {function} pHandler - callback for event
+             @param {boolean} pCapture - indicates running in capture phase, that is top down
+
+             @return {object} - tb.dom() result set, may be empty
+
+             creates a DOM event handler for each element in tb.dom() result set
+             */
+            function on( pEventName, pHandler, pCapture ){
+                var that = this,
+                    eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ],
+                    onceHandler,
+                    capture = typeof pCapture === 'boolean' ? pCapture : false;
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+                            eventNames.forEach(
+                                function( pThisEventName ){
+
+                                    if ( !!pHandler['once'] ){
+                                        onceHandler = (function(pDomNode, pThisEventName, pHandler, capture) {
+                                            return function(){
+                                                _removeEvent( pDomNode, pThisEventName, onceHandler, capture );
+                                                pHandler.apply( pDomNode, arguments );
+                                            }
+                                        })(pDomNode, pThisEventName, pHandler);
+                                    }
+
+                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler, capture );
+                                }
+                            );
+                        }
+                    }
+                );
+
+                return that;
+            }
+
+            /**
+             @method one
+             @chainable
+
+             @param {string} pEventName(s) - name(s) of the event separated by ' '
+             @param {function} pHandler - callback far event
+             @param {boolean} pCapture - indicates running in capture phase, that is top down
+
+             @return {object} - tb.dom() result set, may be empty
+
+             creates a DOM event handler for each element in tb.dom() result set (to be called only once)
+             */
+            function one( pEventName, pHandler, pCapture ){
+                var that = this;
+
+                pHandler.once = true;
+
+                that.on( pEventName, pHandler, pCapture );
+
+                return that;
+            }
+
+            /**
              @method parents
              @chainable
 
@@ -2516,105 +2623,6 @@ if (typeof module === 'undefined' ){
                 );
 
                 return result;
-            }
-
-            /**
-             @method off
-             @chainable
-
-             @param {string} pEventName(s) - name(s) of the event separated by ' '
-             @param {function} pHandler - callback far event
-
-             @return {object} - tb.dom() result set, may be empty
-
-             removes one or all DOM event handlers from each element in tb.dom() result set
-             */
-            function off( pEventName, pHandler ){
-                var that = this,
-                    eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ];
-
-                that.forEach(
-                    function( pDomNode ){
-                        if ( !!pDomNode.nodeType ){
-                            if ( !!pHandler ){
-                                eventNames.forEach(
-                                    function( pThisEventName ){
-                                        _removeEvent( pDomNode, pThisEventName, pHandler );
-                                    }
-                                );
-                            } else {
-                                // todo: remove all event handlers
-                            }
-                        }
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method on
-             @chainable
-
-             @param {string} pEventName(s) - name(s) of the event separated by ' '
-             @param {function} pHandler - callback for event
-             @param {boolean} pCapture - indicates running in capture phase, that is top down
-
-             @return {object} - tb.dom() result set, may be empty
-
-             creates a DOM event handler for each element in tb.dom() result set
-             */
-            function on( pEventName, pHandler, pCapture ){
-                var that = this,
-                    eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ],
-                    onceHandler,
-                    capture = !!pCapture ? true : false;
-
-                that.forEach(
-                    function( pDomNode ){
-                        if ( !!pDomNode.nodeType ){
-                            eventNames.forEach(
-                                function( pThisEventName ){
-
-                                    if ( !!pHandler['once'] ){
-                                        onceHandler = (function(pDomNode, pThisEventName, pHandler) {
-                                            return function(){
-                                                _removeEvent( pDomNode, pThisEventName, onceHandler );
-                                                pHandler.apply( pDomNode, arguments );
-                                            }
-                                        })(pDomNode, pThisEventName, pHandler);
-                                    }
-
-                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler, capture );
-                                }
-                            );
-                        }
-                    }
-                );
-
-                return that;
-            }
-
-            /**
-             @method one
-             @chainable
-
-             @param {string} pEventName(s) - name(s) of the event separated by ' '
-             @param {function} pHandler - callback far event
-             @param {boolean} pCapture - indicates running in capture phase, that is top down
-
-             @return {object} - tb.dom() result set, may be empty
-
-             creates a DOM event handler for each element in tb.dom() result set (to be called only once)
-             */
-            function one( pEventName, pHandler, pCapture ){
-                var that = this;
-
-                pHandler.once = true;
-
-                that.on( pEventName, pHandler, pCapture );
-
-                return that;
             }
 
             /**
@@ -2757,15 +2765,20 @@ if (typeof module === 'undefined' ){
              @chainable
 
              @param {string} pEventName - name of the event
-             @param [pData] - optional data
+             @param {object} [pData] - optional data
+             @param {boolean} [pBubble] - bubble event, default = true
+             @param {boolean} [pCancel] - cancelable event, default = true, if false e.preventDefault() in handler will have no effect
 
              @return {object} - tb.dom() result set, may be empty
 
              creates a DOM event for each element in tb.dom() result set
              */
-            function trigger( pEventName, pData ){
-                var that = this,
-                    eventNames = pEventName.split(' ');
+            function trigger( pEventName, pData, pBubble, pCancel ){
+                var bubble = typeof pBubble === 'boolean' ? pBubble : true,
+                    cancel = typeof pCancel === 'boolean' ? pCancel : true,
+                    that = this,
+                    eventNames = pEventName.split(' '),
+                    e;
 
                 that.forEach(
                     function( pDomNode ){
@@ -2773,15 +2786,15 @@ if (typeof module === 'undefined' ){
                             eventNames.forEach(
                                 function( pThisEventName ){
                                     if ('createEvent' in document) {
-                                        var e = document.createEvent('HTMLEvents');
+                                        e = document.createEvent('HTMLEvents');
                                         tb.extend(
                                             e.data,
                                             pData
                                         );
-                                        e.initEvent(pThisEventName, false, true);
+                                        e.initEvent(pThisEventName, bubble, cancel );
                                         pDomNode.dispatchEvent(e);
                                     } else {
-                                        var e = document.createEventObject();
+                                        e = document.createEventObject();
                                         tb.extend(
                                             e.data,
                                             pData
