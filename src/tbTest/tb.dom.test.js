@@ -427,7 +427,7 @@ describe("tb.dom() selector tests", function() {
 
         describe(".pop()", function() {
 
-            it("tb.dom( 'div.test-parent' ).pop() has .length 4", function() {
+            it("tb.dom( 'div.test-parent' ).pop() remainder has .length 4", function() {
                 var a = tb.dom( 'div.test-parent' );
                 a.pop();
                 

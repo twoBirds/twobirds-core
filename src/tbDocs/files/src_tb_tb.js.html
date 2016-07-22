@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.25</em>
+            <em>API Docs for: v7.2.26</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.25 - 2016-07-21 */
+/*! twobirds-core - v7.2.26 - 2016-07-22 */
 
 /**
  twoBirds V7 core functionality
@@ -1743,11 +1743,11 @@ if (typeof module === &#x27;undefined&#x27; ){
             var dom;
 
             // INTERNAL ONLY Private Functions
-            function _addEvent( pDomNode, pEventName, pHandler ) {
+            function _addEvent( pDomNode, pEventName, pHandler, pCapture ) {
                 if (pDomNode.attachEvent) {
-                    pDomNode.attachEvent(&#x27;on&#x27; + pEventName, pHandler);
+                    pDomNode.attachEvent(&#x27;on&#x27; + pEventName, pHandler, pCapture );
                 } else {
-                    pDomNode.addEventListener(pEventName, pHandler);
+                    pDomNode.addEventListener(pEventName, pHandler, pCapture );
                 }
             }
 
@@ -2645,16 +2645,18 @@ if (typeof module === &#x27;undefined&#x27; ){
              @chainable
 
              @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
-             @param {function} pHandler - callback far event
+             @param {function} pHandler - callback for event
+             @param {boolean} pCapture - indicates running in capture phase, that is top down
 
              @return {object} - tb.dom() result set, may be empty
 
              creates a DOM event handler for each element in tb.dom() result set
              */
-            function on( pEventName, pHandler ){
+            function on( pEventName, pHandler, pCapture ){
                 var that = this,
                     eventNames = pEventName.indexOf(&#x27; &#x27;) &gt; -1 ? pEventName.split(&#x27; &#x27;) : [ pEventName ],
-                    onceHandler;
+                    onceHandler,
+                    capture = !!pCapture ? true : false;
 
                 that.forEach(
                     function( pDomNode ){
@@ -2671,7 +2673,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                                         })(pDomNode, pThisEventName, pHandler);
                                     }
 
-                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler );
+                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler, capture );
                                 }
                             );
                         }
@@ -2687,17 +2689,18 @@ if (typeof module === &#x27;undefined&#x27; ){
 
              @param {string} pEventName(s) - name(s) of the event separated by &#x27; &#x27;
              @param {function} pHandler - callback far event
+             @param {boolean} pCapture - indicates running in capture phase, that is top down
 
              @return {object} - tb.dom() result set, may be empty
 
              creates a DOM event handler for each element in tb.dom() result set (to be called only once)
              */
-            function one( pEventName, pHandler ){
+            function one( pEventName, pHandler, pCapture ){
                 var that = this;
 
                 pHandler.once = true;
 
-                that.on( pEventName, pHandler );
+                that.on( pEventName, pHandler, pCapture );
 
                 return that;
             }
@@ -2859,12 +2862,18 @@ if (typeof module === &#x27;undefined&#x27; ){
                                 function( pThisEventName ){
                                     if (&#x27;createEvent&#x27; in document) {
                                         var e = document.createEvent(&#x27;HTMLEvents&#x27;);
-                                        e.data = pData;
+                                        tb.extend(
+                                            e.data,
+                                            pData
+                                        );
                                         e.initEvent(pThisEventName, false, true);
                                         pDomNode.dispatchEvent(e);
                                     } else {
                                         var e = document.createEventObject();
-                                        e.data = pData;
+                                        tb.extend(
+                                            e.data,
+                                            pData
+                                        );
                                         e.eventType = pThisEventName;
                                         pDomNode.fireEvent(&#x27;on&#x27;+e.pThisEventName, e);
                                     }

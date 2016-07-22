@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.25 - 2016-07-21 */
+/*! twobirds-core - v7.2.26 - 2016-07-22 */
 
 /**
  twoBirds V7 core functionality
@@ -1655,11 +1655,11 @@ if (typeof module === 'undefined' ){
             var dom;
 
             // INTERNAL ONLY Private Functions
-            function _addEvent( pDomNode, pEventName, pHandler ) {
+            function _addEvent( pDomNode, pEventName, pHandler, pCapture ) {
                 if (pDomNode.attachEvent) {
-                    pDomNode.attachEvent('on' + pEventName, pHandler);
+                    pDomNode.attachEvent('on' + pEventName, pHandler, pCapture );
                 } else {
-                    pDomNode.addEventListener(pEventName, pHandler);
+                    pDomNode.addEventListener(pEventName, pHandler, pCapture );
                 }
             }
 
@@ -2557,16 +2557,18 @@ if (typeof module === 'undefined' ){
              @chainable
 
              @param {string} pEventName(s) - name(s) of the event separated by ' '
-             @param {function} pHandler - callback far event
+             @param {function} pHandler - callback for event
+             @param {boolean} pCapture - indicates running in capture phase, that is top down
 
              @return {object} - tb.dom() result set, may be empty
 
              creates a DOM event handler for each element in tb.dom() result set
              */
-            function on( pEventName, pHandler ){
+            function on( pEventName, pHandler, pCapture ){
                 var that = this,
                     eventNames = pEventName.indexOf(' ') > -1 ? pEventName.split(' ') : [ pEventName ],
-                    onceHandler;
+                    onceHandler,
+                    capture = !!pCapture ? true : false;
 
                 that.forEach(
                     function( pDomNode ){
@@ -2583,7 +2585,7 @@ if (typeof module === 'undefined' ){
                                         })(pDomNode, pThisEventName, pHandler);
                                     }
 
-                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler );
+                                    _addEvent( pDomNode, pThisEventName, onceHandler || pHandler, capture );
                                 }
                             );
                         }
@@ -2599,17 +2601,18 @@ if (typeof module === 'undefined' ){
 
              @param {string} pEventName(s) - name(s) of the event separated by ' '
              @param {function} pHandler - callback far event
+             @param {boolean} pCapture - indicates running in capture phase, that is top down
 
              @return {object} - tb.dom() result set, may be empty
 
              creates a DOM event handler for each element in tb.dom() result set (to be called only once)
              */
-            function one( pEventName, pHandler ){
+            function one( pEventName, pHandler, pCapture ){
                 var that = this;
 
                 pHandler.once = true;
 
-                that.on( pEventName, pHandler );
+                that.on( pEventName, pHandler, pCapture );
 
                 return that;
             }
@@ -2771,12 +2774,18 @@ if (typeof module === 'undefined' ){
                                 function( pThisEventName ){
                                     if ('createEvent' in document) {
                                         var e = document.createEvent('HTMLEvents');
-                                        e.data = pData;
+                                        tb.extend(
+                                            e.data,
+                                            pData
+                                        );
                                         e.initEvent(pThisEventName, false, true);
                                         pDomNode.dispatchEvent(e);
                                     } else {
                                         var e = document.createEventObject();
-                                        e.data = pData;
+                                        tb.extend(
+                                            e.data,
+                                            pData
+                                        );
                                         e.eventType = pThisEventName;
                                         pDomNode.fireEvent('on'+e.pThisEventName, e);
                                     }
