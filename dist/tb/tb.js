@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.27 - 2016-07-22 */
+/*! twobirds-core - v7.2.27 - 2016-07-24 */
 
 /**
  twoBirds V7 core functionality
@@ -3046,7 +3046,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
 
  @example
 
-     // observable data is not an object
+     // observable data IS NOT an object
      var o = tb.observable( 0 );                // numeric
 
      o.observe(
@@ -3060,7 +3060,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
 
  @example
 
-     // observable data is not an object
+     // observable data IS an object
      var o = tb.observable( { a: 5 } );         // object
 
      o.observe(
@@ -3077,6 +3077,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
 
      // each of these will trigger the callback since the data changed
      o( 'a', 6 );               // => { a: 6 }
+     o( { c: 42 } );            // => { c: 42 }
      o( 'a.b', { c: 42 } );     // => { a: 6, b: { c: 42 } }
 
 
@@ -3364,16 +3365,16 @@ tb.idle = function( pCallback ){
                 var x = tb.status.loadCount();
 
                 if (
-                    x === 0
-                    && tb.loader.idle()
-                    && tb.status.loadCount.lastChanged === f.lastChanged
+                    x === 0 // nothing loading currently
+                    && tb.loader.idle() // system is idle
+                    && tb.status.loadCount.lastChanged === f.lastChanged // and its still the previous '0' loadcount
                 ){
                     // system is still idle
                     if ( typeof pCallback === 'function'){
                         pCallback();
                     };
                 } else {
-                    // not idle -> reattach
+                    // probably not idle -> retry in 50 ms
                     f.lastChanged = tb.status.loadCount.lastChanged;
                     setTimeout(
                         tf,

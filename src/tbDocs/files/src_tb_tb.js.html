@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.27 - 2016-07-22 */
+/*! twobirds-core - v7.2.27 - 2016-07-24 */
 
 /**
  twoBirds V7 core functionality
@@ -3134,7 +3134,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
 
  @example
 
-     // observable data is not an object
+     // observable data IS NOT an object
      var o = tb.observable( 0 );                // numeric
 
      o.observe(
@@ -3148,7 +3148,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
 
  @example
 
-     // observable data is not an object
+     // observable data IS an object
      var o = tb.observable( { a: 5 } );         // object
 
      o.observe(
@@ -3165,6 +3165,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
 
      // each of these will trigger the callback since the data changed
      o( &#x27;a&#x27;, 6 );               // =&gt; { a: 6 }
+     o( { c: 42 } );            // =&gt; { c: 42 }
      o( &#x27;a.b&#x27;, { c: 42 } );     // =&gt; { a: 6, b: { c: 42 } }
 
 
@@ -3452,16 +3453,16 @@ tb.idle = function( pCallback ){
                 var x = tb.status.loadCount();
 
                 if (
-                    x === 0
-                    &amp;&amp; tb.loader.idle()
-                    &amp;&amp; tb.status.loadCount.lastChanged === f.lastChanged
+                    x === 0 // nothing loading currently
+                    &amp;&amp; tb.loader.idle() // system is idle
+                    &amp;&amp; tb.status.loadCount.lastChanged === f.lastChanged // and its still the previous &#x27;0&#x27; loadcount
                 ){
                     // system is still idle
                     if ( typeof pCallback === &#x27;function&#x27;){
                         pCallback();
                     };
                 } else {
-                    // not idle -&gt; reattach
+                    // probably not idle -&gt; retry in 50 ms
                     f.lastChanged = tb.status.loadCount.lastChanged;
                     setTimeout(
                         tf,
