@@ -140,7 +140,7 @@ if ( typeof module === 'undefined' ) {
             that.done = false;
             that.cb = that.config.cb || function () {
                 };
-            that.data = tb.observable({});
+            that.data = tb.observable('');
 
             // element 'load' callback
             function onLoad(e) {
