@@ -701,7 +701,7 @@
             "itemtype": "method",
             "name": "pop",
             "return": {
-                "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop\">pop</a>",
+                "description": "- tb instance\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop\">pop</a>",
                 "type": "Object"
             },
             "class": "tb"

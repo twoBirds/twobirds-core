@@ -1431,7 +1431,7 @@ tb = (function(){
         /**
          @method pop
 
-         @return {object} - tb.dom() result set, may be empty
+         @return {object} - tb instance
 
          inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a>
          */
