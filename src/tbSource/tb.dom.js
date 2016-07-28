@@ -329,7 +329,8 @@ if (typeof module === 'undefined' ){
                 toArray: toArray,
                 trigger: trigger,
                 unique: unique,
-                val: val
+                val: val,
+                values: values
             };
 
             return new dom( pSelector, pDomNode );
@@ -1316,7 +1317,7 @@ if (typeof module === 'undefined' ){
                     that.forEach(
                         function ( pElement ) {
 
-                            var inputTags = [ 'input', 'select', 'option', 'textarea'];
+                            var inputTags = [ 'input', 'select', 'textarea'];
 
                             if ( pElement.nodeType !== 1
                                 || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
@@ -1338,27 +1339,61 @@ if (typeof module === 'undefined' ){
                     that.some(
                         function ( pElement ) {
 
-                            var inputTags = [ 'input', 'select', 'option', 'textarea'];
+                            var inputTags = [ 'input', 'select', 'textarea'];
 
                             if ( pElement.nodeType !== 1
                                 || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
                             ){
-                                return false; // not an input element
+                                return false; // is not an input element
                             }
 
                             ret = !!valHandlers[ pElement.tagName.toLowerCase() ]
                                 ? valHandlers[ pElement.tagName.toLowerCase() ].call( pElement )
                                 : valHandlers[ 'default' ].call( pElement );
 
-                            return true; // not an input element
+                            return true; // is an input element
 
                         }
                     );
 
-                    return ret;
-
                 }
 
+            }
+
+            /**
+             @method values
+
+             @param {object} [pValues] - field values
+
+             @return {object} - an object containing all values of a forms input fields
+
+             get or set all form input values
+             */
+            function values( pValues ) {
+                var that = this,
+                    node,
+                    values = pValues || {},
+                    ret = {};
+
+                if ( !that['0'] ) return that;
+
+                node = that['0'];
+
+                tb.dom( 'input, select, textarea', node )
+                    .forEach(
+                        function( pInput ){
+                            var name = pInput.attr( 'name' ),
+                                value;
+
+                            if ( !!values && !!value ){
+                                value = pValues[name];
+                                tb.dom( pInput ).val( value );
+                            }
+                            ret[name] = tb.dom( pInput ).val();
+                        }
+                    );
+
+                return ret;
             }
 
         };

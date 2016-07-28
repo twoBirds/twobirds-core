@@ -1083,7 +1083,7 @@ tb = (function(){
 
                 var that = this,
                     ret = tb(),
-                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node -> only local
+                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node or forced -> only local
 
                 if ( that instanceof TbSelector ) {
 
@@ -1098,8 +1098,8 @@ tb = (function(){
                     tb.dom( that.target )
                         .attr( 'data-tempid', id );
 
-                    selector
-                        .not( notSelector )
+                    selector // all descendants
+                        .not( notSelector ) // but not those that are below level 1
                         .forEach(
                             function( pDomNode ) {
                                 Object

@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.27 - 2016-07-24 */
+/*! twobirds-core - v7.2.30 - 2016-07-28 */
 
 /**
  twoBirds V7 core functionality
@@ -1085,7 +1085,7 @@ tb = (function(){
 
                 var that = this,
                     ret = tb(),
-                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node -> only local
+                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node or forced -> only local
 
                 if ( that instanceof TbSelector ) {
 
@@ -1100,8 +1100,8 @@ tb = (function(){
                     tb.dom( that.target )
                         .attr( 'data-tempid', id );
 
-                    selector
-                        .not( notSelector )
+                    selector // all descendants
+                        .not( notSelector ) // but not those that are below level 1
                         .forEach(
                             function( pDomNode ) {
                                 Object
@@ -1971,7 +1971,8 @@ if (typeof module === 'undefined' ){
                 toArray: toArray,
                 trigger: trigger,
                 unique: unique,
-                val: val
+                val: val,
+                values: values
             };
 
             return new dom( pSelector, pDomNode );
@@ -2958,7 +2959,7 @@ if (typeof module === 'undefined' ){
                     that.forEach(
                         function ( pElement ) {
 
-                            var inputTags = [ 'input', 'select', 'option', 'textarea'];
+                            var inputTags = [ 'input', 'select', 'textarea'];
 
                             if ( pElement.nodeType !== 1
                                 || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
@@ -2980,27 +2981,61 @@ if (typeof module === 'undefined' ){
                     that.some(
                         function ( pElement ) {
 
-                            var inputTags = [ 'input', 'select', 'option', 'textarea'];
+                            var inputTags = [ 'input', 'select', 'textarea'];
 
                             if ( pElement.nodeType !== 1
                                 || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
                             ){
-                                return false; // not an input element
+                                return false; // is not an input element
                             }
 
                             ret = !!valHandlers[ pElement.tagName.toLowerCase() ]
                                 ? valHandlers[ pElement.tagName.toLowerCase() ].call( pElement )
                                 : valHandlers[ 'default' ].call( pElement );
 
-                            return true; // not an input element
+                            return true; // is an input element
 
                         }
                     );
 
-                    return ret;
-
                 }
 
+            }
+
+            /**
+             @method values
+
+             @param {object} [pValues] - field values
+
+             @return {object} - an object containing all values of a forms input fields
+
+             get or set all form input values
+             */
+            function values( pValues ) {
+                var that = this,
+                    node,
+                    values = pValues || {},
+                    ret = {};
+
+                if ( !that['0'] ) return that;
+
+                node = that['0'];
+
+                tb.dom( 'input, select, textarea', node )
+                    .forEach(
+                        function( pInput ){
+                            var name = pInput.attr( 'name' ),
+                                value;
+
+                            if ( !!values && !!value ){
+                                value = pValues[name];
+                                tb.dom( pInput ).val( value );
+                            }
+                            ret[name] = tb.dom( pInput ).val();
+                        }
+                    );
+
+                return ret;
             }
 
         };
@@ -3078,7 +3113,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
      // each of these will trigger the callback since the data changed
      o( 'a', 6 );               // => { a: 6 }
      o( { c: 42 } );            // => { c: 42 }
-     o( 'a.b', { c: 42 } );     // => { a: 6, b: { c: 42 } }
+     o( 'b', { c: 42 } );       // => { a: 6, b: { c: 42 } }
 
 
  */
@@ -3652,6 +3687,16 @@ if (typeof module === 'undefined' ){
                 xml: pObj.connection.responseXML,
                 options: pOptions
             };
+
+            // attempt to convert text to JSON object
+            if ( !!pOptions['dataType'] && pOptions['dataType'].toLowerCase() === 'json' ){
+                try{
+                    obj.data = JSON.parse( pObj.connection.responseText );
+                } catch(e) {
+                    console.warn( 'expected JSON, could not parse: ' + pObj.connection.responseText );
+                }
+            }
+
             return obj;
         }
 
@@ -3691,7 +3736,7 @@ if (typeof module === 'undefined' ){
          */
         return function (pOptions) {
             var uid = 'tb' + tb.getId(),
-                xmlreq = false,
+                xmlreq = getConnection(uid),
                 method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
                 url = pOptions.url,
                 params = '',
@@ -3699,16 +3744,25 @@ if (typeof module === 'undefined' ){
                 errorHandler = pOptions.error || tb.nop,
                 stateHandler = pOptions.statechange || tb.nop,
                 isCachable = pOptions.cachable || false,
+                headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
                 isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
 
+            inc();
+
+            // adjust for JSON data
+            if ( !!pOptions['type'] && pOptions['type'].toLowerCase() === 'json'  ){
+                headers['Content-Type'] = 'application/json;charset=UTF-8';
+            }
+
             if (typeof pOptions.params != 'undefined') {
-                var ct = ( pOptions.headers && pOptions.headers['Content-Type']
-                    ? pOptions.headers['Content-Type']
+                var ct = ( headers && headers['Content-Type']
+                    ? headers['Content-Type']
                     : 'application/x-www-form-urlencoded' );
 
+                // parameter handling
                 switch ( ct ){
-                    case 'application/json':
+                    case 'application/json;charset=UTF-8':
                         params = JSON.stringify( pOptions.params );
                         break;
                     default:
@@ -3719,20 +3773,16 @@ if (typeof module === 'undefined' ){
                 }
             }
 
-            inc();
+            // proxy disable - cache busting
+            if (isCachable === false) {
+                url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
+            }
 
-            /*
-             if (isCachable === false) { // proxy disable - cache busting
-             url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
-             }
-             */
-
-            xmlreq = getConnection(uid);
             if (xmlreq) {
                 if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
                     url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
                 }
-                xmlreq.src=url;
+                xmlreq.src = url;
 
                 xmlreq.connection.open(method, url, isAsync);
 
@@ -3741,11 +3791,9 @@ if (typeof module === 'undefined' ){
                 }
 
                 // set request headers
-                if (pOptions.headers) {
-                    for (var i in pOptions.headers) {
-                        if (i !== 'Content-Type') {
-                            xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
-                        }
+                for (var i in headers) {
+                    if (i !== 'Content-Type') {
+                        xmlreq.connection.setRequestHeader(i, headers[i]);
                     }
                 }
 
@@ -4249,7 +4297,7 @@ if ( typeof module === 'undefined' ) {
             that.done = false;
             that.cb = that.config.cb || function () {
                 };
-            that.data = tb.observable({});
+            that.data = tb.observable('');
 
             // element 'load' callback
             function onLoad(e) {

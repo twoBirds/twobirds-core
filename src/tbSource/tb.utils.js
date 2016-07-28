@@ -68,7 +68,7 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
      // each of these will trigger the callback since the data changed
      o( 'a', 6 );               // => { a: 6 }
      o( { c: 42 } );            // => { c: 42 }
-     o( 'a.b', { c: 42 } );     // => { a: 6, b: { c: 42 } }
+     o( 'b', { c: 42 } );       // => { a: 6, b: { c: 42 } }
 
 
  */
@@ -642,6 +642,16 @@ if (typeof module === 'undefined' ){
                 xml: pObj.connection.responseXML,
                 options: pOptions
             };
+
+            // attempt to convert text to JSON object
+            if ( !!pOptions['dataType'] && pOptions['dataType'].toLowerCase() === 'json' ){
+                try{
+                    obj.data = JSON.parse( pObj.connection.responseText );
+                } catch(e) {
+                    console.warn( 'expected JSON, could not parse: ' + pObj.connection.responseText );
+                }
+            }
+
             return obj;
         }
 
@@ -681,7 +691,7 @@ if (typeof module === 'undefined' ){
          */
         return function (pOptions) {
             var uid = 'tb' + tb.getId(),
-                xmlreq = false,
+                xmlreq = getConnection(uid),
                 method = (pOptions.method ? pOptions.method.toUpperCase() : false) || 'GET',
                 url = pOptions.url,
                 params = '',
@@ -689,16 +699,25 @@ if (typeof module === 'undefined' ){
                 errorHandler = pOptions.error || tb.nop,
                 stateHandler = pOptions.statechange || tb.nop,
                 isCachable = pOptions.cachable || false,
+                headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
                 isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
 
+            inc();
+
+            // adjust for JSON data
+            if ( !!pOptions['type'] && pOptions['type'].toLowerCase() === 'json'  ){
+                headers['Content-Type'] = 'application/json;charset=UTF-8';
+            }
+
             if (typeof pOptions.params != 'undefined') {
-                var ct = ( pOptions.headers && pOptions.headers['Content-Type']
-                    ? pOptions.headers['Content-Type']
+                var ct = ( headers && headers['Content-Type']
+                    ? headers['Content-Type']
                     : 'application/x-www-form-urlencoded' );
 
+                // parameter handling
                 switch ( ct ){
-                    case 'application/json':
+                    case 'application/json;charset=UTF-8':
                         params = JSON.stringify( pOptions.params );
                         break;
                     default:
@@ -709,20 +728,16 @@ if (typeof module === 'undefined' ){
                 }
             }
 
-            inc();
+            // proxy disable - cache busting
+            if (isCachable === false) {
+                url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
+            }
 
-            /*
-             if (isCachable === false) { // proxy disable - cache busting
-             url += (url.indexOf('?') < 0 ? '?' : '&') + 'tbUid=' + uid;
-             }
-             */
-
-            xmlreq = getConnection(uid);
             if (xmlreq) {
                 if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
                     url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
                 }
-                xmlreq.src=url;
+                xmlreq.src = url;
 
                 xmlreq.connection.open(method, url, isAsync);
 
@@ -731,11 +746,9 @@ if (typeof module === 'undefined' ){
                 }
 
                 // set request headers
-                if (pOptions.headers) {
-                    for (var i in pOptions.headers) {
-                        if (i !== 'Content-Type') {
-                            xmlreq.connection.setRequestHeader(i, pOptions.headers[i]);
-                        }
+                for (var i in headers) {
+                    if (i !== 'Content-Type') {
+                        xmlreq.connection.setRequestHeader(i, headers[i]);
                     }
                 }
 
