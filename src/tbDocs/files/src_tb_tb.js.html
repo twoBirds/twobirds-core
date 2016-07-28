@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.36</em>
+            <em>API Docs for: v7.2.37</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.36 - 2016-07-28 */
+/*! twobirds-core - v7.2.37 - 2016-07-28 */
 
 /**
  twoBirds V7 core functionality
@@ -3104,8 +3104,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                             var name = tb.dom( pInput ).attr( &#x27;name&#x27; ),
                                 value;
 
-                            if ( !!values &amp;&amp; !!pValues[name] ){
-                                value = pValues[name];
+                            if ( !!values &amp;&amp; !!values[name] ){
+                                value = values[name];
                                 tb.dom( pInput ).val( value );
                             }
                             ret[name] = tb.dom( pInput ).val();
