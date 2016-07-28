@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.37</em>
+            <em>API Docs for: v7.2.38</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.37 - 2016-07-28 */
+/*! twobirds-core - v7.2.38 - 2016-07-29 */
 
 /**
  twoBirds V7 core functionality
@@ -3077,6 +3077,8 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                 }
 
+                return ret;
+
             }
 
             /**
@@ -3101,13 +3103,13 @@ if (typeof module === &#x27;undefined&#x27; ){
                 tb.dom( &#x27;input, select, textarea&#x27;, node )
                     .forEach(
                         function( pInput ){
-                            var name = tb.dom( pInput ).attr( &#x27;name&#x27; ),
-                                value;
+                            var name = tb.dom( pInput ).attr( &#x27;name&#x27; );
 
-                            if ( !!values &amp;&amp; !!values[name] ){
+                            if ( !!pValues &amp;&amp; !!values[name] ){
                                 value = values[name];
                                 tb.dom( pInput ).val( value );
                             }
+
                             ret[name] = tb.dom( pInput ).val();
                         }
                     );

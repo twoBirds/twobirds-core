@@ -1347,6 +1347,8 @@ if (typeof module === 'undefined' ){
 
                 }
 
+                return ret;
+
             }
 
             /**
@@ -1371,13 +1373,13 @@ if (typeof module === 'undefined' ){
                 tb.dom( 'input, select, textarea', node )
                     .forEach(
                         function( pInput ){
-                            var name = tb.dom( pInput ).attr( 'name' ),
-                                value;
+                            var name = tb.dom( pInput ).attr( 'name' );
 
-                            if ( !!values && !!values[name] ){
+                            if ( !!pValues && !!values[name] ){
                                 value = values[name];
                                 tb.dom( pInput ).val( value );
                             }
+
                             ret[name] = tb.dom( pInput ).val();
                         }
                     );
