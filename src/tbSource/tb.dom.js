@@ -1382,10 +1382,10 @@ if (typeof module === 'undefined' ){
                 tb.dom( 'input, select, textarea', node )
                     .forEach(
                         function( pInput ){
-                            var name = pInput.attr( 'name' ),
+                            var name = tb.dom( pInput ).attr( 'name' ),
                                 value;
 
-                            if ( !!values && !!value ){
+                            if ( !!values && !!pValues[name] ){
                                 value = pValues[name];
                                 tb.dom( pInput ).val( value );
                             }
