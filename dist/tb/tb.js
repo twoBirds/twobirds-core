@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.35 - 2016-07-28 */
+/*! twobirds-core - v7.2.36 - 2016-07-28 */
 
 /**
  twoBirds V7 core functionality
@@ -2132,7 +2132,7 @@ if (typeof module === 'undefined' ){
                 var that = this,
                     rootNodes;
 
-                if ( pKey.constructor === Object ){ // hash given
+                if ( typeof pKey === 'object' && pKey.constructor === Object ){ // hash given
 
                     Object
                         .keys( pKey )
@@ -2153,18 +2153,7 @@ if (typeof module === 'undefined' ){
                     rootNodes = that.toArray();
                     rootNodes.forEach(
                         function (pNode) {
-                            if ( pKey.constructor === Object ){
-                                Object
-                                    .keys( pKey )
-                                    .forEach(
-                                        function( thisKey ){
-                                            pNode.setAttribute( thisKey, pKey[thisKey] );
-                                        }
-                                    );
-                                return;
-                            } else {
-                                pNode.setAttribute(pKey, pValue);
-                            }
+                            pNode.setAttribute(pKey, pValue);
                         }
                     );
 
