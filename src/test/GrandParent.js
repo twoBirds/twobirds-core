@@ -18,7 +18,7 @@ tb.namespace( 'test.GrandParent' ).set(
             namespace: 'test.GrandParent',
 
             'tb.Require': [
-                '/test/GrandParent.css'
+                '/test/GrandParent.css' // only to test whether double loading is avoided
             ]
         };
 

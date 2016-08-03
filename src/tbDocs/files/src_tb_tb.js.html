@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.38</em>
+            <em>API Docs for: v7.2.39</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.38 - 2016-07-29 */
+/*! twobirds-core - v7.2.39 - 2016-08-03 */
 
 /**
  twoBirds V7 core functionality
@@ -4289,21 +4289,31 @@ if ( typeof module === &#x27;undefined&#x27; ) {
 
         var that = this;
 
-        if (!pConfig) return;
+        pConfig = !!pConfig ? pConfig : [];
 
         that.requirements = pConfig;
+
+        function requireCallback() {
+            if ( !!that[&#x27;target&#x27;] &amp;&amp; typeof that[&#x27;target&#x27;][&#x27;tb.Require&#x27;] !== &#x27;undefined&#x27; ){
+                that.target.trigger(&#x27;init&#x27;);
+            }
+            if ( typeof pCallback === &#x27;function&#x27;){
+                pCallback();
+            }
+        }
+
+        if ( that.requirements.length === 0 ){
+            setTimeout(
+                requireCallback,
+                10
+            );
+            return;
+        }
 
         // add requirement loading
         tb.loader.load(
             that.requirements,
-            function () {
-                if ( !!that[&#x27;target&#x27;] &amp;&amp; !!that[&#x27;target&#x27;][&#x27;tb.Require&#x27;] ){
-                    that.target.trigger(&#x27;init&#x27;);
-                }
-                if ( typeof pCallback === &#x27;function&#x27;){
-                    pCallback();
-                }
-            }
+            requireCallback
         );
 
     };
@@ -4348,17 +4358,11 @@ if ( typeof module === &#x27;undefined&#x27; ) {
                 },
                 typeConfig, // a single type configuration
                 element,
-                isTyped = !!typeConfigs[type];
+                isTyped = !!typeConfigs[type],
+                fileName = pConfig.src.split(&#x27;?&#x27;)[0];
 
-            // if already loaded
-            if (!!tb.loader.requirementGroups[type][pConfig.src.split(&#x27;?&#x27;)[0]]
-                &amp;&amp; !!tb.loader.requirementGroups[type][pConfig.src.split(&#x27;?&#x27;)[0]].done) { // already loaded
+            //console.log( &#x27;_Requirement:&#x27;, fileName, type );
 
-                that.trigger(&#x27;requirementLoaded&#x27;, src.split(&#x27;?&#x27;)[0], &#x27;u&#x27;);
-
-                return;
-            }
-            
             tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
 
             pConfig.type = type; // add type
@@ -4374,8 +4378,7 @@ if ( typeof module === &#x27;undefined&#x27; ) {
             that.src = pConfig.src;
             that.type = that.config.type = type;
             that.done = false;
-            that.cb = that.config.cb || function () {
-                };
+            that.cb = that.config.cb || function () {};
             that.data = tb.observable(&#x27;&#x27;);
 
             // element &#x27;load&#x27; callback
@@ -4387,18 +4390,9 @@ if ( typeof module === &#x27;undefined&#x27; ) {
 
                 that.done = true;
 
-                if (that.type === &#x27;js&#x27;) {
-                    setTimeout(
-                        function () {
-                            tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
-                        },
-                        50
-                    );
-                } else {
-                    tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
-                }
+                tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
 
-                that.trigger(&#x27;requirementLoaded&#x27;, that.src, &#x27;u&#x27;);
+                tb.loader.trigger(&#x27;requirementLoaded&#x27;, fileName );
 
             }
 
@@ -4512,7 +4506,6 @@ if ( typeof module === &#x27;undefined&#x27; ) {
 
                 if (!!rq.done) { // already loaded
                     rq.trigger(&#x27;onLoad&#x27;);
-
                 }
 
             }
@@ -4532,6 +4525,7 @@ if ( typeof module === &#x27;undefined&#x27; ) {
             }
         };
 
+
         Loader.prototype = {
 
             namespace: &#x27;_Head&#x27;,
@@ -4547,6 +4541,17 @@ if ( typeof module === &#x27;undefined&#x27; ) {
                     pSrc = typeof pSrc === &#x27;string&#x27; ? [pSrc] : pSrc, // convert to array if string
                     pSrc = [].concat.call( [], pSrc); // make an array copy
 
+                //console.log( &#x27;tll:&#x27;, pSrc );
+
+                pSrc.callback = pCallback;
+
+                pSrc.done = function (pFilename) { // will be called when each file &#x27;requirementLoaded&#x27; was triggered
+                    if (pSrc.indexOf(pFilename) &gt; -1) {
+                        pSrc.splice(pSrc.indexOf(pFilename), 1);
+                    }
+                };
+
+                that.rqSets.push(pSrc);
 
                 // will trigger loading if necessary ( async callback even if already loaded )
                 pSrc
@@ -4570,19 +4575,21 @@ if ( typeof module === &#x27;undefined&#x27; ) {
 
                             rg = that.requirementGroups[type];
 
+                            // if already loaded
+                            //console.log( &#x27;test:&#x27;, filename );
+                            if (!!that.requirementGroups[type].requirements[filename]
+                                &amp;&amp; !!that.requirementGroups[type].requirements[filename].done) { // already loaded
+
+                                //console.log( &#x27;already loaded:&#x27;, filename );
+
+                                tb.loader.trigger(&#x27;requirementLoaded&#x27;, filename );
+
+                                return;
+                            }
+
                             rg.load(filename);
                         }
                     );
-
-                pSrc.callback = pCallback;
-
-                pSrc.done = function (pFilename) { // will be called when each file &#x27;requirementLoaded&#x27; was triggered
-                    if (pSrc.indexOf(pFilename) &gt; -1) {
-                        pSrc.splice(pSrc.indexOf(pFilename), 1);
-                    }
-                };
-
-                that.rqSets.push(pSrc);
 
             },
 
@@ -4593,7 +4600,7 @@ if ( typeof module === &#x27;undefined&#x27; ) {
                     rg = that.requirementGroups[type] ? that.requirementGroups[type] : false,
                     rq = rg ? ( rg.requirements[pFileName] ? rg.requirements[pFileName] : false ) : false;
 
-                return rq ? rq.data() : &#x27;data missing for: &#x27; + pFileName;
+                return rq ? rq.data() : false;
             },
 
             idle: function() {
@@ -4609,7 +4616,9 @@ if ( typeof module === &#x27;undefined&#x27; ) {
         function requirementLoaded(e) {
 
             var that = this,
-                filename = e.data.split(&#x27;?&#x27;)[0];
+                filename = e.data;
+
+            //console.log( &#x27;requirementLoaded(&#x27;, filename, &#x27;)&#x27; );
 
             that
                 .rqSets

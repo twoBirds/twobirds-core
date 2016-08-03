@@ -13,13 +13,18 @@ tb.namespace( 'test.Parent' ).set(
 
         // Prototype
         Parent.prototype = {
-            namespace: 'test.Parent'
+            namespace: 'test.Parent',
+
+            'tb.Require': [
+                '/test/GrandParent.css'
+            ]
+
         };
 
         return Parent;
 
         // Methods
-        function init( e ){
+        function init(){
             var that = this;
 
             for ( var i=0; i<10; i++ ){

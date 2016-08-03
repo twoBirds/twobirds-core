@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.38 - 2016-07-29 */
+/*! twobirds-core - v7.2.39 - 2016-08-03 */
 
 tb.namespace( 'test.GrandParent' ).set(
     (function(){
@@ -20,7 +20,7 @@ tb.namespace( 'test.GrandParent' ).set(
             namespace: 'test.GrandParent',
 
             'tb.Require': [
-                '/test/GrandParent.css'
+                '/test/GrandParent.css' // only to test whether double loading is avoided
             ]
         };
 
@@ -64,13 +64,18 @@ tb.namespace( 'test.Parent' ).set(
 
         // Prototype
         Parent.prototype = {
-            namespace: 'test.Parent'
+            namespace: 'test.Parent',
+
+            'tb.Require': [
+                '/test/GrandParent.css'
+            ]
+
         };
 
         return Parent;
 
         // Methods
-        function init( e ){
+        function init(){
             var that = this;
 
             for ( var i=0; i<10; i++ ){
