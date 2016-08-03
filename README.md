@@ -153,41 +153,43 @@ Now lets see all of this in context:
 
 app/Body.js 
 ```js
-tb.namespace('app', true).Body = (function(){
+tb.namespace('app.Body').set( // create the repo namespace if necessary
+    (function(){    // class factory
 
-	// Constructor
-	function Body(){
-		
-		var that = this;
-
-		that.handlers = {
-			init
-		};
-
-	}
-
-	Body.prototype = {
-
-		namespace: 'demoapp.Body',
-
-		'tb.Require': [
-			'/demoapp/body.css'
-		]
-
-	};
-
-	return Body;
-
-	// Private Functions
-	function init(){
-		
-		var that = this;
-
-		// initialize the instance and trigger further actions ...
-
-	}
-
-})();
+        // Constructor
+        function Body(){
+            
+            var that = this;
+    
+            that.handlers = {
+                init
+            };
+    
+        }
+    
+        Body.prototype = {
+    
+            namespace: 'demoapp.Body',
+    
+            'tb.Require': [
+                '/demoapp/body.css'
+            ]
+    
+        };
+    
+        return Body;
+    
+        // Private Functions
+        function init(){
+            
+            var that = this;
+    
+            // initialize the instance and trigger further actions ...
+    
+        }
+    
+    })();
+);
 ```
 
 Upon instanciation this class will create a tb instance, starting the requirement loading if necessary. Further execution is halted until all required files have loaded. The "init" event will fire then.
