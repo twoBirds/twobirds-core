@@ -401,5 +401,3 @@ localhost:3000/index.html
 - view js files in /src/app/ to see the app code for those objects that are lazy loaded
 
 In case of questions contact [me](mailTo:fthuerigen@googlemail.com).
-
-It it helped you getting better you can donate to: 
