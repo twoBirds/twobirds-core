@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.39</em>
+            <em>API Docs for: v7.2.41</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.39 - 2016-08-03 */
+/*! twobirds-core - v7.2.41 - 2016-08-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1694,7 +1694,7 @@ tb.Event.prototype = {
 };
 
 // make it a node module
-if (typeof module !== &#x27;undefined&#x27; &amp;&amp; module.exports) {
+if (typeof module !== &#x27;undefined&#x27; &amp;&amp; !!module[&#x27;exports&#x27;]) {
     module.exports.tb = tb;
 } else {
     /**
@@ -3105,8 +3105,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( &#x27;name&#x27; );
 
-                            if ( !!pValues &amp;&amp; !!values[name] ){
-                                value = values[name];
+                            if ( !!pValues &amp;&amp; typeof values[name] !== &#x27;undefined&#x27; ){
+                                value = !!values[name] ? values[name] : &#x27;&#x27;;
                                 tb.dom( pInput ).val( value );
                             }
 

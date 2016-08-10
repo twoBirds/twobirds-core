@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.39 - 2016-08-03 */
+/*! twobirds-core - v7.2.41 - 2016-08-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1606,7 +1606,7 @@ tb.Event.prototype = {
 };
 
 // make it a node module
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== 'undefined' && !!module['exports']) {
     module.exports.tb = tb;
 } else {
     /**
@@ -3017,8 +3017,8 @@ if (typeof module === 'undefined' ){
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( 'name' );
 
-                            if ( !!pValues && !!values[name] ){
-                                value = values[name];
+                            if ( !!pValues && typeof values[name] !== 'undefined' ){
+                                value = !!values[name] ? values[name] : '';
                                 tb.dom( pInput ).val( value );
                             }
 
