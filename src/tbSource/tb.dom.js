@@ -1375,8 +1375,8 @@ if (typeof module === 'undefined' ){
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( 'name' );
 
-                            if ( !!pValues && !!values[name] ){
-                                value = values[name];
+                            if ( !!pValues && typeof values[name] !== 'undefined' ){
+                                value = !!values[name] ? values[name] : '';
                                 tb.dom( pInput ).val( value );
                             }
 
