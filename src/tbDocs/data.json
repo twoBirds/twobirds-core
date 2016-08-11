@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.2.41",
+        "version": "v7.2.43",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -219,7 +219,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4149,
+            "line": 4157,
             "is_constructor": 1,
             "params": [
                 {
@@ -1849,7 +1849,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4052,
+            "line": 4054,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1864,7 +1864,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4083,
+            "line": 4087,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1879,7 +1879,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4113,
+            "line": 4119,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1894,7 +1894,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4239,
+            "line": 4247,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1970,7 +1970,7 @@
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:4239"
+            "line": " src/tb/tb.js:4247"
         }
     ]
 }

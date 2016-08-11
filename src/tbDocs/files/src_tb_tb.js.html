@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.41</em>
+            <em>API Docs for: v7.2.43</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.41 - 2016-08-10 */
+/*! twobirds-core - v7.2.43 - 2016-08-11 */
 
 /**
  twoBirds V7 core functionality
@@ -4118,6 +4118,8 @@ if (typeof module === &#x27;undefined&#x27; ){ // will not work as a module
             &#x27;create&#x27;: function( pParams ){
                 var o = tb.extend( {}, this.config.create );
 
+                pParams = pParams || {};
+
                 if ( !o.url ){
                     console.error( &#x27;no create url given!&#x27;);
                     return;
@@ -4149,6 +4151,8 @@ if (typeof module === &#x27;undefined&#x27; ){ // will not work as a module
 
                 var o = tb.extend( {}, this.config.read );
 
+                pParams = pParams || {};
+
                 if ( !o.url ){
                     console.error( &#x27;no read url given!&#x27;);
                     return;
@@ -4179,6 +4183,8 @@ if (typeof module === &#x27;undefined&#x27; ){ // will not work as a module
             &#x27;update&#x27;: function( pParams ){
                 var o = tb.extend( {}, this.config.update );
 
+                pParams = pParams || {};
+
                 if ( !o.url ){
                     console.error( &#x27;no update url given!&#x27;);
                     return;
@@ -4208,6 +4214,8 @@ if (typeof module === &#x27;undefined&#x27; ){ // will not work as a module
              */
             &#x27;delete&#x27;: function( pParams ){
                 var o = tb.extend( {}, this.config[&#x27;delete&#x27;] );
+
+                pParams = pParams || {};
 
                 if ( !o.url ){
                     console.error( &#x27;no delete url given!&#x27;);

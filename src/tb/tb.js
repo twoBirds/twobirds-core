@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.41 - 2016-08-10 */
+/*! twobirds-core - v7.2.43 - 2016-08-11 */
 
 /**
  twoBirds V7 core functionality
@@ -4030,6 +4030,8 @@ if (typeof module === 'undefined' ){ // will not work as a module
             'create': function( pParams ){
                 var o = tb.extend( {}, this.config.create );
 
+                pParams = pParams || {};
+
                 if ( !o.url ){
                     console.error( 'no create url given!');
                     return;
@@ -4061,6 +4063,8 @@ if (typeof module === 'undefined' ){ // will not work as a module
 
                 var o = tb.extend( {}, this.config.read );
 
+                pParams = pParams || {};
+
                 if ( !o.url ){
                     console.error( 'no read url given!');
                     return;
@@ -4091,6 +4095,8 @@ if (typeof module === 'undefined' ){ // will not work as a module
             'update': function( pParams ){
                 var o = tb.extend( {}, this.config.update );
 
+                pParams = pParams || {};
+
                 if ( !o.url ){
                     console.error( 'no update url given!');
                     return;
@@ -4120,6 +4126,8 @@ if (typeof module === 'undefined' ){ // will not work as a module
              */
             'delete': function( pParams ){
                 var o = tb.extend( {}, this.config['delete'] );
+
+                pParams = pParams || {};
 
                 if ( !o.url ){
                     console.error( 'no delete url given!');
