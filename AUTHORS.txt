@@ -1,0 +1,8 @@
+Authors ordered by first contribution.
+
+Frank Thürigen <fthuerigen@googlemail.com>
+Francisc Simon <francisc@simon.services>
+
+Honourable mentions.
+
+John Resig - I loved our discussions about JS coding principles back in 2005 - FTH.

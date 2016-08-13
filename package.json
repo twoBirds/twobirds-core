@@ -1,16 +1,10 @@
 {
   "name": "twobirds-core",
   "description": "twoBirds Web Component Framework",
-  "version": "7.2.43",
+  "version": "7.2.44",
   "license": "GPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",
-  "contributors": [
-    {
-      "name": "Frank Thuerigen",
-      "email": "fthuerigen@googlemail.com"
-    }
-  ],
   "main": "dist/tb/tb.js",
   "devDependencies": {
     "grunt": "^1.0.1",
@@ -28,5 +22,11 @@
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/twoBirds/twobirds-core"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Francisc Simon",
+      "email": "francisc@simon.services"
+    }
+  ]
 }

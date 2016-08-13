@@ -599,7 +599,7 @@ describe("tb.core.js", function() {
 
         });
 
-        describe("set()", function() {
+        describe(".set()", function() {
 
             it("tb('body').set('answer', 42 ) instanceof tb.Selector", function() {
                 expect( tb('body').set('answer', 42 )[0]['answer'] === 42 ).toBe( true );
