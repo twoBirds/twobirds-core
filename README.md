@@ -56,8 +56,6 @@ You also have a document.querySelectorAll() based tb.dom() selector, also with t
 
 The difference between these selectors is: tb.dom() returns DOM nodes, tb() returns tb instances that are contained therein.
 
-twoBirds can work with any selector lib ( jQuery etc. ) that returns array-like objects.
-
 Read the API documentation included in the package.
 
 #### 3.) a trigger mechanism to communicate with the selected instance on the page
@@ -72,16 +70,26 @@ twoBirds allows building nested structures of tB instances of repository classes
 
 All instances of these classes are stored in DOM nodes or other tB instances / other objects and vars of course.
 
+#### Is this it?
+
+Yes. This and a few helper methods will allow for JS automation at any level of complexity, while ensuring QA requirements.
+
+The learning curve is very shallow, since tB only requires JS/ES5 knowledge as a prerequisite and does not have a lot of declarative abstraction.
+
 ### Comparision
-twoBirds can be compared to Flight, Polymer, React, ember and backboneJS.
 
-Unlike these frameworks twoBirds ... 
+twoBirds can be compared to any web component framework.
 
+Unlike most of these frameworks twoBirds ... 
+
+- ... is a hands-on approach that allows for a quick start. 
 - ... allows for complete separation of code and design. 
-- ... requirement loading is an inherent part of the system.
-- ... recursively nests application instances transparently.
-- ... doesnt come with prebuilt widgets - every tB instance is a widget
-- ... strictly follows the KISS principle
+- ... has requirement loading as an inherent part of the system.
+- ... RECURSIVELY nests application instances transparently.
+- ... doesnt come with prebuilt widgets - every tB instance is a widget, and usually you will do it yourself.
+- ... strictly follows the KISS and DRY principles.
+- ... ensures reusability of your code - since everything is a widget, you will build your own repository from the very start.
+- ... allows for simple use in an existing plain old website (e.g. like jQuery), as well as migrating it to an SPI bottom-up or creating a new SPI top-down.
 
 ## Description
 
