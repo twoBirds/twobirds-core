@@ -9,7 +9,7 @@ Welcome Birdies ;-)
 
 ## Intro
 
-twoBirds is a lightweight, component-based, event-driven JavaScript framework that maps nested objects to DOM nodes.
+twoBirds is a lightweight, component-based, event-driven, native JavaScript framework that maps nested objects to DOM nodes.
 
 twoBirds strictly follows the KISS doctrine, it is the minimum possible solution for an application framework.
 
@@ -348,21 +348,20 @@ simple: copy tb.js from /dist and insert into your project, or, using npm, follo
 
 ## Features
 
-- component style web programming
-- distributed programming
-- async on demand loading, recursive
 - web-component programming
+- easy distributed / offshore programming
+- async on demand loading, recursive
 
 ## Status:
 
 - core API stable
-- Best Practices stable but not documented yet. FAQ and Tutorials coming soon I hope.
+- Best Practices stable but not documented yet. FAQ and Tutorials coming soon.
 
 ## History
 
-- twoBirds was created 2004 to be able to build a complex web application for an insurance company (similar to google calc, which came later). 
-- It was meant to be a Web Component Framework from the beginning, and was said to be one since 2007.
-- It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) and sorry for the character mess there, the page is outdated obviously ).
+- twoBirds was created 2004 to be able to build a complex web application for an insurance company (similar to google calc, which came later).
+- It was meant to be a Web Component Framework from the beginning.
+- It was first made public as V2 in 2007 ( [Ajaxian](http://ajaxian.com/archives/twobirds-lib-20-released) - and sorry for the character mess there, the page is outdated obviously ).
 - It was constantly under development, though I had to earn some money from time to time. 
 
 ## I dont want to read a lot - give me a kick-start
