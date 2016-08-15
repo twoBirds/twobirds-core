@@ -76,10 +76,10 @@ tb( demoapp.myClass ).on(
     }
 );
 
-tb( 'body' ).trigger( 'myEventName', <eventData>, <bubble> );
+tb( 'body' ).trigger( 'myEventName' [, <myEventData> [, <bubble> ] ] );
 ```
 
-HINT: bubble = 'l' for local, 'd' for down, 'u' for up ('l' being default)
+HINT: bubble = 'l' for local, 'd' for down, 'u' for up ('l' being default) or any combination od these chars in a string.
 
 twoBirds allows building nested structures of tB instances of repository classes that all look the same codewise, but add up to complex functionality.
 
