@@ -67,6 +67,13 @@ Read the API documentation included in the package.
 
 ##### in your code...
 ```js
+tb( demoapp.myClass ).on(
+    'myEventName',
+    function( e ){
+        // e.data === myEventData ...
+    }
+);
+
 tb( 'body' ).trigger( 'myEventName', <eventData>, <bubble> );
 ```
 
