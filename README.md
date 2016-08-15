@@ -46,7 +46,7 @@ new tb(
 	document.body
 );
 ```
-same as above, but done at run-time.
+same as above, but done at run-time in an event handler or instance method.
 
 #### 2.) a selector to adress instances of these objects on the page
 
