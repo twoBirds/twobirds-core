@@ -13,7 +13,7 @@ twoBirds is a
 
 - lightweight, 
 - component-based, 
-- event-driven / loosly coupled, 
+- event-driven / loosely coupled, 
 - native 
 
 ... JavaScript framework that maps nested objects to DOM nodes.
@@ -26,7 +26,7 @@ It consists of 3 parts:
 
 #### 1.) a simple client repository object structure + instanciation mechanism
 
-##### demoapp/myClass.js
+##### demoapp/myClass.js (simplified here)
 ```js
 var demoapp = demoapp || {};
 
