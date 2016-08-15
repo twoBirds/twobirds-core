@@ -31,11 +31,14 @@ demoapp.myClass.prototype = {}
 as you see, any plain old javascript class is a tB class.
 
 
+
 index.html
 ```html
 <body data-tb="demoapp.myClass">
 ```
 this will make an instance of above mentioned class and put it in the dom on load automatically.
+
+
 
 or, somewhere in your js code:
 ```js
