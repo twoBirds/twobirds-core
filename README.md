@@ -30,6 +30,7 @@ demoapp.myClass.prototype = {}
 ```
 as you see, any plain old javascript class is a tB class.
 
+
 index.html
 ```html
 <body data-tb="demoapp.myClass">
