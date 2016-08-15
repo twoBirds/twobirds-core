@@ -19,7 +19,7 @@ It consists of 3 parts:
 
 #### 1.) a simple client repository object structure + instanciation mechanism
 
-demoapp/myClass.js
+##### demoapp/myClass.js
 ```js
 var demoapp = demoapp || {};
 
@@ -30,9 +30,7 @@ demoapp.myClass.prototype = {}
 ```
 as you see, any plain old javascript class is a tB class.
 
-
-
-index.html
+##### index.html
 ```html
 <body data-tb="demoapp.myClass">
 ```
@@ -40,7 +38,7 @@ this will make an instance of above mentioned class and put it in the dom on loa
 
 
 
-or, somewhere in your js code:
+##### or, somewhere in your js code:
 ```js
 new tb(
 	demoapp.myClass,
@@ -52,6 +50,7 @@ same as above, but done at run-time.
 
 #### 2.) a selector to adress instances of these objects on the page
 
+##### in your code...
 ```
 tb( document.body )    // will return any tb instances that are contained in document.body
 ```
@@ -66,6 +65,7 @@ Read the API documentation included in the package.
 
 #### 3.) a trigger mechanism to communicate with the selected instance on the page
 
+##### in your code...
 ```js
 tb( 'body' ).trigger( 'myEventName', <eventData>, <bubble> );
 ```
