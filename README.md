@@ -9,7 +9,14 @@ Welcome Birdies ;-)
 
 ## Intro
 
-twoBirds is a lightweight, component-based, event-driven, native JavaScript framework that maps nested objects to DOM nodes.
+twoBirds is a 
+
+- lightweight, 
+- component-based, 
+- event-driven / loosly coupled, 
+- native 
+
+... JavaScript framework that maps nested objects to DOM nodes.
 
 twoBirds strictly follows the KISS and DRY doctrines, also some of SOLID.
 
@@ -122,33 +129,29 @@ As shown later in the examples, you can find and address all these objects on th
 
 ### Repository
 
-In twoBirds, on the client side you have a repository of plain JS classes. 
-
-These are used to create instances. 
+In twoBirds, on the client side you have a repository of plain JS classes. These are used to create instances. 
 
 The instances usually are saved in a DOM node or in other tB instances.
 
 ### Instances
 
-There are some property names in twoBirds instances that are reserved:
+##### There are some property names in twoBirds instances that are reserved:
 
-* *target*: ... is the DOM node or another object ( e.g. a tB instance ) the tB instance is attached to.
+*target*: ... is the DOM node or another object ( e.g. a tB instance ) the tB instance is attached to.
 
-* *namespace*: ... is the namespace of the repo object, and should be set accordingly, since the regEx selector tb( /.../ ) checks against the "namespace" property.
+*namespace*: ... is the namespace of the repo object, and should be set accordingly, since the regEx selector tb( /.../ ) checks against the "namespace" property.
 
-* *handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. 
+*handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. 
 
-If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions. 
+If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions.  Internally they are stored in an hash object containing arrays anyway.
 
-Internally they are converted to array anyway.
+##### As for handlers, there currently is 1 event name that is automatically used by the system:
 
-As for handlers, there currently is 1 event name that is reserved:
+*init*: function(){ /* all requirement for the instance is done, now construct the object as necessary */ }
 
-* *init*: function(){ /* all requirement loading for all nestings is done, now construct the object as necessary */ }
+*This event will be sent to every newly created instance*, whether there is requirement loading or not. 
 
-This event *will be sent to every newly created instance*, wether there is requirement loading or not. 
-
-The init handler defined in the constructor is the "boot method" of every tb instance.
+The *init handler* defined in the constructor is the *boot method* of every tb instance.
 
 
 
