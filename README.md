@@ -57,9 +57,11 @@ tb( document.body )    // will return any tb instances that are contained in doc
 
 There are a lot of chained methods to that selector.
 
-You also have a document.querySelectorAll() based tb.dom() selector, also with the chained methods you expect.
+##### You also have a document.querySelectorAll() based tb.dom() selector, also with the chained methods you expect. 
 
-The difference between these selectors is: tb.dom() returns DOM nodes, tb() returns tb instances that are contained therein.
+The difference between these selectors is: tb.dom() returns DOM nodes, tb() returns tb instances that are contained therein. 
+
+Map it to a var $ inside your class factory, and you can use it like jQuery.
 
 Read the API documentation included in the package.
 
