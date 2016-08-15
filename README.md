@@ -11,7 +11,9 @@ Welcome Birdies ;-)
 
 twoBirds is a lightweight, component-based, event-driven, native JavaScript framework that maps nested objects to DOM nodes.
 
-twoBirds strictly follows the KISS doctrine, it is the minimum possible solution for an application framework.
+twoBirds strictly follows the KISS and DRY doctrines, also some of SOLID.
+
+tB is the minimum possible solution for an application framework.
 
 It consists of 3 parts:
 
