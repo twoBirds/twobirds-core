@@ -143,11 +143,13 @@ The init handler defined in the constructor is the "boot method" of every tb ins
 
 twoBirds will check whether this namespace already exists, then ...
 
+
 *IF NOT:* twoBirds will convert the property name to a subdir string like so
 
 "app.Body" ==> "/app/Body.js"
 
 ...and starts loading the file.
+
 
 *IF IT EXISTS OR WHEN ITS LOADED:*
 
@@ -157,7 +159,8 @@ If it is a function, it will be executed in the context of the current instance 
 
 If it is a plain object, the property value will be replaced with it, and when "tb.init" fires the handler will receive the previous contents of the property as a single parameter.
 
-Now lets see all of this in context:
+
+*Now lets see all of this in context:*
 
 app/Body.js 
 ```js

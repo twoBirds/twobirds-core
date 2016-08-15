@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.44 - 2016-08-13 */
+/*! twobirds-core - v7.2.45 - 2016-08-15 */
 
 tb.namespace( 'test.GrandParent' ).set(
     (function(){
@@ -22,7 +22,6 @@ tb.namespace( 'test.GrandParent' ).set(
             'tb.Require': [
                 '/test/GrandParent.css' // only to test whether double loading is avoided
             ]
-            
         };
 
         return GrandParent;

@@ -456,6 +456,24 @@ tb.extend = function( pObj ){ // any number of arguments may be given
 
  will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object
  if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned
+
+ @example
+
+     tb.parse( "{a} test test", { a: 'done' } )
+     // "done test test"
+
+     tb.parse( [ "{a} test test" ], { a: 'done' } )
+     // ["done test test"]
+
+     tb.parse( [ "{a} test test", "{b} test test" ], { a: 'done', b: 'processed' } )
+     // ["done test test", "processed test test"]
+
+     tb.parse( [ "{a} test test", "{b} test test", { g: "another {silly} test" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )
+     // ["done test test", "processed test test", Object { g="another not so silly test"}]
+
+     tb.parse( { a: "{a} test test", b: "{b} test test", c: [ "another {silly} test" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )
+     // Object { a="done test test",  b="processed test test",  c=[ "another not so silly test" ] }
+
  */
 tb.parse = function( pWhat, pParse ){
 

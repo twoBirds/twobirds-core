@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.44</em>
+            <em>API Docs for: v7.2.45</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -855,6 +855,28 @@ if typeof pWhat is object or array, it will be done with all strings contained t
         </div>
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>tb.parse( &quot;{a} test test&quot;, { a: 'done' } )
+// &quot;done test test&quot;
+
+tb.parse( [ &quot;{a} test test&quot; ], { a: 'done' } )
+// [&quot;done test test&quot;]
+
+tb.parse( [ &quot;{a} test test&quot;, &quot;{b} test test&quot; ], { a: 'done', b: 'processed' } )
+// [&quot;done test test&quot;, &quot;processed test test&quot;]
+
+tb.parse( [ &quot;{a} test test&quot;, &quot;{b} test test&quot;, { g: &quot;another {silly} test&quot; } ], { a: 'done', b: 'processed', silly: 'not so silly' } )
+// [&quot;done test test&quot;, &quot;processed test test&quot;, Object { g=&quot;another not so silly test&quot;}]
+
+tb.parse( { a: &quot;{a} test test&quot;, b: &quot;{b} test test&quot;, c: [ &quot;another {silly} test&quot; ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )
+// Object { a=&quot;done test test&quot;,  b=&quot;processed test test&quot;,  c=[1]}
+</code></pre>
+
+            </div>
+        </div>
 </div>
 <div id="method_tb.request" class="method item">
     <h3 class="name"><code>tb.request</code></h3>
@@ -880,7 +902,7 @@ if typeof pWhat is object or array, it will be done with all strings contained t
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3539"><code>src&#x2F;tb&#x2F;tb.js:3539</code></a>
+        <a href="../files/src_tb_tb.js.html#l3557"><code>src&#x2F;tb&#x2F;tb.js:3557</code></a>
         </p>
 
 
@@ -1066,7 +1088,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3724"><code>src&#x2F;tb&#x2F;tb.js:3724</code></a>
+        <a href="../files/src_tb_tb.js.html#l3742"><code>src&#x2F;tb&#x2F;tb.js:3742</code></a>
         </p>
 
 
@@ -1105,7 +1127,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3855"><code>src&#x2F;tb&#x2F;tb.js:3855</code></a>
+        <a href="../files/src_tb_tb.js.html#l3873"><code>src&#x2F;tb&#x2F;tb.js:3873</code></a>
         </p>
 
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.44</em>
+            <em>API Docs for: v7.2.45</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.44 - 2016-08-13 */
+/*! twobirds-core - v7.2.45 - 2016-08-15 */
 
 /**
  twoBirds V7 core functionality
@@ -3580,6 +3580,24 @@ tb.extend = function( pObj ){ // any number of arguments may be given
 
  will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object
  if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned
+
+ @example
+ 
+     tb.parse( &quot;{a} test test&quot;, { a: &#x27;done&#x27; } )
+     // &quot;done test test&quot;
+
+     tb.parse( [ &quot;{a} test test&quot; ], { a: &#x27;done&#x27; } )
+     // [&quot;done test test&quot;]
+
+     tb.parse( [ &quot;{a} test test&quot;, &quot;{b} test test&quot; ], { a: &#x27;done&#x27;, b: &#x27;processed&#x27; } )
+     // [&quot;done test test&quot;, &quot;processed test test&quot;]
+
+     tb.parse( [ &quot;{a} test test&quot;, &quot;{b} test test&quot;, { g: &quot;another {silly} test&quot; } ], { a: &#x27;done&#x27;, b: &#x27;processed&#x27;, silly: &#x27;not so silly&#x27; } )
+     // [&quot;done test test&quot;, &quot;processed test test&quot;, Object { g=&quot;another not so silly test&quot;}]
+
+     tb.parse( { a: &quot;{a} test test&quot;, b: &quot;{b} test test&quot;, c: [ &quot;another {silly} test&quot; ] }, { a: &#x27;done&#x27;, b: &#x27;processed&#x27;, silly: &#x27;not so silly&#x27; } )
+     // Object { a=&quot;done test test&quot;,  b=&quot;processed test test&quot;,  c=[1]}
+
  */
 tb.parse = function( pWhat, pParse ){
 

@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.2.44",
+        "version": "v7.2.45",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -192,7 +192,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3875,
+            "line": 3893,
             "is_constructor": 1,
             "params": [
                 {
@@ -219,7 +219,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4157,
+            "line": 4175,
             "is_constructor": 1,
             "params": [
                 {
@@ -1698,11 +1698,14 @@
                 "description": "result, = pWhat parsed\n\ntb.parse() function\n\nwill replace all matching  occurrences with values from pParse object\nif typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned",
                 "type": "namespace1.namespace2.etc"
             },
+            "example": [
+                "\n\n    tb.parse( \"{a} test test\", { a: 'done' } )\n    // \"done test test\"\n\n    tb.parse( [ \"{a} test test\" ], { a: 'done' } )\n    // [\"done test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\" ], { a: 'done', b: 'processed' } )\n    // [\"done test test\", \"processed test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\", { g: \"another {silly} test\" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // [\"done test test\", \"processed test test\", Object { g=\"another not so silly test\"}]\n\n    tb.parse( { a: \"{a} test test\", b: \"{b} test test\", c: [ \"another {silly} test\" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // Object { a=\"done test test\",  b=\"processed test test\",  c=[1]}\n"
+            ],
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3539,
+            "line": 3557,
             "itemtype": "method",
             "name": "tb.request",
             "params": [
@@ -1779,44 +1782,44 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3562,
+            "line": 3580,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3606,
+            "line": 3624,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3623,
+            "line": 3641,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3645,
+            "line": 3663,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3670,
+            "line": 3688,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3694,
+            "line": 3712,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3724,
+            "line": 3742,
             "name": "",
             "itemtype": "method",
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3855,
+            "line": 3873,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -1834,7 +1837,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4022,
+            "line": 4040,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -1849,7 +1852,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4054,
+            "line": 4072,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1864,7 +1867,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4087,
+            "line": 4105,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1879,7 +1882,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4119,
+            "line": 4137,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1894,7 +1897,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4247,
+            "line": 4265,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1926,15 +1929,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/tb/tb.js:3539"
+            "line": " src/tb/tb.js:3557"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:3724"
+            "line": " src/tb/tb.js:3742"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:3724"
+            "line": " src/tb/tb.js:3742"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1946,31 +1949,31 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3562"
+            "line": " src/tb/tb.js:3580"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3606"
+            "line": " src/tb/tb.js:3624"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3623"
+            "line": " src/tb/tb.js:3641"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3645"
+            "line": " src/tb/tb.js:3663"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3670"
+            "line": " src/tb/tb.js:3688"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3694"
+            "line": " src/tb/tb.js:3712"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:4247"
+            "line": " src/tb/tb.js:4265"
         }
     ]
 }
