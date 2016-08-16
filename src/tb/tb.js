@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.46 - 2016-08-15 */
+/*! twobirds-core - v7.2.47 - 2016-08-16 */
 
 /**
  twoBirds V7 core functionality
@@ -227,7 +227,7 @@ tb = (function(){
 
      @returns {object} - the twoBirds instance you just created
 
-     twoBirds constructor
+     1.) twoBirds CONSTRUCTOR
 
      @example
 
@@ -252,6 +252,21 @@ tb = (function(){
              anotherTbInstance             // any other object you want to put the tb instance in
          );
 
+     2.) twoBirds SELECTOR
+
+     @example
+
+         // tb() selector always returns a jQuery-like result set
+         tb( document.body )                // all tb instances residing in this DOM node
+         tb('body')                         // invokes .querySelectorAll(), but returns tB object(s) contained therein.
+         tb( app.Body )                     // get all instances of this class residing in DOM elements
+         tb( /pp.Bod/ )                     // e.g. returns the app.Body instances, if the class 'namespace' property is 'app.Body'
+
+         // both of the following return all toplevel objects in the current DOM, as expected.
+         tb( /./ )                          // any namespace matches
+         tb( '*' )                          // invoking document.querySelectorAll()
+
+     You can call chained methods both on single tB instances as well as on a selector result set ( all of them, then ).
      */
     function tb() {
         var that = this;

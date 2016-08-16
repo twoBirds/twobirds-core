@@ -62,7 +62,7 @@ same as above, but done at run-time in an event handler or instance method.
 tb( document.body )    // will return any tb instances that are contained in document.body
 ```
 
-There are a lot of chained methods to that selector.
+There are a lot of parameter options and chained methods to that selector.
 
 ##### You also have a document.querySelectorAll() based tb.dom() selector, also with the chained methods you expect. 
 

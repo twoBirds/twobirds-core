@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.46</em>
+            <em>API Docs for: v7.2.47</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -200,7 +200,7 @@
                     <ul>
 <li>the twoBirds instance you just created</li>
 </ul>
-<p>twoBirds constructor</p>
+<p>1.) twoBirds CONSTRUCTOR</p>
 
             </div>
         </div>
@@ -231,6 +231,18 @@ new tb(
     anotherTbInstance             // any other object you want to put the tb instance in
 );
 </code></pre>
+<p>2.) twoBirds SELECTOR</p>
+<pre class="code prettyprint"><code>// tb() selector always returns a jQuery-like result set
+tb( document.body )                // all tb instances residing in this DOM node
+tb('body')                         // invokes .querySelectorAll(), but returns tB object(s) contained therein.
+tb( app.Body )                     // get all instances of this class residing in DOM elements
+tb( /pp.Bod/ )                     // e.g. returns the app.Body instances, if the class 'namespace' property is 'app.Body'
+
+// both of the following return all toplevel objects in the current DOM, as expected.
+tb( /./ )                          // any namespace matches
+tb( '*' )                          // invoking document.querySelectorAll()
+</code></pre>
+<p>You can call chained methods both on single tB instances as well as on a selector result set ( all of them, then ).</p>
 
             </div>
         </div>
@@ -427,7 +439,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1356"><code>src&#x2F;tb&#x2F;tb.js:1356</code></a>
+        <a href="../files/src_tb_tb.js.html#l1371"><code>src&#x2F;tb&#x2F;tb.js:1371</code></a>
         </p>
 
 
@@ -506,7 +518,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1068"><code>src&#x2F;tb&#x2F;tb.js:1068</code></a>
+        <a href="../files/src_tb_tb.js.html#l1083"><code>src&#x2F;tb&#x2F;tb.js:1083</code></a>
         </p>
 
 
@@ -592,7 +604,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1383"><code>src&#x2F;tb&#x2F;tb.js:1383</code></a>
+        <a href="../files/src_tb_tb.js.html#l1398"><code>src&#x2F;tb&#x2F;tb.js:1398</code></a>
         </p>
 
 
@@ -644,7 +656,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1009"><code>src&#x2F;tb&#x2F;tb.js:1009</code></a>
+        <a href="../files/src_tb_tb.js.html#l1024"><code>src&#x2F;tb&#x2F;tb.js:1024</code></a>
         </p>
 
 
@@ -716,7 +728,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1393"><code>src&#x2F;tb&#x2F;tb.js:1393</code></a>
+        <a href="../files/src_tb_tb.js.html#l1408"><code>src&#x2F;tb&#x2F;tb.js:1408</code></a>
         </p>
 
 
@@ -768,7 +780,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1281"><code>src&#x2F;tb&#x2F;tb.js:1281</code></a>
+        <a href="../files/src_tb_tb.js.html#l1296"><code>src&#x2F;tb&#x2F;tb.js:1296</code></a>
         </p>
 
 
@@ -839,7 +851,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1209"><code>src&#x2F;tb&#x2F;tb.js:1209</code></a>
+        <a href="../files/src_tb_tb.js.html#l1224"><code>src&#x2F;tb&#x2F;tb.js:1224</code></a>
         </p>
 
 
@@ -891,7 +903,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1403"><code>src&#x2F;tb&#x2F;tb.js:1403</code></a>
+        <a href="../files/src_tb_tb.js.html#l1418"><code>src&#x2F;tb&#x2F;tb.js:1418</code></a>
         </p>
 
 
@@ -942,7 +954,7 @@ new tb(
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l562"><code>src&#x2F;tb&#x2F;tb.js:562</code></a>
+        <a href="../files/src_tb_tb.js.html#l577"><code>src&#x2F;tb&#x2F;tb.js:577</code></a>
         </p>
 
 
@@ -1015,7 +1027,7 @@ a.get( 'x' );
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1413"><code>src&#x2F;tb&#x2F;tb.js:1413</code></a>
+        <a href="../files/src_tb_tb.js.html#l1428"><code>src&#x2F;tb&#x2F;tb.js:1428</code></a>
         </p>
 
 
@@ -1061,7 +1073,7 @@ a.get( 'x' );
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1243"><code>src&#x2F;tb&#x2F;tb.js:1243</code></a>
+        <a href="../files/src_tb_tb.js.html#l1258"><code>src&#x2F;tb&#x2F;tb.js:1258</code></a>
         </p>
 
 
@@ -1112,7 +1124,7 @@ a.get( 'x' );
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1422"><code>src&#x2F;tb&#x2F;tb.js:1422</code></a>
+        <a href="../files/src_tb_tb.js.html#l1437"><code>src&#x2F;tb&#x2F;tb.js:1437</code></a>
         </p>
 
 
@@ -1158,7 +1170,7 @@ a.get( 'x' );
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1133"><code>src&#x2F;tb&#x2F;tb.js:1133</code></a>
+        <a href="../files/src_tb_tb.js.html#l1148"><code>src&#x2F;tb&#x2F;tb.js:1148</code></a>
         </p>
 
 
@@ -1216,7 +1228,7 @@ a.get( 'x' );
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1323"><code>src&#x2F;tb&#x2F;tb.js:1323</code></a>
+        <a href="../files/src_tb_tb.js.html#l1338"><code>src&#x2F;tb&#x2F;tb.js:1338</code></a>
         </p>
 
 
@@ -1296,7 +1308,7 @@ a.get( 'x' );
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l823"><code>src&#x2F;tb&#x2F;tb.js:823</code></a>
+        <a href="../files/src_tb_tb.js.html#l838"><code>src&#x2F;tb&#x2F;tb.js:838</code></a>
         </p>
 
 
@@ -1388,7 +1400,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l745"><code>src&#x2F;tb&#x2F;tb.js:745</code></a>
+        <a href="../files/src_tb_tb.js.html#l760"><code>src&#x2F;tb&#x2F;tb.js:760</code></a>
         </p>
 
 
@@ -1490,7 +1502,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l798"><code>src&#x2F;tb&#x2F;tb.js:798</code></a>
+        <a href="../files/src_tb_tb.js.html#l813"><code>src&#x2F;tb&#x2F;tb.js:813</code></a>
         </p>
 
 
@@ -1577,7 +1589,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l957"><code>src&#x2F;tb&#x2F;tb.js:957</code></a>
+        <a href="../files/src_tb_tb.js.html#l972"><code>src&#x2F;tb&#x2F;tb.js:972</code></a>
         </p>
 
 
@@ -1655,7 +1667,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l893"><code>src&#x2F;tb&#x2F;tb.js:893</code></a>
+        <a href="../files/src_tb_tb.js.html#l908"><code>src&#x2F;tb&#x2F;tb.js:908</code></a>
         </p>
 
 
@@ -1726,7 +1738,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1431"><code>src&#x2F;tb&#x2F;tb.js:1431</code></a>
+        <a href="../files/src_tb_tb.js.html#l1446"><code>src&#x2F;tb&#x2F;tb.js:1446</code></a>
         </p>
 
 
@@ -1772,7 +1784,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1171"><code>src&#x2F;tb&#x2F;tb.js:1171</code></a>
+        <a href="../files/src_tb_tb.js.html#l1186"><code>src&#x2F;tb&#x2F;tb.js:1186</code></a>
         </p>
 
 
@@ -1823,7 +1835,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1440"><code>src&#x2F;tb&#x2F;tb.js:1440</code></a>
+        <a href="../files/src_tb_tb.js.html#l1455"><code>src&#x2F;tb&#x2F;tb.js:1455</code></a>
         </p>
 
 
@@ -1868,7 +1880,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1449"><code>src&#x2F;tb&#x2F;tb.js:1449</code></a>
+        <a href="../files/src_tb_tb.js.html#l1464"><code>src&#x2F;tb&#x2F;tb.js:1464</code></a>
         </p>
 
 
@@ -1913,7 +1925,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1458"><code>src&#x2F;tb&#x2F;tb.js:1458</code></a>
+        <a href="../files/src_tb_tb.js.html#l1473"><code>src&#x2F;tb&#x2F;tb.js:1473</code></a>
         </p>
 
 
@@ -1958,7 +1970,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1467"><code>src&#x2F;tb&#x2F;tb.js:1467</code></a>
+        <a href="../files/src_tb_tb.js.html#l1482"><code>src&#x2F;tb&#x2F;tb.js:1482</code></a>
         </p>
 
 
@@ -2013,7 +2025,7 @@ afterwards the handler is deleted from the event handler list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l519"><code>src&#x2F;tb&#x2F;tb.js:519</code></a>
+        <a href="../files/src_tb_tb.js.html#l534"><code>src&#x2F;tb&#x2F;tb.js:534</code></a>
         </p>
 
 
@@ -2102,7 +2114,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1476"><code>src&#x2F;tb&#x2F;tb.js:1476</code></a>
+        <a href="../files/src_tb_tb.js.html#l1491"><code>src&#x2F;tb&#x2F;tb.js:1491</code></a>
         </p>
 
 
@@ -2147,7 +2159,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1485"><code>src&#x2F;tb&#x2F;tb.js:1485</code></a>
+        <a href="../files/src_tb_tb.js.html#l1500"><code>src&#x2F;tb&#x2F;tb.js:1500</code></a>
         </p>
 
 
@@ -2192,7 +2204,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1494"><code>src&#x2F;tb&#x2F;tb.js:1494</code></a>
+        <a href="../files/src_tb_tb.js.html#l1509"><code>src&#x2F;tb&#x2F;tb.js:1509</code></a>
         </p>
 
 
@@ -2237,7 +2249,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1503"><code>src&#x2F;tb&#x2F;tb.js:1503</code></a>
+        <a href="../files/src_tb_tb.js.html#l1518"><code>src&#x2F;tb&#x2F;tb.js:1518</code></a>
         </p>
 
 
@@ -2282,7 +2294,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1270"><code>src&#x2F;tb&#x2F;tb.js:1270</code></a>
+        <a href="../files/src_tb_tb.js.html#l1285"><code>src&#x2F;tb&#x2F;tb.js:1285</code></a>
         </p>
 
 
@@ -2340,7 +2352,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l596"><code>src&#x2F;tb&#x2F;tb.js:596</code></a>
+        <a href="../files/src_tb_tb.js.html#l611"><code>src&#x2F;tb&#x2F;tb.js:611</code></a>
         </p>
 
 
@@ -2434,7 +2446,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1531"><code>src&#x2F;tb&#x2F;tb.js:1531</code></a>
+        <a href="../files/src_tb_tb.js.html#l1546"><code>src&#x2F;tb&#x2F;tb.js:1546</code></a>
         </p>
 
 
@@ -2480,7 +2492,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l1512"><code>src&#x2F;tb&#x2F;tb.js:1512</code></a>
+        <a href="../files/src_tb_tb.js.html#l1527"><code>src&#x2F;tb&#x2F;tb.js:1527</code></a>
         </p>
 
 
@@ -2538,7 +2550,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l452"><code>src&#x2F;tb&#x2F;tb.js:452</code></a>
+        <a href="../files/src_tb_tb.js.html#l467"><code>src&#x2F;tb&#x2F;tb.js:467</code></a>
         </p>
 
 
