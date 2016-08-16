@@ -20,6 +20,8 @@ Welcome Birdies ;-)
 
 twoBirds strictly follows the KISS and DRY doctrines, also some of SOLID.
 
+It is JS-linted, jasmine tested and this package contains the complete API documentation. 
+
 tB is the minimum possible solution for an application framework.
 
 It consists of 3 parts:
