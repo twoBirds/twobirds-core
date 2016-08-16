@@ -185,9 +185,13 @@ if ( typeof module === 'undefined' ) {
                 };
 
                 // add attributes to DOM element
-                for (var i in typeConfig.attributes) if (typeConfig.attributes.hasOwnProperty(i)) {
-                    element.setAttribute(i, tb.parse(typeConfig.attributes[i], that.config));
-                }
+                Object
+                    .keys( typeConfig.attributes )
+                    .forEach(
+                        function( pKey ){
+                            element.setAttribute(pKey, tb.parse(typeConfig.attributes[pKey], that.config));
+                        }
+                    );
 
                 // append node to head
                 document.getElementsByTagName('head')[0].appendChild(element);
@@ -238,7 +242,7 @@ if ( typeof module === 'undefined' ) {
 
             that.requirements = {};
 
-        };
+        }
 
         _RequirementGroup.prototype = {
 
@@ -286,8 +290,8 @@ if ( typeof module === 'undefined' ) {
 
             that.handlers = {
                 requirementLoaded: requirementLoaded
-            }
-        };
+            };
+        }
 
 
         Loader.prototype = {
@@ -297,15 +301,13 @@ if ( typeof module === 'undefined' ) {
             load: function (pSrc, pCallback) {
 
                 var that = this,
-                    pCallback = pCallback || function (e) {
-                            console.log('onLoad dummy handler on', e);
-                        },
                     type,
-                    rg,
-                    pSrc = typeof pSrc === 'string' ? [pSrc] : pSrc, // convert to array if string
-                    pSrc = [].concat.call( [], pSrc); // make an array copy
+                    rg;
 
-                //console.log( 'tll:', pSrc );
+                pSrc = typeof pSrc === 'string' ? [pSrc] : pSrc; // convert to array if string
+                pSrc = [].concat.call( [], pSrc); // make an array copy
+
+                pCallback = pCallback || function (e) { console.log('onLoad dummy handler on', e); };
 
                 pSrc.callback = pCallback;
 

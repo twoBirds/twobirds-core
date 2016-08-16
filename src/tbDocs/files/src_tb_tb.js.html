@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.47</em>
+            <em>API Docs for: v7.2.48</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.47 - 2016-08-16 */
+/*! twobirds-core - v7.2.48 - 2016-08-16 */
 
 /**
  twoBirds V7 core functionality
@@ -99,33 +99,40 @@
 
 // POLYFILLS
 
+/* jshint ignore:start */
+
 // matches polyfill
-this.Element &amp;&amp; function(ElementPrototype) {
-    ElementPrototype.matches = ElementPrototype.matches ||
-        ElementPrototype.matchesSelector ||
-        ElementPrototype.webkitMatchesSelector ||
-        ElementPrototype.msMatchesSelector ||
-        function(selector) {
-            var node = this,
-                nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
-            while (nodes[++i] &amp;&amp; nodes[i] != node);
-            return !!nodes[i];
-        }
-}(Element.prototype);
+this.Element &amp;&amp; (function(ElementPrototype){
+    Element.prototype.matches =
+        Element.prototype.matchesSelector ||
+        Element.prototype.mozMatchesSelector ||
+        Element.prototype.msMatchesSelector ||
+        Element.prototype.oMatchesSelector ||
+        Element.prototype.webkitMatchesSelector ||
+        function(s) {
+            var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                i = matches.length;
+            while (--i &gt;= 0 &amp;&amp; matches.item(i) !== this) {}
+            return i &gt; -1;
+        };})(Element.prototype);
 
 // closest polyfill
-this.Element &amp;&amp; function(ElementPrototype) {
+this.Element &amp;&amp; (function(ElementPrototype){
     ElementPrototype.closest = ElementPrototype.closest ||
         function(selector) {
             var el = this;
-            while (el.matches &amp;&amp; !el.matches(selector)) el = el.parentNode;
+            while (el.matches &amp;&amp; !el.matches(selector)){
+                el = el.parentNode;
+            }
             return el.matches ? el : null;
-        }
-}(Element.prototype);
+        };
+})(Element.prototype);
+
+/* jshint ignore:end */
 
 // twoBirds
 
-tb = (function(){
+var tb = (function(){
 
     /**
      @class tb.Selector
@@ -180,16 +187,16 @@ tb = (function(){
             // selection by dom selector string
             case &#x27;string&#x27;:
                 // HINT: must be a tb element for every selector of a css selector string
-                var selector = pSelector.split(&#x27; &#x27;),
-                    selector = selector.map(function(s){
-                        if (1 &lt; s.length){
-                            return s+&#x27;:not([data-tb=&quot;&quot;])&#x27;;
-                        }
-                        return s;
-                    }),
-                    selector = selector.join(&#x27; &#x27;);
+                var selector = pSelector.split(&#x27; &#x27;);
 
-                //console.log( pSelector, selector );
+                selector = selector.map(function(s){
+                    if (1 &lt; s.length){
+                        return s+&#x27;:not([data-tb=&quot;&quot;])&#x27;;
+                    }
+                    return s;
+                });
+
+                selector = selector.join(&#x27; &#x27;);
 
                 tb.dom( selector )
                     .forEach(
@@ -233,21 +240,24 @@ tb = (function(){
                                                 [].push.call( that, tbElement );
                                             }
                                         }
-                                    )
+                                    );
                             }
                         );
 
                 } else if ( !!pSelector[&#x27;nodeType&#x27;] &amp;&amp; !!pSelector[&#x27;tb&#x27;] ){ // it is a dom node containing tb elements
                     Object
-                        .keys( pSelector.tb )
+                        .keys( pSelector[&#x27;tb&#x27;] )
                         .forEach(
                             function( pKey ){
-                                [].push.call( that, pSelector.tb[ pKey ] );
+                                [].push.call( that, pSelector[&#x27;tb&#x27;][ pKey ] );
                             }
-                        )
+                        );
 
-                } else if ( pSelector.constructor === Array || !!pSelector[&#x27;length&#x27;]
-                    &amp;&amp; !!pSelector[&#x27;0&#x27;] &amp;&amp; !(pSelector instanceof Array)
+                } else if (
+                    pSelector.constructor === Array // a true array
+                    || !!pSelector[&#x27;length&#x27;]        // an array-like object
+                    &amp;&amp; !!pSelector[&#x27;0&#x27;]
+                    &amp;&amp; !(pSelector instanceof Array)
                 ){
                     // it is an array || array like object
                     [].forEach.call(
@@ -287,7 +297,7 @@ tb = (function(){
                                             [].push.call( that, tbElement );
                                         }
                                     }
-                                )
+                                );
                         }
                     );
 
@@ -299,8 +309,13 @@ tb = (function(){
     }
 
     // empty class def for temporary handler storage, needed for on(), one(), off() and trigger()
-    function Nop(){};
-    Nop.prototype = { namespace: &#x27;Nop&#x27; };
+    function Nop(){
+
+    }
+
+    Nop.prototype = {
+        namespace: &#x27;Nop&#x27;
+    };
 
     // HINT: TbSelector (class) prototype definition after Tb prototype definition
 
@@ -356,7 +371,9 @@ tb = (function(){
 
      You can call chained methods both on single tB instances as well as on a selector result set ( all of them, then ).
      */
+
     function tb() {
+
         var that = this;
 
         // setup prototype chain of twoBirds instance
@@ -367,9 +384,13 @@ tb = (function(){
 
                 var that = this;
 
-                for ( var i in pPrototype ) if ( pPrototype.hasOwnProperty(i) ){
-                    that[i] = pPrototype[i];
-                }
+                Object
+                    .keys( pPrototype )
+                    .forEach(
+                        function( pKey ){
+                            that[pKey] = pPrototype[pKey];
+                        }
+                    );
 
             };
 
@@ -380,14 +401,18 @@ tb = (function(){
 
         // merge handlers from temp instance into target object
         function mergeHandlers( pSourceTb , pTargetTb ){
-            for ( var i in pSourceTb.handlers ) if ( pSourceTb.handlers.hasOwnProperty(i) ){
-                if ( !pTargetTb.handlers[i] ){
-                    pTargetTb.handlers[i] = [];
-                }
-                for ( var j = 0, l = pSourceTb.handlers[i].length; j &lt; l; j++ ){
-                    pTargetTb.handlers[i].push( pSourceTb.handlers[i][j] ); // copy handler
-                }
-            }
+            Object
+                .keys( pSourceTb.handlers )
+                .forEach(
+                    function( pHandler ){
+                        if ( !pTargetTb.handlers[pHandler] ){
+                            pTargetTb.handlers[pHandler] = [];
+                        }
+                        for ( var j = 0, l = pSourceTb.handlers[pHandler].length; j &lt; l; j++ ){
+                            pTargetTb.handlers[pHandler].push( pSourceTb.handlers[pHandler][j] ); // copy handler
+                        }
+                    }
+                );
         }
 
         // instanciate tb instance OR return tb.Selector result set
@@ -419,12 +444,15 @@ tb = (function(){
                             if ( !!tempInstance ){
 
                                 // copy properties from tempInstance, always shallow copy
-                                for ( var i in tempInstance ) if (
-                                    ([&#x27;handlers&#x27;, &#x27;target&#x27;]).indexOf(i) === -1
-                                    &amp;&amp; tempInstance.hasOwnProperty(i)
-                                ){
-                                    thisTb[i] = tempInstance[i];
-                                }
+                                Object
+                                    .keys( tempInstance )
+                                    .forEach(
+                                        function( pKey ){
+                                            if ( ([&#x27;handlers&#x27;, &#x27;target&#x27;]).indexOf(pKey) === -1 ){
+                                                thisTb[pKey] = tempInstance[pKey];
+                                            }
+                                        }
+                                    );
 
                                 mergeHandlers( tempInstance, thisTb );
 
@@ -461,14 +489,16 @@ tb = (function(){
                 // prepare .target property of tb object
                 tbInstance.target = arguments[2] || false; // preset
                 if ( !!arguments[2] ){
+                    var target = arguments[2];
+
                     if ( !arguments[2][&#x27;nodeType&#x27;]
                         &amp;&amp; !!arguments[2][0]
                         &amp;&amp; !!arguments[2][0][&#x27;nodeType&#x27;]
                     ){
-                        arguments[2] = arguments[2][0]; // get first element of an array-like selector return object
+                        target = arguments[2][0]; // get first element of an array-like selector return object
                     }
 
-                    tbInstance.target = arguments[2];
+                    tbInstance.target = target;
                 } else {
                     tbInstance.target = null;
                 }
@@ -500,7 +530,7 @@ tb = (function(){
                         if ( !!dataTb &amp;&amp; !!dataTb.length &amp;&amp; -1 === dataTb.split(&#x27; &#x27;).indexOf( tbInstance.namespace ) ){
                             tbInstance.target.setAttribute( &#x27;data-tb&#x27;, dataTb + &#x27; &#x27; + tbInstance.namespace );
                         } else {
-                            tbInstance.target.setAttribute( &#x27;data-tb&#x27;, tbInstance.namespace )
+                            tbInstance.target.setAttribute( &#x27;data-tb&#x27;, tbInstance.namespace );
                         }
                     }
                 }
@@ -511,13 +541,17 @@ tb = (function(){
                 } else {
                     // if there are single named event handler functions,
                     // convert them to array of functions
-                    for ( var i in tbInstance.handlers ) if ( tbInstance.handlers.hasOwnProperty(i) ){
-                        if ( typeof tbInstance.handlers[i] === &#x27;function&#x27; ){
-                            tbInstance.handlers[i] = [ tbInstance.handlers[i] ];
-                        } else if ( !( tbInstance.handlers[i] instanceof Array ) ){
-                            delete tbInstance.handlers[i];
-                        }
-                    }
+                    Object
+                        .keys(tbInstance.handlers)
+                        .forEach(
+                            function( pKey ){
+                                if ( typeof tbInstance.handlers[pKey] === &#x27;function&#x27; ){
+                                    tbInstance.handlers[pKey] = [ tbInstance.handlers[pKey] ];
+                                } else if ( !( tbInstance.handlers[pKey] instanceof Array ) ){
+                                    delete tbInstance.handlers[pKey];
+                                }
+                            }
+                        );
                 }
 
                 if ( !( tbInstance instanceof Nop ) ){
@@ -605,9 +639,25 @@ tb = (function(){
             };
         } else {
             return function(){
-                var ret = method.apply( this, arguments );
+                var ret = method.apply( this, arguments ),
+                    selector;
 
-                return ret instanceof Array &amp;&amp; !!ret[&#x27;0&#x27;] &amp;&amp; !!ret[&#x27;0&#x27;] instanceof tb ? tb.dom( ret ).unique() : ret;
+                if ( !!(ret instanceof Array) ){
+                    selector = new TbSelector(&#x27;&#x27;);
+
+                    ret
+                        .forEach(
+                            function( pElement ){
+                                [].push.call( selector, pElement );
+                            }
+                        );
+
+                    selector.unique();
+
+                    return selector;
+                }
+
+                return ret;
             };
         }
 
@@ -837,7 +887,7 @@ tb = (function(){
 
                         },
                         10
-                    )
+                    );
 
                 }
 
@@ -1035,7 +1085,7 @@ tb = (function(){
                                                 // push dom object to tb selector content
                                                 [].push.call( ret, pElement.tb[pKey] );
                                             }
-                                        )
+                                        );
                                 }
                             );
 
@@ -1045,7 +1095,7 @@ tb = (function(){
                         [].push.call( ret, that.target ); // push parent object to tb selector content
 
                         if ( !!that.target.parent()[&#x27;0&#x27;] ){
-                            [].push.call( ret, that.target.parent()[&#x27;0&#x27;] )
+                            [].push.call( ret, that.target.parent()[&#x27;0&#x27;] );
                         }
 
                     }
@@ -1090,7 +1140,9 @@ tb = (function(){
                         var tbParents = that.parents().toArray(),
                             tbParent = !!tbParents[&#x27;0&#x27;] ? tbParents[0] : false;
 
-                        if ( !tbParent ) return ret; // no parent -&gt; empty result set
+                        if ( !tbParent ) {
+                            return ret;  // no parent -&gt; empty result set
+                        }
 
                         Object
                             .keys(tbParent.target.tb)
@@ -1187,8 +1239,9 @@ tb = (function(){
             children: function( pSelector, pLocalOnly ){
 
                 var that = this,
-                    ret = tb(),
-                    pLocalOnly = typeof module !== &#x27;undefined&#x27; ? true : pLocalOnly; // if node or forced -&gt; only local
+                    ret = tb();
+
+                pLocalOnly = typeof module !== &#x27;undefined&#x27; ? true : pLocalOnly; // if node or forced -&gt; only local
 
                 if ( that instanceof TbSelector ) {
 
@@ -1221,11 +1274,15 @@ tb = (function(){
 
                 } else if ( !!pLocalOnly ){
 
-                    for ( var i in that ){
-                        if ( that.hasOwnProperty(i) &amp;&amp; that[i] instanceof tb ){
-                            [].push.call( ret, that[i] ); // push tb object to tb selector content
-                        }
-                    }
+                    Object
+                        .keys( that )
+                        .forEach(
+                            function( pKey ){
+                                if ( that[pKey] instanceof tb ){
+                                    [].push.call( ret, that[pKey] ); // push tb object to tb selector content
+                                }
+                            }
+                        );
 
                 }
 
@@ -1478,7 +1535,7 @@ tb = (function(){
                 return tb( ret.concat( add ) );
             }
 
-        }
+        };
 
     })();
 
@@ -1677,7 +1734,7 @@ tb.Event = function( pEventName, pEventData, pBubble ){
     that.data = pEventData || {};
     that.name = pEventName || &#x27;&#x27;;
     that.__stopped__ = that.__immediateStopped__ = false;
-}
+};
 
 tb.Event.prototype = {
 
@@ -2147,8 +2204,10 @@ if (typeof module === &#x27;undefined&#x27; ){
                 that.forEach(
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute(&#x27;class&#x27;) || &#x27;&#x27;,
-                            classes = !!classes.length ? classes.split(&#x27; &#x27;) : [],
-                            index = classes.indexOf(pClassName);
+                            index;
+
+                        classes = !!classes.length ? classes.split(&#x27; &#x27;) : [];
+                        index = classes.indexOf(pClassName);
 
                         if (index === -1) {
                             classes.push( pClassName );
@@ -2374,7 +2433,9 @@ if (typeof module === &#x27;undefined&#x27; ){
                     compare = tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
                     result;
 
-                if ( pSelector === &#x27;undefined&#x27; ) return that;    // unchanged
+                if ( pSelector === &#x27;undefined&#x27; ) {
+                    return that;
+                }    // unchanged
 
                 if ( typeof pSelector === &#x27;string&#x27; ) { // DOM selector given
                     result = [].filter.call(
@@ -2436,7 +2497,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                             function (pNode) {
                                 pNode.innerHTML = pHtml;
                             }
-                        )
+                        );
                     }
                 } else {
                     return !!that[0] ? that[0].innerHTML : &#x27;&#x27;;
@@ -2456,7 +2517,9 @@ if (typeof module === &#x27;undefined&#x27; ){
                 var that = this,
                     target = tb.dom( pTarget )[&#x27;0&#x27;] ? tb.dom( pTarget )[&#x27;0&#x27;] : false;
 
-                if ( !target ) return;
+                if ( !target ) {
+                    return;
+                }
 
                 that.forEach(
                     function( pDomNode ){
@@ -2487,7 +2550,9 @@ if (typeof module === &#x27;undefined&#x27; ){
                     target = tb.dom( pTarget )[&#x27;0&#x27;] ? tb.dom( pTarget )[&#x27;0&#x27;] : false,
                     nextDomNode = target.nextSibling || false;
 
-                if ( !target ) return;
+                if ( !target ) {
+                    return;
+                }
 
                 that.forEach(
                     function( pDomNode ){
@@ -2614,7 +2679,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                                             return function(){
                                                 _removeEvent( pDomNode, pThisEventName, onceHandler, capture );
                                                 pHandler.apply( pDomNode, arguments );
-                                            }
+                                            };
                                         })(pDomNode, pThisEventName, pHandler);
                                     }
 
@@ -2788,11 +2853,13 @@ if (typeof module === &#x27;undefined&#x27; ){
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute(&#x27;class&#x27;) || &#x27;&#x27;;
 
+                        classes = classes.trim();
+
                         pClasses.forEach(
                             function( pClass ){
                                 if ( classes ){
-                                    if ( !!(classes.indexOf(&#x27; &#x27;) + 1) ){
-                                        classes = classes.split(&#x27; &#x27;)
+                                    if ( classes.indexOf(&#x27; &#x27;) &gt; -1 ){
+                                        classes = classes.split(&#x27; &#x27;);
                                     } else {
                                         classes = [ classes ];
                                     }
@@ -2801,13 +2868,13 @@ if (typeof module === &#x27;undefined&#x27; ){
                                         .forEach(
                                             function( pRemoveClass ){
                                                 while ( classes.indexOf(pRemoveClass) &gt; -1 ){
-                                                    classes.splice(classes.indexOf(pRemoveClass), 1)
+                                                    classes.splice(classes.indexOf(pRemoveClass), 1);
                                                 }
                                             }
                                         );
 
                                     if ( !!classes.length ){
-                                        tb.dom( pDomNode ).attr(&#x27;class&#x27;, classes.join(&#x27; &#x27;) )
+                                        tb.dom( pDomNode ).attr(&#x27;class&#x27;, classes.join(&#x27; &#x27;) );
                                     } else {
                                         tb.dom( pDomNode ).removeAttr(&#x27;class&#x27;);
                                     }
@@ -2962,9 +3029,9 @@ if (typeof module === &#x27;undefined&#x27; ){
                             tb.dom( &#x27;option:selected&#x27;, that)
                                 .forEach(
                                     function( pThisSelectedOption ){
-                                        if ( !option.disabled
-                                            &amp;&amp; ( !option.parentNode.disabled
-                                            || option.parentNode.nodeName !== &quot;optgroup&quot; )
+                                        if ( !pThisSelectedOption.disabled
+                                            &amp;&amp; ( !pThisSelectedOption.parentNode.disabled
+                                            || pThisSelectedOption.parentNode.nodeName !== &quot;optgroup&quot; )
                                         ){
                                             var value = pThisSelectedOption.value;
 
@@ -3109,9 +3176,12 @@ if (typeof module === &#x27;undefined&#x27; ){
                 var that = this,
                     node,
                     values = pValues || {},
-                    ret = {};
+                    ret = {},
+                    value;
 
-                if ( !that[&#x27;0&#x27;] ) return that;
+                if ( !that[&#x27;0&#x27;] ) {
+                    return that;
+                }
 
                 node = that[&#x27;0&#x27;];
 
@@ -3241,7 +3311,7 @@ tb.observable = function( pStartValue ){
                     observedValue = p1;
                     notify();
                 } else {
-                    console.warn(&#x27;tb.observable() set value: parameter 1 should be a string or object if observed data is an object!&#x27;)
+                    console.warn(&#x27;tb.observable() set value: parameter 1 should be a string or object if observed data is an object!&#x27;);
                 }
                 return observedValue;
             } else {
@@ -3329,7 +3399,7 @@ tb.namespace = (function(){
 
         that.namespace = pNamespace;
         that.target = pObject;
-        that.namespaceArray =  pNamespace.indexOf( &#x27;.&#x27; ) ? pNamespace.split(&#x27;.&#x27;) : pNameSpace;
+        that.namespaceArray =  pNamespace.indexOf( &#x27;.&#x27; ) ? pNamespace.split(&#x27;.&#x27;) : pNamespace;
         that.forceCreation = false;
     }
 
@@ -3501,7 +3571,7 @@ tb.idle = function( pCallback ){
                     // system is still idle
                     if ( typeof pCallback === &#x27;function&#x27;){
                         pCallback();
-                    };
+                    }
                 } else {
                     // probably not idle -&gt; retry in 50 ms
                     f.lastChanged = tb.status.loadCount.lastChanged;
@@ -3559,22 +3629,26 @@ tb.getId = function(){
 tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
+    function walk(pKey) {
+        if ( cp[pKey] !== null
+            &amp;&amp; !!cp[pKey][&#x27;constructor&#x27;]
+            &amp;&amp; (cp[pKey]).constructor === Object
+        ){
+            pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
+        } else {
+            pObj[pKey] = cp[pKey];
+        }
+    }
+
     while ( arguments[1] ){
         cp = arguments[1];
+
         Object
             .keys(cp)
             .forEach(
-                function(key) {
-                    if ( cp[key] !== null
-                        &amp;&amp; !!cp[key][constructor]
-                        &amp;&amp; (cp[key]).constructor === Object
-                    ){
-                        pObj[key] = tb.extend( pObj[key] || {}, cp[key] );
-                    } else {
-                        pObj[key] = cp[key];
-                    }
-                }
+                walk
             );
+
         [].splice.call( arguments, 1, 1 ); // remove object that is done
     }
 
@@ -3690,7 +3764,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             msoft = [&#x27;Msxml2.XMLHTTP&#x27;, &#x27;Microsoft.XMLHTTP&#x27;];
 
         function getConnection(pId) {
-            var obj = {},
+            var obj,
                 xhr,
                 getConnection;
 
@@ -3698,14 +3772,16 @@ if (typeof module === &#x27;undefined&#x27; ){
                 for (var i = 0; i &lt; msoft.length; ++i) {
                     try {
                         xhr = new ActiveXObject(msoft[i]);
+
                         obj = {
                             connection: xhr,
                             identifier: pId
                         };
 
+                        /* jshint ignore:start */
                         getConnection = (function (pType) {
                             return function (pId) {
-                                var http = new ActiveXObject(pType);
+                                var xhr = new ActiveXObject(pType);
                                 obj = {
                                     connection: xhr,
                                     identifier: pId
@@ -3713,6 +3789,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                                 return obj;
                             };
                         })(msoft[i]);
+                        /* jshint ignore:end */
+
                     } catch (e) {
                     }
                 }
@@ -3765,24 +3843,29 @@ if (typeof module === &#x27;undefined&#x27; ){
 
         /** @private */
         function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+            var httpStatus,
+                responseObject;
 
             try {
-                var httpStatus = pReq.connection.status;
+                httpStatus = pReq.connection.status;
             }
             catch (e) {
-                var httpStatus = 13030;
+                httpStatus = 13030;
             }
+
             if (httpStatus &gt;= 200 &amp;&amp; httpStatus &lt; 300) {
-                var responseObject = createResponseObject(pReq, pOptions);
+                responseObject = createResponseObject(pReq, pOptions);
                 try {
                     pCallback.call(pCallback, responseObject);
                 }
                 catch (e) {
-                    if (tb.debug) debugger;
+                    if (tb.debug){
+                        debugger;
+                    }
                 }
             }
             else {
-                var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
+                responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
                 pFailure.call( pFailure, responseObject );
             }
             release(pReq);
@@ -3818,9 +3901,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             if (pReq.connection){
                 pReq.connection = null;
             }
-            delete pReq.connection;
             pReq = null;
-            delete pReq;
         }
 
         function inc( pReq ) {
@@ -3858,7 +3939,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                 isCachable = pOptions.cachable || false,
                 headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
-                isAsync = (typeof pOptions.async !== &#x27;undefined&#x27; &amp;&amp; pOptions.async === false) ? false : true;
+                isAsync = (typeof pOptions.async !== &#x27;undefined&#x27; &amp;&amp; pOptions.async === false) ? false : true,
+                ct;
 
             inc();
 
@@ -3867,22 +3949,31 @@ if (typeof module === &#x27;undefined&#x27; ){
                 headers[&#x27;Content-Type&#x27;] = &#x27;application/json;charset=UTF-8&#x27;;
             }
 
-            if (typeof pOptions.params != &#x27;undefined&#x27;) {
-                var ct = ( headers &amp;&amp; headers[&#x27;Content-Type&#x27;]
+            if (typeof pOptions.params !== &#x27;undefined&#x27;) {
+                ct = ( headers &amp;&amp; headers[&#x27;Content-Type&#x27;]
                     ? headers[&#x27;Content-Type&#x27;]
                     : &#x27;application/x-www-form-urlencoded&#x27; );
 
                 // parameter handling
                 switch ( ct ){
                     case &#x27;application/json;charset=UTF-8&#x27;:
+
                         params = JSON.stringify( pOptions.params );
                         break;
+
                     default:
-                        for (var i in pOptions.params) { // concat parameter string
-                            params += ((params.length &gt; 0 ? &#x27;&amp;&#x27; : &#x27;&#x27;) + i + &#x27;=&#x27; + pOptions.params[i]);
-                        }
+
+                        Object
+                            .keys( pOptions.params )
+                            .forEach(
+                                function( pParam ){
+                                    params += ((params.length &gt; 0 ? &#x27;&amp;&#x27; : &#x27;&#x27;) + pParam + &#x27;=&#x27; + pOptions.params[pParam]);
+                                }
+                            );
+
                         break;
                 }
+
             }
 
             // proxy disable - cache busting
@@ -3903,33 +3994,39 @@ if (typeof module === &#x27;undefined&#x27; ){
                 }
 
                 // set request headers
-                for (var i in headers) {
-                    if (i !== &#x27;Content-Type&#x27;) {
-                        xmlreq.connection.setRequestHeader(i, headers[i]);
-                    }
-                }
+                Object
+                    .keys( headers )
+                    .forEach(
+                        function( pHeaderVar ){
+                            if (pHeaderVar !== &#x27;Content-Type&#x27;) {
+                                xmlreq.connection.setRequestHeader(pHeaderVar, headers[pHeaderVar]);
+                            }
+                        }
+                    );
 
                 // abort functionality
                 if (timeout) {
                     xmlreq.timeoutTimer = window.setTimeout(
 
-                        function (pT, pR) {
+                        (function (pT, pR) {
                             var f = typeof pT.cb === &#x27;function&#x27; ? pT.cb : false;
                             return function () {
                                 //if ( !myR &amp;&amp; myR.connection.status == 4 ) return;
-                                if (typeof f == &#x27;function&#x27;) {
+                                if (typeof f === &#x27;function&#x27;) {
                                     f( /*createResponseObject(myR)*/ );
                                 }
                                 pR.connection.abort();
                                 window.clearInterval(pR.poll);
                             };
-                        }(timeout, xmlreq), timeout.ms);
+                        })(timeout, xmlreq), timeout.ms);
                 }
 
                 xmlreq.abort = ( function(xmlreq) {
                     return function () {
                         window.clearInterval(xmlreq.poll);
-                        if (xmlreq.connection) xmlreq.connection.abort();
+                        if (xmlreq.connection){
+                            xmlreq.connection.abort();
+                        }
                         release(xmlreq);
                     };
                 })( xmlreq );
@@ -4462,9 +4559,13 @@ if ( typeof module === &#x27;undefined&#x27; ) {
                 };
 
                 // add attributes to DOM element
-                for (var i in typeConfig.attributes) if (typeConfig.attributes.hasOwnProperty(i)) {
-                    element.setAttribute(i, tb.parse(typeConfig.attributes[i], that.config));
-                }
+                Object
+                    .keys( typeConfig.attributes )
+                    .forEach(
+                        function( pKey ){
+                            element.setAttribute(pKey, tb.parse(typeConfig.attributes[pKey], that.config));
+                        }
+                    );
 
                 // append node to head
                 document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(element);
@@ -4515,7 +4616,7 @@ if ( typeof module === &#x27;undefined&#x27; ) {
 
             that.requirements = {};
 
-        };
+        }
 
         _RequirementGroup.prototype = {
 
@@ -4563,8 +4664,8 @@ if ( typeof module === &#x27;undefined&#x27; ) {
 
             that.handlers = {
                 requirementLoaded: requirementLoaded
-            }
-        };
+            };
+        }
 
 
         Loader.prototype = {
@@ -4574,15 +4675,13 @@ if ( typeof module === &#x27;undefined&#x27; ) {
             load: function (pSrc, pCallback) {
 
                 var that = this,
-                    pCallback = pCallback || function (e) {
-                            console.log(&#x27;onLoad dummy handler on&#x27;, e);
-                        },
                     type,
-                    rg,
-                    pSrc = typeof pSrc === &#x27;string&#x27; ? [pSrc] : pSrc, // convert to array if string
-                    pSrc = [].concat.call( [], pSrc); // make an array copy
+                    rg;
 
-                //console.log( &#x27;tll:&#x27;, pSrc );
+                pSrc = typeof pSrc === &#x27;string&#x27; ? [pSrc] : pSrc; // convert to array if string
+                pSrc = [].concat.call( [], pSrc); // make an array copy
+
+                pCallback = pCallback || function (e) { console.log(&#x27;onLoad dummy handler on&#x27;, e); };
 
                 pSrc.callback = pCallback;
 

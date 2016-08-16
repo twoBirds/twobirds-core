@@ -402,8 +402,10 @@ if (typeof module === 'undefined' ){
                 that.forEach(
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute('class') || '',
-                            classes = !!classes.length ? classes.split(' ') : [],
-                            index = classes.indexOf(pClassName);
+                            index;
+
+                        classes = !!classes.length ? classes.split(' ') : [];
+                        index = classes.indexOf(pClassName);
 
                         if (index === -1) {
                             classes.push( pClassName );
@@ -629,7 +631,9 @@ if (typeof module === 'undefined' ){
                     compare = tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
                     result;
 
-                if ( pSelector === 'undefined' ) return that;    // unchanged
+                if ( pSelector === 'undefined' ) {
+                    return that;
+                }    // unchanged
 
                 if ( typeof pSelector === 'string' ) { // DOM selector given
                     result = [].filter.call(
@@ -691,7 +695,7 @@ if (typeof module === 'undefined' ){
                             function (pNode) {
                                 pNode.innerHTML = pHtml;
                             }
-                        )
+                        );
                     }
                 } else {
                     return !!that[0] ? that[0].innerHTML : '';
@@ -711,7 +715,9 @@ if (typeof module === 'undefined' ){
                 var that = this,
                     target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false;
 
-                if ( !target ) return;
+                if ( !target ) {
+                    return;
+                }
 
                 that.forEach(
                     function( pDomNode ){
@@ -742,7 +748,9 @@ if (typeof module === 'undefined' ){
                     target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false,
                     nextDomNode = target.nextSibling || false;
 
-                if ( !target ) return;
+                if ( !target ) {
+                    return;
+                }
 
                 that.forEach(
                     function( pDomNode ){
@@ -869,7 +877,7 @@ if (typeof module === 'undefined' ){
                                             return function(){
                                                 _removeEvent( pDomNode, pThisEventName, onceHandler, capture );
                                                 pHandler.apply( pDomNode, arguments );
-                                            }
+                                            };
                                         })(pDomNode, pThisEventName, pHandler);
                                     }
 
@@ -1043,11 +1051,13 @@ if (typeof module === 'undefined' ){
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute('class') || '';
 
+                        classes = classes.trim();
+
                         pClasses.forEach(
                             function( pClass ){
                                 if ( classes ){
-                                    if ( !!(classes.indexOf(' ') + 1) ){
-                                        classes = classes.split(' ')
+                                    if ( classes.indexOf(' ') > -1 ){
+                                        classes = classes.split(' ');
                                     } else {
                                         classes = [ classes ];
                                     }
@@ -1056,13 +1066,13 @@ if (typeof module === 'undefined' ){
                                         .forEach(
                                             function( pRemoveClass ){
                                                 while ( classes.indexOf(pRemoveClass) > -1 ){
-                                                    classes.splice(classes.indexOf(pRemoveClass), 1)
+                                                    classes.splice(classes.indexOf(pRemoveClass), 1);
                                                 }
                                             }
                                         );
 
                                     if ( !!classes.length ){
-                                        tb.dom( pDomNode ).attr('class', classes.join(' ') )
+                                        tb.dom( pDomNode ).attr('class', classes.join(' ') );
                                     } else {
                                         tb.dom( pDomNode ).removeAttr('class');
                                     }
@@ -1217,9 +1227,9 @@ if (typeof module === 'undefined' ){
                             tb.dom( 'option:selected', that)
                                 .forEach(
                                     function( pThisSelectedOption ){
-                                        if ( !option.disabled
-                                            && ( !option.parentNode.disabled
-                                            || option.parentNode.nodeName !== "optgroup" )
+                                        if ( !pThisSelectedOption.disabled
+                                            && ( !pThisSelectedOption.parentNode.disabled
+                                            || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
                                         ){
                                             var value = pThisSelectedOption.value;
 
@@ -1364,9 +1374,12 @@ if (typeof module === 'undefined' ){
                 var that = this,
                     node,
                     values = pValues || {},
-                    ret = {};
+                    ret = {},
+                    value;
 
-                if ( !that['0'] ) return that;
+                if ( !that['0'] ) {
+                    return that;
+                }
 
                 node = that['0'];
 

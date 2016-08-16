@@ -226,9 +226,9 @@ describe("tb.dom() selector tests", function() {
 
         describe(".concat()", function() {
 
-            it("tb.dom('body').concat( tb.dom( 'div.test-parent' ).toArray() ).length === 6", function() {
-                var a = tb.dom('body').concat( tb.dom( 'div.test-parent' ).toArray() );
-                expect( a.length === 6 ).toBe( true );
+            it("tb.dom('body').concat( tb.dom( 'div.test-parent' )[0] ).length === 2", function() {
+                var a = tb.dom('body').concat( tb.dom( 'div.test-parent' )[0] );
+                expect( a.length === 2 ).toBe( true );
             });
 
         });
@@ -511,7 +511,7 @@ describe("tb.dom() selector tests", function() {
 
         describe(".slice()", function() {
 
-            it("tb.dom( 'div.test-parent' ).slice(...) instanceof tb.dom", function() {
+            it("tb.dom( 'div.test-parent' ).slice(...) instanceof tb", function() {
                 expect( tb.dom( 'div.test-parent' ).slice( 1, 3 )['__tbSelector__'] ).toBe( true );
             });
 
@@ -596,12 +596,12 @@ describe("tb.dom() selector tests", function() {
                 firstCalled = '',
                 handlers = {
                     GPtestHandler: function(e){    // test handler for Grandparent
-                        console.log('GPtestHandler');
+                        //console.log('GPtestHandler');
                         firstCalled = firstCalled || 'GP';
                         GPdone = true;
                     },
                     CtestHandler: function(e){     // test handler for Child
-                        console.log('CtestHandler');
+                        //console.log('CtestHandler');
                         firstCalled = firstCalled || 'C';
                         Cdone = true;
                     }
@@ -643,7 +643,7 @@ describe("tb.dom() selector tests", function() {
                 });
 
                 it("handler called - no bubbling, synchronous and in correct order", function () {
-                    console.log( Cdone, GPdone, firstCalled );
+                    //console.log( Cdone, GPdone, firstCalled );
                     expect( Cdone === true && GPdone === true && firstCalled === 'C' ).toBe( true );
                 });
             });
@@ -670,7 +670,7 @@ describe("tb.dom() selector tests", function() {
                 });
 
                 it("handler called - with caption, synchronous and in correct order", function () {
-                    console.log( Cdone, GPdone, firstCalled );
+                    //console.log( Cdone, GPdone, firstCalled );
                     expect( Cdone === true && GPdone === true && firstCalled === 'GP' ).toBe( true );
                 });
             });
@@ -697,7 +697,7 @@ describe("tb.dom() selector tests", function() {
                 });
 
                 it("handler called - no bubbling, synchronous and in correct order", function () {
-                    console.log( Cdone, GPdone, firstCalled );
+                    //console.log( Cdone, GPdone, firstCalled );
                     expect( Cdone === true && GPdone === false && firstCalled === 'C' ).toBe( true );
                 });
             });

@@ -102,7 +102,7 @@ tb.observable = function( pStartValue ){
                     observedValue = p1;
                     notify();
                 } else {
-                    console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!')
+                    console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!');
                 }
                 return observedValue;
             } else {
@@ -190,7 +190,7 @@ tb.namespace = (function(){
 
         that.namespace = pNamespace;
         that.target = pObject;
-        that.namespaceArray =  pNamespace.indexOf( '.' ) ? pNamespace.split('.') : pNameSpace;
+        that.namespaceArray =  pNamespace.indexOf( '.' ) ? pNamespace.split('.') : pNamespace;
         that.forceCreation = false;
     }
 
@@ -362,7 +362,7 @@ tb.idle = function( pCallback ){
                     // system is still idle
                     if ( typeof pCallback === 'function'){
                         pCallback();
-                    };
+                    }
                 } else {
                     // probably not idle -> retry in 50 ms
                     f.lastChanged = tb.status.loadCount.lastChanged;
@@ -420,22 +420,26 @@ tb.getId = function(){
 tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
+    function walk(pKey) {
+        if ( cp[pKey] !== null
+            && !!cp[pKey]['constructor']
+            && (cp[pKey]).constructor === Object
+        ){
+            pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
+        } else {
+            pObj[pKey] = cp[pKey];
+        }
+    }
+
     while ( arguments[1] ){
         cp = arguments[1];
+
         Object
             .keys(cp)
             .forEach(
-                function(key) {
-                    if ( cp[key] !== null
-                        && !!cp[key][constructor]
-                        && (cp[key]).constructor === Object
-                    ){
-                        pObj[key] = tb.extend( pObj[key] || {}, cp[key] );
-                    } else {
-                        pObj[key] = cp[key];
-                    }
-                }
+                walk
             );
+
         [].splice.call( arguments, 1, 1 ); // remove object that is done
     }
 
@@ -551,7 +555,7 @@ if (typeof module === 'undefined' ){
             msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
 
         function getConnection(pId) {
-            var obj = {},
+            var obj,
                 xhr,
                 getConnection;
 
@@ -559,14 +563,16 @@ if (typeof module === 'undefined' ){
                 for (var i = 0; i < msoft.length; ++i) {
                     try {
                         xhr = new ActiveXObject(msoft[i]);
+
                         obj = {
                             connection: xhr,
                             identifier: pId
                         };
 
+                        /* jshint ignore:start */
                         getConnection = (function (pType) {
                             return function (pId) {
-                                var http = new ActiveXObject(pType);
+                                var xhr = new ActiveXObject(pType);
                                 obj = {
                                     connection: xhr,
                                     identifier: pId
@@ -574,6 +580,8 @@ if (typeof module === 'undefined' ){
                                 return obj;
                             };
                         })(msoft[i]);
+                        /* jshint ignore:end */
+
                     } catch (e) {
                     }
                 }
@@ -626,24 +634,29 @@ if (typeof module === 'undefined' ){
 
         /** @private */
         function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+            var httpStatus,
+                responseObject;
 
             try {
-                var httpStatus = pReq.connection.status;
+                httpStatus = pReq.connection.status;
             }
             catch (e) {
-                var httpStatus = 13030;
+                httpStatus = 13030;
             }
+
             if (httpStatus >= 200 && httpStatus < 300) {
-                var responseObject = createResponseObject(pReq, pOptions);
+                responseObject = createResponseObject(pReq, pOptions);
                 try {
                     pCallback.call(pCallback, responseObject);
                 }
                 catch (e) {
-                    if (tb.debug) debugger;
+                    if (tb.debug){
+                        debugger;
+                    }
                 }
             }
             else {
-                var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
+                responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
                 pFailure.call( pFailure, responseObject );
             }
             release(pReq);
@@ -679,9 +692,7 @@ if (typeof module === 'undefined' ){
             if (pReq.connection){
                 pReq.connection = null;
             }
-            delete pReq.connection;
             pReq = null;
-            delete pReq;
         }
 
         function inc( pReq ) {
@@ -719,7 +730,8 @@ if (typeof module === 'undefined' ){
                 isCachable = pOptions.cachable || false,
                 headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
-                isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
+                isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true,
+                ct;
 
             inc();
 
@@ -728,22 +740,31 @@ if (typeof module === 'undefined' ){
                 headers['Content-Type'] = 'application/json;charset=UTF-8';
             }
 
-            if (typeof pOptions.params != 'undefined') {
-                var ct = ( headers && headers['Content-Type']
+            if (typeof pOptions.params !== 'undefined') {
+                ct = ( headers && headers['Content-Type']
                     ? headers['Content-Type']
                     : 'application/x-www-form-urlencoded' );
 
                 // parameter handling
                 switch ( ct ){
                     case 'application/json;charset=UTF-8':
+
                         params = JSON.stringify( pOptions.params );
                         break;
+
                     default:
-                        for (var i in pOptions.params) { // concat parameter string
-                            params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
-                        }
+
+                        Object
+                            .keys( pOptions.params )
+                            .forEach(
+                                function( pParam ){
+                                    params += ((params.length > 0 ? '&' : '') + pParam + '=' + pOptions.params[pParam]);
+                                }
+                            );
+
                         break;
                 }
+
             }
 
             // proxy disable - cache busting
@@ -764,33 +785,39 @@ if (typeof module === 'undefined' ){
                 }
 
                 // set request headers
-                for (var i in headers) {
-                    if (i !== 'Content-Type') {
-                        xmlreq.connection.setRequestHeader(i, headers[i]);
-                    }
-                }
+                Object
+                    .keys( headers )
+                    .forEach(
+                        function( pHeaderVar ){
+                            if (pHeaderVar !== 'Content-Type') {
+                                xmlreq.connection.setRequestHeader(pHeaderVar, headers[pHeaderVar]);
+                            }
+                        }
+                    );
 
                 // abort functionality
                 if (timeout) {
                     xmlreq.timeoutTimer = window.setTimeout(
 
-                        function (pT, pR) {
+                        (function (pT, pR) {
                             var f = typeof pT.cb === 'function' ? pT.cb : false;
                             return function () {
                                 //if ( !myR && myR.connection.status == 4 ) return;
-                                if (typeof f == 'function') {
+                                if (typeof f === 'function') {
                                     f( /*createResponseObject(myR)*/ );
                                 }
                                 pR.connection.abort();
                                 window.clearInterval(pR.poll);
                             };
-                        }(timeout, xmlreq), timeout.ms);
+                        })(timeout, xmlreq), timeout.ms);
                 }
 
                 xmlreq.abort = ( function(xmlreq) {
                     return function () {
                         window.clearInterval(xmlreq.poll);
-                        if (xmlreq.connection) xmlreq.connection.abort();
+                        if (xmlreq.connection){
+                            xmlreq.connection.abort();
+                        }
                         release(xmlreq);
                     };
                 })( xmlreq );

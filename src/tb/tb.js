@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.47 - 2016-08-16 */
+/*! twobirds-core - v7.2.48 - 2016-08-16 */
 
 /**
  twoBirds V7 core functionality
@@ -11,33 +11,40 @@
 
 // POLYFILLS
 
+/* jshint ignore:start */
+
 // matches polyfill
-this.Element && function(ElementPrototype) {
-    ElementPrototype.matches = ElementPrototype.matches ||
-        ElementPrototype.matchesSelector ||
-        ElementPrototype.webkitMatchesSelector ||
-        ElementPrototype.msMatchesSelector ||
-        function(selector) {
-            var node = this,
-                nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
-            while (nodes[++i] && nodes[i] != node);
-            return !!nodes[i];
-        }
-}(Element.prototype);
+this.Element && (function(ElementPrototype){
+    Element.prototype.matches =
+        Element.prototype.matchesSelector ||
+        Element.prototype.mozMatchesSelector ||
+        Element.prototype.msMatchesSelector ||
+        Element.prototype.oMatchesSelector ||
+        Element.prototype.webkitMatchesSelector ||
+        function(s) {
+            var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                i = matches.length;
+            while (--i >= 0 && matches.item(i) !== this) {}
+            return i > -1;
+        };})(Element.prototype);
 
 // closest polyfill
-this.Element && function(ElementPrototype) {
+this.Element && (function(ElementPrototype){
     ElementPrototype.closest = ElementPrototype.closest ||
         function(selector) {
             var el = this;
-            while (el.matches && !el.matches(selector)) el = el.parentNode;
+            while (el.matches && !el.matches(selector)){
+                el = el.parentNode;
+            }
             return el.matches ? el : null;
-        }
-}(Element.prototype);
+        };
+})(Element.prototype);
+
+/* jshint ignore:end */
 
 // twoBirds
 
-tb = (function(){
+var tb = (function(){
 
     /**
      @class tb.Selector
@@ -92,16 +99,16 @@ tb = (function(){
             // selection by dom selector string
             case 'string':
                 // HINT: must be a tb element for every selector of a css selector string
-                var selector = pSelector.split(' '),
-                    selector = selector.map(function(s){
-                        if (1 < s.length){
-                            return s+':not([data-tb=""])';
-                        }
-                        return s;
-                    }),
-                    selector = selector.join(' ');
+                var selector = pSelector.split(' ');
 
-                //console.log( pSelector, selector );
+                selector = selector.map(function(s){
+                    if (1 < s.length){
+                        return s+':not([data-tb=""])';
+                    }
+                    return s;
+                });
+
+                selector = selector.join(' ');
 
                 tb.dom( selector )
                     .forEach(
@@ -145,21 +152,24 @@ tb = (function(){
                                                 [].push.call( that, tbElement );
                                             }
                                         }
-                                    )
+                                    );
                             }
                         );
 
                 } else if ( !!pSelector['nodeType'] && !!pSelector['tb'] ){ // it is a dom node containing tb elements
                     Object
-                        .keys( pSelector.tb )
+                        .keys( pSelector['tb'] )
                         .forEach(
                             function( pKey ){
-                                [].push.call( that, pSelector.tb[ pKey ] );
+                                [].push.call( that, pSelector['tb'][ pKey ] );
                             }
-                        )
+                        );
 
-                } else if ( pSelector.constructor === Array || !!pSelector['length']
-                    && !!pSelector['0'] && !(pSelector instanceof Array)
+                } else if (
+                    pSelector.constructor === Array // a true array
+                    || !!pSelector['length']        // an array-like object
+                    && !!pSelector['0']
+                    && !(pSelector instanceof Array)
                 ){
                     // it is an array || array like object
                     [].forEach.call(
@@ -199,7 +209,7 @@ tb = (function(){
                                             [].push.call( that, tbElement );
                                         }
                                     }
-                                )
+                                );
                         }
                     );
 
@@ -211,8 +221,13 @@ tb = (function(){
     }
 
     // empty class def for temporary handler storage, needed for on(), one(), off() and trigger()
-    function Nop(){};
-    Nop.prototype = { namespace: 'Nop' };
+    function Nop(){
+
+    }
+
+    Nop.prototype = {
+        namespace: 'Nop'
+    };
 
     // HINT: TbSelector (class) prototype definition after Tb prototype definition
 
@@ -268,7 +283,9 @@ tb = (function(){
 
      You can call chained methods both on single tB instances as well as on a selector result set ( all of them, then ).
      */
+
     function tb() {
+
         var that = this;
 
         // setup prototype chain of twoBirds instance
@@ -279,9 +296,13 @@ tb = (function(){
 
                 var that = this;
 
-                for ( var i in pPrototype ) if ( pPrototype.hasOwnProperty(i) ){
-                    that[i] = pPrototype[i];
-                }
+                Object
+                    .keys( pPrototype )
+                    .forEach(
+                        function( pKey ){
+                            that[pKey] = pPrototype[pKey];
+                        }
+                    );
 
             };
 
@@ -292,14 +313,18 @@ tb = (function(){
 
         // merge handlers from temp instance into target object
         function mergeHandlers( pSourceTb , pTargetTb ){
-            for ( var i in pSourceTb.handlers ) if ( pSourceTb.handlers.hasOwnProperty(i) ){
-                if ( !pTargetTb.handlers[i] ){
-                    pTargetTb.handlers[i] = [];
-                }
-                for ( var j = 0, l = pSourceTb.handlers[i].length; j < l; j++ ){
-                    pTargetTb.handlers[i].push( pSourceTb.handlers[i][j] ); // copy handler
-                }
-            }
+            Object
+                .keys( pSourceTb.handlers )
+                .forEach(
+                    function( pHandler ){
+                        if ( !pTargetTb.handlers[pHandler] ){
+                            pTargetTb.handlers[pHandler] = [];
+                        }
+                        for ( var j = 0, l = pSourceTb.handlers[pHandler].length; j < l; j++ ){
+                            pTargetTb.handlers[pHandler].push( pSourceTb.handlers[pHandler][j] ); // copy handler
+                        }
+                    }
+                );
         }
 
         // instanciate tb instance OR return tb.Selector result set
@@ -331,12 +356,15 @@ tb = (function(){
                             if ( !!tempInstance ){
 
                                 // copy properties from tempInstance, always shallow copy
-                                for ( var i in tempInstance ) if (
-                                    (['handlers', 'target']).indexOf(i) === -1
-                                    && tempInstance.hasOwnProperty(i)
-                                ){
-                                    thisTb[i] = tempInstance[i];
-                                }
+                                Object
+                                    .keys( tempInstance )
+                                    .forEach(
+                                        function( pKey ){
+                                            if ( (['handlers', 'target']).indexOf(pKey) === -1 ){
+                                                thisTb[pKey] = tempInstance[pKey];
+                                            }
+                                        }
+                                    );
 
                                 mergeHandlers( tempInstance, thisTb );
 
@@ -373,14 +401,16 @@ tb = (function(){
                 // prepare .target property of tb object
                 tbInstance.target = arguments[2] || false; // preset
                 if ( !!arguments[2] ){
+                    var target = arguments[2];
+
                     if ( !arguments[2]['nodeType']
                         && !!arguments[2][0]
                         && !!arguments[2][0]['nodeType']
                     ){
-                        arguments[2] = arguments[2][0]; // get first element of an array-like selector return object
+                        target = arguments[2][0]; // get first element of an array-like selector return object
                     }
 
-                    tbInstance.target = arguments[2];
+                    tbInstance.target = target;
                 } else {
                     tbInstance.target = null;
                 }
@@ -412,7 +442,7 @@ tb = (function(){
                         if ( !!dataTb && !!dataTb.length && -1 === dataTb.split(' ').indexOf( tbInstance.namespace ) ){
                             tbInstance.target.setAttribute( 'data-tb', dataTb + ' ' + tbInstance.namespace );
                         } else {
-                            tbInstance.target.setAttribute( 'data-tb', tbInstance.namespace )
+                            tbInstance.target.setAttribute( 'data-tb', tbInstance.namespace );
                         }
                     }
                 }
@@ -423,13 +453,17 @@ tb = (function(){
                 } else {
                     // if there are single named event handler functions,
                     // convert them to array of functions
-                    for ( var i in tbInstance.handlers ) if ( tbInstance.handlers.hasOwnProperty(i) ){
-                        if ( typeof tbInstance.handlers[i] === 'function' ){
-                            tbInstance.handlers[i] = [ tbInstance.handlers[i] ];
-                        } else if ( !( tbInstance.handlers[i] instanceof Array ) ){
-                            delete tbInstance.handlers[i];
-                        }
-                    }
+                    Object
+                        .keys(tbInstance.handlers)
+                        .forEach(
+                            function( pKey ){
+                                if ( typeof tbInstance.handlers[pKey] === 'function' ){
+                                    tbInstance.handlers[pKey] = [ tbInstance.handlers[pKey] ];
+                                } else if ( !( tbInstance.handlers[pKey] instanceof Array ) ){
+                                    delete tbInstance.handlers[pKey];
+                                }
+                            }
+                        );
                 }
 
                 if ( !( tbInstance instanceof Nop ) ){
@@ -517,9 +551,25 @@ tb = (function(){
             };
         } else {
             return function(){
-                var ret = method.apply( this, arguments );
+                var ret = method.apply( this, arguments ),
+                    selector;
 
-                return ret instanceof Array && !!ret['0'] && !!ret['0'] instanceof tb ? tb.dom( ret ).unique() : ret;
+                if ( !!(ret instanceof Array) ){
+                    selector = new TbSelector('');
+
+                    ret
+                        .forEach(
+                            function( pElement ){
+                                [].push.call( selector, pElement );
+                            }
+                        );
+
+                    selector.unique();
+
+                    return selector;
+                }
+
+                return ret;
             };
         }
 
@@ -749,7 +799,7 @@ tb = (function(){
 
                         },
                         10
-                    )
+                    );
 
                 }
 
@@ -947,7 +997,7 @@ tb = (function(){
                                                 // push dom object to tb selector content
                                                 [].push.call( ret, pElement.tb[pKey] );
                                             }
-                                        )
+                                        );
                                 }
                             );
 
@@ -957,7 +1007,7 @@ tb = (function(){
                         [].push.call( ret, that.target ); // push parent object to tb selector content
 
                         if ( !!that.target.parent()['0'] ){
-                            [].push.call( ret, that.target.parent()['0'] )
+                            [].push.call( ret, that.target.parent()['0'] );
                         }
 
                     }
@@ -1002,7 +1052,9 @@ tb = (function(){
                         var tbParents = that.parents().toArray(),
                             tbParent = !!tbParents['0'] ? tbParents[0] : false;
 
-                        if ( !tbParent ) return ret; // no parent -> empty result set
+                        if ( !tbParent ) {
+                            return ret;  // no parent -> empty result set
+                        }
 
                         Object
                             .keys(tbParent.target.tb)
@@ -1099,8 +1151,9 @@ tb = (function(){
             children: function( pSelector, pLocalOnly ){
 
                 var that = this,
-                    ret = tb(),
-                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node or forced -> only local
+                    ret = tb();
+
+                pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node or forced -> only local
 
                 if ( that instanceof TbSelector ) {
 
@@ -1133,11 +1186,15 @@ tb = (function(){
 
                 } else if ( !!pLocalOnly ){
 
-                    for ( var i in that ){
-                        if ( that.hasOwnProperty(i) && that[i] instanceof tb ){
-                            [].push.call( ret, that[i] ); // push tb object to tb selector content
-                        }
-                    }
+                    Object
+                        .keys( that )
+                        .forEach(
+                            function( pKey ){
+                                if ( that[pKey] instanceof tb ){
+                                    [].push.call( ret, that[pKey] ); // push tb object to tb selector content
+                                }
+                            }
+                        );
 
                 }
 
@@ -1390,7 +1447,7 @@ tb = (function(){
                 return tb( ret.concat( add ) );
             }
 
-        }
+        };
 
     })();
 
@@ -1589,7 +1646,7 @@ tb.Event = function( pEventName, pEventData, pBubble ){
     that.data = pEventData || {};
     that.name = pEventName || '';
     that.__stopped__ = that.__immediateStopped__ = false;
-}
+};
 
 tb.Event.prototype = {
 
@@ -2059,8 +2116,10 @@ if (typeof module === 'undefined' ){
                 that.forEach(
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute('class') || '',
-                            classes = !!classes.length ? classes.split(' ') : [],
-                            index = classes.indexOf(pClassName);
+                            index;
+
+                        classes = !!classes.length ? classes.split(' ') : [];
+                        index = classes.indexOf(pClassName);
 
                         if (index === -1) {
                             classes.push( pClassName );
@@ -2286,7 +2345,9 @@ if (typeof module === 'undefined' ){
                     compare = tb.dom( pSelector ),// functions and undefined will be ignored, so empty result then
                     result;
 
-                if ( pSelector === 'undefined' ) return that;    // unchanged
+                if ( pSelector === 'undefined' ) {
+                    return that;
+                }    // unchanged
 
                 if ( typeof pSelector === 'string' ) { // DOM selector given
                     result = [].filter.call(
@@ -2348,7 +2409,7 @@ if (typeof module === 'undefined' ){
                             function (pNode) {
                                 pNode.innerHTML = pHtml;
                             }
-                        )
+                        );
                     }
                 } else {
                     return !!that[0] ? that[0].innerHTML : '';
@@ -2368,7 +2429,9 @@ if (typeof module === 'undefined' ){
                 var that = this,
                     target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false;
 
-                if ( !target ) return;
+                if ( !target ) {
+                    return;
+                }
 
                 that.forEach(
                     function( pDomNode ){
@@ -2399,7 +2462,9 @@ if (typeof module === 'undefined' ){
                     target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false,
                     nextDomNode = target.nextSibling || false;
 
-                if ( !target ) return;
+                if ( !target ) {
+                    return;
+                }
 
                 that.forEach(
                     function( pDomNode ){
@@ -2526,7 +2591,7 @@ if (typeof module === 'undefined' ){
                                             return function(){
                                                 _removeEvent( pDomNode, pThisEventName, onceHandler, capture );
                                                 pHandler.apply( pDomNode, arguments );
-                                            }
+                                            };
                                         })(pDomNode, pThisEventName, pHandler);
                                     }
 
@@ -2700,11 +2765,13 @@ if (typeof module === 'undefined' ){
                     function (pDomNode) {
                         var classes = pDomNode.getAttribute('class') || '';
 
+                        classes = classes.trim();
+
                         pClasses.forEach(
                             function( pClass ){
                                 if ( classes ){
-                                    if ( !!(classes.indexOf(' ') + 1) ){
-                                        classes = classes.split(' ')
+                                    if ( classes.indexOf(' ') > -1 ){
+                                        classes = classes.split(' ');
                                     } else {
                                         classes = [ classes ];
                                     }
@@ -2713,13 +2780,13 @@ if (typeof module === 'undefined' ){
                                         .forEach(
                                             function( pRemoveClass ){
                                                 while ( classes.indexOf(pRemoveClass) > -1 ){
-                                                    classes.splice(classes.indexOf(pRemoveClass), 1)
+                                                    classes.splice(classes.indexOf(pRemoveClass), 1);
                                                 }
                                             }
                                         );
 
                                     if ( !!classes.length ){
-                                        tb.dom( pDomNode ).attr('class', classes.join(' ') )
+                                        tb.dom( pDomNode ).attr('class', classes.join(' ') );
                                     } else {
                                         tb.dom( pDomNode ).removeAttr('class');
                                     }
@@ -2874,9 +2941,9 @@ if (typeof module === 'undefined' ){
                             tb.dom( 'option:selected', that)
                                 .forEach(
                                     function( pThisSelectedOption ){
-                                        if ( !option.disabled
-                                            && ( !option.parentNode.disabled
-                                            || option.parentNode.nodeName !== "optgroup" )
+                                        if ( !pThisSelectedOption.disabled
+                                            && ( !pThisSelectedOption.parentNode.disabled
+                                            || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
                                         ){
                                             var value = pThisSelectedOption.value;
 
@@ -3021,9 +3088,12 @@ if (typeof module === 'undefined' ){
                 var that = this,
                     node,
                     values = pValues || {},
-                    ret = {};
+                    ret = {},
+                    value;
 
-                if ( !that['0'] ) return that;
+                if ( !that['0'] ) {
+                    return that;
+                }
 
                 node = that['0'];
 
@@ -3153,7 +3223,7 @@ tb.observable = function( pStartValue ){
                     observedValue = p1;
                     notify();
                 } else {
-                    console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!')
+                    console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!');
                 }
                 return observedValue;
             } else {
@@ -3241,7 +3311,7 @@ tb.namespace = (function(){
 
         that.namespace = pNamespace;
         that.target = pObject;
-        that.namespaceArray =  pNamespace.indexOf( '.' ) ? pNamespace.split('.') : pNameSpace;
+        that.namespaceArray =  pNamespace.indexOf( '.' ) ? pNamespace.split('.') : pNamespace;
         that.forceCreation = false;
     }
 
@@ -3413,7 +3483,7 @@ tb.idle = function( pCallback ){
                     // system is still idle
                     if ( typeof pCallback === 'function'){
                         pCallback();
-                    };
+                    }
                 } else {
                     // probably not idle -> retry in 50 ms
                     f.lastChanged = tb.status.loadCount.lastChanged;
@@ -3471,22 +3541,26 @@ tb.getId = function(){
 tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
+    function walk(pKey) {
+        if ( cp[pKey] !== null
+            && !!cp[pKey]['constructor']
+            && (cp[pKey]).constructor === Object
+        ){
+            pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
+        } else {
+            pObj[pKey] = cp[pKey];
+        }
+    }
+
     while ( arguments[1] ){
         cp = arguments[1];
+
         Object
             .keys(cp)
             .forEach(
-                function(key) {
-                    if ( cp[key] !== null
-                        && !!cp[key][constructor]
-                        && (cp[key]).constructor === Object
-                    ){
-                        pObj[key] = tb.extend( pObj[key] || {}, cp[key] );
-                    } else {
-                        pObj[key] = cp[key];
-                    }
-                }
+                walk
             );
+
         [].splice.call( arguments, 1, 1 ); // remove object that is done
     }
 
@@ -3602,7 +3676,7 @@ if (typeof module === 'undefined' ){
             msoft = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP'];
 
         function getConnection(pId) {
-            var obj = {},
+            var obj,
                 xhr,
                 getConnection;
 
@@ -3610,14 +3684,16 @@ if (typeof module === 'undefined' ){
                 for (var i = 0; i < msoft.length; ++i) {
                     try {
                         xhr = new ActiveXObject(msoft[i]);
+
                         obj = {
                             connection: xhr,
                             identifier: pId
                         };
 
+                        /* jshint ignore:start */
                         getConnection = (function (pType) {
                             return function (pId) {
-                                var http = new ActiveXObject(pType);
+                                var xhr = new ActiveXObject(pType);
                                 obj = {
                                     connection: xhr,
                                     identifier: pId
@@ -3625,6 +3701,8 @@ if (typeof module === 'undefined' ){
                                 return obj;
                             };
                         })(msoft[i]);
+                        /* jshint ignore:end */
+
                     } catch (e) {
                     }
                 }
@@ -3677,24 +3755,29 @@ if (typeof module === 'undefined' ){
 
         /** @private */
         function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+            var httpStatus,
+                responseObject;
 
             try {
-                var httpStatus = pReq.connection.status;
+                httpStatus = pReq.connection.status;
             }
             catch (e) {
-                var httpStatus = 13030;
+                httpStatus = 13030;
             }
+
             if (httpStatus >= 200 && httpStatus < 300) {
-                var responseObject = createResponseObject(pReq, pOptions);
+                responseObject = createResponseObject(pReq, pOptions);
                 try {
                     pCallback.call(pCallback, responseObject);
                 }
                 catch (e) {
-                    if (tb.debug) debugger;
+                    if (tb.debug){
+                        debugger;
+                    }
                 }
             }
             else {
-                var responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
+                responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
                 pFailure.call( pFailure, responseObject );
             }
             release(pReq);
@@ -3730,9 +3813,7 @@ if (typeof module === 'undefined' ){
             if (pReq.connection){
                 pReq.connection = null;
             }
-            delete pReq.connection;
             pReq = null;
-            delete pReq;
         }
 
         function inc( pReq ) {
@@ -3770,7 +3851,8 @@ if (typeof module === 'undefined' ){
                 isCachable = pOptions.cachable || false,
                 headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
-                isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true;
+                isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true,
+                ct;
 
             inc();
 
@@ -3779,22 +3861,31 @@ if (typeof module === 'undefined' ){
                 headers['Content-Type'] = 'application/json;charset=UTF-8';
             }
 
-            if (typeof pOptions.params != 'undefined') {
-                var ct = ( headers && headers['Content-Type']
+            if (typeof pOptions.params !== 'undefined') {
+                ct = ( headers && headers['Content-Type']
                     ? headers['Content-Type']
                     : 'application/x-www-form-urlencoded' );
 
                 // parameter handling
                 switch ( ct ){
                     case 'application/json;charset=UTF-8':
+
                         params = JSON.stringify( pOptions.params );
                         break;
+
                     default:
-                        for (var i in pOptions.params) { // concat parameter string
-                            params += ((params.length > 0 ? '&' : '') + i + '=' + pOptions.params[i]);
-                        }
+
+                        Object
+                            .keys( pOptions.params )
+                            .forEach(
+                                function( pParam ){
+                                    params += ((params.length > 0 ? '&' : '') + pParam + '=' + pOptions.params[pParam]);
+                                }
+                            );
+
                         break;
                 }
+
             }
 
             // proxy disable - cache busting
@@ -3815,33 +3906,39 @@ if (typeof module === 'undefined' ){
                 }
 
                 // set request headers
-                for (var i in headers) {
-                    if (i !== 'Content-Type') {
-                        xmlreq.connection.setRequestHeader(i, headers[i]);
-                    }
-                }
+                Object
+                    .keys( headers )
+                    .forEach(
+                        function( pHeaderVar ){
+                            if (pHeaderVar !== 'Content-Type') {
+                                xmlreq.connection.setRequestHeader(pHeaderVar, headers[pHeaderVar]);
+                            }
+                        }
+                    );
 
                 // abort functionality
                 if (timeout) {
                     xmlreq.timeoutTimer = window.setTimeout(
 
-                        function (pT, pR) {
+                        (function (pT, pR) {
                             var f = typeof pT.cb === 'function' ? pT.cb : false;
                             return function () {
                                 //if ( !myR && myR.connection.status == 4 ) return;
-                                if (typeof f == 'function') {
+                                if (typeof f === 'function') {
                                     f( /*createResponseObject(myR)*/ );
                                 }
                                 pR.connection.abort();
                                 window.clearInterval(pR.poll);
                             };
-                        }(timeout, xmlreq), timeout.ms);
+                        })(timeout, xmlreq), timeout.ms);
                 }
 
                 xmlreq.abort = ( function(xmlreq) {
                     return function () {
                         window.clearInterval(xmlreq.poll);
-                        if (xmlreq.connection) xmlreq.connection.abort();
+                        if (xmlreq.connection){
+                            xmlreq.connection.abort();
+                        }
                         release(xmlreq);
                     };
                 })( xmlreq );
@@ -4374,9 +4471,13 @@ if ( typeof module === 'undefined' ) {
                 };
 
                 // add attributes to DOM element
-                for (var i in typeConfig.attributes) if (typeConfig.attributes.hasOwnProperty(i)) {
-                    element.setAttribute(i, tb.parse(typeConfig.attributes[i], that.config));
-                }
+                Object
+                    .keys( typeConfig.attributes )
+                    .forEach(
+                        function( pKey ){
+                            element.setAttribute(pKey, tb.parse(typeConfig.attributes[pKey], that.config));
+                        }
+                    );
 
                 // append node to head
                 document.getElementsByTagName('head')[0].appendChild(element);
@@ -4427,7 +4528,7 @@ if ( typeof module === 'undefined' ) {
 
             that.requirements = {};
 
-        };
+        }
 
         _RequirementGroup.prototype = {
 
@@ -4475,8 +4576,8 @@ if ( typeof module === 'undefined' ) {
 
             that.handlers = {
                 requirementLoaded: requirementLoaded
-            }
-        };
+            };
+        }
 
 
         Loader.prototype = {
@@ -4486,15 +4587,13 @@ if ( typeof module === 'undefined' ) {
             load: function (pSrc, pCallback) {
 
                 var that = this,
-                    pCallback = pCallback || function (e) {
-                            console.log('onLoad dummy handler on', e);
-                        },
                     type,
-                    rg,
-                    pSrc = typeof pSrc === 'string' ? [pSrc] : pSrc, // convert to array if string
-                    pSrc = [].concat.call( [], pSrc); // make an array copy
+                    rg;
 
-                //console.log( 'tll:', pSrc );
+                pSrc = typeof pSrc === 'string' ? [pSrc] : pSrc; // convert to array if string
+                pSrc = [].concat.call( [], pSrc); // make an array copy
+
+                pCallback = pCallback || function (e) { console.log('onLoad dummy handler on', e); };
 
                 pSrc.callback = pCallback;
 

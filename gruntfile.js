@@ -136,22 +136,36 @@ module.exports = function(grunt) {
 
         jshint: {
             options: {
+                force: true,
                 curly: true,
                 eqeqeq: true,
                 immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
+                latedef: false,
+                newcap: false,
+                noarg: false,
                 sub: true,
                 undef: true,
                 boss: true,
+                debug: true,
                 eqnull: true,
-                node: true
+                node: true,
+                laxbreak: true,
+                laxcomma: true,
+                globals: {
+                    exports: true,
+                    module: false,
+                    tb: true,
+                    "window": false,
+                    "document": false,
+                    "HTMLCollection": false,
+                    "NodeList": false,
+                    "XMLHttpRequest": false,
+                    "ActiveXObject": false
+                }
             },
-            globals: {
-                exports: true,
-                module: false
-            }
+            all: [
+                'src/tb/tb.js'
+            ]
         },
 
         yuidoc: {
@@ -182,11 +196,11 @@ module.exports = function(grunt) {
     // Default task(s).
     grunt.registerTask(
         'default', [
-            'jshint',
             'clean',
             'copy:before',
             'concat',
             'uglify',
+            'jshint',
             'copy:main',
             'yuidoc'
         ]
