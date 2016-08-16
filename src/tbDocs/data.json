@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.2.45",
+        "version": "v7.2.46",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -1699,7 +1699,7 @@
                 "type": "namespace1.namespace2.etc"
             },
             "example": [
-                "\n\n    tb.parse( \"{a} test test\", { a: 'done' } )\n    // \"done test test\"\n\n    tb.parse( [ \"{a} test test\" ], { a: 'done' } )\n    // [\"done test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\" ], { a: 'done', b: 'processed' } )\n    // [\"done test test\", \"processed test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\", { g: \"another {silly} test\" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // [\"done test test\", \"processed test test\", Object { g=\"another not so silly test\"}]\n\n    tb.parse( { a: \"{a} test test\", b: \"{b} test test\", c: [ \"another {silly} test\" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // Object { a=\"done test test\",  b=\"processed test test\",  c=[1]}\n"
+                "\n\n    tb.parse( \"{a} test test\", { a: 'done' } )\n    // \"done test test\"\n\n    tb.parse( [ \"{a} test test\" ], { a: 'done' } )\n    // [\"done test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\" ], { a: 'done', b: 'processed' } )\n    // [\"done test test\", \"processed test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\", { g: \"another {silly} test\" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // [\"done test test\", \"processed test test\", Object { g=\"another not so silly test\"}]\n\n    tb.parse( { a: \"{a} test test\", b: \"{b} test test\", c: [ \"another {silly} test\" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // Object { a=\"done test test\",  b=\"processed test test\",  c=[ \"another not so silly test\" ] }\n"
             ],
             "class": "tb.Util"
         },

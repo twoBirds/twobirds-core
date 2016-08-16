@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.45 - 2016-08-15 */
+/*! twobirds-core - v7.2.46 - 2016-08-15 */
 
 /**
  twoBirds V7 core functionality
@@ -3494,7 +3494,7 @@ tb.extend = function( pObj ){ // any number of arguments may be given
  if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned
 
  @example
- 
+
      tb.parse( "{a} test test", { a: 'done' } )
      // "done test test"
 
@@ -3508,7 +3508,7 @@ tb.extend = function( pObj ){ // any number of arguments may be given
      // ["done test test", "processed test test", Object { g="another not so silly test"}]
 
      tb.parse( { a: "{a} test test", b: "{b} test test", c: [ "another {silly} test" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )
-     // Object { a="done test test",  b="processed test test",  c=[1]}
+     // Object { a="done test test",  b="processed test test",  c=[ "another not so silly test" ] }
 
  */
 tb.parse = function( pWhat, pParse ){
