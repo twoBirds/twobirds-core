@@ -9,14 +9,14 @@ Welcome Birdies ;-)
 
 ## Intro
 
-##### twoBirds is a 
+##### twoBirds is a ...
 
 - lightweight, 
 - component-based, 
 - event-driven / loosely coupled, 
 - native 
 
-... *JavaScript framework* that maps objects to DOM nodes.
+##### ... JavaScript framework that maps objects to DOM nodes.
 
 twoBirds strictly follows the KISS and DRY doctrines, also some of SOLID.
 
