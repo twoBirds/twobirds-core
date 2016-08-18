@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.49</em>
+            <em>API Docs for: v7.2.50</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.49 - 2016-08-16 */
+/*! twobirds-core - v7.2.50 - 2016-08-18 */
 
 /**
  twoBirds V7 core functionality
@@ -631,30 +631,20 @@ var tb = (function(){
     function _mapArrayMethod( pMethodName ){
         var method = [][pMethodName];
 
-        if ( -1 &lt; ([ &#x27;push&#x27;, &#x27;unshift&#x27; ]).indexOf( pMethodName ) ){ // force these array methods to be chainable
+        if ( -1 &lt; ([ &#x27;pop&#x27;, &#x27;push&#x27;, &#x27;unshift&#x27;, &#x27;shift&#x27;, &#x27;splice&#x27; ]).indexOf( pMethodName ) ){ // self-muting methods
             return function(){
-                method.apply( this, arguments );
+                var that = this,
+                    ret = method.apply( that, arguments );
 
-                return this.unique();
+                return ret ? ret : that;
             };
         } else {
             return function(){
-                var ret = method.apply( this, arguments ),
-                    selector;
+                var that = this,
+                    ret = method.apply( that.toArray(), arguments );
 
-                if ( !!(ret instanceof Array) ){
-                    selector = new TbSelector(&#x27;&#x27;);
-
-                    ret
-                        .forEach(
-                            function( pElement ){
-                                [].push.call( selector, pElement );
-                            }
-                        );
-
-                    selector.unique();
-
-                    return selector;
+                if ( ret instanceof Array ){
+                    return that.flush().add( ret );
                 }
 
                 return ret;
@@ -1529,10 +1519,38 @@ var tb = (function(){
             add: function( pSelector ){
 
                 var that = this,
-                    add = tb( pSelector ).toArray(), // object array to check against
-                    ret = that.toArray();
+                    add = tb( pSelector ).toArray(),
+                    element;
 
-                return tb( ret.concat( add ) );
+                while ( add.length &gt; 0 ){
+                    element = add.shift();
+                    if ( [].indexOf.call( that, element ) === -1 ){
+                        that.push( element );
+                    }
+                }
+
+                return that;
+            },
+
+            /**
+             @method flush
+             @chainable
+
+             @return {object} - emptied tb.Selector instance
+
+             flush() method
+
+             remove all elements from tb result set
+             */
+            flush: function(){
+                var that = this,
+                    pop = [].pop;
+
+                while( that.length &gt; 0 ){
+                    pop.call( that );
+                }
+
+                return that;
             }
 
         };
@@ -1676,7 +1694,7 @@ var tb = (function(){
 
          inherited from Array, see &lt;a href=&quot;https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift&quot;&gt;unshift&lt;/a&gt;
          */
-        unshift: _mapArrayMethod( &#x27;unshift&#x27; ),
+        unshift: _mapArrayMethod( &#x27;unshift&#x27; )
 
     };
 

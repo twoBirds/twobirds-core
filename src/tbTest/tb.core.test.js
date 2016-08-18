@@ -174,9 +174,9 @@ describe("tb.core.js", function() {
 
         describe(".concat()", function() {
 
-            it("tb('body').concat( tb( 'div.test-parent' ).toArray() ).length === 6", function() {
-                var a = tb('body').concat( tb( 'div.test-parent' ).toArray() );
-                expect( a.length === 6 ).toBe( true );
+            it("tb('body').concat( tb( 'div.test-parent' )[0] ).length === 2", function() {
+                var a = tb('body').concat( tb( 'div.test-parent' )[0] );
+                expect( a.length === 2 ).toBe( true );
             });
 
         });
@@ -514,14 +514,7 @@ describe("tb.core.js", function() {
 
         describe(".pop()", function() {
 
-            it("tb( 'div.test-parent' ).pop() result has .length 4 afterwards", function() {
-                var a = tb( 'div.test-parent' );
-                a.pop();
-
-                expect( a.length === 4 ).toBe( true );
-            });
-
-            it("!!tb( 'div.test-parent' ).pop() instanceof tb", function() {
+            it("tb( 'div.test-parent' ).pop() instanceof tb", function() {
                 var a = tb( 'div.test-parent' ),
                     b = a.pop();
                 expect( b instanceof tb ).toBe( true );
@@ -601,12 +594,12 @@ describe("tb.core.js", function() {
 
         describe(".set()", function() {
 
-            it("tb('body').set('answer', 42 ) instanceof tb.Selector", function() {
+            it("tb('body').set('answer', 42 )[0]['answer'] === 42", function() {
                 expect( tb('body').set('answer', 42 )[0]['answer'] === 42 ).toBe( true );
                 delete tb('body')[0]['answer'];
             });
 
-            it("tb('div').set('answer', 42 ) instanceof tb.Selector", function() {
+            it("tb('div').set('answer', 42 ) all equal 42", function() {
                 tb('div').set('answer', 42 ); // 5 elements
 
                 [].forEach.call(
@@ -622,10 +615,18 @@ describe("tb.core.js", function() {
 
         describe(".shift()", function() {
 
-            it("tb( 'div.test-parent' ).shift()[0] === tb( 'div.test-parent' )[1]", function() {
+            it("tb( 'div.test-parent' ).shift() instanceof tb", function() {
+                var a = tb( 'div.test-parent' ),
+                    b = a.shift();
+                expect( b instanceof tb ).toBe( true );
+            });
+
+            it("tb( 'div.test-parent' ).shift() : selector has .length 4 afterwards", function() {
                 var a = tb( 'div.test-parent' );
+
                 a.shift();
-                expect( a[0] === tb( 'div.test-parent' )[1] ).toBe( true );
+
+                expect( a.length === 4 ).toBe( true );
             });
 
         });
