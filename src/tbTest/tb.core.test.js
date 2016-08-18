@@ -253,6 +253,14 @@ describe("tb.core.js", function() {
 
         });
 
+        describe(".flush()", function() {
+
+            it("tb( 'div.test-parent' ).flush().length === 0", function() {
+                expect( tb( 'div.test-parent' ).flush().length === 0 ).toBe( true );
+            });
+
+        });
+
         describe(".forEach()", function() {
 
             it("forEach()", function() {
