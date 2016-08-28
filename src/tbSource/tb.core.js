@@ -10,7 +10,7 @@
 // POLYFILLS
 
 // matches polyfill
-this.Element && function(ElementPrototype) {
+this.Element && (function(ElementPrototype){
     ElementPrototype.matches = ElementPrototype.matches ||
         ElementPrototype.matchesSelector ||
         ElementPrototype.webkitMatchesSelector ||
@@ -18,20 +18,22 @@ this.Element && function(ElementPrototype) {
         function(selector) {
             var node = this,
                 nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
-            while (nodes[++i] && nodes[i] != node);
+            while (nodes[++i] && nodes[i] !== node){}
             return !!nodes[i];
-        }
-}(Element.prototype);
+        };
+})(Element.prototype); // jshint ignore:line
 
 // closest polyfill
-this.Element && function(ElementPrototype) {
+this.Element && (function(ElementPrototype){
     ElementPrototype.closest = ElementPrototype.closest ||
         function(selector) {
             var el = this;
-            while (el.matches && !el.matches(selector)) el = el.parentNode;
+            while (el.matches && !el.matches(selector)) {
+                el = el.parentNode;
+            }
             return el.matches ? el : null;
-        }
-}(Element.prototype);
+        };
+})(Element.prototype); // jshint ignore:line
 
 // twoBirds
 
@@ -91,13 +93,13 @@ tb = (function(){
             case 'string':
                 // HINT: must be a tb element for every selector of a css selector string
                 var selector = pSelector.split(' '),
-                    selector = selector.map(function(s){
+                    selector = selector.map(function(s){ // jshint ignore:line
                         if (1 < s.length){
                             return s+':not([data-tb=""])';
                         }
                         return s;
                     }),
-                    selector = selector.join(' ');
+                    selector = selector.join(' '); // jshint ignore:line
 
                 //console.log( pSelector, selector );
 
@@ -143,7 +145,7 @@ tb = (function(){
                                                 [].push.call( that, tbElement );
                                             }
                                         }
-                                    )
+                                    );
                             }
                         );
 
@@ -154,7 +156,7 @@ tb = (function(){
                             function( pKey ){
                                 [].push.call( that, pSelector.tb[ pKey ] );
                             }
-                        )
+                        );
 
                 } else if ( pSelector.constructor === Array || !!pSelector['length']
                     && !!pSelector['0'] && !(pSelector instanceof Array)
@@ -197,7 +199,7 @@ tb = (function(){
                                             [].push.call( that, tbElement );
                                         }
                                     }
-                                )
+                                );
                         }
                     );
 
@@ -209,7 +211,7 @@ tb = (function(){
     }
 
     // empty class def for temporary handler storage, needed for on(), one(), off() and trigger()
-    function Nop(){};
+    function Nop(){}
     Nop.prototype = { namespace: 'Nop' };
 
     // HINT: TbSelector (class) prototype definition after Tb prototype definition
@@ -262,8 +264,10 @@ tb = (function(){
 
                 var that = this;
 
-                for ( var i in pPrototype ) if ( pPrototype.hasOwnProperty(i) ){
-                    that[i] = pPrototype[i];
+                for ( var i in pPrototype ) {
+                    if ( pPrototype.hasOwnProperty(i) ){
+                        that[i] = pPrototype[i];
+                    }
                 }
 
             };
@@ -275,12 +279,14 @@ tb = (function(){
 
         // merge handlers from temp instance into target object
         function mergeHandlers( pSourceTb , pTargetTb ){
-            for ( var i in pSourceTb.handlers ) if ( pSourceTb.handlers.hasOwnProperty(i) ){
-                if ( !pTargetTb.handlers[i] ){
-                    pTargetTb.handlers[i] = [];
-                }
-                for ( var j = 0, l = pSourceTb.handlers[i].length; j < l; j++ ){
-                    pTargetTb.handlers[i].push( pSourceTb.handlers[i][j] ); // copy handler
+            for ( var i in pSourceTb.handlers ) {
+                if ( pSourceTb.handlers.hasOwnProperty(i) ){
+                    if ( !pTargetTb.handlers[i] ){
+                        pTargetTb.handlers[i] = [];
+                    }
+                    for ( var j = 0, l = pSourceTb.handlers[i].length; j < l; j++ ){
+                        pTargetTb.handlers[i].push( pSourceTb.handlers[i][j] ); // copy handler
+                    }
                 }
             }
         }
@@ -314,11 +320,13 @@ tb = (function(){
                             if ( !!tempInstance ){
 
                                 // copy properties from tempInstance, always shallow copy
-                                for ( var i in tempInstance ) if (
-                                    (['handlers', 'target']).indexOf(i) === -1
-                                    && tempInstance.hasOwnProperty(i)
-                                ){
-                                    thisTb[i] = tempInstance[i];
+                                for ( var i in tempInstance ) {
+                                    if (
+                                        (['handlers', 'target']).indexOf(i) === -1
+                                        && tempInstance.hasOwnProperty(i)
+                                    ){
+                                        thisTb[i] = tempInstance[i];
+                                    }
                                 }
 
                                 mergeHandlers( tempInstance, thisTb );
@@ -360,7 +368,8 @@ tb = (function(){
                         && !!arguments[2][0]
                         && !!arguments[2][0]['nodeType']
                     ){
-                        arguments[2] = arguments[2][0]; // get first element of an array-like selector return object
+                        arguments[2] = arguments[2][0]; // jshint ignore:line
+                        // get first element of an array-like selector return object
                     }
 
                     tbInstance.target = arguments[2];
@@ -395,7 +404,7 @@ tb = (function(){
                         if ( !!dataTb && !!dataTb.length && -1 === dataTb.split(' ').indexOf( tbInstance.namespace ) ){
                             tbInstance.target.setAttribute( 'data-tb', dataTb + ' ' + tbInstance.namespace );
                         } else {
-                            tbInstance.target.setAttribute( 'data-tb', tbInstance.namespace )
+                            tbInstance.target.setAttribute( 'data-tb', tbInstance.namespace );
                         }
                     }
                 }
@@ -406,11 +415,13 @@ tb = (function(){
                 } else {
                     // if there are single named event handler functions,
                     // convert them to array of functions
-                    for ( var i in tbInstance.handlers ) if ( tbInstance.handlers.hasOwnProperty(i) ){
-                        if ( typeof tbInstance.handlers[i] === 'function' ){
-                            tbInstance.handlers[i] = [ tbInstance.handlers[i] ];
-                        } else if ( !( tbInstance.handlers[i] instanceof Array ) ){
-                            delete tbInstance.handlers[i];
+                    for ( var i in tbInstance.handlers ) {
+                        if ( tbInstance.handlers.hasOwnProperty(i) ){
+                            if ( typeof tbInstance.handlers[i] === 'function' ){
+                                tbInstance.handlers[i] = [ tbInstance.handlers[i] ];
+                            } else if ( !( tbInstance.handlers[i] instanceof Array ) ){
+                                delete tbInstance.handlers[i];
+                            }
                         }
                     }
                 }
@@ -492,17 +503,23 @@ tb = (function(){
     function _mapArrayMethod( pMethodName ){
         var method = [][pMethodName];
 
-        if ( -1 < ([ 'push', 'unshift' ]).indexOf( pMethodName ) ){ // force these array methods to be chainable
+        if ( -1 < ([ 'pop', 'push', 'unshift', 'shift', 'splice' ]).indexOf( pMethodName ) ){ // self-muting methods
             return function(){
-                method.apply( this, arguments );
+                var that = this,
+                    ret = method.apply( that, arguments );
 
-                return this.unique();
+                return !!ret ? ( ret instanceof Array ? tb( ret ) : ret ) : that;
             };
         } else {
             return function(){
-                var ret = method.apply( this, arguments );
+                var that = this,
+                    ret = method.apply( that.toArray(), arguments );
 
-                return ret instanceof Array && !!ret['0'] && !!ret['0'] instanceof tb ? tb.dom( ret ).unique() : ret;
+                if ( ret instanceof Array ){
+                    return that.flush().add( ret );
+                }
+
+                return ret;
             };
         }
 
@@ -731,8 +748,8 @@ tb = (function(){
                             }
 
                         },
-                        10
-                    )
+                        0
+                    );
 
                 }
 
@@ -930,7 +947,7 @@ tb = (function(){
                                                 // push dom object to tb selector content
                                                 [].push.call( ret, pElement.tb[pKey] );
                                             }
-                                        )
+                                        );
                                 }
                             );
 
@@ -940,7 +957,7 @@ tb = (function(){
                         [].push.call( ret, that.target ); // push parent object to tb selector content
 
                         if ( !!that.target.parent()['0'] ){
-                            [].push.call( ret, that.target.parent()['0'] )
+                            [].push.call( ret, that.target.parent()['0'] );
                         }
 
                     }
@@ -985,7 +1002,9 @@ tb = (function(){
                         var tbParents = that.parents().toArray(),
                             tbParent = !!tbParents['0'] ? tbParents[0] : false;
 
-                        if ( !tbParent ) return ret; // no parent -> empty result set
+                        if ( !tbParent ) {
+                            return ret;
+                        } // no parent -> empty result set
 
                         Object
                             .keys(tbParent.target.tb)
@@ -1083,7 +1102,7 @@ tb = (function(){
 
                 var that = this,
                     ret = tb(),
-                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node or forced -> only local
+                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // jshint ignore:line
 
                 if ( that instanceof TbSelector ) {
 
@@ -1371,9 +1390,32 @@ tb = (function(){
                     ret = that.toArray();
 
                 return tb( ret.concat( add ) );
+            },
+
+            /**
+             @method flush
+             @chainable
+
+             @return {object} - mpty tb.Selector instance - for chaining
+
+             flush() method
+
+             empty current result set
+             - return empty TbSelector result set
+             */
+            flush: function(){
+
+                var that = this;
+
+                if ( that instanceof TbSelector ){
+                    while ( that.length ){
+                        that.pop();
+                    }
+                }
+                return that;
             }
 
-        }
+        };
 
     })();
 
@@ -1572,7 +1614,7 @@ tb.Event = function( pEventName, pEventData, pBubble ){
     that.data = pEventData || {};
     that.name = pEventName || '';
     that.__stopped__ = that.__immediateStopped__ = false;
-}
+};
 
 tb.Event.prototype = {
 

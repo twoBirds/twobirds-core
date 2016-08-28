@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.50 - 2016-08-18 */
+/*! twobirds-core - v7.2.51 - 2016-08-28 */
 
 tb.namespace( 'test.GrandParent' ).set(
     (function(){
@@ -64,7 +64,6 @@ tb.namespace( 'test.Parent' ).set(
 
         // Prototype
         Parent.prototype = {
-
             namespace: 'test.Parent',
 
             'tb.Require': [

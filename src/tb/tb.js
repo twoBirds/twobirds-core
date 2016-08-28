@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.50 - 2016-08-18 */
+/*! twobirds-core - v7.2.51 - 2016-08-28 */
 
 /**
  twoBirds V7 core functionality
@@ -11,40 +11,35 @@
 
 // POLYFILLS
 
-/* jshint ignore:start */
-
 // matches polyfill
 this.Element && (function(ElementPrototype){
-    Element.prototype.matches =
-        Element.prototype.matchesSelector ||
-        Element.prototype.mozMatchesSelector ||
-        Element.prototype.msMatchesSelector ||
-        Element.prototype.oMatchesSelector ||
-        Element.prototype.webkitMatchesSelector ||
-        function(s) {
-            var matches = (this.document || this.ownerDocument).querySelectorAll(s),
-                i = matches.length;
-            while (--i >= 0 && matches.item(i) !== this) {}
-            return i > -1;
-        };})(Element.prototype);
+    ElementPrototype.matches = ElementPrototype.matches ||
+        ElementPrototype.matchesSelector ||
+        ElementPrototype.webkitMatchesSelector ||
+        ElementPrototype.msMatchesSelector ||
+        function(selector) {
+            var node = this,
+                nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
+            while (nodes[++i] && nodes[i] !== node){}
+            return !!nodes[i];
+        };
+})(Element.prototype); // jshint ignore:line
 
 // closest polyfill
 this.Element && (function(ElementPrototype){
     ElementPrototype.closest = ElementPrototype.closest ||
         function(selector) {
             var el = this;
-            while (el.matches && !el.matches(selector)){
+            while (el.matches && !el.matches(selector)) {
                 el = el.parentNode;
             }
             return el.matches ? el : null;
         };
-})(Element.prototype);
-
-/* jshint ignore:end */
+})(Element.prototype); // jshint ignore:line
 
 // twoBirds
 
-var tb = (function(){
+tb = (function(){
 
     /**
      @class tb.Selector
@@ -99,16 +94,16 @@ var tb = (function(){
             // selection by dom selector string
             case 'string':
                 // HINT: must be a tb element for every selector of a css selector string
-                var selector = pSelector.split(' ');
+                var selector = pSelector.split(' '),
+                    selector = selector.map(function(s){ // jshint ignore:line
+                        if (1 < s.length){
+                            return s+':not([data-tb=""])';
+                        }
+                        return s;
+                    }),
+                    selector = selector.join(' '); // jshint ignore:line
 
-                selector = selector.map(function(s){
-                    if (1 < s.length){
-                        return s+':not([data-tb=""])';
-                    }
-                    return s;
-                });
-
-                selector = selector.join(' ');
+                //console.log( pSelector, selector );
 
                 tb.dom( selector )
                     .forEach(
@@ -158,18 +153,15 @@ var tb = (function(){
 
                 } else if ( !!pSelector['nodeType'] && !!pSelector['tb'] ){ // it is a dom node containing tb elements
                     Object
-                        .keys( pSelector['tb'] )
+                        .keys( pSelector.tb )
                         .forEach(
                             function( pKey ){
-                                [].push.call( that, pSelector['tb'][ pKey ] );
+                                [].push.call( that, pSelector.tb[ pKey ] );
                             }
                         );
 
-                } else if (
-                    pSelector.constructor === Array // a true array
-                    || !!pSelector['length']        // an array-like object
-                    && !!pSelector['0']
-                    && !(pSelector instanceof Array)
+                } else if ( pSelector.constructor === Array || !!pSelector['length']
+                    && !!pSelector['0'] && !(pSelector instanceof Array)
                 ){
                     // it is an array || array like object
                     [].forEach.call(
@@ -221,13 +213,8 @@ var tb = (function(){
     }
 
     // empty class def for temporary handler storage, needed for on(), one(), off() and trigger()
-    function Nop(){
-
-    }
-
-    Nop.prototype = {
-        namespace: 'Nop'
-    };
+    function Nop(){}
+    Nop.prototype = { namespace: 'Nop' };
 
     // HINT: TbSelector (class) prototype definition after Tb prototype definition
 
@@ -242,7 +229,7 @@ var tb = (function(){
 
      @returns {object} - the twoBirds instance you just created
 
-     1.) twoBirds CONSTRUCTOR
+     twoBirds constructor
 
      @example
 
@@ -267,25 +254,8 @@ var tb = (function(){
              anotherTbInstance             // any other object you want to put the tb instance in
          );
 
-     2.) twoBirds SELECTOR
-
-     @example
-
-         // tb() selector always returns a jQuery-like result set
-         tb( document.body )                // all tb instances residing in this DOM node
-         tb('body')                         // invokes .querySelectorAll(), but returns tB object(s) contained therein.
-         tb( app.Body )                     // get all instances of this class residing in DOM elements
-         tb( /pp.Bod/ )                     // e.g. returns the app.Body instances, if the class 'namespace' property is 'app.Body'
-
-         // both of the following return all toplevel objects in the current DOM, as expected.
-         tb( /./ )                          // any namespace matches
-         tb( '*' )                          // invoking document.querySelectorAll()
-
-     You can call chained methods both on single tB instances as well as on a selector result set ( all of them, then ).
      */
-
     function tb() {
-
         var that = this;
 
         // setup prototype chain of twoBirds instance
@@ -296,13 +266,11 @@ var tb = (function(){
 
                 var that = this;
 
-                Object
-                    .keys( pPrototype )
-                    .forEach(
-                        function( pKey ){
-                            that[pKey] = pPrototype[pKey];
-                        }
-                    );
+                for ( var i in pPrototype ) {
+                    if ( pPrototype.hasOwnProperty(i) ){
+                        that[i] = pPrototype[i];
+                    }
+                }
 
             };
 
@@ -313,18 +281,16 @@ var tb = (function(){
 
         // merge handlers from temp instance into target object
         function mergeHandlers( pSourceTb , pTargetTb ){
-            Object
-                .keys( pSourceTb.handlers )
-                .forEach(
-                    function( pHandler ){
-                        if ( !pTargetTb.handlers[pHandler] ){
-                            pTargetTb.handlers[pHandler] = [];
-                        }
-                        for ( var j = 0, l = pSourceTb.handlers[pHandler].length; j < l; j++ ){
-                            pTargetTb.handlers[pHandler].push( pSourceTb.handlers[pHandler][j] ); // copy handler
-                        }
+            for ( var i in pSourceTb.handlers ) {
+                if ( pSourceTb.handlers.hasOwnProperty(i) ){
+                    if ( !pTargetTb.handlers[i] ){
+                        pTargetTb.handlers[i] = [];
                     }
-                );
+                    for ( var j = 0, l = pSourceTb.handlers[i].length; j < l; j++ ){
+                        pTargetTb.handlers[i].push( pSourceTb.handlers[i][j] ); // copy handler
+                    }
+                }
+            }
         }
 
         // instanciate tb instance OR return tb.Selector result set
@@ -356,15 +322,14 @@ var tb = (function(){
                             if ( !!tempInstance ){
 
                                 // copy properties from tempInstance, always shallow copy
-                                Object
-                                    .keys( tempInstance )
-                                    .forEach(
-                                        function( pKey ){
-                                            if ( (['handlers', 'target']).indexOf(pKey) === -1 ){
-                                                thisTb[pKey] = tempInstance[pKey];
-                                            }
-                                        }
-                                    );
+                                for ( var i in tempInstance ) {
+                                    if (
+                                        (['handlers', 'target']).indexOf(i) === -1
+                                        && tempInstance.hasOwnProperty(i)
+                                    ){
+                                        thisTb[i] = tempInstance[i];
+                                    }
+                                }
 
                                 mergeHandlers( tempInstance, thisTb );
 
@@ -401,16 +366,15 @@ var tb = (function(){
                 // prepare .target property of tb object
                 tbInstance.target = arguments[2] || false; // preset
                 if ( !!arguments[2] ){
-                    var target = arguments[2];
-
                     if ( !arguments[2]['nodeType']
                         && !!arguments[2][0]
                         && !!arguments[2][0]['nodeType']
                     ){
-                        target = arguments[2][0]; // get first element of an array-like selector return object
+                        arguments[2] = arguments[2][0]; // jshint ignore:line
+                        // get first element of an array-like selector return object
                     }
 
-                    tbInstance.target = target;
+                    tbInstance.target = arguments[2];
                 } else {
                     tbInstance.target = null;
                 }
@@ -453,17 +417,15 @@ var tb = (function(){
                 } else {
                     // if there are single named event handler functions,
                     // convert them to array of functions
-                    Object
-                        .keys(tbInstance.handlers)
-                        .forEach(
-                            function( pKey ){
-                                if ( typeof tbInstance.handlers[pKey] === 'function' ){
-                                    tbInstance.handlers[pKey] = [ tbInstance.handlers[pKey] ];
-                                } else if ( !( tbInstance.handlers[pKey] instanceof Array ) ){
-                                    delete tbInstance.handlers[pKey];
-                                }
+                    for ( var i in tbInstance.handlers ) {
+                        if ( tbInstance.handlers.hasOwnProperty(i) ){
+                            if ( typeof tbInstance.handlers[i] === 'function' ){
+                                tbInstance.handlers[i] = [ tbInstance.handlers[i] ];
+                            } else if ( !( tbInstance.handlers[i] instanceof Array ) ){
+                                delete tbInstance.handlers[i];
                             }
-                        );
+                        }
+                    }
                 }
 
                 if ( !( tbInstance instanceof Nop ) ){
@@ -548,7 +510,7 @@ var tb = (function(){
                 var that = this,
                     ret = method.apply( that, arguments );
 
-                return ret ? ret : that;
+                return !!ret ? ( ret instanceof Array ? tb( ret ) : ret ) : that;
             };
         } else {
             return function(){
@@ -788,7 +750,7 @@ var tb = (function(){
                             }
 
                         },
-                        10
+                        0
                     );
 
                 }
@@ -1043,8 +1005,8 @@ var tb = (function(){
                             tbParent = !!tbParents['0'] ? tbParents[0] : false;
 
                         if ( !tbParent ) {
-                            return ret;  // no parent -> empty result set
-                        }
+                            return ret;
+                        } // no parent -> empty result set
 
                         Object
                             .keys(tbParent.target.tb)
@@ -1141,9 +1103,8 @@ var tb = (function(){
             children: function( pSelector, pLocalOnly ){
 
                 var that = this,
-                    ret = tb();
-
-                pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // if node or forced -> only local
+                    ret = tb(),
+                    pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // jshint ignore:line
 
                 if ( that instanceof TbSelector ) {
 
@@ -1176,15 +1137,11 @@ var tb = (function(){
 
                 } else if ( !!pLocalOnly ){
 
-                    Object
-                        .keys( that )
-                        .forEach(
-                            function( pKey ){
-                                if ( that[pKey] instanceof tb ){
-                                    [].push.call( ret, that[pKey] ); // push tb object to tb selector content
-                                }
-                            }
-                        );
+                    for ( var i in that ){
+                        if ( that.hasOwnProperty(i) && that[i] instanceof tb ){
+                            [].push.call( ret, that[i] ); // push tb object to tb selector content
+                        }
+                    }
 
                 }
 
@@ -1431,37 +1388,32 @@ var tb = (function(){
             add: function( pSelector ){
 
                 var that = this,
-                    add = tb( pSelector ).toArray(),
-                    element;
+                    add = tb( pSelector ).toArray(), // object array to check against
+                    ret = that.toArray();
 
-                while ( add.length > 0 ){
-                    element = add.shift();
-                    if ( [].indexOf.call( that, element ) === -1 ){
-                        that.push( element );
-                    }
-                }
-
-                return that;
+                return tb( ret.concat( add ) );
             },
 
             /**
              @method flush
              @chainable
 
-             @return {object} - emptied tb.Selector instance
+             @return {object} - mpty tb.Selector instance - for chaining
 
              flush() method
 
-             remove all elements from tb result set
+             empty current result set
+             - return empty TbSelector result set
              */
             flush: function(){
-                var that = this,
-                    pop = [].pop;
 
-                while( that.length > 0 ){
-                    pop.call( that );
+                var that = this;
+
+                if ( that instanceof TbSelector ){
+                    while ( that.length ){
+                        that.pop();
+                    }
                 }
-
                 return that;
             }
 
@@ -1606,7 +1558,7 @@ var tb = (function(){
 
          inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift">unshift</a>
          */
-        unshift: _mapArrayMethod( 'unshift' )
+        unshift: _mapArrayMethod( 'unshift' ),
 
     };
 
@@ -1696,7 +1648,7 @@ tb.Event.prototype = {
 };
 
 // make it a node module
-if (typeof module !== 'undefined' && !!module['exports']) {
+if (typeof module !== 'undefined' && module.exports) {
     module.exports.tb = tb;
 } else {
     /**
