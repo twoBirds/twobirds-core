@@ -1,30 +1,40 @@
 tb.namespace( 'test.GrandParent' ).set(
     (function(){
+        
+        class GrandParent {
 
-        // Constructor
-        function GrandParent(){
-            var that = this;
+            constructor(pConfig) {
+                var that = this;
 
-            that.handlers = {
-                init: init,
-                test: test
-            };
+                that.handlers = {
+                    init,
+                    test
+                };
+            }
+
+            // static
+
+            // prototype
 
         }
 
-        // Prototype
-        GrandParent.prototype = {
+        // proto properties and methods
+        tb.extend(
+            GrandParent.prototype,
+            {
+                namespace: 'test.GrandParent',
 
-            namespace: 'test.GrandParent',
+                'tb.Require': [
+                    '/test/GrandParent.css'
+                ],
 
-            'tb.Require': [
-                '/test/GrandParent.css' // only to test whether double loading is avoided
-            ]
-        };
+                test: test
+            }
+        );
 
         return GrandParent;
 
-        // Private Methods
+        // private methods
         function init(){
             var that = this;
 

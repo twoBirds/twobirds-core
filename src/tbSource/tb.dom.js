@@ -1053,15 +1053,15 @@ if (typeof module === 'undefined' ){
 
                         classes = classes.trim();
 
+                        if ( classes.indexOf(' ') > -1 ){
+                            classes = classes.split(' ');
+                        } else {
+                            classes = [ classes ];
+                        }
+
                         pClasses.forEach(
                             function( pClass ){
                                 if ( classes ){
-                                    if ( classes.indexOf(' ') > -1 ){
-                                        classes = classes.split(' ');
-                                    } else {
-                                        classes = [ classes ];
-                                    }
-
                                     pClassName.split(' ')
                                         .forEach(
                                             function( pRemoveClass ){

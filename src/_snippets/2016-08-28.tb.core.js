@@ -1510,10 +1510,10 @@ var tb = (function(){
             var that = this;
 
             //console.log( 'proxy get:', pKey, that );
-            if ( pKey.substr(0,1) !== '_' && pObject.hasOwnProperty( pKey ) ) {
-                return pObject['pKey'];
+            if ( pKey.substr(0,1) !== '_' ) { // it is not a private var but has made it down to here
+                return undefined;
             } else if ( that.__.hasOwnProperty( pKey ) ){
-                return that.__['pKey'];
+                return that.__.pKey;
             } else if ( pKey === '__' ){
                 return that.__;
             }
@@ -1526,7 +1526,7 @@ var tb = (function(){
             that.__ = that.__ || {};
 
             //console.log( 'proxy set:', pKey, that );
-            if ( pKey.substr(0,1) === '_' && that.__.hasOwnProperty( pKey )){
+            if ( pKey.substr(0,1) === '_' ){
                 that.__[pKey] = pValue;
             } else {
                 pObject[pKey] = pValue;

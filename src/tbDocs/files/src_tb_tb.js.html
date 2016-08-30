@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.51</em>
+            <em>API Docs for: v7.2.53</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.51 - 2016-08-28 */
+/*! twobirds-core - v7.2.53 - 2016-08-31 */
 
 /**
  twoBirds V7 core functionality
@@ -346,27 +346,6 @@ tb = (function(){
     function tb() {
         var that = this;
 
-        // setup prototype chain of twoBirds instance
-        function makePrototype( pPrototype ){
-
-            // make custom class constructor
-            var f = function ( pPrototype ){
-
-                var that = this;
-
-                for ( var i in pPrototype ) {
-                    if ( pPrototype.hasOwnProperty(i) ){
-                        that[i] = pPrototype[i];
-                    }
-                }
-
-            };
-
-            f.prototype = tb.prototype;
-
-            return new f( pPrototype );
-        }
-
         // merge handlers from temp instance into target object
         function mergeHandlers( pSourceTb , pTargetTb ){
             for ( var i in pSourceTb.handlers ) {
@@ -435,8 +414,8 @@ tb = (function(){
 
                 // prepare
                 if ( !tbClass.prototype.__tb__ ){
-                    tbClass.prototype.__tb__ = &#x27;V7&#x27;;
-                    tbClass.prototype = makePrototype( tbClass.prototype, tbClass );
+                    Object.defineProperty( tbClass.prototype, &#x27;__tb__&#x27;, { value: &#x27;V7&#x27;, enumerable: true } );
+                    Object.setPrototypeOf( tbClass.prototype, tb.prototype );
                 }
 
                 // make a new instance of given constructor
@@ -2825,15 +2804,15 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                         classes = classes.trim();
 
+                        if ( classes.indexOf(&#x27; &#x27;) &gt; -1 ){
+                            classes = classes.split(&#x27; &#x27;);
+                        } else {
+                            classes = [ classes ];
+                        }
+
                         pClasses.forEach(
                             function( pClass ){
                                 if ( classes ){
-                                    if ( classes.indexOf(&#x27; &#x27;) &gt; -1 ){
-                                        classes = classes.split(&#x27; &#x27;);
-                                    } else {
-                                        classes = [ classes ];
-                                    }
-
                                     pClassName.split(&#x27; &#x27;)
                                         .forEach(
                                             function( pRemoveClass ){

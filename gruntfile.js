@@ -136,6 +136,7 @@ module.exports = function(grunt) {
 
         jshint: {
             options: {
+                esnext: true,
                 force: true,
                 curly: true,
                 eqeqeq: true,

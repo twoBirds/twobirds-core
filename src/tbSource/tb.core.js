@@ -256,27 +256,6 @@ tb = (function(){
     function tb() {
         var that = this;
 
-        // setup prototype chain of twoBirds instance
-        function makePrototype( pPrototype ){
-
-            // make custom class constructor
-            var f = function ( pPrototype ){
-
-                var that = this;
-
-                for ( var i in pPrototype ) {
-                    if ( pPrototype.hasOwnProperty(i) ){
-                        that[i] = pPrototype[i];
-                    }
-                }
-
-            };
-
-            f.prototype = tb.prototype;
-
-            return new f( pPrototype );
-        }
-
         // merge handlers from temp instance into target object
         function mergeHandlers( pSourceTb , pTargetTb ){
             for ( var i in pSourceTb.handlers ) {
@@ -345,8 +324,8 @@ tb = (function(){
 
                 // prepare
                 if ( !tbClass.prototype.__tb__ ){
-                    tbClass.prototype.__tb__ = 'V7';
-                    tbClass.prototype = makePrototype( tbClass.prototype, tbClass );
+                    Object.defineProperty( tbClass.prototype, '__tb__', { value: 'V7', enumerable: true } );
+                    Object.setPrototypeOf( tbClass.prototype, tb.prototype );
                 }
 
                 // make a new instance of given constructor
