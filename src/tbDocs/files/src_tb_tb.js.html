@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.2.53</em>
+            <em>API Docs for: v7.3.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.2.53 - 2016-08-31 */
+/*! twobirds-core - v7.3.1 - 2016-09-03 */
 
 /**
  twoBirds V7 core functionality
@@ -2062,6 +2062,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                 children: children,
                 descendants: descendants,
                 empty: empty,
+                hasClass: hasClass,
                 hide: hide,
                 html: html,
                 insertBefore: insertBefore,
@@ -2255,6 +2256,11 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                 } else { // key/value pair expected
 
+                    // if no arguments, return attribute object
+                    if (!arguments.length) {
+                        return that[0].attributes;
+                    }
+
                     // if no value is given and there are elements, return attribute value of first in list
                     if (!pValue &amp;&amp; that.length &gt; 0) {
                         return that[0].getAttribute(pKey);
@@ -2402,6 +2408,21 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                 return tb.dom(result);
 
+            }
+
+            /**
+             @method hasClass
+
+             @return {boolean} - true if class in className
+             */
+            function hasClass( pClass ) {
+                var that = this,
+                    node = !!that[0] ? that[0] : false;
+
+                if ( node ){
+                     return node.className.split( &#x27; &#x27; ).indexOf( pClass ) &gt; -1;
+                }
+                return;
             }
 
             /**

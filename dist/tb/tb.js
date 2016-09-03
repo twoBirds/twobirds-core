@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.2.53 - 2016-08-31 */
+/*! twobirds-core - v7.3.1 - 2016-09-03 */
 
 /**
  twoBirds V7 core functionality
@@ -1974,6 +1974,7 @@ if (typeof module === 'undefined' ){
                 children: children,
                 descendants: descendants,
                 empty: empty,
+                hasClass: hasClass,
                 hide: hide,
                 html: html,
                 insertBefore: insertBefore,
@@ -2167,6 +2168,11 @@ if (typeof module === 'undefined' ){
 
                 } else { // key/value pair expected
 
+                    // if no arguments, return attribute object
+                    if (!arguments.length) {
+                        return that[0].attributes;
+                    }
+
                     // if no value is given and there are elements, return attribute value of first in list
                     if (!pValue && that.length > 0) {
                         return that[0].getAttribute(pKey);
@@ -2314,6 +2320,21 @@ if (typeof module === 'undefined' ){
 
                 return tb.dom(result);
 
+            }
+
+            /**
+             @method hasClass
+
+             @return {boolean} - true if class in className
+             */
+            function hasClass( pClass ) {
+                var that = this,
+                    node = !!that[0] ? that[0] : false;
+
+                if ( node ){
+                     return node.className.split( ' ' ).indexOf( pClass ) > -1;
+                }
+                return;
             }
 
             /**

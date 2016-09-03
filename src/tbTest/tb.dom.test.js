@@ -309,6 +309,20 @@ describe("tb.dom() selector tests", function() {
 
         });
 
+        describe(".hasClass()", function() {
+
+            it("hasClass() true", function() {
+                var a = tb.dom( 'body' ).addClass('test');
+                expect( tb.dom( 'body' ).hasClass( 'test' ) === true ).toBe( true );
+            });
+
+            it("hasClass() false", function() {
+                var a = tb.dom( 'body' ).removeClass('test');
+                expect( tb.dom( 'body' ).hasClass( 'test' ) === false ).toBe( true );
+            });
+
+        });
+
         describe(".hide() / .show()", function() {
 
             it("hide()", function() {
