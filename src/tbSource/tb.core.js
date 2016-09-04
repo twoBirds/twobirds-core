@@ -1575,21 +1575,21 @@ tb = (function(){
         return tb.dom( result );
     };
 
-    tb.extend = function( pMethodName, pFunction ){
-        var p = tb.constructor.prototype;
-
-        if ( !p[ pMethodName ] ){
-            p[ pMethodName ] = pFunction;
-            console.log( 'extend:', pMethodName, p );
-        } else {
-            console.warn( 'Cannot overload existing tb method:', pMethodName );
-        }
-
-    };
-
     return tb;
 
 })();
+
+tb.plugin = function( pMethodName, pFunction ){
+    var p = tb.constructor.prototype;
+
+    if ( !p[ pMethodName ] ){
+        p[ pMethodName ] = pFunction;
+        console.log( 'extend:', pMethodName, p );
+    } else {
+        console.warn( 'Cannot overload existing tb method:', pMethodName );
+    }
+
+};
 
 
 /**
