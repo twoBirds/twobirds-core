@@ -1584,7 +1584,7 @@ tb = (function(){
 
         if ( !p[ pMethodName ] ){
             p[ pMethodName ] = pFunction;
-            console.log( 'plugin:', pMethodName, p );
+            //console.log( 'plugin:', pMethodName, p );
         } else {
             console.warn( 'Cannot overload existing tb method:', pMethodName );
         }
