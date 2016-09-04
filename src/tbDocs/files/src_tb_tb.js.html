@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.2</em>
+            <em>API Docs for: v7.3.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.2 - 2016-09-04 */
+/*! twobirds-core - v7.3.4 - 2016-09-04 */
 
 /**
  twoBirds V7 core functionality
@@ -98,8 +98,6 @@
  */
 
 // temporary vars
-
-var internaltb;
 
 // POLYFILLS
 
@@ -500,7 +498,7 @@ tb = (function(){
                 }
 
                 if ( !( tbInstance instanceof Nop ) ){
-                    
+
                     // trigger init directly if no requirement array
                     if ( !tbInstance[&#x27;tb.Require&#x27;] ) {
                         tbInstance.trigger( &#x27;init&#x27; );
@@ -528,8 +526,6 @@ tb = (function(){
         }
 
     }
-
-    internaltb = tb;
 
     tb.Selector = TbSelector; // make official, e.g. for events
 
@@ -1669,21 +1665,19 @@ tb = (function(){
         return tb.dom( result );
     };
 
+    tb.extend = function( pMethodName, pFunction ){
+
+        if ( !tb.prototype[ pMethodName ] ){
+            tb.prototype[ pMethodName ] = pFunction;
+        } else {
+            console.warn( &#x27;Cannot overload existing tb method:&#x27;, pMethodName );
+        }
+
+    };
+    
     return tb;
 
 })();
-
-tb.extend = function( pMethodName, pFunction ){
-
-    if ( !internaltb.prototype[ pMethodName ] ){
-        internaltb.prototype[ pMethodName ] = pFunction;
-    } else {
-        console.warn( &#x27;Cannot overload existing tb method:&#x27;, pMethodName );
-    }
-
-};
-
-delete internaltb; // jshint ignore:line
 
 
 /**

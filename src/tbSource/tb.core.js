@@ -9,8 +9,6 @@
 
 // temporary vars
 
-var internaltb;
-
 // POLYFILLS
 
 // matches polyfill
@@ -410,7 +408,7 @@ tb = (function(){
                 }
 
                 if ( !( tbInstance instanceof Nop ) ){
-                    
+
                     // trigger init directly if no requirement array
                     if ( !tbInstance['tb.Require'] ) {
                         tbInstance.trigger( 'init' );
@@ -438,8 +436,6 @@ tb = (function(){
         }
 
     }
-
-    internaltb = tb;
 
     tb.Selector = TbSelector; // make official, e.g. for events
 
@@ -1579,21 +1575,19 @@ tb = (function(){
         return tb.dom( result );
     };
 
+    tb.extend = function( pMethodName, pFunction ){
+
+        if ( !tb.prototype[ pMethodName ] ){
+            tb.prototype[ pMethodName ] = pFunction;
+        } else {
+            console.warn( 'Cannot overload existing tb method:', pMethodName );
+        }
+
+    };
+    
     return tb;
 
 })();
-
-tb.extend = function( pMethodName, pFunction ){
-
-    if ( !internaltb.prototype[ pMethodName ] ){
-        internaltb.prototype[ pMethodName ] = pFunction;
-    } else {
-        console.warn( 'Cannot overload existing tb method:', pMethodName );
-    }
-
-};
-
-delete internaltb; // jshint ignore:line
 
 
 /**
