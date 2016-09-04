@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.1 - 2016-09-03 */
+/*! twobirds-core - v7.3.2 - 2016-09-04 */
 
 /**
  twoBirds V7 core functionality
@@ -8,6 +8,10 @@
  @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
 
  */
+
+// temporary vars
+
+var internaltb;
 
 // POLYFILLS
 
@@ -437,6 +441,8 @@ tb = (function(){
 
     }
 
+    internaltb = tb;
+
     tb.Selector = TbSelector; // make official, e.g. for events
 
     /**
@@ -527,8 +533,8 @@ tb = (function(){
 
              @example
 
-                var a = new tb(...); // create a tB instance
-                a.set( 'x': 42 );
+             var a = new tb(...); // create a tB instance
+             a.set( 'x': 42 );
 
              */
             set: function( pKey, pValue ){
@@ -1578,6 +1584,19 @@ tb = (function(){
     return tb;
 
 })();
+
+tb.extend = function( pMethodName, pFunction ){
+
+    if ( !internaltb.prototype[ pMethodName ] ){
+        internaltb.prototype[ pMethodName ] = pFunction;
+    } else {
+        console.warn( 'Cannot overload existing tb method:', pMethodName );
+    }
+
+};
+
+delete internaltb; // jshint ignore:line
+
 
 /**
  @class tb.Event

@@ -7,6 +7,10 @@
 
  */
 
+// temporary vars
+
+var internaltb;
+
 // POLYFILLS
 
 // matches polyfill
@@ -435,6 +439,8 @@ tb = (function(){
 
     }
 
+    internaltb = tb;
+
     tb.Selector = TbSelector; // make official, e.g. for events
 
     /**
@@ -525,8 +531,8 @@ tb = (function(){
 
              @example
 
-                var a = new tb(...); // create a tB instance
-                a.set( 'x': 42 );
+             var a = new tb(...); // create a tB instance
+             a.set( 'x': 42 );
 
              */
             set: function( pKey, pValue ){
@@ -1576,6 +1582,19 @@ tb = (function(){
     return tb;
 
 })();
+
+tb.extend = function( pMethodName, pFunction ){
+
+    if ( !internaltb.prototype[ pMethodName ] ){
+        internaltb.prototype[ pMethodName ] = pFunction;
+    } else {
+        console.warn( 'Cannot overload existing tb method:', pMethodName );
+    }
+
+};
+
+delete internaltb; // jshint ignore:line
+
 
 /**
  @class tb.Event
