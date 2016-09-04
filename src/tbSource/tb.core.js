@@ -41,6 +41,8 @@ this.Element && (function(ElementPrototype){
 
 tb = (function(){
 
+    var internaltb;
+
     /**
      @class tb.Selector
      @constructor
@@ -436,6 +438,8 @@ tb = (function(){
         }
 
     }
+
+    internaltb = tb;
 
     tb.Selector = TbSelector; // make official, e.g. for events
 
@@ -1575,21 +1579,21 @@ tb = (function(){
         return tb.dom( result );
     };
 
+    tb.plugin = function( pMethodName, pFunction ){
+        var p = internaltb.prototype;
+
+        if ( !p[ pMethodName ] ){
+            p[ pMethodName ] = pFunction;
+            console.log( 'plugin:', pMethodName, p );
+        } else {
+            console.warn( 'Cannot overload existing tb method:', pMethodName );
+        }
+
+    };
+
     return tb;
 
 })();
-
-tb.plugin = function( pMethodName, pFunction ){
-    var p = tb.constructor.prototype;
-
-    if ( !p[ pMethodName ] ){
-        p[ pMethodName ] = pFunction;
-        console.log( 'extend:', pMethodName, p );
-    } else {
-        console.warn( 'Cannot overload existing tb method:', pMethodName );
-    }
-
-};
 
 
 /**

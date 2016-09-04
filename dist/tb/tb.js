@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.5 - 2016-09-04 */
+/*! twobirds-core - v7.3.7 - 2016-09-04 */
 
 /**
  twoBirds V7 core functionality
@@ -42,6 +42,8 @@ this.Element && (function(ElementPrototype){
 // twoBirds
 
 tb = (function(){
+
+    var internaltb;
 
     /**
      @class tb.Selector
@@ -438,6 +440,8 @@ tb = (function(){
         }
 
     }
+
+    internaltb = tb;
 
     tb.Selector = TbSelector; // make official, e.g. for events
 
@@ -1577,12 +1581,12 @@ tb = (function(){
         return tb.dom( result );
     };
 
-    tb.extend = function( pMethodName, pFunction ){
-        var p = tb.constructor.prototype;
+    tb.plugin = function( pMethodName, pFunction ){
+        var p = internaltb.prototype;
 
         if ( !p[ pMethodName ] ){
             p[ pMethodName ] = pFunction;
-            console.log( 'extend:', pMethodName, p );
+            console.log( 'plugin:', pMethodName, p );
         } else {
             console.warn( 'Cannot overload existing tb method:', pMethodName );
         }
