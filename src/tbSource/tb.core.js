@@ -1576,15 +1576,17 @@ tb = (function(){
     };
 
     tb.extend = function( pMethodName, pFunction ){
+        var p = tb.constructor.prototype;
 
-        if ( !tb.prototype[ pMethodName ] ){
-            tb.prototype[ pMethodName ] = pFunction;
+        if ( !p[ pMethodName ] ){
+            p[ pMethodName ] = pFunction;
+            console.log( 'extend:', pMethodName, p );
         } else {
             console.warn( 'Cannot overload existing tb method:', pMethodName );
         }
 
     };
-    
+
     return tb;
 
 })();

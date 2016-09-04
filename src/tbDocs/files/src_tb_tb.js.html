@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.4</em>
+            <em>API Docs for: v7.3.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.4 - 2016-09-04 */
+/*! twobirds-core - v7.3.5 - 2016-09-04 */
 
 /**
  twoBirds V7 core functionality
@@ -1666,15 +1666,17 @@ tb = (function(){
     };
 
     tb.extend = function( pMethodName, pFunction ){
+        var p = tb.constructor.prototype;
 
-        if ( !tb.prototype[ pMethodName ] ){
-            tb.prototype[ pMethodName ] = pFunction;
+        if ( !p[ pMethodName ] ){
+            p[ pMethodName ] = pFunction;
+            console.log( &#x27;extend:&#x27;, pMethodName, p );
         } else {
             console.warn( &#x27;Cannot overload existing tb method:&#x27;, pMethodName );
         }
 
     };
-    
+
     return tb;
 
 })();

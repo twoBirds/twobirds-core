@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.4 - 2016-09-04 */
+/*! twobirds-core - v7.3.5 - 2016-09-04 */
 
 /**
  twoBirds V7 core functionality
@@ -1578,15 +1578,17 @@ tb = (function(){
     };
 
     tb.extend = function( pMethodName, pFunction ){
+        var p = tb.constructor.prototype;
 
-        if ( !tb.prototype[ pMethodName ] ){
-            tb.prototype[ pMethodName ] = pFunction;
+        if ( !p[ pMethodName ] ){
+            p[ pMethodName ] = pFunction;
+            console.log( 'extend:', pMethodName, p );
         } else {
             console.warn( 'Cannot overload existing tb method:', pMethodName );
         }
 
     };
-    
+
     return tb;
 
 })();
