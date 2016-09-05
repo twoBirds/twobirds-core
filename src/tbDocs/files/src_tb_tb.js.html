@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.9</em>
+            <em>API Docs for: v7.3.10</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.9 - 2016-09-05 */
+/*! twobirds-core - v7.3.10 - 2016-09-05 */
 
 /**
  twoBirds V7 core functionality
@@ -3413,7 +3413,7 @@ tb.namespace = (function(){
 
         if ( namespaceArray.length &lt; 2 ){
 
-            if( that.forceCreation &amp;&amp; that.value ){ // if value is present it is called with set()
+            if( that.forceCreation &amp;&amp; that.value !== undefined ){ // if value is present it is called with set()
                 o[ namespaceArray[0] ] = that.value;
             }
             return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
