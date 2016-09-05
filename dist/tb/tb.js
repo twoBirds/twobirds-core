@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.10 - 2016-09-05 */
+/*! twobirds-core - v7.3.12 - 2016-09-05 */
 
 /**
  twoBirds V7 core functionality
@@ -3325,7 +3325,7 @@ tb.namespace = (function(){
 
         if ( namespaceArray.length < 2 ){
 
-            if( that.forceCreation && that.value !== undefined ){ // if value is present it is called with set()
+            if( that.forceCreation && typeof that.value !== 'undefined' ){ // if value is present it is called with set()
                 o[ namespaceArray[0] ] = that.value;
             }
             return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
@@ -3599,7 +3599,8 @@ tb.parse = function( pWhat, pParse ){
                 .forEach(
                     function (pPropname) {
                         var propname = pPropname.substr(1, pPropname.length - 2),
-                            propValue = tb.namespace(propname, pParse).get() || propname + ' not found!';
+                            value = tb.namespace( propname, pParse ).get(),
+                            propValue = typeof value === 'undefined' ? propname + ' not found!' : value;
 
                         pWhat = pWhat.replace( pPropname, propValue );
                     }
