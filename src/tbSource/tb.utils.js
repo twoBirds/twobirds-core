@@ -215,7 +215,7 @@ tb.namespace = (function(){
 
         if ( namespaceArray.length < 2 ){
 
-            if( that.forceCreation && that.value ){ // if value is present it is called with set()
+            if( that.forceCreation && that.value !== undefined ){ // if value is present it is called with set()
                 o[ namespaceArray[0] ] = that.value;
             }
             return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
