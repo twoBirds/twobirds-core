@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.7 - 2016-09-04 */
+/*! twobirds-core - v7.3.9 - 2016-09-05 */
 
 /**
  twoBirds V7 core functionality
@@ -1586,7 +1586,7 @@ tb = (function(){
 
         if ( !p[ pMethodName ] ){
             p[ pMethodName ] = pFunction;
-            console.log( 'plugin:', pMethodName, p );
+            //console.log( 'plugin:', pMethodName, p );
         } else {
             console.warn( 'Cannot overload existing tb method:', pMethodName );
         }
@@ -3195,7 +3195,7 @@ tb.observable = function( pStartValue ){
         }
 
         if ( typeof p1 !== 'undefined' ){
-            if( typeof observedValue === 'object' ) {
+            if( observedValue.constructor === Object ) {
                 if ( typeof p1 === 'string' ) {
                     if (typeof p2 !== 'undefined') {
                         // value has changed, p1 must be key or namespace ( key1.key2 etc ) for object property

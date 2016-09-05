@@ -85,7 +85,7 @@ tb.observable = function( pStartValue ){
         }
 
         if ( typeof p1 !== 'undefined' ){
-            if( typeof observedValue === 'object' ) {
+            if( observedValue.constructor === Object ) {
                 if ( typeof p1 === 'string' ) {
                     if (typeof p2 !== 'undefined') {
                         // value has changed, p1 must be key or namespace ( key1.key2 etc ) for object property
