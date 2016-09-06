@@ -1313,7 +1313,7 @@ if (typeof module === 'undefined' ){
                                         } else { // getter
                                             console.log( 'radio:', pRadio, pRadio.checked );
 
-                                            if ( pRadio.checked ){
+                                            if ( pRadio.checked === true ){
                                                 result = that.value;
                                             }
                                         }
