@@ -133,7 +133,7 @@ if (typeof module === 'undefined' ){
                             .split( ',' )
                             .forEach(
                                 function forEachTbDomSelector( pThisSelector ){
-                                    nodeList = domNode.querySelectorAll(pThisSelector);
+                                    nodeList = domNode.querySelectorAll(pThisSelector.trim());
                                     if (!!nodeList['0']) {
                                         [].forEach.call(
                                             nodeList,
@@ -1404,9 +1404,7 @@ if (typeof module === 'undefined' ){
                     return ret;
                 }
 
-                // console.log( 'tb.Dom.values() form:', formNode );
-
-                tb.dom( 'input, select, textarea', formNode )
+                tb.dom( 'input,select,textarea', formNode )
                     .forEach(
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( 'name' );

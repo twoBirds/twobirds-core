@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.16 - 2016-09-06 */
+/*! twobirds-core - v7.3.19 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -1815,7 +1815,7 @@ if (typeof module === 'undefined' ){
                             .split( ',' )
                             .forEach(
                                 function forEachTbDomSelector( pThisSelector ){
-                                    nodeList = domNode.querySelectorAll(pThisSelector);
+                                    nodeList = domNode.querySelectorAll(pThisSelector.trim());
                                     if (!!nodeList['0']) {
                                         [].forEach.call(
                                             nodeList,
@@ -3075,21 +3075,23 @@ if (typeof module === 'undefined' ){
              */
             function values( pValues ) {
                 var that = this,
-                    node,
                     values = pValues || {},
+                    formNode,
                     ret = {},
                     value;
 
-                if ( that.tagName !== 'FORM' || !that[0] ) { // not a form or no inputs
+                formNode = that[0] || undefined;
+
+                if ( !formNode || formNode.tagName !== 'FORM' ) { // not a form or no inputs
                     return ret;
                 }
 
-                tb.dom( 'input, select, textarea', that.target )
+                tb.dom( 'input,select,textarea', formNode )
                     .forEach(
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( 'name' );
 
-                            console.log( 'tb.Dom.values() input:', pInput );
+                            // console.log( 'tb.Dom.values() input:', pInput );
                             if ( !!pValues && typeof values[name] !== 'undefined' ){
                                 value = !!values[name] ? values[name] : '';
                                 tb.dom( pInput ).val( value );
@@ -3099,7 +3101,7 @@ if (typeof module === 'undefined' ){
                         }
                     );
 
-                console.log( 'tb.Dom.values() ret:', ret );
+                //console.log( 'tb.Dom.values() ret:', ret );
 
                 return ret;
             }
