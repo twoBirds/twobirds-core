@@ -1245,21 +1245,23 @@ if (typeof module === 'undefined' ){
 
                             ret = [];
 
-                            tb.dom( 'option[selected]', that)
+                            tb.dom( 'option', that)
                                 .forEach(
                                     function( pThisSelectedOption ){
-                                        if ( !pThisSelectedOption.disabled
-                                            && ( !pThisSelectedOption.parentNode.disabled
-                                            || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
-                                        ){
-                                            var value = pThisSelectedOption.value;
+                                        if ( pThisSelectedOption.selected ){
+                                            if ( !pThisSelectedOption.disabled
+                                                && ( !pThisSelectedOption.parentNode.disabled
+                                                || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
+                                            ){
+                                                var value = pThisSelectedOption.value;
 
-                                            if ( !multiSelect ) {
-                                                return value;
-                                            }
+                                                if ( !multiSelect ) {
+                                                    return value;
+                                                }
 
-                                            ret.push( value );
-                                        }                                    }
+                                                ret.push( value );
+                                            }                                    }
+                                        }
                                 );
 
                             return ret;

@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.19 - 2016-09-06 */
+/*! twobirds-core - v7.3.21 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -2927,21 +2927,23 @@ if (typeof module === 'undefined' ){
 
                             ret = [];
 
-                            tb.dom( 'option:selected', that)
+                            tb.dom( 'option', that)
                                 .forEach(
                                     function( pThisSelectedOption ){
-                                        if ( !pThisSelectedOption.disabled
-                                            && ( !pThisSelectedOption.parentNode.disabled
-                                            || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
-                                        ){
-                                            var value = pThisSelectedOption.value;
+                                        if ( pThisSelectedOption.selected ){
+                                            if ( !pThisSelectedOption.disabled
+                                                && ( !pThisSelectedOption.parentNode.disabled
+                                                || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
+                                            ){
+                                                var value = pThisSelectedOption.value;
 
-                                            if ( !multiSelect ) {
-                                                return value;
-                                            }
+                                                if ( !multiSelect ) {
+                                                    return value;
+                                                }
 
-                                            ret.push( value );
-                                        }                                    }
+                                                ret.push( value );
+                                            }                                    }
+                                        }
                                 );
 
                             return ret;
