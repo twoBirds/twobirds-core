@@ -1306,7 +1306,7 @@ if (typeof module === 'undefined' ){
                                         if ( typeof pValue !== 'undefined' ){ // setter
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
-                                                pRadio.checked = true;
+                                                pRadio.checked = pValue;
                                                 ret = pValue;
                                             }
                                         } else { // getter
@@ -1324,7 +1324,7 @@ if (typeof module === 'undefined' ){
 
                             if ( typeof pValue !== 'undefined' ){ // setter
                                 that.checked = true;
-                                ret = that.value;
+                                ret = that.checked;
                             } else { // getter
                                 ret = false;
                                 if ( that.checked === true ){
