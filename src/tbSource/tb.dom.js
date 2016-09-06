@@ -1295,12 +1295,11 @@ if (typeof module === 'undefined' ){
 
                         if ( that.type === 'radio' ){ // input radio or checkbox
                             var name = that.name,
+                                result,
                                 selector = '[name="' + name + '"]',
-                                result;
+                                radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
-                            tb.dom( that )
-                                .parents( 'form' )
-                                .descendants( selector )
+                            radios
                                 .forEach(
                                     function( pRadio ){
                                         var isElement;
@@ -1310,8 +1309,6 @@ if (typeof module === 'undefined' ){
                                             if ( isElement ){
                                                 that.checked = true;
                                                 result = pValue;
-                                            } else {
-                                                that.checked = false;
                                             }
                                         } else {
                                             if ( !!that.checked ){
