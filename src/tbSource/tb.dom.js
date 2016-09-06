@@ -1398,11 +1398,11 @@ if (typeof module === 'undefined' ){
                     ret = {},
                     value;
 
-                if ( !that['0'] ) {
-                    return that;
+                if ( that.tagName !== 'FORM' || !that[0] ) { // not a form or no inputs
+                    return ret;
                 }
 
-                tb.dom( 'input, select, textarea', that )
+                tb.dom( 'input, select, textarea', that.target )
                     .forEach(
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( 'name' );

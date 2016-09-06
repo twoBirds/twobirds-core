@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.13</em>
+            <em>API Docs for: v7.3.14</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.13 - 2016-09-06 */
+/*! twobirds-core - v7.3.14 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -3168,11 +3168,11 @@ if (typeof module === &#x27;undefined&#x27; ){
                     ret = {},
                     value;
 
-                if ( !that[&#x27;0&#x27;] ) {
-                    return that;
+                if ( that.tagName !== &#x27;FORM&#x27; || !that[0] ) { // not a form or no inputs
+                    return ret;
                 }
 
-                tb.dom( &#x27;input, select, textarea&#x27;, that )
+                tb.dom( &#x27;input, select, textarea&#x27;, that.target )
                     .forEach(
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( &#x27;name&#x27; );
