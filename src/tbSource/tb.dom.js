@@ -1245,7 +1245,7 @@ if (typeof module === 'undefined' ){
 
                             ret = [];
 
-                            tb.dom( 'option:selected', that)
+                            tb.dom( 'option[selected]', that)
                                 .forEach(
                                     function( pThisSelectedOption ){
                                         if ( !pThisSelectedOption.disabled
