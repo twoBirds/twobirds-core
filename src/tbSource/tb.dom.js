@@ -1270,16 +1270,28 @@ if (typeof module === 'undefined' ){
                             // if not multiSelect but array given set array to first value
                             pValue = !multiSelect && pValue.constructor === Array ? [ pValue[0] ] : pValue;
 
-                            // remove all 'selected' attributes
-                            tb.dom( 'option', that )
-                                .removeAttr( 'selected' );
+                            // set options
+                            that
+                                .options
+                                .forEach(
+                                    function( pOption ){
+                                        var valIndex = pValue.indexOf( pOption.value ),
+                                            val;
+
+                                        if ( valIndex + 1 ){
+                                            val = pValue[ valIndex ];
+                                            pOption.selected = !!val;
+                                        }
+
+                                    }
+                                );
 
                             // set given 'selected' attributes
                             pValue
                                 .forEach(
-                                    function( pThisOptionValue ){
-                                        tb.dom( 'option[value="' + pThisOptionValue + '"]', that )
-                                            .attr( { 'selected': 'selected' } );
+                                    function( pOption ){
+                                        tb.dom( 'option[value="' + pOption + '"]', that )
+                                            .selected = true;
                                     }
                                 );
 
