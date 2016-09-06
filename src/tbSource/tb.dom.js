@@ -1304,13 +1304,13 @@ if (typeof module === 'undefined' ){
                                     function( pRadio ){
                                         var isElement;
 
-                                        if ( !!pValue ){
+                                        if ( typeof pValue !== 'undefined' ){ // setter
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
                                                 that.checked = true;
                                                 result = pValue;
                                             }
-                                        } else {
+                                        } else { // getter
                                             if ( !!that.checked ){
                                                 result = that.value;
                                             }
@@ -1319,7 +1319,7 @@ if (typeof module === 'undefined' ){
                                     }
                                 );
 
-                            return result; // getter
+                            return result; 
 
                         } else { // not a radio
 

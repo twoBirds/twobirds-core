@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.27 - 2016-09-06 */
+/*! twobirds-core - v7.3.29 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -2977,25 +2977,22 @@ if (typeof module === 'undefined' ){
 
                         if ( that.type === 'radio' ){ // input radio or checkbox
                             var name = that.name,
+                                result,
                                 selector = '[name="' + name + '"]',
-                                result;
+                                radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
-                            tb.dom( that )
-                                .parents( 'form' )
-                                .descendants( selector )
+                            radios
                                 .forEach(
                                     function( pRadio ){
                                         var isElement;
 
-                                        if ( !!pValue ){
+                                        if ( typeof pValue !== 'undefined' ){ // setter
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
                                                 that.checked = true;
                                                 result = pValue;
-                                            } else {
-                                                that.checked = false;
                                             }
-                                        } else {
+                                        } else { // getter
                                             if ( !!that.checked ){
                                                 result = that.value;
                                             }
@@ -3004,7 +3001,7 @@ if (typeof module === 'undefined' ){
                                     }
                                 );
 
-                            return result; // getter
+                            return result; 
 
                         } else { // not a radio
 
