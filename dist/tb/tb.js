@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.37 - 2016-09-07 */
+/*! twobirds-core - v7.3.40 - 2016-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -2977,7 +2977,6 @@ if (typeof module === 'undefined' ){
 
                         if ( that.type === 'radio' ){ // input radio or checkbox
                             var name = that.name,
-                                result,
                                 selector = '[type="radio"][name="' + name + '"]',
                                 radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
@@ -2990,24 +2989,34 @@ if (typeof module === 'undefined' ){
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
                                                 pRadio.checked = true;
-                                                result = pValue;
+                                                ret = pValue;
                                             }
                                         } else { // getter
-                                            console.log( 'radio:', pRadio, pRadio.checked );
-
                                             if ( pRadio.checked === true ){
-                                                result = that.value;
+                                                ret = pRadio.value;
                                             }
                                         }
 
                                     }
                                 );
 
-                            console.log( 'radio result:', result );
+                            return ret;
 
-                            return result; 
+                        } if ( that.type === 'checkbox' ){ // input radio or checkbox
 
-                        } else { // not a radio
+                            if ( typeof pValue !== 'undefined' ){ // setter
+                                that.checked = true;
+                                ret = that.value;
+                            } else { // getter
+                                ret = false;
+                                if ( that.checked === true ){
+                                    ret = true;
+                                }
+                            }
+                            
+                            return ret;
+
+                        } else { // not a radio or checkbox
 
                             if ( !arguments.length ) { // getter
 
