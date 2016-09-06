@@ -1306,16 +1306,16 @@ if (typeof module === 'undefined' ){
                                     function( pRadio ){
                                         var isElement;
 
-                                        console.log( 'radio:', pRadio );
+                                        console.log( 'radio:', pRadio, pRadio );
                                         
                                         if ( typeof pValue !== 'undefined' ){ // setter
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
-                                                that.checked = true;
+                                                pRadio.checked = true;
                                                 result = pValue;
                                             }
                                         } else { // getter
-                                            if ( that.checked ){
+                                            if ( pRadio.checked ){
                                                 result = that.value;
                                             }
                                         }
