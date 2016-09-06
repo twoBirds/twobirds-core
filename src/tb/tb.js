@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.35 - 2016-09-07 */
+/*! twobirds-core - v7.3.37 - 2016-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -2995,13 +2995,15 @@ if (typeof module === 'undefined' ){
                                         } else { // getter
                                             console.log( 'radio:', pRadio, pRadio.checked );
 
-                                            if ( pRadio.checked ){
+                                            if ( pRadio.checked === true ){
                                                 result = that.value;
                                             }
                                         }
 
                                     }
                                 );
+
+                            console.log( 'radio result:', result );
 
                             return result; 
 

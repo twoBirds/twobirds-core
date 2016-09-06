@@ -1321,6 +1321,8 @@ if (typeof module === 'undefined' ){
                                     }
                                 );
 
+                            console.log( 'radio result:', result );
+
                             return result; 
 
                         } else { // not a radio
