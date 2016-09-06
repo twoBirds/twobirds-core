@@ -1280,6 +1280,8 @@ if (typeof module === 'undefined' ){
                                     if ( valIndex + 1 ){
                                         val = pValue[ valIndex ];
                                         pOption.selected = !!val;
+                                    } else {
+                                        pOption.selected = false;
                                     }
 
                                 }
