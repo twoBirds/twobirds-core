@@ -1293,15 +1293,38 @@ if (typeof module === 'undefined' ){
                         var that = this,
                             ret;
 
-                        if ( ([ 'radio', 'checkbox' ]).indexOf( that.type ) > -1 ){ // input radio or checkbox
+                        if ( that.type === 'radio' ){ // input radio or checkbox
+                            var name = that.name,
+                                selector = '[name="' + name + '"]',
+                                result;
 
-                            if ( !!arguments.length ){ // setter
-                                that.checked = !!pValue;
-                            }
+                            tb.dom( that )
+                                .parents( 'form' )[0]
+                                .descendants( selector )
+                                .forEach(
+                                    function( pRadio ){
+                                        var isElement;
 
-                            return that.checked; // getter
+                                        if ( !!pValue ){
+                                            isElement = pRadio.value === pValue;
+                                            if ( isElement ){
+                                                that.checked = true;
+                                                result = pValue;
+                                            } else {
+                                                that.checked = false;
+                                            }
+                                        } else {
+                                            if ( !!that.checked ){
+                                                result = that.value;
+                                            }
+                                        }
 
-                        } else {
+                                    }
+                                );
+
+                            return result; // getter
+
+                        } else { // not a radio
 
                             if ( !arguments.length ) { // getter
 
