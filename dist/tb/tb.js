@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.29 - 2016-09-06 */
+/*! twobirds-core - v7.3.30 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -2978,7 +2978,7 @@ if (typeof module === 'undefined' ){
                         if ( that.type === 'radio' ){ // input radio or checkbox
                             var name = that.name,
                                 result,
-                                selector = '[name="' + name + '"]',
+                                selector = '[type="radio"][name="' + name + '"]',
                                 radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
                             radios

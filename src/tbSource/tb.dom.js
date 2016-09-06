@@ -1296,7 +1296,7 @@ if (typeof module === 'undefined' ){
                         if ( that.type === 'radio' ){ // input radio or checkbox
                             var name = that.name,
                                 result,
-                                selector = '[name="' + name + '"]',
+                                selector = '[type="radio"][name="' + name + '"]',
                                 radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
                             radios
