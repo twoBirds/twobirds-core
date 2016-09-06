@@ -1271,20 +1271,19 @@ if (typeof module === 'undefined' ){
                             pValue = !multiSelect && pValue.constructor === Array ? [ pValue[0] ] : pValue;
 
                             // set options
-                            that
-                                .options
-                                .forEach(
-                                    function( pOption ){
-                                        var valIndex = pValue.indexOf( pOption.value ),
-                                            val;
+                            [].forEach.call(
+                                that.options,
+                                function( pOption ){
+                                    var valIndex = pValue.indexOf( pOption.value ),
+                                        val;
 
-                                        if ( valIndex + 1 ){
-                                            val = pValue[ valIndex ];
-                                            pOption.selected = !!val;
-                                        }
-
+                                    if ( valIndex + 1 ){
+                                        val = pValue[ valIndex ];
+                                        pOption.selected = !!val;
                                     }
-                                );
+
+                                }
+                            );
 
                             // set given 'selected' attributes
                             pValue
