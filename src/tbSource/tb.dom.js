@@ -1299,7 +1299,7 @@ if (typeof module === 'undefined' ){
                                 result;
 
                             tb.dom( that )
-                                .parents( 'form' )[0]
+                                .parents( 'form' )
                                 .descendants( selector )
                                 .forEach(
                                     function( pRadio ){
