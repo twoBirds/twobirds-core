@@ -1299,6 +1299,8 @@ if (typeof module === 'undefined' ){
                                 selector = '[type="radio"][name="' + name + '"]',
                                 radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
+                            console.log( radios );
+
                             radios
                                 .forEach(
                                     function( pRadio ){
