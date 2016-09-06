@@ -1306,6 +1306,8 @@ if (typeof module === 'undefined' ){
                                     function( pRadio ){
                                         var isElement;
 
+                                        console.log( 'radio:', pRadio );
+                                        
                                         if ( typeof pValue !== 'undefined' ){ // setter
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
@@ -1313,7 +1315,7 @@ if (typeof module === 'undefined' ){
                                                 result = pValue;
                                             }
                                         } else { // getter
-                                            if ( !!that.checked ){
+                                            if ( that.checked ){
                                                 result = that.value;
                                             }
                                         }
