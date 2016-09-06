@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.3.42",
+        "version": "v7.3.44",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -166,7 +166,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3150,
+            "line": 3152,
             "is_constructor": 1,
             "params": [
                 {
@@ -192,7 +192,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4029,
+            "line": 4031,
             "is_constructor": 1,
             "params": [
                 {
@@ -219,7 +219,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4311,
+            "line": 4313,
             "is_constructor": 1,
             "params": [
                 {
@@ -1541,7 +1541,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3098,
+            "line": 3100,
             "itemtype": "method",
             "name": "values",
             "params": [
@@ -1560,7 +1560,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3168,
+            "line": 3170,
             "itemtype": "method",
             "name": "tb.observable",
             "params": [
@@ -1581,7 +1581,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3299,
+            "line": 3301,
             "itemtype": "method",
             "name": "tb.namespace",
             "params": [
@@ -1610,7 +1610,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3397,
+            "line": 3399,
             "itemtype": "method",
             "name": "tb.bind",
             "params": [
@@ -1631,7 +1631,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3454,
+            "line": 3456,
             "itemtype": "property",
             "name": "tb.status",
             "type": "Object\n\ncontainer for twoBirds status observables",
@@ -1639,7 +1639,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3461,
+            "line": 3463,
             "itemtype": "property",
             "name": "tb.status.loadCount",
             "type": "Function\n\nobservable containing the number of ( script load operations + xHr requests ) currently pending",
@@ -1647,7 +1647,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3472,
+            "line": 3474,
             "itemtype": "method",
             "name": "tb.idle",
             "params": [
@@ -1668,7 +1668,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3537,
+            "line": 3539,
             "itemtype": "method",
             "name": "tb.getId",
             "return": {
@@ -1679,7 +1679,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3550,
+            "line": 3552,
             "itemtype": "method",
             "name": "tb.extend",
             "params": [
@@ -1703,7 +1703,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3595,
+            "line": 3597,
             "itemtype": "method",
             "name": "tb.parse",
             "params": [
@@ -1728,7 +1728,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3670,
+            "line": 3672,
             "itemtype": "method",
             "name": "tb.request",
             "params": [
@@ -1805,44 +1805,44 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3693,
+            "line": 3695,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3741,
+            "line": 3743,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3758,
+            "line": 3760,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3780,
+            "line": 3782,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3810,
+            "line": 3812,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3834,
+            "line": 3836,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3862,
+            "line": 3864,
             "name": "",
             "itemtype": "method",
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4009,
+            "line": 4011,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -1860,7 +1860,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4176,
+            "line": 4178,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -1875,7 +1875,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4208,
+            "line": 4210,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1890,7 +1890,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4241,
+            "line": 4243,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1905,7 +1905,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4273,
+            "line": 4275,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1920,7 +1920,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4401,
+            "line": 4403,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1948,19 +1948,19 @@
         },
         {
             "message": "param name missing: {void}",
-            "line": " src/tb/tb.js:3150"
+            "line": " src/tb/tb.js:3152"
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/tb/tb.js:3670"
+            "line": " src/tb/tb.js:3672"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:3862"
+            "line": " src/tb/tb.js:3864"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:3862"
+            "line": " src/tb/tb.js:3864"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1972,31 +1972,31 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3693"
+            "line": " src/tb/tb.js:3695"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3741"
+            "line": " src/tb/tb.js:3743"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3758"
+            "line": " src/tb/tb.js:3760"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3780"
+            "line": " src/tb/tb.js:3782"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3810"
+            "line": " src/tb/tb.js:3812"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:3834"
+            "line": " src/tb/tb.js:3836"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:4401"
+            "line": " src/tb/tb.js:4403"
         }
     ]
 }

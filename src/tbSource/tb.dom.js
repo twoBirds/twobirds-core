@@ -1307,8 +1307,10 @@ if (typeof module === 'undefined' ){
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
                                                 pRadio.checked = pValue;
-                                                ret = pValue;
+                                            } else {
+                                                pRadio.checked = false;
                                             }
+                                            ret = pRadio.checked;
                                         } else { // getter
                                             if ( pRadio.checked === true ){
                                                 ret = pRadio.value;

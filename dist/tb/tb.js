@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.42 - 2016-09-07 */
+/*! twobirds-core - v7.3.44 - 2016-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -2989,8 +2989,10 @@ if (typeof module === 'undefined' ){
                                             isElement = pRadio.value === pValue;
                                             if ( isElement ){
                                                 pRadio.checked = pValue;
-                                                ret = pValue;
+                                            } else {
+                                                pRadio.checked = false;
                                             }
+                                            ret = pRadio.checked;
                                         } else { // getter
                                             if ( pRadio.checked === true ){
                                                 ret = pRadio.value;
@@ -3004,8 +3006,8 @@ if (typeof module === 'undefined' ){
 
                         } if ( that.type === 'checkbox' ){ // input radio or checkbox
 
-                            if ( typeof pValue !== 'undefined' && !!pValue ){ // setter
-                                that.checked = true;
+                            if ( typeof pValue !== 'undefined' ){ // setter
+                                that.checked = pValue ? true : false;
                                 ret = that.checked;
                             } else { // getter
                                 ret = false;
