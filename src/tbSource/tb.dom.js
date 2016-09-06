@@ -1246,7 +1246,7 @@ if (typeof module === 'undefined' ){
                             ret = [];
 
                             that
-                                .selectedOption
+                                .selectedOptions
                                 .forEach(
                                     function( pThisSelectedOption ){
                                         if ( pThisSelectedOption.selected ){
