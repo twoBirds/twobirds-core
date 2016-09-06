@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.30 - 2016-09-06 */
+/*! twobirds-core - v7.3.32 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -2970,7 +2970,7 @@ if (typeof module === 'undefined' ){
                         return that;
                     },
 
-                    'default':function defaultVal( pValue ){
+                    'default': function defaultVal( pValue ){
 
                         var that = this,
                             ret;
@@ -2980,6 +2980,8 @@ if (typeof module === 'undefined' ){
                                 result,
                                 selector = '[type="radio"][name="' + name + '"]',
                                 radios = tb.dom( that ).parents( 'form' ).descendants( selector );
+
+                            console.log( 'radio', that.name, 'has', radios );
 
                             radios
                                 .forEach(

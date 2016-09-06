@@ -1288,7 +1288,7 @@ if (typeof module === 'undefined' ){
                         return that;
                     },
 
-                    'default':function defaultVal( pValue ){
+                    'default': function defaultVal( pValue ){
 
                         var that = this,
                             ret;
@@ -1299,7 +1299,7 @@ if (typeof module === 'undefined' ){
                                 selector = '[type="radio"][name="' + name + '"]',
                                 radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
-                            console.log( radios );
+                            console.log( 'radio', that.name, 'has', radios );
 
                             radios
                                 .forEach(
