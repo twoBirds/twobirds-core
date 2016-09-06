@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.23 - 2016-09-06 */
+/*! twobirds-core - v7.3.25 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -2927,23 +2927,18 @@ if (typeof module === 'undefined' ){
 
                             ret = [];
 
-                            that
-                                .selectedOption
-                                .forEach(
-                                    function( pThisSelectedOption ){
-                                        if ( pThisSelectedOption.selected ){
-                                            if ( !pThisSelectedOption.disabled
-                                                && ( !pThisSelectedOption.parentNode.disabled
-                                                || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
-                                            ){
-                                                var value = pThisSelectedOption.value;
+                            [].forEach.call(
+                                that.selectedOptions,
+                                function( pOption ){
+                                    if ( pOption.selected ){
+                                        if ( !pOption.disabled
+                                            && ( !pOption.parentNode.disabled
+                                            || pOption.parentNode.nodeName !== "optgroup" )
+                                        ){
+                                            var value = pOption.value;
 
-                                                if ( !multiSelect ) {
-                                                    return value;
-                                                }
-
-                                                ret.push( value );
-                                            }                                    }
+                                            ret.push( value );
+                                        }                                    }
                                     }
                                 );
 

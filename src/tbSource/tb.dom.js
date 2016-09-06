@@ -1245,23 +1245,18 @@ if (typeof module === 'undefined' ){
 
                             ret = [];
 
-                            that
-                                .selectedOptions
-                                .forEach(
-                                    function( pThisSelectedOption ){
-                                        if ( pThisSelectedOption.selected ){
-                                            if ( !pThisSelectedOption.disabled
-                                                && ( !pThisSelectedOption.parentNode.disabled
-                                                || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
-                                            ){
-                                                var value = pThisSelectedOption.value;
+                            [].forEach.call(
+                                that.selectedOptions,
+                                function( pOption ){
+                                    if ( pOption.selected ){
+                                        if ( !pOption.disabled
+                                            && ( !pOption.parentNode.disabled
+                                            || pOption.parentNode.nodeName !== "optgroup" )
+                                        ){
+                                            var value = pOption.value;
 
-                                                if ( !multiSelect ) {
-                                                    return value;
-                                                }
-
-                                                ret.push( value );
-                                            }                                    }
+                                            ret.push( value );
+                                        }                                    }
                                     }
                                 );
 
