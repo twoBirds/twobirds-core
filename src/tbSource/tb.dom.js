@@ -1402,9 +1402,7 @@ if (typeof module === 'undefined' ){
                     return that;
                 }
 
-                node = that['0'];
-
-                tb.dom( 'input, select, textarea', node )
+                tb.dom( 'input, select, textarea', that )
                     .forEach(
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( 'name' );

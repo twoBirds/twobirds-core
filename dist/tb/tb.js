@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.12 - 2016-09-05 */
+/*! twobirds-core - v7.3.13 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -3084,9 +3084,7 @@ if (typeof module === 'undefined' ){
                     return that;
                 }
 
-                node = that['0'];
-
-                tb.dom( 'input, select, textarea', node )
+                tb.dom( 'input, select, textarea', that )
                     .forEach(
                         function( pInput ){
                             var name = tb.dom( pInput ).attr( 'name' );
