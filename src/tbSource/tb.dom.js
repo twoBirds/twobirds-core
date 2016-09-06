@@ -1322,7 +1322,7 @@ if (typeof module === 'undefined' ){
 
                         } if ( that.type === 'checkbox' ){ // input radio or checkbox
 
-                            if ( typeof pValue !== 'undefined' ){ // setter
+                            if ( typeof pValue !== 'undefined' && !!pValue ){ // setter
                                 that.checked = true;
                                 ret = that.checked;
                             } else { // getter
