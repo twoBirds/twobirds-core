@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.21 - 2016-09-06 */
+/*! twobirds-core - v7.3.23 - 2016-09-06 */
 
 /**
  twoBirds V7 core functionality
@@ -2927,7 +2927,8 @@ if (typeof module === 'undefined' ){
 
                             ret = [];
 
-                            tb.dom( 'option', that)
+                            that
+                                .selectedOption
                                 .forEach(
                                     function( pThisSelectedOption ){
                                         if ( pThisSelectedOption.selected ){
@@ -2943,7 +2944,7 @@ if (typeof module === 'undefined' ){
 
                                                 ret.push( value );
                                             }                                    }
-                                        }
+                                    }
                                 );
 
                             return ret;

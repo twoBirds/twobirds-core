@@ -1245,28 +1245,25 @@ if (typeof module === 'undefined' ){
 
                             ret = [];
 
-                            if ( multiSelect ){
-                                tb.dom( 'option', that)
-                                    .forEach(
-                                        function( pThisSelectedOption ){
-                                            if ( pThisSelectedOption.selected ){
-                                                if ( !pThisSelectedOption.disabled
-                                                    && ( !pThisSelectedOption.parentNode.disabled
-                                                    || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
-                                                ){
-                                                    var value = pThisSelectedOption.value;
+                            that
+                                .selectedOption
+                                .forEach(
+                                    function( pThisSelectedOption ){
+                                        if ( pThisSelectedOption.selected ){
+                                            if ( !pThisSelectedOption.disabled
+                                                && ( !pThisSelectedOption.parentNode.disabled
+                                                || pThisSelectedOption.parentNode.nodeName !== "optgroup" )
+                                            ){
+                                                var value = pThisSelectedOption.value;
 
-                                                    if ( !multiSelect ) {
-                                                        return value;
-                                                    }
+                                                if ( !multiSelect ) {
+                                                    return value;
+                                                }
 
-                                                    ret.push( value );
-                                                }                                    }
-                                        }
-                                    );
-                            } else { // its a single select
-                                ret.push( that.selectedIndex || -1 );
-                            }
+                                                ret.push( value );
+                                            }                                    }
+                                    }
+                                );
 
                             return ret;
 
