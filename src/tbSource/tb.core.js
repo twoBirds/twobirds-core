@@ -1590,7 +1590,7 @@ tb = (function(){
             }
 
         };
-    })( internaltb.prototype )
+    })( internaltb.prototype );
 
     return tb;
 
