@@ -1,5 +1,5 @@
 if (typeof module === 'undefined' ){
-    tb.dom = (function ( internalProto ) {
+    tb.dom = (function () {
 
         // Variables
         var regExReturn = /\r/g,
@@ -7,8 +7,8 @@ if (typeof module === 'undefined' ){
             regExWord = /\S+/g,
             regExHtml = /^<>$/g,
             TbSelector = tb.Selector,
-            retFunc,
-            dom;
+            dom,
+            f;
 
         // INTERNAL ONLY Private Functions
         function _addEvent( pDomNode, pEventName, pHandler, pCapture ) {
@@ -1466,24 +1466,26 @@ if (typeof module === 'undefined' ){
             return ret;
         }
 
-        retFunc = function ( pSelector, pDomNode ) {
+        f = function (pSelector, pDomNode) {
 
             return new dom( pSelector, pDomNode );
 
         };
 
-        retFunc.plugin = function( pMethodName, pFunction ){
+        f.innerProto = dom.prototype;
 
-            if ( !dom.prototype[ pMethodName ] ){
-                dom.prototype[ pMethodName ] = pFunction;
-            } else {
-                console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
-            }
-
-        };
-
-        return retFunc;
-
+        return f;
     })();
+
+    tb.dom.plugin = function( pMethodName, pFunction ){
+        var p = tb.dom.innerProto;
+
+        if ( !p[ pMethodName ] ){
+            p[ pMethodName ] = pFunction;
+        } else {
+            console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
+        }
+
+    };
 
 }
