@@ -1227,7 +1227,15 @@ if (typeof module === 'undefined' ){
         function val( pValue ){
 
             var that = this,
+                inputTags = ('input select textarea').split( ' ' ),
+                excludeTypes = ('button file image reset submit').split( ' ' ),
                 ret;
+
+            function isInput( pElement ){
+                return pElement.nodeType === 1
+                    && ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) > -1
+                    && ( excludeTypes ).indexOf( pElement.type ) === -1;
+            }
 
             var valHandlers = {
 
@@ -1379,11 +1387,7 @@ if (typeof module === 'undefined' ){
                 that.forEach(
                     function ( pElement ) {
 
-                        var inputTags = [ 'input', 'select', 'textarea'];
-
-                        if ( pElement.nodeType !== 1
-                            || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
-                        ){
+                        if ( !isInput( pElement ) ){
                             return; // not an input element
                         }
 
@@ -1401,11 +1405,7 @@ if (typeof module === 'undefined' ){
                 that.some(
                     function ( pElement ) {
 
-                        var inputTags = [ 'input', 'select', 'textarea'];
-
-                        if ( pElement.nodeType !== 1
-                            || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
-                        ){
+                        if ( !isInput( pElement ) ){
                             return false; // is not an input element
                         }
 

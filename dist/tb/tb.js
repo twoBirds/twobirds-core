@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.56 - 2016-09-07 */
+/*! twobirds-core - v7.3.58 - 2016-09-08 */
 
 /**
  twoBirds V7 core functionality
@@ -2910,7 +2910,15 @@ if (typeof module === 'undefined' ){
         function val( pValue ){
 
             var that = this,
+                inputTags = ('input select textarea').split( ' ' ),
+                excludeTypes = ('button file image reset submit').split( ' ' ),
                 ret;
+
+            function isInput( pElement ){
+                return pElement.nodeType === 1
+                    && ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) > -1
+                    && ( excludeTypes ).indexOf( pElement.type ) === -1;
+            }
 
             var valHandlers = {
 
@@ -2997,12 +3005,10 @@ if (typeof module === 'undefined' ){
 
                                     if ( typeof pValue !== 'undefined' ){ // setter
                                         isElement = pRadio.value === pValue;
-                                        if ( isElement ){
-                                            pRadio.checked = pValue;
-                                        } else {
-                                            pRadio.checked = false;
-                                        }
-                                        ret = pRadio.checked;
+
+                                        pRadio.checked = isElement ? true : false;
+
+                                        ret = pRadio.checked ? pRadio.value : undefined;
                                     } else { // getter
                                         if ( pRadio.checked === true ){
                                             ret = pRadio.value;
@@ -3014,7 +3020,9 @@ if (typeof module === 'undefined' ){
 
                         return ret;
 
-                    } if ( that.type === 'checkbox' ){ // input radio or checkbox
+                    }
+
+                    if ( that.type === 'checkbox' ){ // input radio or checkbox
 
                         if ( typeof pValue !== 'undefined' ){ // setter
                             that.checked = pValue ? true : false;
@@ -3062,11 +3070,7 @@ if (typeof module === 'undefined' ){
                 that.forEach(
                     function ( pElement ) {
 
-                        var inputTags = [ 'input', 'select', 'textarea'];
-
-                        if ( pElement.nodeType !== 1
-                            || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
-                        ){
+                        if ( !isInput( pElement ) ){
                             return; // not an input element
                         }
 
@@ -3084,11 +3088,7 @@ if (typeof module === 'undefined' ){
                 that.some(
                     function ( pElement ) {
 
-                        var inputTags = [ 'input', 'select', 'textarea'];
-
-                        if ( pElement.nodeType !== 1
-                            || ( inputTags ).indexOf( pElement.tagName.toLowerCase() ) === -1
-                        ){
+                        if ( !isInput( pElement ) ){
                             return false; // is not an input element
                         }
 
