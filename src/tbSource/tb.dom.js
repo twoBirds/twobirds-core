@@ -1314,12 +1314,10 @@ if (typeof module === 'undefined' ){
 
                                     if ( typeof pValue !== 'undefined' ){ // setter
                                         isElement = pRadio.value === pValue;
-                                        if ( isElement ){
-                                            pRadio.checked = pValue;
-                                        } else {
-                                            pRadio.checked = false;
-                                        }
-                                        ret = pRadio.checked;
+
+                                        pRadio.checked = isElement ? true : false;
+
+                                        ret = pRadio.checked ? pRadio.value : undefined;
                                     } else { // getter
                                         if ( pRadio.checked === true ){
                                             ret = pRadio.value;
@@ -1331,7 +1329,9 @@ if (typeof module === 'undefined' ){
 
                         return ret;
 
-                    } if ( that.type === 'checkbox' ){ // input radio or checkbox
+                    }
+
+                    if ( that.type === 'checkbox' ){ // input radio or checkbox
 
                         if ( typeof pValue !== 'undefined' ){ // setter
                             that.checked = pValue ? true : false;
