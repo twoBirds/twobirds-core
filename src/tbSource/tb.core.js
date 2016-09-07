@@ -1579,16 +1579,18 @@ tb = (function(){
         return tb.dom( result );
     };
 
-    tb.plugin = function( pMethodName, pFunction ){
-        var p = internaltb.prototype;
+    tb.plugin = (function( internalProto ) {
+        return function (pMethodName, pFunction) {
+            var p = internalProto;
 
-        if ( !p[ pMethodName ] ){
-            p[ pMethodName ] = pFunction;
-        } else {
-            console.warn( 'tb.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
-        }
+            if (!p[pMethodName]) {
+                p[pMethodName] = pFunction;
+            } else {
+                console.warn('tb.plugin(): Cannot overload existing tb method (', pMethodName, ')');
+            }
 
-    };
+        };
+    })( internaltb.prototype )
 
     return tb;
 

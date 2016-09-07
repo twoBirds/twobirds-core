@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.51 - 2016-09-07 */
+/*! twobirds-core - v7.3.53 - 2016-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -1581,16 +1581,18 @@ tb = (function(){
         return tb.dom( result );
     };
 
-    tb.plugin = function( pMethodName, pFunction ){
-        var p = internaltb.prototype;
+    tb.plugin = (function( internalProto ) {
+        return function (pMethodName, pFunction) {
+            var p = internalProto;
 
-        if ( !p[ pMethodName ] ){
-            p[ pMethodName ] = pFunction;
-        } else {
-            console.warn( 'tb.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
-        }
+            if (!p[pMethodName]) {
+                p[pMethodName] = pFunction;
+            } else {
+                console.warn('tb.plugin(): Cannot overload existing tb method (', pMethodName, ')');
+            }
 
-    };
+        };
+    })( internaltb.prototype )
 
     return tb;
 
@@ -1840,7 +1842,7 @@ if (typeof module === 'undefined' ){
             };
 
             // dom prototype, public functions
-            dom.prototype = internalProto = {
+            dom.prototype = {
 
                 __tbSelector__: true,   // detection
 
@@ -2016,6 +2018,8 @@ if (typeof module === 'undefined' ){
                 val: val,
                 values: values
             };
+
+            internalProto = dom.prototype;
 
             return new dom( pSelector, pDomNode );
 
@@ -3155,16 +3159,20 @@ if (typeof module === 'undefined' ){
 
         };
 
-        retFunc.plugin = function( pMethodName, pFunction ){
-            var p = internalProto;
+        retFunc.plugin = (function( internalProto ){ // bind the internal prototype now, on invocation it is too late
 
-            if ( !p[ pMethodName ] ){
-                p[ pMethodName ] = pFunction;
-            } else {
-                console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
-            }
+            return function( pMethodName, pFunction ){
+                var p = internalProto;
 
-        };
+                if ( !p[ pMethodName ] ){
+                    p[ pMethodName ] = pFunction;
+                } else {
+                    console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
+                }
+
+            };
+
+        })( internalProto );
 
         return retFunc;
 

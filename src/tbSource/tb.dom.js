@@ -1476,16 +1476,20 @@ if (typeof module === 'undefined' ){
 
         };
 
-        retFunc.plugin = function( pMethodName, pFunction ){
-            var p = internalProto;
+        retFunc.plugin = (function( internalProto ){ // bind the internal prototype now, on invocation it is too late
 
-            if ( !p[ pMethodName ] ){
-                p[ pMethodName ] = pFunction;
-            } else {
-                console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
-            }
+            return function( pMethodName, pFunction ){
+                var p = internalProto;
 
-        };
+                if ( !p[ pMethodName ] ){
+                    p[ pMethodName ] = pFunction;
+                } else {
+                    console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
+                }
+
+            };
+
+        })( internalProto );
 
         return retFunc;
 
