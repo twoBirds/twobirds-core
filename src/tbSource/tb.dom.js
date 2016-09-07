@@ -1265,7 +1265,7 @@ if (typeof module === 'undefined' ){
                         } else { // setter
 
                             // if single value given convert to array
-                            pValue = multiSelect && pValue.constructor !== Array ? [ pValue ] : pValue;
+                            pValue = pValue.constructor !== Array ? [ pValue ] : pValue;
 
                             // if not multiSelect but array given set array to first value
                             pValue = !multiSelect && pValue.constructor === Array ? [ pValue[0] ] : pValue;
