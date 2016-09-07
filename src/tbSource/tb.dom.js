@@ -1471,5 +1471,18 @@ if (typeof module === 'undefined' ){
             }
 
         };
+
     })();
+
+    tb.dom.plugin = function( pMethodName, pFunction ){
+        var p = tb.dom().constructor.prototype;
+
+        if ( !p[ pMethodName ] ){
+            p[ pMethodName ] = pFunction;
+        } else {
+            console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
+        }
+
+    };
+
 }

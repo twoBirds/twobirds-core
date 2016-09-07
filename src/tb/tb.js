@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.47 - 2016-09-07 */
+/*! twobirds-core - v7.3.49 - 2016-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -1586,9 +1586,8 @@ tb = (function(){
 
         if ( !p[ pMethodName ] ){
             p[ pMethodName ] = pFunction;
-            //console.log( 'plugin:', pMethodName, p );
         } else {
-            console.warn( 'Cannot overload existing tb method:', pMethodName );
+            console.warn( 'tb.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
         }
 
     };
@@ -2947,7 +2946,7 @@ if (typeof module === 'undefined' ){
                         } else { // setter
 
                             // if single value given convert to array
-                            pValue = multiSelect && pValue.constructor !== Array ? [ pValue ] : pValue;
+                            pValue = pValue.constructor !== Array ? [ pValue ] : pValue;
 
                             // if not multiSelect but array given set array to first value
                             pValue = !multiSelect && pValue.constructor === Array ? [ pValue[0] ] : pValue;
@@ -3153,7 +3152,20 @@ if (typeof module === 'undefined' ){
             }
 
         };
+
     })();
+
+    tb.dom.plugin = function( pMethodName, pFunction ){
+        var p = tb.dom().constructor.prototype;
+
+        if ( !p[ pMethodName ] ){
+            p[ pMethodName ] = pFunction;
+        } else {
+            console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
+        }
+
+    };
+
 }
 
 
