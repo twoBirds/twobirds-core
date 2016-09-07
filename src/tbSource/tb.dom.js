@@ -8,7 +8,7 @@ if (typeof module === 'undefined' ){
             regExHtml = /^<>$/g,
             TbSelector = tb.Selector;
 
-        return function (pSelector, pDomNode) {
+        return function ( pSelector, pDomNode ) {
 
             var dom;
 
@@ -152,6 +152,17 @@ if (typeof module === 'undefined' ){
                         // return html content as a set of nodes
                         return tb.dom( DOM );
                     }
+                }
+
+            };
+
+            dom.plugin = function( pMethodName, pFunction ){
+                var p = dom.prototype;
+
+                if ( !p[ pMethodName ] ){
+                    p[ pMethodName ] = pFunction;
+                } else {
+                    console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
                 }
 
             };
@@ -1473,16 +1484,5 @@ if (typeof module === 'undefined' ){
         };
 
     })();
-
-    tb.dom.plugin = function( pMethodName, pFunction ){
-        var p = tb.dom().constructor.prototype;
-
-        if ( !p[ pMethodName ] ){
-            p[ pMethodName ] = pFunction;
-        } else {
-            console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
-        }
-
-    };
 
 }
