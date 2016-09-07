@@ -159,7 +159,7 @@ if (typeof module === 'undefined' ){
             };
 
             // dom prototype, public functions
-            dom.prototype = internalProto = {
+            dom.prototype = {
 
                 __tbSelector__: true,   // detection
 
@@ -335,6 +335,8 @@ if (typeof module === 'undefined' ){
                 val: val,
                 values: values
             };
+
+            internalProto = dom.prototype;
 
             return new dom( pSelector, pDomNode );
 
