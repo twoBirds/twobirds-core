@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.53 - 2016-09-07 */
+/*! twobirds-core - v7.3.54 - 2016-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -1592,7 +1592,7 @@ tb = (function(){
             }
 
         };
-    })( internaltb.prototype )
+    })( internaltb.prototype );
 
     return tb;
 
@@ -1682,7 +1682,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
 
 if (typeof module === 'undefined' ){
-    tb.dom = (function () {
+    tb.dom = (function ( internalProto ) {
 
         // Variables
         var regExReturn = /\r/g,
@@ -1690,8 +1690,7 @@ if (typeof module === 'undefined' ){
             regExWord = /\S+/g,
             regExHtml = /^<>$/g,
             TbSelector = tb.Selector,
-            retFunc,
-            internalProto;
+            retFunc;
 
         retFunc = function ( pSelector, pDomNode ) {
 
