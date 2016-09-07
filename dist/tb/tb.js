@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.49 - 2016-09-07 */
+/*! twobirds-core - v7.3.51 - 2016-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -1687,9 +1687,11 @@ if (typeof module === 'undefined' ){
             regExSpaces = /[\x20\t\r\n\f]+/g,
             regExWord = /\S+/g,
             regExHtml = /^<>$/g,
-            TbSelector = tb.Selector;
+            TbSelector = tb.Selector,
+            retFunc,
+            internalProto;
 
-        return function (pSelector, pDomNode) {
+        retFunc = function ( pSelector, pDomNode ) {
 
             var dom;
 
@@ -1838,7 +1840,7 @@ if (typeof module === 'undefined' ){
             };
 
             // dom prototype, public functions
-            dom.prototype = {
+            dom.prototype = internalProto = {
 
                 __tbSelector__: true,   // detection
 
@@ -3153,18 +3155,20 @@ if (typeof module === 'undefined' ){
 
         };
 
+        retFunc.plugin = function( pMethodName, pFunction ){
+            var p = internalProto;
+
+            if ( !p[ pMethodName ] ){
+                p[ pMethodName ] = pFunction;
+            } else {
+                console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
+            }
+
+        };
+
+        return retFunc;
+
     })();
-
-    tb.dom.plugin = function( pMethodName, pFunction ){
-        var p = tb.dom().constructor.prototype;
-
-        if ( !p[ pMethodName ] ){
-            p[ pMethodName ] = pFunction;
-        } else {
-            console.warn( 'tb.dom.plugin(): Cannot overload existing tb method (', pMethodName, ')' );
-        }
-
-    };
 
 }
 
