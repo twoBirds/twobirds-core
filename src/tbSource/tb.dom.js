@@ -487,7 +487,8 @@ if (typeof module === 'undefined' ){
         function attr(pKey, pValue) {
 
             var that = this,
-                rootNodes;
+                rootNodes,
+                attributes = {};
 
             if ( typeof pKey === 'object' && pKey.constructor === Object ){ // hash given
 
@@ -503,7 +504,13 @@ if (typeof module === 'undefined' ){
 
                 // if no arguments, return attribute object
                 if (!arguments.length) {
-                    return that[0].attributes;
+                    [].forEach.call(
+                        that[0].attributes,
+                        function( pAttribute ){
+                            attributes[ pAttribute.name ] = pAttribute.nodeValue;
+                        }
+                    );
+                    return attributes;
                 }
 
                 // if no value is given and there are elements, return attribute value of first in list
