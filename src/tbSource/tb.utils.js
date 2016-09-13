@@ -57,8 +57,8 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
          function( pValue ){                    // callback will be triggered when observable value changes
                      console.log( pValue );
                  },
-         false                                  // false or no parameter indicates callback will be called
-                                                // whenever the data changes
+         false                                  // false or no parameter indicates callback will always be called
+                                                // when the data changes, true will trigger it only once
      );
 
      // get data:

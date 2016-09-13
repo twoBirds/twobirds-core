@@ -1322,6 +1322,8 @@ if (typeof module === 'undefined' ){
                             selector = '[type="radio"][name="' + name + '"]',
                             radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
+                        ret = '';
+
                         radios
                             .forEach(
                                 function( pRadio ){
@@ -1332,7 +1334,7 @@ if (typeof module === 'undefined' ){
 
                                         pRadio.checked = isElement ? true : false;
 
-                                        ret = pRadio.checked ? pRadio.value : undefined;
+                                        ret = pRadio.checked ? pRadio.value : ret;
                                     } else { // getter
                                         if ( pRadio.checked === true ){
                                             ret = pRadio.value;

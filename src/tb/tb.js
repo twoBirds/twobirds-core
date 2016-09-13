@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.58 - 2016-09-08 */
+/*! twobirds-core - v7.3.60 - 2016-09-13 */
 
 /**
  twoBirds V7 core functionality
@@ -2170,7 +2170,8 @@ if (typeof module === 'undefined' ){
         function attr(pKey, pValue) {
 
             var that = this,
-                rootNodes;
+                rootNodes,
+                attributes = {};
 
             if ( typeof pKey === 'object' && pKey.constructor === Object ){ // hash given
 
@@ -2186,7 +2187,13 @@ if (typeof module === 'undefined' ){
 
                 // if no arguments, return attribute object
                 if (!arguments.length) {
-                    return that[0].attributes;
+                    [].forEach.call(
+                        that[0].attributes,
+                        function( pAttribute ){
+                            attributes[ pAttribute.name ] = pAttribute.nodeValue;
+                        }
+                    );
+                    return attributes;
                 }
 
                 // if no value is given and there are elements, return attribute value of first in list
@@ -2998,6 +3005,8 @@ if (typeof module === 'undefined' ){
                             selector = '[type="radio"][name="' + name + '"]',
                             radios = tb.dom( that ).parents( 'form' ).descendants( selector );
 
+                        ret = '';
+
                         radios
                             .forEach(
                                 function( pRadio ){
@@ -3008,7 +3017,7 @@ if (typeof module === 'undefined' ){
 
                                         pRadio.checked = isElement ? true : false;
 
-                                        ret = pRadio.checked ? pRadio.value : undefined;
+                                        ret = pRadio.checked ? pRadio.value : ret;
                                     } else { // getter
                                         if ( pRadio.checked === true ){
                                             ret = pRadio.value;
@@ -3233,8 +3242,8 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
          function( pValue ){                    // callback will be triggered when observable value changes
                      console.log( pValue );
                  },
-         false                                  // false or no parameter indicates callback will be called
-                                                // whenever the data changes
+         false                                  // false or no parameter indicates callback will always be called
+                                                // when the data changes, true will trigger it only once
      );
 
      // get data:
