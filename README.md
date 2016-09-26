@@ -401,15 +401,15 @@ simple: copy tb.js from /dist and insert into your project, or, using npm, follo
 // see node docs on how to do it...
 
 // if necessary install grunt-cli
-sudo npm install -g grunt-cli
+> sudo npm install -g grunt-cli
 
-// then:
-npm install
-grunt
-cd src
+// then goto twoBirds-core directory and...
+> npm install
+> grunt
 
 // you can use whatever you like as a web server, just one fast option using php here...
-php -S 0.0.0.0:3000 &
+> cd src
+> php -S 0.0.0.0:3000 &
 
 // in your browser goto
 //
