@@ -5,7 +5,7 @@ Welcome Birdies ;-)
 
 
 [I dont want to read a lot - give me a kick-start](#i-dont-want-to-read-a-lot-give-me-a-kick-start)
-
+[I want to support this](#https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) ![Flattr this](//button.flattr.com/flattr-badge-large.png)
 
 ## Intro
 
