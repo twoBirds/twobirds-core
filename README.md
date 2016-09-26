@@ -207,10 +207,10 @@ tb.namespace('app.Body').set( // create the repo namespace if necessary
     
         Body.prototype = {
     
-            namespace: 'demoapp.Body',
+            namespace: 'app.Body',
     
             'tb.Require': [
-                '/demoapp/body.css'
+                '/app/body.css'
             ]
     
         };
