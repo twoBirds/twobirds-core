@@ -397,6 +397,13 @@ simple: copy tb.js from /dist and insert into your project, or, using npm, follo
 
 ```console
 
+// if necessary install nodeJS
+// see node docs on how to do it...
+
+// if necessary install grunt-cli
+sudo npm install -g grunt-cli
+
+// then:
 npm install
 grunt
 cd src
