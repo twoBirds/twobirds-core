@@ -431,4 +431,6 @@ simple: copy tb.js from /dist and insert into your project, or, using npm, follo
 - view 'test.html' file to see the app code ( in this case, its lack of ;-) )
 - view js files in /src/app/ to see the app code for those objects that are lazy loaded
 
+[I want to support this ![Flattr this](//button.flattr.com/flattr-badge-large.png)](https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) 
+
 In case of questions contact [me](mailTo:fthuerigen@googlemail.com).
