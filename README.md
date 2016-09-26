@@ -8,7 +8,7 @@ Welcome Birdies ;-)
 
 [I want to support this ![Flattr this](//button.flattr.com/flattr-badge-large.png)](https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) 
 
-You can also contact [me](mailTo:fthuerigen@googlemail.com) if you need a specific twoBirds plugin tailored for your needs. Usually that doesnt take a lot.
+You can also [contact me](mailTo:fthuerigen@googlemail.com) if you need a specific twoBirds plugin tailored for your needs. Usually that doesnt take a lot.
 ## Intro
 
 ##### twoBirds is a ...
