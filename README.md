@@ -33,38 +33,42 @@ It consists of 3 parts:
 
 ##### demoapp/myClass.js (simplified here)
 ```js
-var demoapp = demoapp || {};
+MyClass = function(){};
 
-
-demoapp.myClass = function(){};
-
-demoapp.myClass.prototype = {}
+MyClass.prototype = {
+    namespace: 'MyClass'
+}
 ```
-as you see, any plain old javascript class is a tB class.
+...as you see, any plain old javascript constructor can be a tB class. 
+
+The 'namespace' property is convention and allows for selection, see below.
 
 ##### index.html
 ```html
-<body data-tb="demoapp.myClass">
+<body data-tb="MyClass">
 ```
 this will make an instance of above mentioned class and put it in the dom on load automatically.
 
 
 
-##### or, somewhere in your js code:
+##### ...or, somewhere in your js code:
 ```js
 new tb(
-	demoapp.myClass,
+	MyClass,
 	{ ... config data ... },
 	document.body
 );
 ```
-same as above, but done at run-time in an event handler or instance method.
+same as above, but done at run-time in an event handler or instance method of another tB instance - hence: recursive!
 
 #### 2.) a selector to adress instances of these objects on the page
 
 ##### in your code...
 ```
 tb( document.body )    // will return any tb instances that are contained in document.body
+
+tb( /MyClass/ )        // find all instances on page that match the given namespace 
+                       // see namespace static property above, that is what it checks against
 ```
 
 There are a lot of parameter options and chained methods to that selector.
@@ -81,7 +85,7 @@ Read the API documentation included in the package.
 
 ##### in your code...
 ```js
-tb( demoapp.myClass ).on(
+tb( MyClass ).on(
     'myEventName',
     function( e ){
         // e.data === myEventData ...
@@ -236,7 +240,9 @@ You can also insert a twoBirds instance into an already existing instance at run
 ```js
 // somewhere in you class code...
 this.tbElement = new tb(
-	'app.someElement'
+	'app.SomeClass', // an instance of this class
+	{},              // hand this to the constructor
+	this             // the target of the resulting instance points to the current instance
 );
 ```
 
@@ -257,7 +263,9 @@ By default upon startup twoBirds will lookup DOM nodes containing a "data-tb" at
 
 An instance of the class will be created and attached to the DOM node.
  
-If the corresponding class doesnt exist in the repository, on-demand loading is performed. 
+If the corresponding class doesnt exist in the repository, on-demand loading is performed.
+
+So, if the 'app.Body' class does not exist (window.app.Body), the system will look it up under this URL: /app/Body.js
 
 ### tb() Selector and inner structure example
 
