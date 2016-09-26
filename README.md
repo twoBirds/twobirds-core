@@ -408,11 +408,7 @@ npm install
 grunt
 cd src
 
-```
-( you can use whatever you like as a web server, just one option using php here: )
-
-```console
-
+// you can use whatever you like as a web server, just one fast option using php here...
 php -S 0.0.0.0:3000 &
 
 ```
@@ -425,7 +421,7 @@ php -S 0.0.0.0:3000 &
 localhost:3000/index.html
 
 // -> select test page to see it at work
-// -> select API docs to see how it works
+// -> select API docs to inspect the functionality
 
 ```
 
