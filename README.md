@@ -6,7 +6,7 @@ Welcome Birdies ;-)
 
 [I dont want to read a lot - give me a kick-start](#i-dont-want-to-read-a-lot-give-me-a-kick-start)
 
-[I want to support this ![Flattr this](//button.flattr.com/flattr-badge-large.png)](https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) 
+[I want to support this:&nbsp;&nbsp;&nbsp;![Flattr this](//button.flattr.com/flattr-badge-large.png)](https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) 
 
 You can also [contact me](mailTo:fthuerigen@googlemail.com) if you need a specific twoBirds plugin tailored for your needs. Usually that doesnt take a lot.
 
