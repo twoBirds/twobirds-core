@@ -2,7 +2,7 @@
   "name": "twobirds-core",
   "description": "twoBirds Web Component Framework",
   "version": "7.3.60",
-  "license": "GPL-3.0+",
+  "license": "LGPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",
   "main": "dist/tb/tb.js",
