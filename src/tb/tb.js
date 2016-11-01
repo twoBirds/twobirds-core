@@ -1,11 +1,11 @@
-/*! twobirds-core - v7.3.60 - 2016-09-13 */
+/*! twobirds-core - v7.3.61 - 2016-11-01 */
 
 /**
  twoBirds V7 core functionality
 
  @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  @copyright       copyright (c) 2006- Frank Thürigen
- @license         http://www.gnu.org/copyleft/gpl.html GNU GPL v3
+ @license         GNU LGPL v3 - read LICENSE.txt
 
  */
 
