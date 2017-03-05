@@ -209,9 +209,9 @@ describe("tb.dom() selector tests", function() {
 
         describe(".children()", function() {
 
-            it("tb.dom('body').children().length === 6", function() {
+            it("tb.dom('body').children().length === 7", function() {
                 // includes jasmine din tag
-                expect( tb.dom('body').children().length === 6 ).toBe( true );
+                expect( tb.dom('body').children().length === 7 ).toBe( true );
             });
 
             it("tb.dom('body').children('div.test-parent').length === 5", function() {
@@ -364,12 +364,13 @@ describe("tb.dom() selector tests", function() {
 
             it("tb.dom( '<b></b>' ).insertBefore( tb.dom( 'div.test-parent' )[2] )", function() {
                 tb.dom( '<b></b>' ).insertBefore( tb.dom( 'div.test-parent' )[2] );
-                expect( tb.dom( 'body').children()[2].tagName === 'B' ).toBe( true );
+                expect( tb.dom( 'b')[0].nextElementSibling === tb.dom( 'div.test-parent' )[2] ).toBe( true );
+                tb.dom( 'body > b' ).remove();
             });
 
             it("tb.dom( '<b></b>' ).insertAfter( tb.dom( 'div.test-parent' )[2] )", function() {
                 tb.dom( '<b></b>' ).insertAfter( tb.dom( 'div.test-parent' )[2] );
-                expect( tb.dom( 'body').children()[4].tagName === 'B' ).toBe( true );
+                expect( tb.dom( 'div.test-parent' )[2].nextElementSibling === tb.dom( 'b' )[0] ).toBe( true );
                 tb.dom( 'body > b' ).remove();
             });
 

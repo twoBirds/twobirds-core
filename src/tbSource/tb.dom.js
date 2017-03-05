@@ -1442,37 +1442,128 @@ if (typeof module === 'undefined' ){
 
          get or set all form input values
          */
-        function values( pValues ) {
+        function values() {
+
             var that = this,
-                values = pValues || {},
-                formNode,
-                ret = {},
-                value;
+                node = that[0] || undefined,
+                values;
 
-            formNode = that[0] || undefined;
-
-            if ( !formNode || formNode.tagName !== 'FORM' ) { // not a form or no inputs
-                return ret;
+            if ( !node ) { // nothing found
+                return that;
             }
 
-            tb.dom( 'input,select,textarea', formNode )
-                .forEach(
-                    function( pInput ){
-                        var name = tb.dom( pInput ).attr( 'name' );
+            node['values'] = !!node['values'] ? node['values'] : tb.observable({});
 
-                        // console.log( 'tb.Dom.values() input:', pInput );
-                        if ( !!pValues && typeof values[name] !== 'undefined' ){
-                            value = !!values[name] ? values[name] : '';
-                            tb.dom( pInput ).val( value );
-                        }
+            // value hash constructor
+            function Values(){
+            }
 
-                        ret[name] = tb.dom( pInput ).val();
-                    }
-                );
+            // value hash prototype
+            Values.prototype = {
+                observe: function( pCallback, pOnce ){
+                    node['values'].observe( pCallback, pOnce );
+                },
+                encodeURIComponents: function( pNameArray ){
+                    var values = {},
+                        that = this;
 
-            //console.log( 'tb.Dom.values() ret:', ret );
+                    Object
+                        .keys( this )
+                        .forEach(
+                            function( pKey ){
+                                var val = that[pKey];
 
-            return ret;
+                                if ( typeof val === 'string' && ( !pNameArray || pNameArray.indexOf( pKey ) > -1 ) ){
+                                    values[ pKey ] = encodeURIComponent( val );
+                                } else {
+                                    values[ pKey ] = val;
+                                }
+
+                            }
+                        );
+
+                    return values;
+                }
+            };
+
+            // make value hash
+            values = new Values();
+
+            Object.defineProperty(
+                that,
+                'values',
+                {
+                    enumerable: true,
+
+                    configurable: true,
+
+                    set: function( pObject ){
+
+                        // disable notifications for bulk change
+                        node['values']
+                            .enableNotify( false );
+
+                        Object
+                            .keys( pObject )
+                            .forEach(
+                                function( pKey ){
+                                    that.values[ pKey ] = pObject[ pKey ];
+                                }
+                            );
+
+                        // now notify
+                        node['values']
+                            .enableNotify()
+                            .notify();
+
+                    },
+
+                    get: (function(node, observable){ return function(){
+                        var fields = tb.dom('input[name],select[name],textarea[name]', node );
+
+                        fields
+                            .forEach(
+                                function( pField ){
+                                    var key = tb.dom( pField ).attr('name');
+
+                                    if ( values.hasOwnProperty( key ) ){
+                                        return;
+                                    }
+
+                                    Object.defineProperty(
+                                        values,
+                                        key,
+                                        {
+                                            enumerable: true,
+
+                                            get: function(){
+                                                return tb.dom( pField ).val();
+                                            },
+                                            set: function( pValue ){
+                                                var ret = tb.dom( pField ).val( pValue );
+
+                                                observable( values );
+
+                                                tb.dom( pField ).trigger('change');
+
+                                                return ret;
+                                            }
+                                        }
+                                    );
+
+                                }
+                            );
+
+                        // set observable w/ values
+                        node['values']( values );
+
+                        return values;
+
+                    };})( node, node['values'] )
+                }
+            );
+
+            return that.values;
         }
 
         f = function (pSelector, pDomNode) {

@@ -74,12 +74,16 @@ YOU MUST KEEP THE ORDER IN THIS FILE!
  */
 tb.observable = function( pStartValue ){
 
-    var observedValue = pStartValue;
+    var observedValue = pStartValue,
+        enableNotify = true;
 
     // make observable function to return in the end
     var observableFunction = function( p1, p2 ){
 
         function notify(){
+            if ( !enableNotify ) {
+                return;
+            }
             observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
             observableFunction.notify();
         }
@@ -140,6 +144,11 @@ tb.observable = function( pStartValue ){
             }
         );
 
+    };
+
+    // enable notifications
+    observableFunction.enableNotify = function( pEnableNotify ){
+        enableNotify = pEnableNotify === false ? false : true;
     };
 
     // function used to add a callbacks

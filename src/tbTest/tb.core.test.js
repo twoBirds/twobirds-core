@@ -187,23 +187,23 @@ describe("tb.core.js", function() {
                 expect( tb('body').descendants() instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants().length === 505", function() {
-                expect( tb('body').descendants().length === 505 ).toBe( true );
+            it("tb('body').descendants('div.test-parent,span').length === 505", function() {
+                expect( tb('body').descendants('div.test-parent,span').length === 505 ).toBe( true );
             });
 
             it("tb('body').descendants('div') instanceof tb.Selector", function() {
                 expect( tb('body').descendants('div') instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants('div').length === 5", function() {
-                expect( tb('body').descendants('div').length === 5 ).toBe( true );
+            it("tb('body').descendants('div.test-parent').length === 5", function() {
+                expect( tb('body').descendants('.test-parent').length === 5 ).toBe( true );
             });
 
             it("tb('body').descendants('span') instanceof tb.Selector", function() {
                 expect( tb('body').descendants('span') instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants('span').length === 500", function() {
+            it("tb('body').descendants('div.test-parent span').length === 500", function() {
                 expect( tb('body').descendants('span').length === 500 ).toBe( true );
             });
 
