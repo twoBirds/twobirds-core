@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.65 - 2017-03-18 */
+/*! twobirds-core - v7.3.65 - 2017-03-19 */
 
 /**
  twoBirds V7 core functionality
@@ -3424,7 +3424,7 @@ tb.observable = function( pStartValue ){
 
     };
 
-    // enable notifications
+    // enable/disable notifications
     observableFunction.enableNotify = function( pEnableNotify ){
         enableNotify = pEnableNotify === false ? false : true;
     };
@@ -3829,11 +3829,9 @@ tb.Promise = (function(){
     var IS_ERROR = {};
 
     function Promise(fn) {
+        fn = fn || tb.nop;
         if (typeof this !== 'object') {
             throw new TypeError('Promises must be constructed via new');
-        }
-        if (typeof fn !== 'function') {
-            throw new TypeError('Promise constructor\'s argument is not a function');
         }
         this._deferredState = 0;
         this._state = 0;
@@ -3857,6 +3855,10 @@ tb.Promise = (function(){
         return res;
     };
 
+    Promise.prototype.catch = function( pFunction ){
+        return this.then( null, pFunction );
+    };
+
     Promise.prototype.done = function (onFulfilled, onRejected) {
         var self = arguments.length ? this.then.apply(this, arguments) : this;
         self.then(null, function (err) {
@@ -3876,6 +3878,83 @@ tb.Promise = (function(){
                 throw err;
             });
         });
+    };
+
+    Promise.resolve = function( pValue ){
+        var ret = new tb.Promise();
+
+        resolve( ret, pValue );
+
+        return ret;
+    };
+
+    Promise.reject = function( pValue ){
+        var ret = new tb.Promise();
+
+        reject( ret, pValue );
+
+        return ret;
+    };
+
+    Promise.all = function( pIterable ){
+        var count = pIterable.length,
+            observable = tb.observable(count),
+            promise = new Promise(),
+            result = new Array(count);
+
+        // convert to promises if necessary and add callbacks
+        pIterable
+            .forEach( function( pValue, pIndex, pIterable ){
+                if ( pValue.constructor !== Promise ){
+                    pIterable[ pIndex ] = Promise.resolve( pValue );
+                }
+                pIterable[ pIndex ]
+                    .then(function(pValue){
+                        result[ pIndex ] = pValue;
+                        observable( observable() - 1 );
+                    })
+                    .catch(function(pValue){
+                        if ( promise._state === 0 ){
+                            reject( promise, pValue );
+                        }
+                    });
+            });
+
+        observable.observe(function(pValue){
+            if ( pValue === 0 ){
+                observable = null;
+                if ( promise._state === 0 ){
+                    resolve( promise, result );
+                }
+            }
+        });
+
+        return promise;
+    };
+
+    Promise.race = function( pIterable ){
+        var promise = new tb.Promise();
+
+        // convert to promises if necessary and add callbacks
+        pIterable
+            .forEach( function( pValue, pIndex, pIterable ){
+                if ( pValue.constructor !== Promise ){
+                    pIterable[ pIndex ] = Promise.resolve( pValue );
+                }
+                pIterable[ pIndex ]
+                    .then(function(pValue){
+                        if ( promise._state === 0 ){
+                            resolve( promise, pValue );
+                        }
+                    })
+                    .catch(function(pValue){
+                        if ( promise._state === 0 ){
+                            reject( promise, pValue );
+                        }
+                    });
+            });
+
+        return promise;
     };
 
     return Promise;

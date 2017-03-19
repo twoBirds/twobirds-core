@@ -192,7 +192,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4410,
+            "line": 4489,
             "is_constructor": 1,
             "params": [
                 {
@@ -219,7 +219,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4692,
+            "line": 4771,
             "is_constructor": 1,
             "params": [
                 {
@@ -1728,13 +1728,13 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4021,
+            "line": 4100,
             "description": "Take a potentially misbehaving resolver function and make sure\nonFulfilled and onRejected are only called once.\n\nMakes no guarantees about asynchrony.",
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4051,
+            "line": 4130,
             "itemtype": "method",
             "name": "tb.request",
             "params": [
@@ -1811,44 +1811,44 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4074,
+            "line": 4153,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4122,
+            "line": 4201,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4139,
+            "line": 4218,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4161,
+            "line": 4240,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4191,
+            "line": 4270,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4215,
+            "line": 4294,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4243,
+            "line": 4322,
             "name": "",
             "itemtype": "method",
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4390,
+            "line": 4469,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -1866,7 +1866,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4557,
+            "line": 4636,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -1881,7 +1881,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4589,
+            "line": 4668,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1896,7 +1896,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4622,
+            "line": 4701,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1911,7 +1911,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4654,
+            "line": 4733,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1926,7 +1926,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4782,
+            "line": 4861,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1958,15 +1958,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/tb/tb.js:4051"
+            "line": " src/tb/tb.js:4130"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:4243"
+            "line": " src/tb/tb.js:4322"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:4243"
+            "line": " src/tb/tb.js:4322"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1978,35 +1978,35 @@
         },
         {
             "message": "Missing item type\nTake a potentially misbehaving resolver function and make sure\nonFulfilled and onRejected are only called once.\n\nMakes no guarantees about asynchrony.",
-            "line": " src/tb/tb.js:4021"
+            "line": " src/tb/tb.js:4100"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4074"
+            "line": " src/tb/tb.js:4153"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4122"
+            "line": " src/tb/tb.js:4201"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4139"
+            "line": " src/tb/tb.js:4218"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4161"
+            "line": " src/tb/tb.js:4240"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4191"
+            "line": " src/tb/tb.js:4270"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4215"
+            "line": " src/tb/tb.js:4294"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:4782"
+            "line": " src/tb/tb.js:4861"
         }
     ]
 }
