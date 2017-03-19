@@ -940,7 +940,7 @@ if (typeof module === 'undefined' ){
         }
 
         /** @private */
-        function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
+        function handleReadyState(pReq, pResolve, pStateChange, pReject, pOptions) {
             var connection = this;
             var poll = window.setInterval((function (pReadyState) {
                 return function () {
@@ -953,7 +953,7 @@ if (typeof module === 'undefined' ){
                             window.clearTimeout(pReq.aborttimer);
                         }
                         window.clearInterval(poll);
-                        handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
+                        handleTransactionResponse(pReq, pResolve, pReject, pOptions);
                     }
                 };
             })(0), interval);
@@ -962,7 +962,7 @@ if (typeof module === 'undefined' ){
         }
 
         /** @private */
-        function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+        function handleTransactionResponse(pReq, pResolve, pReject, pOptions) {
             var httpStatus,
                 responseObject;
 
@@ -973,10 +973,10 @@ if (typeof module === 'undefined' ){
                 httpStatus = 13030;
             }
 
-            if (httpStatus >= 200 && httpStatus < 300) {
+            if (httpStatus >= 200 && httpStatus < 400) {
                 responseObject = createResponseObject(pReq, pOptions);
                 try {
-                    pCallback.call(pCallback, responseObject);
+                    pResolve( responseObject );
                 }
                 catch (e) {
                     if (tb.debug){
@@ -986,7 +986,7 @@ if (typeof module === 'undefined' ){
             }
             else {
                 responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
-                pFailure.call( pFailure, responseObject );
+                pReject( responseObject );
             }
             release(pReq);
         }
@@ -997,11 +997,24 @@ if (typeof module === 'undefined' ){
                 tId: pObj.identifier,
                 status: pObj.connection.status,
                 statusText: pObj.connection.statusText,
-                allResponseHeaders: pObj.connection.getAllResponseHeaders(),
+                responseHeaders: {},
+                requestHeaders: pOptions.headers,
                 text: pObj.connection.responseText,
                 xml: pObj.connection.responseXML,
                 options: pOptions
             };
+
+            pObj
+                .connection
+                .getAllResponseHeaders()
+                .split('\r\n')
+                .forEach(function(pSubString){
+                    var key = pSubString.split(':')[0],
+                        value = pSubString.substr( pSubString.indexOf(':')+1 );
+                    if ( !!pSubString ) {
+                        obj.responseHeaders[key] = value;
+                    }
+                });
 
             // attempt to convert text to JSON object
             if ( !!pOptions['dataType'] && pOptions['dataType'].toLowerCase() === 'json' ){
@@ -1055,9 +1068,10 @@ if (typeof module === 'undefined' ){
                 params = '',
                 successHandler = pOptions.success || tb.nop,
                 errorHandler = pOptions.error || tb.nop,
+                finalHandler = pOptions.finally || tb.nop,
                 stateHandler = pOptions.statechange || tb.nop,
                 isCachable = pOptions.cachable || false,
-                headers = pOptions.headers || {},
+                headers = pOptions.headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
                 isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true,
                 ct;
@@ -1102,82 +1116,93 @@ if (typeof module === 'undefined' ){
             }
 
             if (xmlreq) {
-                if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
-                    url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
-                }
-                xmlreq.src = url;
+                var promise = new tb.Promise(function( resolve, reject ){
+                    if ( ( method === 'GET' || method === 'DELETE' ) && params !== '') {
+                        url = url + (url.indexOf('?') < 0 ? '?' : '&') + params;
+                    }
+                    xmlreq.src = url;
 
-                xmlreq.connection.open(method, url, isAsync);
+                    xmlreq.connection.open(method, url, isAsync);
 
-                if (isAsync === true) {
-                    xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
-                }
+                    if (isAsync === true) {
+                        xmlreq.poll = handleReadyState(xmlreq, resolve, stateHandler, reject, pOptions);
+                    }
 
-                // set request headers
-                Object
-                    .keys( headers )
-                    .forEach(
-                        function( pHeaderVar ){
-                            if (pHeaderVar !== 'Content-Type') {
-                                xmlreq.connection.setRequestHeader(pHeaderVar, headers[pHeaderVar]);
-                            }
-                        }
-                    );
-
-                // abort functionality
-                if (timeout) {
-                    xmlreq.timeoutTimer = window.setTimeout(
-
-                        (function (pT, pR) {
-                            var f = typeof pT.cb === 'function' ? pT.cb : false;
-                            return function () {
-                                //if ( !myR && myR.connection.status == 4 ) { return; }
-                                if (typeof f === 'function') {
-                                    f( /*createResponseObject(myR)*/ );
+                    // set request headers
+                    Object
+                        .keys( headers )
+                        .forEach(
+                            function( pHeaderVar ){
+                                if (pHeaderVar !== 'Content-Type') {
+                                    xmlreq.connection.setRequestHeader(pHeaderVar, headers[pHeaderVar]);
                                 }
-                                pR.connection.abort();
-                                window.clearInterval(pR.poll);
-                            };
-                        })(timeout, xmlreq), timeout.ms);
-                }
+                            }
+                        );
 
-                xmlreq.abort = ( function(xmlreq) {
-                    return function () {
-                        window.clearInterval(xmlreq.poll);
-                        if (xmlreq.connection){
-                            xmlreq.connection.abort();
+                    // abort functionality
+                    if (timeout) {
+                        xmlreq.timeoutTimer = window.setTimeout(
+
+                            (function (pT, pR) {
+                                var f = typeof pT.cb === 'function' ? pT.cb : false;
+                                return function () {
+                                    //if ( !myR && myR.connection.status == 4 ) { return; }
+                                    if (typeof f === 'function') {
+                                        f( /*createResponseObject(myR)*/ );
+                                    }
+                                    pR.connection.abort();
+                                    window.clearInterval(pR.poll);
+                                };
+                            })(timeout, xmlreq), timeout.ms);
+                    }
+
+                    xmlreq.abort = ( function(xmlreq) {
+                        return function () {
+                            window.clearInterval(xmlreq.poll);
+                            if (xmlreq.connection){
+                                xmlreq.connection.abort();
+                            }
+                            release(xmlreq);
+                        };
+                    })( xmlreq );
+
+                    // send
+                    if (method === 'POST' || method === 'PUT') {
+                        if (params !== '') {
+                            xmlreq.connection.setRequestHeader('Content-Type', ct);
+                            xmlreq.connection.send(params);
                         }
-                        release(xmlreq);
-                    };
-                })( xmlreq );
-
-                // send
-                if (method === 'POST' || method === 'PUT') {
-                    if (params !== '') {
-                        xmlreq.connection.setRequestHeader('Content-Type', ct);
-                        xmlreq.connection.send(params);
+                        else {
+                            xmlreq.connection.send(null);
+                        }
                     }
                     else {
                         xmlreq.connection.send(null);
                     }
-                }
-                else {
-                    xmlreq.connection.send(null);
-                }
-                // if sync request direct handler call
-                if (isAsync === false) {
-                    tb.request.dec();
-                    if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
-                        successHandler( xmlreq );
+                    // if sync request direct handler call
+                    if (isAsync === false) {
+                        tb.request.dec();
+                        if (xmlreq.connection.status >= 200 && xmlreq.connection.status < 300) {
+                            resolve( createResponseObject( xmlreq, tb.extend( {}, pOptions ) ) );
+                        }
+                        else {
+                            reject( createResponseObject( xmlreq, tb.extend( {}, pOptions ) ) );
+                        }
                     }
-                    else {
-                        errorHandler( xmlreq );
-                    }
-                }
-                else {
-                    return xmlreq;
-                }
-                return;
+                });
+
+                promise
+                    .then(function(pResult){
+                        successHandler( pResult );
+                    })
+                    .catch(function(pResult){
+                        errorHandler( pResult );
+                    })
+                    .finally(function(pResult){
+                        finalHandler( pResult );
+                    });
+
+                return promise;
             }
             else {
                 return false;

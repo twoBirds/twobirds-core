@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.3.65",
+        "version": "v7.3.67",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -192,7 +192,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4489,
+            "line": 4514,
             "is_constructor": 1,
             "params": [
                 {
@@ -219,7 +219,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4771,
+            "line": 4796,
             "is_constructor": 1,
             "params": [
                 {
@@ -1836,19 +1836,19 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4294,
+            "line": 4307,
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4322,
+            "line": 4335,
             "name": "",
             "itemtype": "method",
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4469,
+            "line": 4494,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -1866,7 +1866,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4636,
+            "line": 4661,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -1881,7 +1881,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4668,
+            "line": 4693,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1896,7 +1896,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4701,
+            "line": 4726,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1911,7 +1911,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4733,
+            "line": 4758,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1926,7 +1926,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4861,
+            "line": 4886,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1962,11 +1962,11 @@
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:4322"
+            "line": " src/tb/tb.js:4335"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:4322"
+            "line": " src/tb/tb.js:4335"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -2002,11 +2002,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4294"
+            "line": " src/tb/tb.js:4307"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:4861"
+            "line": " src/tb/tb.js:4886"
         }
     ]
 }

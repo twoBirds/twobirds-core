@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.65</em>
+            <em>API Docs for: v7.3.67</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.65 - 2017-03-19 */
+/*! twobirds-core - v7.3.67 - 2017-03-19 */
 
 /**
  twoBirds V7 core functionality
@@ -4304,7 +4304,7 @@ if (typeof module === &#x27;undefined&#x27; ){
         }
 
         /** @private */
-        function handleReadyState(pReq, pCallback, pStateChange, pFailure, pOptions) {
+        function handleReadyState(pReq, pResolve, pStateChange, pReject, pOptions) {
             var connection = this;
             var poll = window.setInterval((function (pReadyState) {
                 return function () {
@@ -4317,7 +4317,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                             window.clearTimeout(pReq.aborttimer);
                         }
                         window.clearInterval(poll);
-                        handleTransactionResponse(pReq, pCallback, pFailure, pOptions);
+                        handleTransactionResponse(pReq, pResolve, pReject, pOptions);
                     }
                 };
             })(0), interval);
@@ -4326,7 +4326,7 @@ if (typeof module === &#x27;undefined&#x27; ){
         }
 
         /** @private */
-        function handleTransactionResponse(pReq, pCallback, pFailure, pOptions) {
+        function handleTransactionResponse(pReq, pResolve, pReject, pOptions) {
             var httpStatus,
                 responseObject;
 
@@ -4337,10 +4337,10 @@ if (typeof module === &#x27;undefined&#x27; ){
                 httpStatus = 13030;
             }
 
-            if (httpStatus &gt;= 200 &amp;&amp; httpStatus &lt; 300) {
+            if (httpStatus &gt;= 200 &amp;&amp; httpStatus &lt; 400) {
                 responseObject = createResponseObject(pReq, pOptions);
                 try {
-                    pCallback.call(pCallback, responseObject);
+                    pResolve( responseObject );
                 }
                 catch (e) {
                     if (tb.debug){
@@ -4350,7 +4350,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
             else {
                 responseObject = createResponseObject(pReq, tb.extend( {}, pOptions ) );
-                pFailure.call( pFailure, responseObject );
+                pReject( responseObject );
             }
             release(pReq);
         }
@@ -4361,11 +4361,24 @@ if (typeof module === &#x27;undefined&#x27; ){
                 tId: pObj.identifier,
                 status: pObj.connection.status,
                 statusText: pObj.connection.statusText,
-                allResponseHeaders: pObj.connection.getAllResponseHeaders(),
+                responseHeaders: {},
+                requestHeaders: pOptions.headers,
                 text: pObj.connection.responseText,
                 xml: pObj.connection.responseXML,
                 options: pOptions
             };
+
+            pObj
+                .connection
+                .getAllResponseHeaders()
+                .split(&#x27;\r\n&#x27;)
+                .forEach(function(pSubString){
+                    var key = pSubString.split(&#x27;:&#x27;)[0],
+                        value = pSubString.substr( pSubString.indexOf(&#x27;:&#x27;)+1 );
+                    if ( !!pSubString ) {
+                        obj.responseHeaders[key] = value;
+                    }
+                });
 
             // attempt to convert text to JSON object
             if ( !!pOptions[&#x27;dataType&#x27;] &amp;&amp; pOptions[&#x27;dataType&#x27;].toLowerCase() === &#x27;json&#x27; ){
@@ -4419,9 +4432,10 @@ if (typeof module === &#x27;undefined&#x27; ){
                 params = &#x27;&#x27;,
                 successHandler = pOptions.success || tb.nop,
                 errorHandler = pOptions.error || tb.nop,
+                finalHandler = pOptions.finally || tb.nop,
                 stateHandler = pOptions.statechange || tb.nop,
                 isCachable = pOptions.cachable || false,
-                headers = pOptions.headers || {},
+                headers = pOptions.headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
                 isAsync = (typeof pOptions.async !== &#x27;undefined&#x27; &amp;&amp; pOptions.async === false) ? false : true,
                 ct;
@@ -4466,82 +4480,93 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             if (xmlreq) {
-                if ( ( method === &#x27;GET&#x27; || method === &#x27;DELETE&#x27; ) &amp;&amp; params !== &#x27;&#x27;) {
-                    url = url + (url.indexOf(&#x27;?&#x27;) &lt; 0 ? &#x27;?&#x27; : &#x27;&amp;&#x27;) + params;
-                }
-                xmlreq.src = url;
+                var promise = new tb.Promise(function( resolve, reject ){
+                    if ( ( method === &#x27;GET&#x27; || method === &#x27;DELETE&#x27; ) &amp;&amp; params !== &#x27;&#x27;) {
+                        url = url + (url.indexOf(&#x27;?&#x27;) &lt; 0 ? &#x27;?&#x27; : &#x27;&amp;&#x27;) + params;
+                    }
+                    xmlreq.src = url;
 
-                xmlreq.connection.open(method, url, isAsync);
+                    xmlreq.connection.open(method, url, isAsync);
 
-                if (isAsync === true) {
-                    xmlreq.poll = handleReadyState(xmlreq, successHandler, stateHandler, errorHandler, pOptions);
-                }
+                    if (isAsync === true) {
+                        xmlreq.poll = handleReadyState(xmlreq, resolve, stateHandler, reject, pOptions);
+                    }
 
-                // set request headers
-                Object
-                    .keys( headers )
-                    .forEach(
-                        function( pHeaderVar ){
-                            if (pHeaderVar !== &#x27;Content-Type&#x27;) {
-                                xmlreq.connection.setRequestHeader(pHeaderVar, headers[pHeaderVar]);
-                            }
-                        }
-                    );
-
-                // abort functionality
-                if (timeout) {
-                    xmlreq.timeoutTimer = window.setTimeout(
-
-                        (function (pT, pR) {
-                            var f = typeof pT.cb === &#x27;function&#x27; ? pT.cb : false;
-                            return function () {
-                                //if ( !myR &amp;&amp; myR.connection.status == 4 ) { return; }
-                                if (typeof f === &#x27;function&#x27;) {
-                                    f( /*createResponseObject(myR)*/ );
+                    // set request headers
+                    Object
+                        .keys( headers )
+                        .forEach(
+                            function( pHeaderVar ){
+                                if (pHeaderVar !== &#x27;Content-Type&#x27;) {
+                                    xmlreq.connection.setRequestHeader(pHeaderVar, headers[pHeaderVar]);
                                 }
-                                pR.connection.abort();
-                                window.clearInterval(pR.poll);
-                            };
-                        })(timeout, xmlreq), timeout.ms);
-                }
+                            }
+                        );
 
-                xmlreq.abort = ( function(xmlreq) {
-                    return function () {
-                        window.clearInterval(xmlreq.poll);
-                        if (xmlreq.connection){
-                            xmlreq.connection.abort();
+                    // abort functionality
+                    if (timeout) {
+                        xmlreq.timeoutTimer = window.setTimeout(
+
+                            (function (pT, pR) {
+                                var f = typeof pT.cb === &#x27;function&#x27; ? pT.cb : false;
+                                return function () {
+                                    //if ( !myR &amp;&amp; myR.connection.status == 4 ) { return; }
+                                    if (typeof f === &#x27;function&#x27;) {
+                                        f( /*createResponseObject(myR)*/ );
+                                    }
+                                    pR.connection.abort();
+                                    window.clearInterval(pR.poll);
+                                };
+                            })(timeout, xmlreq), timeout.ms);
+                    }
+
+                    xmlreq.abort = ( function(xmlreq) {
+                        return function () {
+                            window.clearInterval(xmlreq.poll);
+                            if (xmlreq.connection){
+                                xmlreq.connection.abort();
+                            }
+                            release(xmlreq);
+                        };
+                    })( xmlreq );
+
+                    // send
+                    if (method === &#x27;POST&#x27; || method === &#x27;PUT&#x27;) {
+                        if (params !== &#x27;&#x27;) {
+                            xmlreq.connection.setRequestHeader(&#x27;Content-Type&#x27;, ct);
+                            xmlreq.connection.send(params);
                         }
-                        release(xmlreq);
-                    };
-                })( xmlreq );
-
-                // send
-                if (method === &#x27;POST&#x27; || method === &#x27;PUT&#x27;) {
-                    if (params !== &#x27;&#x27;) {
-                        xmlreq.connection.setRequestHeader(&#x27;Content-Type&#x27;, ct);
-                        xmlreq.connection.send(params);
+                        else {
+                            xmlreq.connection.send(null);
+                        }
                     }
                     else {
                         xmlreq.connection.send(null);
                     }
-                }
-                else {
-                    xmlreq.connection.send(null);
-                }
-                // if sync request direct handler call
-                if (isAsync === false) {
-                    tb.request.dec();
-                    if (xmlreq.connection.status &gt;= 200 &amp;&amp; xmlreq.connection.status &lt; 300) {
-                        successHandler( xmlreq );
+                    // if sync request direct handler call
+                    if (isAsync === false) {
+                        tb.request.dec();
+                        if (xmlreq.connection.status &gt;= 200 &amp;&amp; xmlreq.connection.status &lt; 300) {
+                            resolve( createResponseObject( xmlreq, tb.extend( {}, pOptions ) ) );
+                        }
+                        else {
+                            reject( createResponseObject( xmlreq, tb.extend( {}, pOptions ) ) );
+                        }
                     }
-                    else {
-                        errorHandler( xmlreq );
-                    }
-                }
-                else {
-                    return xmlreq;
-                }
-                return;
+                });
+
+                promise
+                    .then(function(pResult){
+                        successHandler( pResult );
+                    })
+                    .catch(function(pResult){
+                        errorHandler( pResult );
+                    })
+                    .finally(function(pResult){
+                        finalHandler( pResult );
+                    });
+
+                return promise;
             }
             else {
                 return false;
