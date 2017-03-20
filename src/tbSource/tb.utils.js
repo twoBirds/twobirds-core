@@ -578,40 +578,6 @@ tb.Promise = (function(){
         done: _done
     };
 
-    function _then(onFulfilled, onRejected) {
-        if (this.constructor !== Promise) {
-            return safeThen(this, onFulfilled, onRejected);
-        }
-        var res = new Promise(tb.nop);
-        handle(this, new Handler(onFulfilled, onRejected, res));
-        return res;
-    }
-
-    function _catch( pFunction ){
-        return this.then( null, pFunction );
-    }
-
-    function _done(onFulfilled, onRejected) {
-        var that = arguments.length ? this.then.apply(this, arguments) : this;
-        that.then(null, function (err) {
-            setTimeout(function () {
-                throw err;
-            }, 0);
-        });
-    }
-
-    function _finally(f) {
-        return this.then(function (value) {
-            return Promise.resolve(f()).then(function () {
-                return value;
-            });
-        }, function (err) {
-            return Promise.resolve(f()).then(function () {
-                throw err;
-            });
-        });
-    }
-
     // static methods
     Promise.resolve = function( pValue ){
         var ret = new tb.Promise();
@@ -693,6 +659,44 @@ tb.Promise = (function(){
     return Promise;
 
     // private functions
+
+    // HINT: ignore:lines are needed because jslint regards these functions as being standalone,
+    // which they are not - they are the bodys of Promise.prototype methods.
+
+    function _then(onFulfilled, onRejected) {
+        if (this.constructor !== Promise) { // jshint ignore:line
+            return safeThen(this, onFulfilled, onRejected); // jshint ignore:line
+        }
+        var res = new Promise(tb.nop);
+        handle(this, new Handler(onFulfilled, onRejected, res)); // jshint ignore:line
+        return res;
+    }
+
+    function _catch( pFunction ){
+        return this.then( null, pFunction ); // jshint ignore:line
+    }
+
+    function _done(onFulfilled, onRejected) {
+        var that = arguments.length ? this.then.apply(this, arguments) : this; // jshint ignore:line
+        that.then(null, function (err) {
+            setTimeout(function () {
+                throw err;
+            }, 0);
+        });
+    }
+
+    function _finally(f) {
+        return this.then(function (value) { // jshint ignore:line
+            return Promise.resolve(f()).then(function () {
+                return value;
+            });
+        }, function (err) {
+            return Promise.resolve(f()).then(function () {
+                throw err;
+            });
+        });
+    }
+
     function getThen(obj) {
         try {
             return obj.then;

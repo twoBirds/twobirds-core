@@ -21,7 +21,7 @@ You can also [contact me](mailTo:fthuerigen@googlemail.com) if you need a specif
 
 ##### ... JavaScript framework that maps objects to DOM nodes.
 
-twoBirds strictly follows the KISS and DRY doctrines, also some of SOLID.
+twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines, also by coding style it encourages the use of [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)) principles.
 
 It is JS-linted, jasmine tested and this package contains the complete API documentation. 
 
