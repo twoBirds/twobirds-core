@@ -552,6 +552,7 @@ tb.Promise = (function(){
     var LAST_ERROR = null;
     var IS_ERROR = {};
 
+    // Promise constructor
     function Promise(fn) {
         fn = fn || tb.nop;
         if (typeof this !== 'object') {
@@ -568,31 +569,38 @@ tb.Promise = (function(){
     }
     Promise._onHandle = null;
     Promise._onReject = null;
-    Promise._noop = tb.nop;
 
-    Promise.prototype.then = function(onFulfilled, onRejected) {
+    // Promise prototype
+    Promise.prototype = {
+        then: _then,
+        'catch': _catch,
+        'finally': _finally,
+        done: _done
+    };
+
+    function _then(onFulfilled, onRejected) {
         if (this.constructor !== Promise) {
             return safeThen(this, onFulfilled, onRejected);
         }
         var res = new Promise(tb.nop);
         handle(this, new Handler(onFulfilled, onRejected, res));
         return res;
-    };
+    }
 
-    Promise.prototype.catch = function( pFunction ){
+    function _catch( pFunction ){
         return this.then( null, pFunction );
-    };
+    }
 
-    Promise.prototype.done = function (onFulfilled, onRejected) {
-        var self = arguments.length ? this.then.apply(this, arguments) : this;
-        self.then(null, function (err) {
+    function _done(onFulfilled, onRejected) {
+        var that = arguments.length ? this.then.apply(this, arguments) : this;
+        that.then(null, function (err) {
             setTimeout(function () {
                 throw err;
             }, 0);
         });
-    };
+    }
 
-    Promise.prototype['finally'] = function (f) {
+    function _finally(f) {
         return this.then(function (value) {
             return Promise.resolve(f()).then(function () {
                 return value;
@@ -602,8 +610,9 @@ tb.Promise = (function(){
                 throw err;
             });
         });
-    };
+    }
 
+    // static methods
     Promise.resolve = function( pValue ){
         var ret = new tb.Promise();
 
@@ -683,6 +692,7 @@ tb.Promise = (function(){
 
     return Promise;
 
+    // private functions
     function getThen(obj) {
         try {
             return obj.then;
@@ -709,49 +719,49 @@ tb.Promise = (function(){
         }
     }
 
-    function safeThen(self, onFulfilled, onRejected) {
-        return new self.constructor(function (resolve, reject) {
+    function safeThen(that, onFulfilled, onRejected) {
+        return new that.constructor(function (resolve, reject) {
             var res = new Promise(tb.nop);
             res.then(resolve, reject);
-            handle(self, new Handler(onFulfilled, onRejected, res));
+            handle(that, new Handler(onFulfilled, onRejected, res));
         });
     }
-    function handle(self, deferred) {
-        while (self._state === 3) {
-            self = self._value;
+    function handle(that, deferred) {
+        while (that._state === 3) {
+            that = that._value;
         }
         if (Promise._onHandle) {
-            Promise._onHandle(self);
+            Promise._onHandle(that);
         }
-        if (self._state === 0) {
-            if (self._deferredState === 0) {
-                self._deferredState = 1;
-                self._deferreds = deferred;
+        if (that._state === 0) {
+            if (that._deferredState === 0) {
+                that._deferredState = 1;
+                that._deferreds = deferred;
                 return;
             }
-            if (self._deferredState === 1) {
-                self._deferredState = 2;
-                self._deferreds = [self._deferreds, deferred];
+            if (that._deferredState === 1) {
+                that._deferredState = 2;
+                that._deferreds = [that._deferreds, deferred];
                 return;
             }
-            self._deferreds.push(deferred);
+            that._deferreds.push(deferred);
             return;
         }
-        handleResolved(self, deferred);
+        handleResolved(that, deferred);
     }
 
-    function handleResolved(self, deferred) {
+    function handleResolved(that, deferred) {
         setTimeout( function() {
-            var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
+            var cb = that._state === 1 ? deferred.onFulfilled : deferred.onRejected;
             if (cb === null) {
-                if (self._state === 1) {
-                    resolve(deferred.promise, self._value);
+                if (that._state === 1) {
+                    resolve(deferred.promise, that._value);
                 } else {
-                    reject(deferred.promise, self._value);
+                    reject(deferred.promise, that._value);
                 }
                 return;
             }
-            var ret = tryCallOne(cb, self._value);
+            var ret = tryCallOne(cb, that._value);
             if (ret === IS_ERROR) {
                 reject(deferred.promise, LAST_ERROR);
             } else {
@@ -760,11 +770,11 @@ tb.Promise = (function(){
         }, 0);
     }
 
-    function resolve(self, newValue) {
+    function resolve(that, newValue) {
         // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-        if (newValue === self) {
+        if (newValue === that) {
             return reject(
-                self,
+                that,
                 new TypeError('A promise cannot be resolved with itself.')
             );
         }
@@ -774,44 +784,44 @@ tb.Promise = (function(){
         ) {
             var then = getThen(newValue);
             if (then === IS_ERROR) {
-                return reject(self, LAST_ERROR);
+                return reject(that, LAST_ERROR);
             }
             if (
-                then === self.then &&
+                then === that.then &&
                 newValue instanceof Promise
             ) {
-                self._state = 3;
-                self._value = newValue;
-                finale(self);
+                that._state = 3;
+                that._value = newValue;
+                finale(that);
                 return;
             } else if (typeof then === 'function') {
-                doResolve(then.bind(newValue), self);
+                doResolve(then.bind(newValue), that);
                 return;
             }
         }
-        self._state = 1;
-        self._value = newValue;
-        finale(self);
+        that._state = 1;
+        that._value = newValue;
+        finale(that);
     }
 
-    function reject(self, newValue) {
-        self._state = 2;
-        self._value = newValue;
+    function reject(that, newValue) {
+        that._state = 2;
+        that._value = newValue;
         if (Promise._onReject) {
-            Promise._onReject(self, newValue);
+            Promise._onReject(that, newValue);
         }
-        finale(self);
+        finale(that);
     }
-    function finale(self) {
-        if (self._deferredState === 1) {
-            handle(self, self._deferreds);
-            self._deferreds = null;
+    function finale(that) {
+        if (that._deferredState === 1) {
+            handle(that, that._deferreds);
+            that._deferreds = null;
         }
-        if (self._deferredState === 2) {
-            for (var i = 0; i < self._deferreds.length; i++) {
-                handle(self, self._deferreds[i]);
+        if (that._deferredState === 2) {
+            for (var i = 0; i < that._deferreds.length; i++) {
+                handle(that, that._deferreds[i]);
             }
-            self._deferreds = null;
+            that._deferreds = null;
         }
     }
 
