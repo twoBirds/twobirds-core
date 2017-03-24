@@ -367,7 +367,7 @@ tb.idle = function( pCallback ){
 
                 if (
                     x === 0 // nothing loading currently
-                    && tb.loader.idle() // system is idle
+                    && tb.require.loadcount === 0
                     && tb.status.loadCount.lastChanged === f.lastChanged // and its still the previous '0' loadcount
                 ){
                     // system is still idle
@@ -680,7 +680,8 @@ tb.Promise = (function(){
 
      */
     Promise.resolve = function( pValue ){
-        var ret = new tb.Promise();
+        var ret = new tb.Promise(function( resolve, reject ){
+        });
 
         resolve( ret, pValue );
 
@@ -703,7 +704,8 @@ tb.Promise = (function(){
 
      */
     Promise.reject = function( pValue ){
-        var ret = new tb.Promise();
+        var ret = new tb.Promise(function( resolve, reject ){
+        });
 
         reject( ret, pValue );
 
@@ -733,6 +735,7 @@ tb.Promise = (function(){
         });
      */
     Promise.all = function( pIterable ){
+
         var count = pIterable.length,
             observable = tb.observable(count),
             promise = new Promise(),
@@ -740,20 +743,25 @@ tb.Promise = (function(){
 
         // convert to promises if necessary and add callbacks
         pIterable
-            .forEach( function( pValue, pIndex, pIterable ){
-                if ( pValue.constructor !== Promise ){
-                    pIterable[ pIndex ] = Promise.resolve( pValue );
+            .forEach( function( pValue, pIndex ){
+
+                if ( !pValue.then || typeof pValue.then !== 'function' ){
+                    pValue = tb.Promise.resolve( pValue );
                 }
-                pIterable[ pIndex ]
+                  
+                pValue
                     .then(function(pValue){
                         result[ pIndex ] = pValue;
-                        observable( observable() - 1 );
                     })
                     .catch(function(pValue){
                         if ( promise._state === 0 ){
-                            reject( promise, pValue );
+                            reject( promise, pValue._value );
                         }
+                    })
+                    .finally(function(pValue){
+                        observable( observable() - 1 );
                     });
+
             });
 
         observable.observe(function(pValue){
@@ -809,11 +817,12 @@ tb.Promise = (function(){
 
         // convert to promises if necessary and add callbacks
         pIterable
-            .forEach( function( pValue, pIndex, pIterable ){
+            .forEach( function( pValue, pIndex, pOriginalIterable ){
                 if ( pValue.constructor !== Promise ){
-                    pIterable[ pIndex ] = Promise.resolve( pValue );
+                    pOriginalIterable[ pIndex ] = Promise.resolve( pValue );
                 }
-                pIterable[ pIndex ]
+                
+                pOriginalIterable[ pIndex ]
                     .then(function(pValue){
                         if ( promise._state === 0 ){
                             resolve( promise, pValue );
@@ -837,7 +846,7 @@ tb.Promise = (function(){
     // which they are not - they are the implementation of Promise.prototype methods.
 
     function _then(onFulfilled, onRejected) {
-        if (this.constructor !== Promise) { // jshint ignore:line
+        if ( !( this instanceof Promise) ) { // jshint ignore:line
             return safeThen(this, onFulfilled, onRejected); // jshint ignore:line
         }
         var res = new Promise(tb.nop);
@@ -860,7 +869,7 @@ tb.Promise = (function(){
 
     function _finally(f) {
         return this.then(function (value) { // jshint ignore:line
-            return Promise.resolve(f()).then(function () {
+            return tb.Promise.resolve(f()).then(function () {
                 return value;
             });
         }, function (err) {
@@ -898,7 +907,7 @@ tb.Promise = (function(){
 
     function safeThen(that, onFulfilled, onRejected) {
         return new that.constructor(function (resolve, reject) {
-            var res = new Promise(tb.nop);
+            var res = new tb.Promise(tb.nop);
             res.then(resolve, reject);
             handle(that, new Handler(onFulfilled, onRejected, res));
         });
@@ -1035,6 +1044,278 @@ tb.Promise = (function(){
 
 })();
 
+/**
+ @class tb.Require
+ @constructor
+
+ @param   {array} pRequiredFiles - array containing required files
+
+ @return {object} - Promise/A+ compliant promise object
+
+ tb.Require class
+
+ - add into prototype of your constructor
+ - instance will get an 'init' event when all files have loaded.
+
+ @example
+
+     tb.namespace( 'app.GrandParent' ).set( 
+         (function(){
+
+              // Constructor
+              function GrandParent(){
+                  var that = this;
+    
+                  that.handlers = {
+                      init,
+                      test
+                  };
+    
+              }
+    
+              // Prototype
+              GrandParent.prototype = {
+    
+                  namespace: 'app.GrandParent',
+    
+                  'tb.Require': [
+                       '/app/GrandParent.css'
+                  ]
+    
+              };
+    
+              return GrandParent;
+    
+              // Private Methods
+    
+              // ...
+    
+         })()
+     );
+ */
+if ( typeof module === 'undefined' ) {
+
+    // mapping to tb.require
+    tb.Require = function ( pConfig ) {
+        var promise = tb.require( pConfig );
+
+        promise.then(function(){ console.log( 'tb.Require promise', promise ); });
+
+        return promise;
+    };
+
+    tb.Require.prototype = {};
+
+} else {
+    // todo: local loading in nodeJS
+}
+
+
+/**
+ @method tb.require
+ @extends tb
+ @static
+
+ @param {array} pFiles- array of filenames
+ @param {function} [pCallback] - optional, a callback after all loading is done
+ 
+ @return {object} - Promise/A+ compliant promise object
+
+ @example
+
+    // in your code ...
+    tb.require([
+        '/app/styles.css',                  // .css will be inserted into head <link>
+        '/app/someJavascript.js',           // .js will be insertid into head <script>
+        '/app/someData.json',               // .json data will be parsed to JS object
+        '/app/templates/someTemplate.html'  // all other file contents will be saved into repo
+    ], function(){
+        // do something when all loading activity has finished
+    });
+ 
+ */
+tb.require = function( pFiles, pCallback ){
+
+    var promiseArray = [], // used for Promise.all()
+        ret;
+
+    console.log( 'tb.require()', pFiles);
+
+    if ( !pFiles ){
+        var warn = 'tb.require: no files given.';
+
+        console.warn(warn);
+
+        return tb.Promise.reject(warn);
+    }
+
+    // convert to array anyway
+    if ( typeof pFiles === 'string' ){
+        pFiles = [ pFiles ];
+    }
+
+    // make parameter array for tb.Promise.all
+    pFiles
+        .forEach(function( pFile ){
+            var type = _getTypeFromSrc( pFile );
+
+            if ( pFile.split('/').pop().indexOf('.') === -1 ){ // file type extension
+                var warn = 'tb.require: no file type given for ';
+
+                console.warn( warn, pFile );
+
+                return tb.Promise.reject( warn + pFile );
+            }
+
+            // file type container does not exist
+            if ( !tb.require.repo[type] ){
+                tb.require.repo[type] = {};
+            }
+
+            // file promise does not exist in container
+            if ( !tb.require.repo[type][pFile] ){
+                tb.require.repo[type][pFile] = _load( pFile );
+            }
+
+            // finally push promise
+            promiseArray.push( tb.require.repo[type][pFile] );
+
+        });
+
+
+    ret = tb.Promise.all(promiseArray);
+
+    // attach callback if given
+    if ( !!pCallback ){
+        ret.finally( function(pValueArray){
+            pCallback.call( pValueArray );
+        });
+    }
+
+    return ret;
+
+    // private functions
+
+    function _load(pFile){
+        
+        var typeConfigs = { // standard configuration types
+                'css': {
+                    tag: 'link',
+                    attributes: {
+                        type: 'text/css',
+                        rel: 'stylesheet',
+                        href: '{src}'
+                    }
+                },
+                'js': {
+                    tag: 'script',
+                    attributes: {
+                        type: 'text/javascript',
+                        src: '{src}'
+                    }
+                }
+            },
+            typeConfig,
+            type = _getTypeFromSrc(pFile),
+            file = pFile,
+            promise;
+
+        // cache busting
+        if ( !!tb.require.cacheBust ){
+            file = pFile + ( pFile.indexOf('?') > -1 ? '&' : '?' ) + tb.getId();
+        }
+
+        console.log('load', type, typeConfigs);
+
+        // do loading
+        if ( !!typeConfigs[type] ) { // either *.css or *.js file
+
+            promise = new tb.Promise(function(resolve, reject){
+                var element;
+
+                console.log('special load', type, typeConfigs);
+
+                // increase loadcount ( tb.idle() related )
+                tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
+                tb.require.loadCount++;
+
+                // get default config for type
+                typeConfig = typeConfigs[type];
+
+                // create DOM element
+                element = document.createElement(typeConfig.tag);
+                element.async = true;
+                element.onreadystatechange = element.onload = function () {
+                    var state = element.readyState;
+                    if ( !state || /loaded|complete/.test(state) ) {
+                        tb.require.loadCount--;
+                        resolve('1');
+                    }
+                };
+
+                // add attributes to DOM element
+                Object
+                    .keys( typeConfig.attributes )
+                    .forEach(
+                        function( pKey ){
+                            element.setAttribute(pKey, tb.parse(typeConfig.attributes[pKey], { src: pFile }));
+                        }
+                    );
+
+                // append node to head
+                document.getElementsByTagName('head')[0].appendChild(element);
+
+            }).finally(function(){
+
+                // decrease loadcount ( tb.idle() related )
+                tb.status.loadCount(tb.status.loadCount() - 1); // increase loadCount
+
+                tb.require.repo[type][pFile] = 'done';
+            
+            });
+
+            return promise;
+
+        } else { // load via request if unknown type, trigger callback with text or JSON
+
+            var f = function (data) {
+
+                // convert if .json
+                if ( type === 'json' && !!data['text']) {
+                    try {
+                        tb.require.repo[type][pFile] = JSON.parse(data.text);
+                    } catch (e) {
+                        console.error('result parsing, valid JSON expected in:', data);
+                    }
+                } else {
+                    tb.require.repo[type][pFile] = data.text;
+                }
+
+            };
+
+            var options = {
+                url: file
+            };
+
+            return tb.request(options).finally(f);
+
+        }
+
+    }
+
+    function _getTypeFromSrc(pSrc) {
+        return pSrc.split('?')[0].split('.').pop();
+    }
+
+};
+
+tb.require.repo = {};
+tb.require.cacheBust = true;
+tb.require.loadcount = 0;
+
+tb.require.get = function(pFile){
+    return tb.require.repo[pFile.split('?')[0].split('.').pop()][pFile] || undefined;
+};
 
 /**
  @method tb.request
@@ -1054,7 +1335,7 @@ tb.Promise = (function(){
  @param {boolean} [pOptions.cachable] - defaults to true, indicates whether or not to include a unique id in URL
  @param {boolean} [pOptions.async] - whether or not to make an asynchronous request
 
- @returns a twoBirds request object
+ @return {object} - a Promise/A+ compliant promise object
 
  */
 if (typeof module === 'undefined' ){

@@ -380,9 +380,10 @@ tb = (function(){
                 fileName = arguments[0].replace( /\./g, &#x27;/&#x27; ) + &#x27;.js&#x27;;
                 tempInstance = new tb( Nop, arguments[1] || {}, arguments[2] || false ); // construct temp tb instance from empty constructor -&gt; temp handler store
 
-                tb.loader.load(
-                    fileName,
-                    (function( args ){
+                tb.require(
+                    fileName
+                ).then(
+                    (function( args ){          
                         return function(){
 
                             var thisTb = new tb(
@@ -509,10 +510,21 @@ tb = (function(){
 
                     // add property declared classes (prop contains &quot;.&quot;) as tb objects
                     for ( var key in tbInstance ) {
+                    
                         if ( typeof key === &#x27;string&#x27;
                             &amp;&amp; key.indexOf( &#x27;.&#x27; ) &gt; -1
-                        ){ // prop name contains &quot;.&quot;, treat as tb class
-                            tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
+                        ){ 
+                            if ( key === &#x27;tb.Require&#x27; ){
+                                console.log(&#x27;tbInstance tb.Require found!&#x27;, key);
+                                tbInstance[&#x27;tb.Require&#x27;] = tb.require(tbInstance[&#x27;tb.Require&#x27;])
+                                    .then(function(pValue){ // jshint ignore:line
+                                        console.log( &#x27;tb.Require init&#x27;, tbInstance, pValue );
+                                        tbInstance.trigger( &#x27;init&#x27; );
+                                    });
+                            } else { // prop name contains &quot;.&quot;, treat as tb class
+                                console.log(&#x27;tbInstance dotted class found!&#x27;, key);
+                                tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
+                            }
                         }
                     }
 
@@ -3732,7 +3744,7 @@ tb.idle = function( pCallback ){
 
                 if (
                     x === 0 // nothing loading currently
-                    &amp;&amp; tb.loader.idle() // system is idle
+                    &amp;&amp; tb.require.loadcount === 0
                     &amp;&amp; tb.status.loadCount.lastChanged === f.lastChanged // and its still the previous &#x27;0&#x27; loadcount
                 ){
                     // system is still idle
@@ -4045,7 +4057,8 @@ tb.Promise = (function(){
 
      */
     Promise.resolve = function( pValue ){
-        var ret = new tb.Promise();
+        var ret = new tb.Promise(function( resolve, reject ){
+        });
 
         resolve( ret, pValue );
 
@@ -4068,7 +4081,8 @@ tb.Promise = (function(){
 
      */
     Promise.reject = function( pValue ){
-        var ret = new tb.Promise();
+        var ret = new tb.Promise(function( resolve, reject ){
+        });
 
         reject( ret, pValue );
 
@@ -4098,6 +4112,7 @@ tb.Promise = (function(){
         });
      */
     Promise.all = function( pIterable ){
+
         var count = pIterable.length,
             observable = tb.observable(count),
             promise = new Promise(),
@@ -4105,20 +4120,25 @@ tb.Promise = (function(){
 
         // convert to promises if necessary and add callbacks
         pIterable
-            .forEach( function( pValue, pIndex, pIterable ){
-                if ( pValue.constructor !== Promise ){
-                    pIterable[ pIndex ] = Promise.resolve( pValue );
+            .forEach( function( pValue, pIndex ){
+
+                if ( !pValue.then || typeof pValue.then !== &#x27;function&#x27; ){
+                    pValue = tb.Promise.resolve( pValue );
                 }
-                pIterable[ pIndex ]
+                  
+                pValue
                     .then(function(pValue){
                         result[ pIndex ] = pValue;
-                        observable( observable() - 1 );
                     })
                     .catch(function(pValue){
                         if ( promise._state === 0 ){
-                            reject( promise, pValue );
+                            reject( promise, pValue._value );
                         }
+                    })
+                    .finally(function(pValue){
+                        observable( observable() - 1 );
                     });
+
             });
 
         observable.observe(function(pValue){
@@ -4174,11 +4194,12 @@ tb.Promise = (function(){
 
         // convert to promises if necessary and add callbacks
         pIterable
-            .forEach( function( pValue, pIndex, pIterable ){
+            .forEach( function( pValue, pIndex, pOriginalIterable ){
                 if ( pValue.constructor !== Promise ){
-                    pIterable[ pIndex ] = Promise.resolve( pValue );
+                    pOriginalIterable[ pIndex ] = Promise.resolve( pValue );
                 }
-                pIterable[ pIndex ]
+                
+                pOriginalIterable[ pIndex ]
                     .then(function(pValue){
                         if ( promise._state === 0 ){
                             resolve( promise, pValue );
@@ -4202,7 +4223,7 @@ tb.Promise = (function(){
     // which they are not - they are the implementation of Promise.prototype methods.
 
     function _then(onFulfilled, onRejected) {
-        if (this.constructor !== Promise) { // jshint ignore:line
+        if ( !( this instanceof Promise) ) { // jshint ignore:line
             return safeThen(this, onFulfilled, onRejected); // jshint ignore:line
         }
         var res = new Promise(tb.nop);
@@ -4225,7 +4246,7 @@ tb.Promise = (function(){
 
     function _finally(f) {
         return this.then(function (value) { // jshint ignore:line
-            return Promise.resolve(f()).then(function () {
+            return tb.Promise.resolve(f()).then(function () {
                 return value;
             });
         }, function (err) {
@@ -4263,7 +4284,7 @@ tb.Promise = (function(){
 
     function safeThen(that, onFulfilled, onRejected) {
         return new that.constructor(function (resolve, reject) {
-            var res = new Promise(tb.nop);
+            var res = new tb.Promise(tb.nop);
             res.then(resolve, reject);
             handle(that, new Handler(onFulfilled, onRejected, res));
         });
@@ -4400,6 +4421,278 @@ tb.Promise = (function(){
 
 })();
 
+/**
+ @class tb.Require
+ @constructor
+
+ @param   {array} pRequiredFiles - array containing required files
+
+ @return {object} - Promise/A+ compliant promise object
+
+ tb.Require class
+
+ - add into prototype of your constructor
+ - instance will get an &#x27;init&#x27; event when all files have loaded.
+
+ @example
+
+     tb.namespace( &#x27;app.GrandParent&#x27; ).set( 
+         (function(){
+
+              // Constructor
+              function GrandParent(){
+                  var that = this;
+    
+                  that.handlers = {
+                      init,
+                      test
+                  };
+    
+              }
+    
+              // Prototype
+              GrandParent.prototype = {
+    
+                  namespace: &#x27;app.GrandParent&#x27;,
+    
+                  &#x27;tb.Require&#x27;: [
+                       &#x27;/app/GrandParent.css&#x27;
+                  ]
+    
+              };
+    
+              return GrandParent;
+    
+              // Private Methods
+    
+              // ...
+    
+         })()
+     );
+ */
+if ( typeof module === &#x27;undefined&#x27; ) {
+
+    // mapping to tb.require
+    tb.Require = function ( pConfig ) {
+        var promise = tb.require( pConfig );
+
+        promise.then(function(){ console.log( &#x27;tb.Require promise&#x27;, promise ); });
+
+        return promise;
+    };
+
+    tb.Require.prototype = {};
+
+} else {
+    // todo: local loading in nodeJS
+}
+
+
+/**
+ @method tb.require
+ @extends tb
+ @static
+
+ @param {array} pFiles- array of filenames
+ @param {function} [pCallback] - optional, a callback after all loading is done
+ 
+ @return {object} - Promise/A+ compliant promise object
+
+ @example
+
+    // in your code ...
+    tb.require([
+        &#x27;/app/styles.css&#x27;,                  // .css will be inserted into head &lt;link&gt;
+        &#x27;/app/someJavascript.js&#x27;,           // .js will be insertid into head &lt;script&gt;
+        &#x27;/app/someData.json&#x27;,               // .json data will be parsed to JS object
+        &#x27;/app/templates/someTemplate.html&#x27;  // all other file contents will be saved into repo
+    ], function(){
+        // do something when all loading activity has finished
+    });
+ 
+ */
+tb.require = function( pFiles, pCallback ){
+
+    var promiseArray = [], // used for Promise.all()
+        ret;
+
+    console.log( &#x27;tb.require()&#x27;, pFiles);
+
+    if ( !pFiles ){
+        var warn = &#x27;tb.require: no files given.&#x27;;
+
+        console.warn(warn);
+
+        return tb.Promise.reject(warn);
+    }
+
+    // convert to array anyway
+    if ( typeof pFiles === &#x27;string&#x27; ){
+        pFiles = [ pFiles ];
+    }
+
+    // make parameter array for tb.Promise.all
+    pFiles
+        .forEach(function( pFile ){
+            var type = _getTypeFromSrc( pFile );
+
+            if ( pFile.split(&#x27;/&#x27;).pop().indexOf(&#x27;.&#x27;) === -1 ){ // file type extension
+                var warn = &#x27;tb.require: no file type given for &#x27;;
+
+                console.warn( warn, pFile );
+
+                return tb.Promise.reject( warn + pFile );
+            }
+
+            // file type container does not exist
+            if ( !tb.require.repo[type] ){
+                tb.require.repo[type] = {};
+            }
+
+            // file promise does not exist in container
+            if ( !tb.require.repo[type][pFile] ){
+                tb.require.repo[type][pFile] = _load( pFile );
+            }
+
+            // finally push promise
+            promiseArray.push( tb.require.repo[type][pFile] );
+
+        });
+
+
+    ret = tb.Promise.all(promiseArray);
+
+    // attach callback if given
+    if ( !!pCallback ){
+        ret.finally( function(pValueArray){
+            pCallback.call( pValueArray );
+        });
+    }
+
+    return ret;
+
+    // private functions
+
+    function _load(pFile){
+        
+        var typeConfigs = { // standard configuration types
+                &#x27;css&#x27;: {
+                    tag: &#x27;link&#x27;,
+                    attributes: {
+                        type: &#x27;text/css&#x27;,
+                        rel: &#x27;stylesheet&#x27;,
+                        href: &#x27;{src}&#x27;
+                    }
+                },
+                &#x27;js&#x27;: {
+                    tag: &#x27;script&#x27;,
+                    attributes: {
+                        type: &#x27;text/javascript&#x27;,
+                        src: &#x27;{src}&#x27;
+                    }
+                }
+            },
+            typeConfig,
+            type = _getTypeFromSrc(pFile),
+            file = pFile,
+            promise;
+
+        // cache busting
+        if ( !!tb.require.cacheBust ){
+            file = pFile + ( pFile.indexOf(&#x27;?&#x27;) &gt; -1 ? &#x27;&amp;&#x27; : &#x27;?&#x27; ) + tb.getId();
+        }
+
+        console.log(&#x27;load&#x27;, type, typeConfigs);
+
+        // do loading
+        if ( !!typeConfigs[type] ) { // either *.css or *.js file
+
+            promise = new tb.Promise(function(resolve, reject){
+                var element;
+
+                console.log(&#x27;special load&#x27;, type, typeConfigs);
+
+                // increase loadcount ( tb.idle() related )
+                tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
+                tb.require.loadCount++;
+
+                // get default config for type
+                typeConfig = typeConfigs[type];
+
+                // create DOM element
+                element = document.createElement(typeConfig.tag);
+                element.async = true;
+                element.onreadystatechange = element.onload = function () {
+                    var state = element.readyState;
+                    if ( !state || /loaded|complete/.test(state) ) {
+                        tb.require.loadCount--;
+                        resolve(&#x27;1&#x27;);
+                    }
+                };
+
+                // add attributes to DOM element
+                Object
+                    .keys( typeConfig.attributes )
+                    .forEach(
+                        function( pKey ){
+                            element.setAttribute(pKey, tb.parse(typeConfig.attributes[pKey], { src: pFile }));
+                        }
+                    );
+
+                // append node to head
+                document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(element);
+
+            }).finally(function(){
+
+                // decrease loadcount ( tb.idle() related )
+                tb.status.loadCount(tb.status.loadCount() - 1); // increase loadCount
+
+                tb.require.repo[type][pFile] = &#x27;done&#x27;;
+            
+            });
+
+            return promise;
+
+        } else { // load via request if unknown type, trigger callback with text or JSON
+
+            var f = function (data) {
+
+                // convert if .json
+                if ( type === &#x27;json&#x27; &amp;&amp; !!data[&#x27;text&#x27;]) {
+                    try {
+                        tb.require.repo[type][pFile] = JSON.parse(data.text);
+                    } catch (e) {
+                        console.error(&#x27;result parsing, valid JSON expected in:&#x27;, data);
+                    }
+                } else {
+                    tb.require.repo[type][pFile] = data.text;
+                }
+
+            };
+
+            var options = {
+                url: file
+            };
+
+            return tb.request(options).finally(f);
+
+        }
+
+    }
+
+    function _getTypeFromSrc(pSrc) {
+        return pSrc.split(&#x27;?&#x27;)[0].split(&#x27;.&#x27;).pop();
+    }
+
+};
+
+tb.require.repo = {};
+tb.require.cacheBust = true;
+tb.require.loadcount = 0;
+
+tb.require.get = function(pFile){
+    return tb.require.repo[pFile.split(&#x27;?&#x27;)[0].split(&#x27;.&#x27;).pop()][pFile] || undefined;
+};
 
 /**
  @method tb.request
@@ -4419,7 +4712,7 @@ tb.Promise = (function(){
  @param {boolean} [pOptions.cachable] - defaults to true, indicates whether or not to include a unique id in URL
  @param {boolean} [pOptions.async] - whether or not to make an asynchronous request
 
- @returns a twoBirds request object
+ @return {object} - a Promise/A+ compliant promise object
 
  */
 if (typeof module === &#x27;undefined&#x27; ){
@@ -5066,423 +5359,6 @@ if (typeof module === &#x27;undefined&#x27; ){ // will not work as a module
     })();
 }
 
-
-/**
- @class tb.Require
- @constructor
-
- @param   {array} pRequiredFiles - array containing required files
-
- @return {void}
-
- tb.require class
-
- - add into prototype of your constructor
- - instance will get an &#x27;init&#x27; event when all files have loaded.
-
- @example
-
-     tb.namespace( &#x27;app.GrandParent&#x27; ).set( 
-         (function(){
-
-              // Constructor
-              function GrandParent(){
-                  var that = this;
-    
-                  that.handlers = {
-                      init,
-                      test
-                  };
-    
-              }
-    
-              // Prototype
-              GrandParent.prototype = {
-    
-                  namespace: &#x27;app.GrandParent&#x27;,
-    
-                  &#x27;tb.Require&#x27;: [
-                       &#x27;/app/GrandParent.css&#x27;
-                  ]
-    
-              };
-    
-              return GrandParent;
-    
-              // Private Methods
-    
-              // ...
-    
-         })()
-     );
- */
-if ( typeof module === &#x27;undefined&#x27; ) {
-
-    tb.Require = function (pConfig, pCallback ) {
-
-        var that = this;
-
-        pConfig = !!pConfig ? pConfig : [];
-
-        that.requirements = pConfig;
-
-        function requireCallback() {
-            if ( !!that[&#x27;target&#x27;] &amp;&amp; typeof that[&#x27;target&#x27;][&#x27;tb.Require&#x27;] !== &#x27;undefined&#x27; ){
-                that.target.trigger(&#x27;init&#x27;);
-            }
-            if ( typeof pCallback === &#x27;function&#x27;){
-                pCallback();
-            }
-        }
-
-        if ( that.requirements.length === 0 ){
-            setTimeout(
-                requireCallback,
-                10
-            );
-            return;
-        }
-
-        // add requirement loading
-        tb.loader.load(
-            that.requirements,
-            requireCallback
-        );
-
-    };
-
-    tb.Require.prototype = {
-        ready: function () {
-            // do we need this???
-        }
-    };
-
-    /**
-     * requirement handling
-     */
-    (function () {
-        // private
-
-        function getTypeFromSrc(pSrc) {
-            return pSrc.split(&#x27;?&#x27;)[0].split(&#x27;.&#x27;).pop();
-        }
-
-        // requirement constructor
-        function _Requirement(pConfig) {
-
-            var that = this,
-                type = getTypeFromSrc(pConfig.src), // filename extension
-                typeConfigs = { // standard configuration types
-                    &#x27;css&#x27;: {
-                        tag: &#x27;link&#x27;,
-                        attributes: {
-                            type: &#x27;text/css&#x27;,
-                            rel: &#x27;stylesheet&#x27;,
-                            href: &#x27;{src}&#x27;
-                        }
-                    },
-                    &#x27;js&#x27;: {
-                        tag: &#x27;script&#x27;,
-                        attributes: {
-                            type: &#x27;text/javascript&#x27;,
-                            src: &#x27;{src}&#x27;
-                        }
-                    }
-                },
-                typeConfig, // a single type configuration
-                element,
-                isTyped = !!typeConfigs[type],
-                fileName = pConfig.src.split(&#x27;?&#x27;)[0];
-
-            //console.log( &#x27;_Requirement:&#x27;, fileName, type );
-
-            tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
-
-            pConfig.type = type; // add type
-
-            that.config = pConfig;
-
-            // cache busting
-            if (!!that.config.src) {
-                that.config.src = that.config.src + ( that.config.src.indexOf(&#x27;?&#x27;) &gt; -1 ? &#x27;&amp;&#x27; : &#x27;?&#x27; ) + tb.getId();
-            }
-
-            //that.target = pConfig.target;
-            that.src = pConfig.src;
-            that.type = that.config.type = type;
-            that.done = false;
-            that.cb = that.config.cb || function () {};
-            that.data = tb.observable(&#x27;&#x27;);
-
-            // element &#x27;load&#x27; callback
-            function onLoad(e) {
-
-                if (!!e &amp;&amp; e.data) {
-                    that.data(e.data);
-                }
-
-                that.done = true;
-
-                tb.status.loadCount(tb.status.loadCount() - 1); // decrease loadCount
-
-                tb.loader.trigger(&#x27;requirementLoaded&#x27;, fileName );
-
-            }
-
-            // execute onLoad only once
-            onLoad.once = true;
-
-            // handlers
-            that.handlers = {
-                &#x27;onLoad&#x27;: onLoad
-            };
-
-
-            if (isTyped) { // either *.css or *.js file
-
-                // get default config for type
-                typeConfig = typeConfigs[type];
-
-                // create DOM element
-                element = document.createElement(typeConfig.tag);
-                element.async = true;
-                element.onreadystatechange = element.onload = function () {
-                    var state = element.readyState;
-                    if (!that.done &amp;&amp; (!state || /loaded|complete/.test(state))) {
-                        that.trigger(&#x27;onLoad&#x27;, element);
-                    }
-                };
-
-                // add attributes to DOM element
-                Object
-                    .keys( typeConfig.attributes )
-                    .forEach(
-                        function( pKey ){
-                            element.setAttribute(pKey, tb.parse(typeConfig.attributes[pKey], that.config));
-                        }
-                    );
-
-                // append node to head
-                document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(element);
-
-                that.element = element;
-
-            } else { // load via request if unknown type, trigger callback with text or JSON
-
-                var f = function (data) {
-
-                    if (that.type === &#x27;json&#x27; &amp;&amp; !!data[&#x27;text&#x27;]) {
-                        try {
-                            data = JSON.parse(data.text);
-                        } catch (e) {
-                            console.log(&#x27;error parsing, JSON expected in:&#x27;, data);
-                        }
-                    } else {
-                        data = data.text;
-                    }
-
-                    that.trigger(&#x27;onLoad&#x27;, data);
-                };
-
-                var options = {
-                    url: that.src,
-                    success: f,
-                    error: f
-                };
-
-                tb.request(options);
-
-            }
-
-        }
-
-        _Requirement.prototype = {
-            namespace: &#x27;_Requirement&#x27;
-        };
-
-
-        // requirement group constructor
-        function _RequirementGroup(pConfig) {
-
-            var that = this;
-
-            that.type = pConfig.type;
-            that.target = pConfig.target;
-
-            that.requirements = {};
-
-        }
-
-        _RequirementGroup.prototype = {
-
-            namespace: &#x27;_RequirementGroup&#x27;,
-
-            load: function (pSrc) {
-
-                var that = this,
-                    rq = !!that.requirements[pSrc];
-
-                if (!rq) { // not loading or loaded: add a new requirement
-
-                    rq = that.requirements[pSrc] = new tb(
-                        _Requirement,
-                        {
-                            src: pSrc,
-                            target: that.target
-                        },
-                        that.requirements
-                    );
-
-                    that.requirements[pSrc].target = tb.loader; // needed for event bubbling
-
-                } else { // already loading or loaded
-
-                    rq = that.requirements[pSrc];
-
-                }
-
-                if (!!rq.done) { // already loaded
-                    rq.trigger(&#x27;onLoad&#x27;);
-                }
-
-            }
-
-        };
-
-
-        function Loader(pConfig) {
-            var that = this;
-
-            that.config = pConfig;
-            that.requirementGroups = {}; // will later contain requirement groups ( grouped by file extension )
-            that.rqSets = []; // requirement sets, may contain various file types
-
-            that.handlers = {
-                requirementLoaded: requirementLoaded
-            };
-        }
-
-
-        Loader.prototype = {
-
-            namespace: &#x27;_Head&#x27;,
-
-            load: function (pSrc, pCallback) {
-
-                var that = this,
-                    type,
-                    rg;
-
-                pSrc = typeof pSrc === &#x27;string&#x27; ? [pSrc] : pSrc; // convert to array if string
-                pSrc = [].concat.call( [], pSrc); // make an array copy
-
-                pCallback = pCallback || function (e) { console.log(&#x27;onLoad dummy handler on&#x27;, e); };
-
-                pSrc.callback = pCallback;
-
-                pSrc.done = function (pFilename) { // will be called when each file &#x27;requirementLoaded&#x27; was triggered
-                    if (pSrc.indexOf(pFilename) &gt; -1) {
-                        pSrc.splice(pSrc.indexOf(pFilename), 1);
-                    }
-                };
-
-                that.rqSets.push(pSrc);
-
-                // will trigger loading if necessary ( async callback even if already loaded )
-                pSrc
-                    .forEach(
-                        function (filename) {
-                            type = getTypeFromSrc(filename);
-                            rg = !!that.requirementGroups[type];
-
-                            if (!rg) { // add a new requirement group
-
-                                that.requirementGroups[type] = new tb(
-                                    _RequirementGroup,
-                                    {
-                                        type: type
-                                    },
-                                    that.requirementGroups
-                                );
-
-                                that.requirementGroups[type].target = tb.loader; // needed for event bubbling
-                            }
-
-                            rg = that.requirementGroups[type];
-
-                            // if already loaded
-                            //console.log( &#x27;test:&#x27;, filename );
-                            if (!!that.requirementGroups[type].requirements[filename]
-                                &amp;&amp; !!that.requirementGroups[type].requirements[filename].done) { // already loaded
-
-                                //console.log( &#x27;already loaded:&#x27;, filename );
-
-                                tb.loader.trigger(&#x27;requirementLoaded&#x27;, filename );
-
-                                return;
-                            }
-
-                            rg.load(filename);
-                        }
-                    );
-
-            },
-
-            get: function (pFileName) {
-
-                var that = this,
-                    type = getTypeFromSrc(pFileName),
-                    rg = that.requirementGroups[type] ? that.requirementGroups[type] : false,
-                    rq = rg ? ( rg.requirements[pFileName] ? rg.requirements[pFileName] : false ) : false;
-
-                return rq ? rq.data() : false;
-            },
-
-            idle: function() {
-                var that = this;
-
-                return !!that.rqSets; // false if everything loaded
-            }
-
-        };
-
-        tb.loader = new tb(Loader);
-
-        function requirementLoaded(e) {
-
-            var that = this,
-                filename = e.data;
-
-            //console.log( &#x27;requirementLoaded(&#x27;, filename, &#x27;)&#x27; );
-
-            that
-                .rqSets
-                .forEach(
-                    function (pRqSet) {
-                        pRqSet.done(filename);
-                        if (pRqSet.length === 0) { // every file loaded
-                            pRqSet.callback();
-                        }
-                    }
-                );
-
-            that.rqSets = that
-                .rqSets
-                .filter(
-                    function (pElement) {
-                        return pElement.length &gt; 0;
-                    }
-                );
-
-            e.stopPropagation();
-        }
-
-    })();
-
-} else {
-    // todo: in a node module
-    console.log( &#x27;tb.Require not implemented yet for node use!!!&#x27;);
-}
     </pre>
 </div>
                     </div>

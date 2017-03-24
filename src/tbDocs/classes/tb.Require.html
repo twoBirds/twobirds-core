@@ -88,7 +88,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l4981"><code>src&#x2F;tb&#x2F;tb.js:4981</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l4335"><code>src&#x2F;tb&#x2F;tb.js:4335</code></a>
         </div>
 
 
@@ -113,7 +113,7 @@
         </div>
 
         <span class="returns-inline">
-            <span class="type">Void</span>
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
         </span>
 
 
@@ -125,7 +125,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4981"><code>src&#x2F;tb&#x2F;tb.js:4981</code></a>
+        <a href="../files/src_tb_tb.js.html#l4335"><code>src&#x2F;tb&#x2F;tb.js:4335</code></a>
         </p>
 
 
@@ -160,8 +160,11 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Void</span>:
-                    <p>tb.require class</p>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>Promise/A+ compliant promise object</li>
+</ul>
+<p>tb.Require class</p>
 <ul>
 <li>add into prototype of your constructor</li>
 <li>instance will get an 'init' event when all files have loaded.</li>
@@ -218,17 +221,444 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
     </ul>
 
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_tb.request">tb.request</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.require">tb.require</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_"></a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.stop">tb.stop</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
 
         </div>
 
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_tb.request" class="method item">
+    <h3 class="name"><code>tb.request</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pOptions</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4608"><code>src&#x2F;tb&#x2F;tb.js:4608</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pOptions</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>a hash object containing these options:<br><br><br></p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">url:</code>
+                                    <span class="type"></span>
+
+                                <div class="param-description">
+                                    <p>(string, omitted) the URL to call</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[params]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>a hash object containing the parameters to post</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[method]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>(string, optional, defaults to 'POST') the XHR method</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[headers]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>a hash object containing additional XHR headers</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[success]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>the function to call with the request result</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[error]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>the function to call if request status not in 200...299</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[statechange]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>the function to call when readyState changes</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[timeout]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>structure sample: { cb: myFunction, ms:10000 }
+cb: callback to run when timeout occurs
+ms: number of milliseconds the request will run before being terminated</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[cachable]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>defaults to true, indicates whether or not to include a unique id in URL</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[async]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>whether or not to make an asynchronous request</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a Promise/A+ compliant promise object</li>
+</ul>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_tb.require" class="method item">
+    <h3 class="name"><code>tb.require</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pFiles-</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[pCallback]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4402"><code>src&#x2F;tb&#x2F;tb.js:4402</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pFiles-</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <p>array of filenames</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[pCallback]</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>optional, a callback after all loading is done</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>Promise/A+ compliant promise object</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>// in your code ...
+tb.require([
+'/app/styles.css',                  // .css will be inserted into head <link>
+'/app/someJavascript.js',           // .js will be insertid into head <script>
+'/app/someData.json',               // .json data will be parsed to JS object
+'/app/templates/someTemplate.html'  // all other file contents will be saved into repo
+], function(){
+// do something when all loading activity has finished
+});</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_" class="method item">
+    <h3 class="name"><code></code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4813"><code>src&#x2F;tb&#x2F;tb.js:4813</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+<div id="method_tb.stop" class="method item">
+    <h3 class="name"><code>tb.stop</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pStopit</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4972"><code>src&#x2F;tb&#x2F;tb.js:4972</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pStopit</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>indicating whether to stop event handling</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                    <ul>
+<li>true if event handling stopped, else false</li>
+</ul>
+<p>stops event handling</p>
+
+            </div>
+        </div>
+
+
+</div>
+            </div>
 
 
 

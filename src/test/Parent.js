@@ -15,9 +15,7 @@ tb.namespace( 'test.Parent' ).set(
         Parent.prototype = {
             namespace: 'test.Parent',
 
-            'tb.Require': [
-                '/test/GrandParent.css'
-            ]
+            
 
         };
 

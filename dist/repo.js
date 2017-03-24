@@ -3,36 +3,25 @@
 tb.namespace( 'test.GrandParent' ).set(
     (function(){
         
-        class GrandParent {
+        function GrandParent(pConfig) {
+            var that = this;
 
-            constructor(pConfig) {
-                var that = this;
-
-                that.handlers = {
-                    init,
-                    test
-                };
-            }
-
-            // static
-
-            // prototype
-
+            that.handlers = {
+                init,
+                test
+            };
         }
 
         // proto properties and methods
-        tb.extend(
-            GrandParent.prototype,
-            {
-                namespace: 'test.GrandParent',
+        GrandParent.prototype = {
+            namespace: 'test.GrandParent',
 
-                'tb.Require': [
-                    '/test/GrandParent.css'
-                ],
+            'tb.Require': [
+                '/test/GrandParent.css'
+            ],
 
-                test: test
-            }
-        );
+            test: test
+        };
 
         return GrandParent;
 
@@ -76,9 +65,7 @@ tb.namespace( 'test.Parent' ).set(
         Parent.prototype = {
             namespace: 'test.Parent',
 
-            'tb.Require': [
-                '/test/GrandParent.css'
-            ]
+            
 
         };
 

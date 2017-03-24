@@ -289,9 +289,10 @@ tb = (function(){
                 fileName = arguments[0].replace( /\./g, '/' ) + '.js';
                 tempInstance = new tb( Nop, arguments[1] || {}, arguments[2] || false ); // construct temp tb instance from empty constructor -> temp handler store
 
-                tb.loader.load(
-                    fileName,
-                    (function( args ){
+                tb.require(
+                    fileName
+                ).then(
+                    (function( args ){          
                         return function(){
 
                             var thisTb = new tb(
@@ -418,10 +419,21 @@ tb = (function(){
 
                     // add property declared classes (prop contains ".") as tb objects
                     for ( var key in tbInstance ) {
+                    
                         if ( typeof key === 'string'
                             && key.indexOf( '.' ) > -1
-                        ){ // prop name contains ".", treat as tb class
-                            tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
+                        ){ 
+                            if ( key === 'tb.Require' ){
+                                console.log('tbInstance tb.Require found!', key);
+                                tbInstance['tb.Require'] = tb.require(tbInstance['tb.Require'])
+                                    .then(function(pValue){ // jshint ignore:line
+                                        console.log( 'tb.Require init', tbInstance, pValue );
+                                        tbInstance.trigger( 'init' );
+                                    });
+                            } else { // prop name contains ".", treat as tb class
+                                console.log('tbInstance dotted class found!', key);
+                                tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
+                            }
                         }
                     }
 
