@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.3.69",
+        "version": "v7.3.71",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -15,6 +15,7 @@
                 "tb.Event": 1,
                 "tb.dom": 1,
                 "tb.Util": 1,
+                "tb.Promise": 1,
                 "tb.Model": 1,
                 "tb.Require": 1
             },
@@ -183,6 +184,33 @@
                 "\n   // see methods\n"
             ]
         },
+        "tb.Promise": {
+            "name": "tb.Promise",
+            "shortname": "tb.Promise",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/tb/tb.js",
+            "line": 3813,
+            "is_constructor": 1,
+            "extends": "tb",
+            "params": [
+                {
+                    "name": "pFunction",
+                    "description": "- function to execute",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "- Promise/A+ compliant promise object\n\nPromise/A+ compliant promise functionality",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   var p = new tb.Promise(function(resolve, reject){\n\n       setTimeout(function(){\n           resolve('it worked.');\n       },1000)    \n\n       setTimeout(function(){\n           reject('something went wrong.');\n       },500)    \n\n   }).then(function(pValue){\n\n       console.log('Yippie! ', pValue);\n\n   }).catch(function(pValue){\n\n       console.log('Oops? ', pValue);\n\n   }).finally(function(pValue){\n\n       console.log('Cleaning up ', pValue);\n\n   });\n"
+            ]
+        },
         "tb.Model": {
             "name": "tb.Model",
             "shortname": "tb.Model",
@@ -192,7 +220,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4528,
+            "line": 4699,
             "is_constructor": 1,
             "params": [
                 {
@@ -219,7 +247,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4810,
+            "line": 4981,
             "is_constructor": 1,
             "params": [
                 {
@@ -1728,13 +1756,171 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4114,
-            "description": "Take a potentially misbehaving resolver function and make sure\nonFulfilled and onRejected are only called once.\n\nMakes no guarantees about asynchrony.",
-            "class": "tb.Util"
+            "line": 3878,
+            "itemtype": "method",
+            "name": "then",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pFunction",
+                    "description": "- function to execute when promise is resolved",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "- a new Promise instance (chaining)",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   new tb.Promise(function(resolve, reject){\n       setTimeout( resolve('ok.') );    \n   }).then(function(pValue){\n       console.log( pValue );  // >ok.\n   });\n"
+            ],
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4144,
+            "line": 3898,
+            "itemtype": "method",
+            "name": "catch",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pFunction",
+                    "description": "- function to execute when promise is rejected",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "- a new Promise instance (chaining)",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   new tb.Promise(function(resolve, reject){\n       setTimeout( reject('oops.') );    \n   }).catch(function(pValue){\n       console.log( pValue );  // >oops.\n   });\n"
+            ],
+            "class": "tb.Promise"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 3918,
+            "itemtype": "method",
+            "name": "finally",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pFunction",
+                    "description": "- function to execute at the end in any case",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "- a new Promise instance (chaining)",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   new tb.Promise(function(resolve, reject){\n       setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed    \n   }).finally(function(pValue){\n       console.log( pValue );  // >whatever.\n   });\n"
+            ],
+            "class": "tb.Promise"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 3943,
+            "itemtype": "method",
+            "name": "tb.Promise.resolve",
+            "chainable": 1,
+            "static": 1,
+            "params": [
+                {
+                    "name": "pValue",
+                    "description": "- the value the returned promise will resolve with",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "- a new resolved Promise instance (chaining)",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   var p = tb.Promise.resolve('resolved');\n"
+            ],
+            "class": "tb.Promise"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 3966,
+            "itemtype": "method",
+            "name": "tb.Promise.reject",
+            "chainable": 1,
+            "static": 1,
+            "params": [
+                {
+                    "name": "pValue",
+                    "description": "- the value the returned promise will reject with",
+                    "type": "Any"
+                }
+            ],
+            "return": {
+                "description": "- a new rejected Promise instance (chaining)",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   var p = tb.Promise.reject('rejected');\n"
+            ],
+            "class": "tb.Promise"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 3989,
+            "itemtype": "method",
+            "name": "tb.Promise.all",
+            "chainable": 1,
+            "static": 1,
+            "params": [
+                {
+                    "name": "pIterable",
+                    "description": "- an array containing values and/or promises",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "- a new rejected Promise instance (chaining)",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   // \"then\" function will be executed when ALL promises have been resolved\n   // \"catch\" function will be executed if one of the promises rejects\n   // values in the parameter array will be converted to Promise.resolve(value)\n\n   var p = tb.Promise.all([ \n       true, \n       tb.Promise.resolve('new value') \n   ]).then(function(pValue){\n       console.log(pValue); // >new value\n   });"
+            ],
+            "class": "tb.Promise"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 4047,
+            "itemtype": "method",
+            "name": "tb.Promise.race",
+            "chainable": 1,
+            "static": 1,
+            "params": [
+                {
+                    "name": "pIterable",
+                    "description": "- an array containing values and/or promises",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "- a new rejected Promise instance (chaining)",
+                "type": "Object"
+            },
+            "example": [
+                "\n\n   // \"then\" function will be executed when the fastest promise resolves\n   // \"catch\" function will be executed when the fastest promise rejects\n   // values in the parameter array will be converted to Promise.resolve(value)\n\n   var p1 = new tb.Promise(function(resolve,reject){\n       setTimeout(function(){\n           resolve('ok.');\n       },1000);\n   });\n\n   var p2 = new tb.Promise(function(resolve,reject){\n       setTimeout(function(){\n           reject('oops.');\n       },2000);\n   });\n\n   var p = tb.Promise.race([ \n       p1, \n       p2 \n   ]).then(function(pValue){\n       console.log(pValue); // >ok.\n   }).catch(function(pValue){\n       console.log(pValue); // (will never be reached, p1 resolves first)\n   });"
+            ],
+            "class": "tb.Promise"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 4288,
+            "description": "execute promise function",
+            "class": "tb.Promise"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 4315,
             "itemtype": "method",
             "name": "tb.request",
             "params": [
@@ -1807,48 +1993,48 @@
             "return": {
                 "description": "a twoBirds request object"
             },
-            "class": "tb.Util"
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4167,
-            "class": "tb.Util"
+            "line": 4338,
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4215,
-            "class": "tb.Util"
+            "line": 4386,
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4232,
-            "class": "tb.Util"
+            "line": 4403,
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4254,
-            "class": "tb.Util"
+            "line": 4425,
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4284,
-            "class": "tb.Util"
+            "line": 4455,
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4321,
-            "class": "tb.Util"
+            "line": 4492,
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4349,
+            "line": 4520,
             "name": "",
             "itemtype": "method",
-            "class": "tb.Util"
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4508,
+            "line": 4679,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -1862,11 +2048,11 @@
                 "description": "- true if event handling stopped, else false\n\nstops event handling",
                 "type": "Boolean"
             },
-            "class": "tb.Util"
+            "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4675,
+            "line": 4846,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -1881,7 +2067,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4707,
+            "line": 4878,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -1896,7 +2082,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4740,
+            "line": 4911,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -1911,7 +2097,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4772,
+            "line": 4943,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -1926,7 +2112,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4900,
+            "line": 5071,
             "description": "requirement handling",
             "class": "tb.Require"
         }
@@ -1958,15 +2144,15 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/tb/tb.js:4144"
+            "line": " src/tb/tb.js:4315"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:4349"
+            "line": " src/tb/tb.js:4520"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:4349"
+            "line": " src/tb/tb.js:4520"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -1977,36 +2163,36 @@
             "line": " src/tb/tb.js:1653"
         },
         {
-            "message": "Missing item type\nTake a potentially misbehaving resolver function and make sure\nonFulfilled and onRejected are only called once.\n\nMakes no guarantees about asynchrony.",
-            "line": " src/tb/tb.js:4114"
+            "message": "Missing item type\nexecute promise function",
+            "line": " src/tb/tb.js:4288"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4167"
+            "line": " src/tb/tb.js:4338"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4215"
+            "line": " src/tb/tb.js:4386"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4232"
+            "line": " src/tb/tb.js:4403"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4254"
+            "line": " src/tb/tb.js:4425"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4284"
+            "line": " src/tb/tb.js:4455"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4321"
+            "line": " src/tb/tb.js:4492"
         },
         {
             "message": "Missing item type\nrequirement handling",
-            "line": " src/tb/tb.js:4900"
+            "line": " src/tb/tb.js:5071"
         }
     ]
 }

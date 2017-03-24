@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.69</em>
+            <em>API Docs for: v7.3.71</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -42,6 +42,7 @@
                                 <li><a href="../classes/tb.dom.html">tb.dom</a></li>
                                 <li><a href="../classes/tb.Event.html">tb.Event</a></li>
                                 <li><a href="../classes/tb.Model.html">tb.Model</a></li>
+                                <li><a href="../classes/tb.Promise.html">tb.Promise</a></li>
                                 <li><a href="../classes/tb.Require.html">tb.Require</a></li>
                                 <li><a href="../classes/tb.Selector.html">tb.Selector</a></li>
                                 <li><a href="../classes/tb.Util.html">tb.Util</a></li>
@@ -86,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.69 - 2017-03-20 */
+/*! twobirds-core - v7.3.71 - 2017-03-24 */
 
 /**
  twoBirds V7 core functionality
@@ -3898,21 +3899,48 @@ tb.parse = function( pWhat, pParse ){
     return pWhat;
 };
 
+/**
+ @class tb.Promise
+ @constructor
+ @extends tb
+  
+ @param {function} pFunction - function to execute
+ 
+ @return {object} - Promise/A+ compliant promise object
+
+ Promise/A+ compliant promise functionality
+
+ @example
+
+    var p = new tb.Promise(function(resolve, reject){
+
+        setTimeout(function(){
+            resolve(&#x27;it worked.&#x27;);
+        },1000)    
+
+        setTimeout(function(){
+            reject(&#x27;something went wrong.&#x27;);
+        },500)    
+
+    }).then(function(pValue){
+
+        console.log(&#x27;Yippie! &#x27;, pValue);
+
+    }).catch(function(pValue){
+
+        console.log(&#x27;Oops? &#x27;, pValue);
+
+    }).finally(function(pValue){
+
+        console.log(&#x27;Cleaning up &#x27;, pValue);
+
+    });
+
+ */
 tb.Promise = (function(){
 
     &#x27;use strict&#x27;;
 
-    // States:
-    //
-    // 0 - pending
-    // 1 - fulfilled with _value
-    // 2 - rejected with _value
-    // 3 - adopted the state of another promise, _value
-    //
-    // once the state is no longer pending (0) it is immutable
-
-    // to avoid using try/catch inside critical functions, we
-    // extract them to here.
     var LAST_ERROR = null;
     var IS_ERROR = {};
 
@@ -3936,13 +3964,86 @@ tb.Promise = (function(){
 
     // Promise prototype
     Promise.prototype = {
+        /**
+         @method then
+         @chainable
+
+         @param {function} pFunction - function to execute when promise is resolved
+
+         @return {object} - a new Promise instance (chaining)
+
+
+         @example
+
+            new tb.Promise(function(resolve, reject){
+                setTimeout( resolve(&#x27;ok.&#x27;) );    
+            }).then(function(pValue){
+                console.log( pValue );  // &gt;ok.
+            });
+
+         */
         then: _then,
+
+        /**
+         @method catch
+         @chainable
+
+         @param {function} pFunction - function to execute when promise is rejected
+
+         @return {object} - a new Promise instance (chaining)
+
+
+         @example
+
+            new tb.Promise(function(resolve, reject){
+                setTimeout( reject(&#x27;oops.&#x27;) );    
+            }).catch(function(pValue){
+                console.log( pValue );  // &gt;oops.
+            });
+
+         */
         &#x27;catch&#x27;: _catch,
+
+        /**
+         @method finally
+         @chainable
+
+         @param {function} pFunction - function to execute at the end in any case
+
+         @return {object} - a new Promise instance (chaining)
+
+
+         @example
+
+            new tb.Promise(function(resolve, reject){
+                setTimeout( reject(&#x27;whatever.&#x27;) ); // could also be resolve, finally will always be executed    
+            }).finally(function(pValue){
+                console.log( pValue );  // &gt;whatever.
+            });
+
+         */
         &#x27;finally&#x27;: _finally,
+
         done: _done
     };
 
     // static methods
+
+    /**
+     @method tb.Promise.resolve
+     @chainable
+     @static
+
+     @param {any} pValue - the value the returned promise will resolve with
+
+     @return {object} - a new resolved Promise instance (chaining)
+
+
+     @example
+
+        var p = tb.Promise.resolve(&#x27;resolved&#x27;);
+
+     */
     Promise.resolve = function( pValue ){
         var ret = new tb.Promise();
 
@@ -3951,6 +4052,21 @@ tb.Promise = (function(){
         return ret;
     };
 
+    /**
+     @method tb.Promise.reject
+     @chainable
+     @static
+
+     @param {any} pValue - the value the returned promise will reject with
+
+     @return {object} - a new rejected Promise instance (chaining)
+
+
+     @example
+
+        var p = tb.Promise.reject(&#x27;rejected&#x27;);
+
+     */
     Promise.reject = function( pValue ){
         var ret = new tb.Promise();
 
@@ -3959,6 +4075,28 @@ tb.Promise = (function(){
         return ret;
     };
 
+    /**
+     @method tb.Promise.all
+     @chainable
+     @static
+
+     @param {array} pIterable - an array containing values and/or promises
+
+     @return {object} - a new rejected Promise instance (chaining)
+
+     @example
+
+        // &quot;then&quot; function will be executed when ALL promises have been resolved
+        // &quot;catch&quot; function will be executed if one of the promises rejects
+        // values in the parameter array will be converted to Promise.resolve(value)
+
+        var p = tb.Promise.all([ 
+            true, 
+            tb.Promise.resolve(&#x27;new value&#x27;) 
+        ]).then(function(pValue){
+            console.log(pValue); // &gt;new value
+        });
+     */
     Promise.all = function( pIterable ){
         var count = pIterable.length,
             observable = tb.observable(count),
@@ -3995,6 +4133,42 @@ tb.Promise = (function(){
         return promise;
     };
 
+    /**
+     @method tb.Promise.race
+     @chainable
+     @static
+
+     @param {array} pIterable - an array containing values and/or promises
+
+     @return {object} - a new rejected Promise instance (chaining)
+
+     @example
+
+        // &quot;then&quot; function will be executed when the fastest promise resolves
+        // &quot;catch&quot; function will be executed when the fastest promise rejects
+        // values in the parameter array will be converted to Promise.resolve(value)
+
+        var p1 = new tb.Promise(function(resolve,reject){
+            setTimeout(function(){
+                resolve(&#x27;ok.&#x27;);
+            },1000);
+        });
+
+        var p2 = new tb.Promise(function(resolve,reject){
+            setTimeout(function(){
+                reject(&#x27;oops.&#x27;);
+            },2000);
+        });
+
+        var p = tb.Promise.race([ 
+            p1, 
+            p2 
+        ]).then(function(pValue){
+            console.log(pValue); // &gt;ok.
+        }).catch(function(pValue){
+            console.log(pValue); // (will never be reached, p1 resolves first)
+        });
+     */
     Promise.race = function( pIterable ){
         var promise = new tb.Promise();
 
@@ -4025,7 +4199,7 @@ tb.Promise = (function(){
     // private functions
 
     // HINT: ignore:lines are needed because jslint regards these functions as being standalone,
-    // which they are not - they are the bodys of Promise.prototype methods.
+    // which they are not - they are the implementation of Promise.prototype methods.
 
     function _then(onFulfilled, onRejected) {
         if (this.constructor !== Promise) { // jshint ignore:line
@@ -4094,6 +4268,7 @@ tb.Promise = (function(){
             handle(that, new Handler(onFulfilled, onRejected, res));
         });
     }
+
     function handle(that, deferred) {
         while (that._state === 3) {
             that = that._value;
@@ -4200,10 +4375,7 @@ tb.Promise = (function(){
     }
 
     /**
-     * Take a potentially misbehaving resolver function and make sure
-     * onFulfilled and onRejected are only called once.
-     *
-     * Makes no guarantees about asynchrony.
+     * execute promise function
      */
     function doResolve(fn, promise) {
         var done = false;
