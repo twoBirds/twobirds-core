@@ -21,7 +21,12 @@ You can also [contact me](mailTo:fthuerigen@googlemail.com) if you need a specif
 
 ##### ... JavaScript framework that maps objects to DOM nodes.
 
-twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines, also by coding style it encourages the use of [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)) principles.
+twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines.
+
+The tB core can be seen as an intermediate step between a simple wrapper/helper library like jQuery and a fully fledged JS framework. 
+Like the first, it has selectors for the dom and reasonable modification methods. Like the latter, is incorporates a higher level abstraction scheme for application objects.
+The core does not contain higher level DOM elements like datepickers or the like, but gives you a sufficient set of functionality to implement these as you like. 
+As a result, a widget is just another application object (same type of code, easy understandable). 
 
 It is JS-linted, jasmine tested and this package contains the complete API documentation. 
 

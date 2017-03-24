@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>tb - twoBirds</title>
+    <title>tb.Promise - twoBirds</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -83,12 +83,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>tb Class</h1>
+<h1>tb.Promise Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends Tb
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l225"><code>src&#x2F;tb&#x2F;tb.js:225</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l3813"><code>src&#x2F;tb&#x2F;tb.js:3813</code></a>
         </div>
 
 
@@ -101,13 +104,13 @@
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_tb" class="method item">
-    <h3 class="name"><code>tb</code></h3>
+<div id="method_tb.Promise" class="method item">
+    <h3 class="name"><code>tb.Promise</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>pOptions</code>
+                        <code>pFunction</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -125,7 +128,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l225"><code>src&#x2F;tb&#x2F;tb.js:225</code></a>
+        <a href="../files/src_tb_tb.js.html#l3813"><code>src&#x2F;tb&#x2F;tb.js:3813</code></a>
         </p>
 
 
@@ -141,54 +144,17 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">pOptions</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                        <code class="param-name">pFunction</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
 
 
                     <div class="param-description">
-                         
+                        <ul>
+<li>function to execute</li>
+</ul>
+
                     </div>
 
-                        <ul class="params-list">
-                            <li class="param">
-                                    <code class="param-name">pClass</code>
-                                    <span class="type"></span>
-
-                                <div class="param-description">
-                                    <ul>
-<li>class Namespace as string or class</li>
-</ul>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[pConfig]</code>
-                                    <span class="type"></span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <ul>
-<li>optional configuration, any type, preferrably object</li>
-</ul>
-
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name optional">[pTarget]</code>
-                                    <span class="type"></span>
-                                    <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                <div class="param-description">
-                                    <ul>
-<li>target to put object in, DOM node or any other object</li>
-</ul>
-
-                                </div>
-
-                            </li>
-                        </ul>
                 </li>
             </ul>
         </div>
@@ -199,9 +165,9 @@
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
                     <ul>
-<li>the twoBirds instance you just created</li>
+<li>Promise/A+ compliant promise object</li>
 </ul>
-<p>twoBirds constructor</p>
+<p>Promise/A+ compliant promise functionality</p>
 
             </div>
         </div>
@@ -211,27 +177,25 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>// put Instance into DOM node
-new tb(
-    app.myConstructor,                                     // any constructor you want to have an instance of
-    { ... },                                               // the config object you hand over to the constructor
-    target.appendChild( document.createElement( 'span' ) ) // DOM node to insert the object item
-);
+                <p>var p = new tb.Promise(function(resolve, reject){</p>
+<pre class="code prettyprint"><code>   setTimeout(function(){
+       resolve('it worked.');
+   },1000)    
 
-// put Instance anywhere
-new tb(
-    app.myConstructor,            // any constructor you want to have an instance of
-    { ... },                      // the config object you hand over to the constructor
-    anotherTbInstance             // any other object you want to put the tb instance in
-);
-
-// if a namespace STRING is given, requirement loading is done in case the class isnt present yet
-new tb(
-    'app.myConstructor',          // namespace string for the constructor you want to have an instance of
-    { ... },                      // the config object you hand over to the constructor
-    anotherTbInstance             // any other object you want to put the tb instance in
-);
+   setTimeout(function(){
+       reject('something went wrong.');
+   },500)    
 </code></pre>
+<p>}).then(function(pValue){</p>
+<pre class="code prettyprint"><code>   console.log('Yippie! ', pValue);
+</code></pre>
+<p>}).catch(function(pValue){</p>
+<pre class="code prettyprint"><code>   console.log('Oops? ', pValue);
+</code></pre>
+<p>}).finally(function(pValue){</p>
+<pre class="code prettyprint"><code>   console.log('Cleaning up ', pValue);
+</code></pre>
+<p>});</p>
 
             </div>
         </div>
@@ -252,148 +216,192 @@ new tb(
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
-                            <li class="index-item method">
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
                                 <a href="#method_add">add</a>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_catch">catch</a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_children">children</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_concat">concat</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_descendants">descendants</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_every">every</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_filter">filter</a>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_finally">finally</a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_first">first</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_flush">flush</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_forEach">forEach</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_get">get</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_indexOf">indexOf</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_last">last</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_map">map</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_next">next</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_not">not</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_off">off</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_on">on</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_one">one</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_parent">parent</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_parents">parents</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_pop">pop</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_prev">prev</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_push">push</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_reduce">reduce</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_reduceRight">reduceRight</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_reverse">reverse</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_set">set</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_shift">shift</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_slice">slice</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_some">some</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_splice">splice</a>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_tb.Promise.all">tb.Promise.all</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.Promise.race">tb.Promise.race</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.Promise.reject">tb.Promise.reject</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.Promise.resolve">tb.Promise.resolve</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.request">tb.request</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.stop">tb.stop</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_then">then</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_"></a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_toArray">toArray</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_trigger">trigger</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_unique">unique</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_unshift">unshift</a>
 
                             </li>
-                            <li class="index-item method private">
+                            <li class="index-item method private inherited">
                                 <a href="#method_walkSelector">walkSelector</a>
 
                             </li>
@@ -407,7 +415,7 @@ new tb(
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_add" class="method item">
+<div id="method_add" class="method item inherited">
     <h3 class="name"><code>add</code></h3>
 
         <div class="args">
@@ -430,8 +438,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_add">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1360"><code>src&#x2F;tb&#x2F;tb.js:1360</code></a>
         </p>
 
@@ -483,7 +491,89 @@ new tb(
 
 
 </div>
-<div id="method_children" class="method item">
+<div id="method_catch" class="method item">
+    <h3 class="name"><code>catch</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pFunction</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3898"><code>src&#x2F;tb&#x2F;tb.js:3898</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pFunction</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>function to execute when promise is rejected</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a new Promise instance (chaining)</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>new tb.Promise(function(resolve, reject){
+setTimeout( reject('oops.') );<br>
+}).catch(function(pValue){
+console.log( pValue );  // &gt;oops.
+});</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_children" class="method item inherited">
     <h3 class="name"><code>children</code></h3>
 
         <div class="args">
@@ -509,8 +599,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_children">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1072"><code>src&#x2F;tb&#x2F;tb.js:1072</code></a>
         </p>
 
@@ -578,7 +668,7 @@ new tb(
 
 
 </div>
-<div id="method_concat" class="method item">
+<div id="method_concat" class="method item inherited">
     <h3 class="name"><code>concat</code></h3>
 
         <span class="paren">()</span>
@@ -595,8 +685,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_concat">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1410"><code>src&#x2F;tb&#x2F;tb.js:1410</code></a>
         </p>
 
@@ -624,7 +714,7 @@ new tb(
 
 
 </div>
-<div id="method_descendants" class="method item">
+<div id="method_descendants" class="method item inherited">
     <h3 class="name"><code>descendants</code></h3>
 
         <div class="args">
@@ -647,8 +737,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_descendants">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1013"><code>src&#x2F;tb&#x2F;tb.js:1013</code></a>
         </p>
 
@@ -702,7 +792,7 @@ new tb(
 
 
 </div>
-<div id="method_every" class="method item">
+<div id="method_every" class="method item inherited">
     <h3 class="name"><code>every</code></h3>
 
         <span class="paren">()</span>
@@ -719,8 +809,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_every">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1420"><code>src&#x2F;tb&#x2F;tb.js:1420</code></a>
         </p>
 
@@ -748,7 +838,7 @@ new tb(
 
 
 </div>
-<div id="method_filter" class="method item">
+<div id="method_filter" class="method item inherited">
     <h3 class="name"><code>filter</code></h3>
 
         <div class="args">
@@ -771,8 +861,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_filter">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1285"><code>src&#x2F;tb&#x2F;tb.js:1285</code></a>
         </p>
 
@@ -825,7 +915,89 @@ new tb(
 
 
 </div>
-<div id="method_first" class="method item">
+<div id="method_finally" class="method item">
+    <h3 class="name"><code>finally</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pFunction</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3918"><code>src&#x2F;tb&#x2F;tb.js:3918</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pFunction</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>function to execute at the end in any case</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a new Promise instance (chaining)</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>new tb.Promise(function(resolve, reject){
+setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed<br>
+}).finally(function(pValue){
+console.log( pValue );  // &gt;whatever.
+});</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_first" class="method item inherited">
     <h3 class="name"><code>first</code></h3>
 
         <span class="paren">()</span>
@@ -842,8 +1014,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_first">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1213"><code>src&#x2F;tb&#x2F;tb.js:1213</code></a>
         </p>
 
@@ -877,7 +1049,7 @@ new tb(
 
 
 </div>
-<div id="method_flush" class="method item">
+<div id="method_flush" class="method item inherited">
     <h3 class="name"><code>flush</code></h3>
 
         <span class="paren">()</span>
@@ -894,8 +1066,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_flush">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1382"><code>src&#x2F;tb&#x2F;tb.js:1382</code></a>
         </p>
 
@@ -927,7 +1099,7 @@ new tb(
 
 
 </div>
-<div id="method_forEach" class="method item">
+<div id="method_forEach" class="method item inherited">
     <h3 class="name"><code>forEach</code></h3>
 
         <span class="paren">()</span>
@@ -944,8 +1116,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_forEach">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1430"><code>src&#x2F;tb&#x2F;tb.js:1430</code></a>
         </p>
 
@@ -973,7 +1145,7 @@ new tb(
 
 
 </div>
-<div id="method_get" class="method item">
+<div id="method_get" class="method item inherited">
     <h3 class="name"><code>get</code></h3>
 
         <div class="args">
@@ -995,8 +1167,8 @@ new tb(
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_get">tb</a>:
         <a href="../files/src_tb_tb.js.html#l564"><code>src&#x2F;tb&#x2F;tb.js:564</code></a>
         </p>
 
@@ -1052,7 +1224,7 @@ a.get( 'x' );
             </div>
         </div>
 </div>
-<div id="method_indexOf" class="method item">
+<div id="method_indexOf" class="method item inherited">
     <h3 class="name"><code>indexOf</code></h3>
 
         <span class="paren">()</span>
@@ -1068,8 +1240,8 @@ a.get( 'x' );
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_indexOf">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1440"><code>src&#x2F;tb&#x2F;tb.js:1440</code></a>
         </p>
 
@@ -1097,7 +1269,7 @@ a.get( 'x' );
 
 
 </div>
-<div id="method_last" class="method item">
+<div id="method_last" class="method item inherited">
     <h3 class="name"><code>last</code></h3>
 
         <span class="paren">()</span>
@@ -1114,8 +1286,8 @@ a.get( 'x' );
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_last">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1247"><code>src&#x2F;tb&#x2F;tb.js:1247</code></a>
         </p>
 
@@ -1149,7 +1321,7 @@ a.get( 'x' );
 
 
 </div>
-<div id="method_map" class="method item">
+<div id="method_map" class="method item inherited">
     <h3 class="name"><code>map</code></h3>
 
         <span class="paren">()</span>
@@ -1165,8 +1337,8 @@ a.get( 'x' );
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_map">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1449"><code>src&#x2F;tb&#x2F;tb.js:1449</code></a>
         </p>
 
@@ -1194,7 +1366,7 @@ a.get( 'x' );
 
 
 </div>
-<div id="method_next" class="method item">
+<div id="method_next" class="method item inherited">
     <h3 class="name"><code>next</code></h3>
 
         <span class="paren">()</span>
@@ -1211,8 +1383,8 @@ a.get( 'x' );
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_next">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1137"><code>src&#x2F;tb&#x2F;tb.js:1137</code></a>
         </p>
 
@@ -1246,7 +1418,7 @@ a.get( 'x' );
 
 
 </div>
-<div id="method_not" class="method item">
+<div id="method_not" class="method item inherited">
     <h3 class="name"><code>not</code></h3>
 
         <div class="args">
@@ -1269,8 +1441,8 @@ a.get( 'x' );
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_not">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1327"><code>src&#x2F;tb&#x2F;tb.js:1327</code></a>
         </p>
 
@@ -1323,7 +1495,7 @@ a.get( 'x' );
 
 
 </div>
-<div id="method_off" class="method item">
+<div id="method_off" class="method item inherited">
     <h3 class="name"><code>off</code></h3>
 
         <div class="args">
@@ -1349,8 +1521,8 @@ a.get( 'x' );
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_off">tb</a>:
         <a href="../files/src_tb_tb.js.html#l825"><code>src&#x2F;tb&#x2F;tb.js:825</code></a>
         </p>
 
@@ -1412,7 +1584,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_on" class="method item">
+<div id="method_on" class="method item inherited">
     <h3 class="name"><code>on</code></h3>
 
         <div class="args">
@@ -1441,8 +1613,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_on">tb</a>:
         <a href="../files/src_tb_tb.js.html#l747"><code>src&#x2F;tb&#x2F;tb.js:747</code></a>
         </p>
 
@@ -1517,7 +1689,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_one" class="method item">
+<div id="method_one" class="method item inherited">
     <h3 class="name"><code>one</code></h3>
 
         <div class="args">
@@ -1543,8 +1715,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_one">tb</a>:
         <a href="../files/src_tb_tb.js.html#l800"><code>src&#x2F;tb&#x2F;tb.js:800</code></a>
         </p>
 
@@ -1607,7 +1779,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_parent" class="method item">
+<div id="method_parent" class="method item inherited">
     <h3 class="name"><code>parent</code></h3>
 
         <div class="args">
@@ -1630,8 +1802,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_parent">tb</a>:
         <a href="../files/src_tb_tb.js.html#l959"><code>src&#x2F;tb&#x2F;tb.js:959</code></a>
         </p>
 
@@ -1685,7 +1857,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_parents" class="method item">
+<div id="method_parents" class="method item inherited">
     <h3 class="name"><code>parents</code></h3>
 
         <div class="args">
@@ -1708,8 +1880,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_parents">tb</a>:
         <a href="../files/src_tb_tb.js.html#l895"><code>src&#x2F;tb&#x2F;tb.js:895</code></a>
         </p>
 
@@ -1763,7 +1935,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_pop" class="method item">
+<div id="method_pop" class="method item inherited">
     <h3 class="name"><code>pop</code></h3>
 
         <span class="paren">()</span>
@@ -1779,8 +1951,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_pop">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1458"><code>src&#x2F;tb&#x2F;tb.js:1458</code></a>
         </p>
 
@@ -1808,7 +1980,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_prev" class="method item">
+<div id="method_prev" class="method item inherited">
     <h3 class="name"><code>prev</code></h3>
 
         <span class="paren">()</span>
@@ -1825,8 +1997,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_prev">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1175"><code>src&#x2F;tb&#x2F;tb.js:1175</code></a>
         </p>
 
@@ -1860,7 +2032,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_push" class="method item">
+<div id="method_push" class="method item inherited">
     <h3 class="name"><code>push</code></h3>
 
         <span class="paren">()</span>
@@ -1876,8 +2048,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_push">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1467"><code>src&#x2F;tb&#x2F;tb.js:1467</code></a>
         </p>
 
@@ -1905,7 +2077,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_reduce" class="method item">
+<div id="method_reduce" class="method item inherited">
     <h3 class="name"><code>reduce</code></h3>
 
         <span class="paren">()</span>
@@ -1921,8 +2093,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_reduce">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1476"><code>src&#x2F;tb&#x2F;tb.js:1476</code></a>
         </p>
 
@@ -1950,7 +2122,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_reduceRight" class="method item">
+<div id="method_reduceRight" class="method item inherited">
     <h3 class="name"><code>reduceRight</code></h3>
 
         <span class="paren">()</span>
@@ -1966,8 +2138,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_reduceRight">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1485"><code>src&#x2F;tb&#x2F;tb.js:1485</code></a>
         </p>
 
@@ -1995,7 +2167,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_reverse" class="method item">
+<div id="method_reverse" class="method item inherited">
     <h3 class="name"><code>reverse</code></h3>
 
         <span class="paren">()</span>
@@ -2011,8 +2183,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_reverse">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1494"><code>src&#x2F;tb&#x2F;tb.js:1494</code></a>
         </p>
 
@@ -2040,7 +2212,7 @@ afterwards the handler is deleted from the event handler list</p>
 
 
 </div>
-<div id="method_set" class="method item">
+<div id="method_set" class="method item inherited">
     <h3 class="name"><code>set</code></h3>
 
         <div class="args">
@@ -2066,8 +2238,8 @@ afterwards the handler is deleted from the event handler list</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_set">tb</a>:
         <a href="../files/src_tb_tb.js.html#l521"><code>src&#x2F;tb&#x2F;tb.js:521</code></a>
         </p>
 
@@ -2139,7 +2311,7 @@ a.set( 'x': 42 );</p>
             </div>
         </div>
 </div>
-<div id="method_shift" class="method item">
+<div id="method_shift" class="method item inherited">
     <h3 class="name"><code>shift</code></h3>
 
         <span class="paren">()</span>
@@ -2155,8 +2327,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_shift">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1503"><code>src&#x2F;tb&#x2F;tb.js:1503</code></a>
         </p>
 
@@ -2184,7 +2356,7 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_slice" class="method item">
+<div id="method_slice" class="method item inherited">
     <h3 class="name"><code>slice</code></h3>
 
         <span class="paren">()</span>
@@ -2200,8 +2372,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_slice">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1512"><code>src&#x2F;tb&#x2F;tb.js:1512</code></a>
         </p>
 
@@ -2229,7 +2401,7 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_some" class="method item">
+<div id="method_some" class="method item inherited">
     <h3 class="name"><code>some</code></h3>
 
         <span class="paren">()</span>
@@ -2245,8 +2417,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_some">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1521"><code>src&#x2F;tb&#x2F;tb.js:1521</code></a>
         </p>
 
@@ -2274,7 +2446,7 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_splice" class="method item">
+<div id="method_splice" class="method item inherited">
     <h3 class="name"><code>splice</code></h3>
 
         <span class="paren">()</span>
@@ -2290,8 +2462,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_splice">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1530"><code>src&#x2F;tb&#x2F;tb.js:1530</code></a>
         </p>
 
@@ -2319,7 +2491,728 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_toArray" class="method item">
+<div id="method_tb.Promise.all" class="method item">
+    <h3 class="name"><code>tb.Promise.all</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pIterable</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3989"><code>src&#x2F;tb&#x2F;tb.js:3989</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pIterable</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>an array containing values and/or promises</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a new rejected Promise instance (chaining)</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>// &quot;then&quot; function will be executed when ALL promises have been resolved
+// &quot;catch&quot; function will be executed if one of the promises rejects
+// values in the parameter array will be converted to Promise.resolve(value)</p>
+<p>var p = tb.Promise.all([
+true,
+tb.Promise.resolve('new value')
+]).then(function(pValue){
+console.log(pValue); // &gt;new value
+});</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_tb.Promise.race" class="method item">
+    <h3 class="name"><code>tb.Promise.race</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pIterable</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4047"><code>src&#x2F;tb&#x2F;tb.js:4047</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pIterable</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>an array containing values and/or promises</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a new rejected Promise instance (chaining)</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>// &quot;then&quot; function will be executed when the fastest promise resolves
+// &quot;catch&quot; function will be executed when the fastest promise rejects
+// values in the parameter array will be converted to Promise.resolve(value)</p>
+<p>var p1 = new tb.Promise(function(resolve,reject){
+setTimeout(function(){
+resolve('ok.');
+},1000);
+});</p>
+<p>var p2 = new tb.Promise(function(resolve,reject){
+setTimeout(function(){
+reject('oops.');
+},2000);
+});</p>
+<p>var p = tb.Promise.race([
+p1,
+p2
+]).then(function(pValue){
+console.log(pValue); // &gt;ok.
+}).catch(function(pValue){
+console.log(pValue); // (will never be reached, p1 resolves first)
+});</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_tb.Promise.reject" class="method item">
+    <h3 class="name"><code>tb.Promise.reject</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pValue</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3966"><code>src&#x2F;tb&#x2F;tb.js:3966</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pValue</code>
+                        <span class="type">Any</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>the value the returned promise will reject with</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a new rejected Promise instance (chaining)</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>var p = tb.Promise.reject('rejected');</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_tb.Promise.resolve" class="method item">
+    <h3 class="name"><code>tb.Promise.resolve</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pValue</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3943"><code>src&#x2F;tb&#x2F;tb.js:3943</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pValue</code>
+                        <span class="type">Any</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>the value the returned promise will resolve with</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a new resolved Promise instance (chaining)</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>var p = tb.Promise.resolve('resolved');</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_tb.request" class="method item">
+    <h3 class="name"><code>tb.request</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pOptions</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4315"><code>src&#x2F;tb&#x2F;tb.js:4315</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pOptions</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>a hash object containing these options:<br><br><br></p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">url:</code>
+                                    <span class="type"></span>
+
+                                <div class="param-description">
+                                    <p>(string, omitted) the URL to call</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[params]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>a hash object containing the parameters to post</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[method]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>(string, optional, defaults to 'POST') the XHR method</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[headers]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>a hash object containing additional XHR headers</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[success]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>the function to call with the request result</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[error]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>the function to call if request status not in 200...299</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[statechange]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>the function to call when readyState changes</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[timeout]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>structure sample: { cb: myFunction, ms:10000 }
+cb: callback to run when timeout occurs
+ms: number of milliseconds the request will run before being terminated</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[cachable]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>defaults to true, indicates whether or not to include a unique id in URL</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[async]</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <ul>
+<li>whether or not to make an asynchronous request</li>
+</ul>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>a twoBirds request object</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_tb.stop" class="method item">
+    <h3 class="name"><code>tb.stop</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pStopit</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4679"><code>src&#x2F;tb&#x2F;tb.js:4679</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pStopit</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>indicating whether to stop event handling</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                    <ul>
+<li>true if event handling stopped, else false</li>
+</ul>
+<p>stops event handling</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_then" class="method item">
+    <h3 class="name"><code>then</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pFunction</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l3878"><code>src&#x2F;tb&#x2F;tb.js:3878</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pFunction</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>function to execute when promise is resolved</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                    <ul>
+<li>a new Promise instance (chaining)</li>
+</ul>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <p>new tb.Promise(function(resolve, reject){
+setTimeout( resolve('ok.') );<br>
+}).then(function(pValue){
+console.log( pValue );  // &gt;ok.
+});</p>
+
+            </div>
+        </div>
+</div>
+<div id="method_" class="method item">
+    <h3 class="name"><code></code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l4520"><code>src&#x2F;tb&#x2F;tb.js:4520</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+<div id="method_toArray" class="method item inherited">
     <h3 class="name"><code>toArray</code></h3>
 
         <span class="paren">()</span>
@@ -2335,8 +3228,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_toArray">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1274"><code>src&#x2F;tb&#x2F;tb.js:1274</code></a>
         </p>
 
@@ -2364,7 +3257,7 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_trigger" class="method item">
+<div id="method_trigger" class="method item inherited">
     <h3 class="name"><code>trigger</code></h3>
 
         <div class="args">
@@ -2393,8 +3286,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_trigger">tb</a>:
         <a href="../files/src_tb_tb.js.html#l598"><code>src&#x2F;tb&#x2F;tb.js:598</code></a>
         </p>
 
@@ -2470,7 +3363,7 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_unique" class="method item">
+<div id="method_unique" class="method item inherited">
     <h3 class="name"><code>unique</code></h3>
 
         <span class="paren">()</span>
@@ -2487,8 +3380,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_unique">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1558"><code>src&#x2F;tb&#x2F;tb.js:1558</code></a>
         </p>
 
@@ -2517,7 +3410,7 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_unshift" class="method item">
+<div id="method_unshift" class="method item inherited">
     <h3 class="name"><code>unshift</code></h3>
 
         <span class="paren">()</span>
@@ -2533,8 +3426,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_unshift">tb</a>:
         <a href="../files/src_tb_tb.js.html#l1539"><code>src&#x2F;tb&#x2F;tb.js:1539</code></a>
         </p>
 
@@ -2562,7 +3455,7 @@ a.set( 'x': 42 );</p>
 
 
 </div>
-<div id="method_walkSelector" class="method item private">
+<div id="method_walkSelector" class="method item private inherited">
     <h3 class="name"><code>walkSelector</code></h3>
 
         <div class="args">
@@ -2591,8 +3484,8 @@ a.set( 'x': 42 );</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="#method_walkSelector">tb</a>:
         <a href="../files/src_tb_tb.js.html#l448"><code>src&#x2F;tb&#x2F;tb.js:448</code></a>
         </p>
 
