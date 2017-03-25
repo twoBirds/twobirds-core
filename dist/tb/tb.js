@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.71 - 2017-03-24 */
+/*! twobirds-core - v7.3.72 - 2017-03-25 */
 
 /**
  twoBirds V7 core functionality
@@ -426,14 +426,14 @@ tb = (function(){
                             && key.indexOf( '.' ) > -1
                         ){ 
                             if ( key === 'tb.Require' ){
-                                console.log('tbInstance tb.Require found!', key);
+                                //console.log('tbInstance tb.Require found!', key);
                                 tbInstance['tb.Require'] = tb.require(tbInstance['tb.Require'])
                                     .then(function(pValue){ // jshint ignore:line
-                                        console.log( 'tb.Require init', tbInstance, pValue );
+                                        //console.log( 'tb.Require init', tbInstance, pValue );
                                         tbInstance.trigger( 'init' );
                                     });
                             } else { // prop name contains ".", treat as tb class
-                                console.log('tbInstance dotted class found!', key);
+                                //console.log('tbInstance dotted class found!', key);
                                 tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
                             }
                         }
@@ -3644,37 +3644,46 @@ tb.status = {
  */
 tb.idle = function( pCallback ){
 
-
     var f = function(){
 
+        //console.log( 'idle call f()' );
+
         if ( tb.status.loadCount() === 0 ){
-            f.lastChanged = tb.status.loadCount.lastChanged; // get timestamp for when loadcount has been changed
+
+            //console.log( 'idle create tf()' );
 
             var tf = function(){
-                var x = tb.status.loadCount();
 
-                if (
-                    x === 0 // nothing loading currently
-                    && tb.require.loadcount === 0
-                    && tb.status.loadCount.lastChanged === f.lastChanged // and its still the previous '0' loadcount
-                ){
-                    // system is still idle
-                    if ( typeof pCallback === 'function'){
-                        pCallback();
+                //console.log( 'idle call tf()' );
+
+                if ( tb.status.loadCount() === 0 ){ // loadCount is (still) 0
+                    if (
+                        tb.status.loadCount.lastChanged === tf.lastChanged // it is still the previous '0' loadcount
+                    ){
+                        // system is still idle
+                        if ( typeof pCallback === 'function'){
+                            //console.log('idle', tf.lastChanged, tb.status.loadCount.lastChanged );
+                            pCallback();
+                        }
+                    } else {
+                        // probably not idle -> retry in 50 ms
+                        //console.log('not yet idle', tf.lastChanged, tb.status.loadCount.lastChanged );
+                        tf.lastChanged = tb.status.loadCount.lastChanged;
+                        setTimeout(
+                            tf,
+                            100
+                        );
                     }
-                } else {
-                    // probably not idle -> retry in 50 ms
-                    f.lastChanged = tb.status.loadCount.lastChanged;
-                    setTimeout(
-                        tf,
-                        50
-                    );
+                } else { // loadCount is not 0 -> reattach function
+                    tb.status.loadCount.observe( f, true );
                 }
             };
 
+            tf.lastChanged = 0;
+
             setTimeout(
                 tf,
-                50
+                100
             );
         } else {
             // if idle not yet reached, re-attach function for ONE execution
@@ -3687,6 +3696,10 @@ tb.idle = function( pCallback ){
     tb.status.loadCount.observe( f, true );
 
 };
+
+tb.status.loadCount.observe(function(pValue){
+    //console.log(pValue);
+});
 
 
 /**
@@ -4427,7 +4440,7 @@ tb.require = function( pFiles, pCallback ){
     var promiseArray = [], // used for Promise.all()
         ret;
 
-    console.log( 'tb.require()', pFiles);
+    //console.log( 'tb.require()', pFiles);
 
     if ( !pFiles ){
         var warn = 'tb.require: no files given.';
@@ -4513,19 +4526,18 @@ tb.require = function( pFiles, pCallback ){
             file = pFile + ( pFile.indexOf('?') > -1 ? '&' : '?' ) + tb.getId();
         }
 
-        console.log('load', type, typeConfigs);
+        //console.log('load', type, typeConfigs);
 
         // do loading
         if ( !!typeConfigs[type] ) { // either *.css or *.js file
 
+            // increase loadcount ( tb.idle() related )
+            tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
+
             promise = new tb.Promise(function(resolve, reject){
                 var element;
 
-                console.log('special load', type, typeConfigs);
-
-                // increase loadcount ( tb.idle() related )
-                tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
-                tb.require.loadCount++;
+                //console.log('special load', type, typeConfigs);
 
                 // get default config for type
                 typeConfig = typeConfigs[type];
@@ -4536,7 +4548,6 @@ tb.require = function( pFiles, pCallback ){
                 element.onreadystatechange = element.onload = function () {
                     var state = element.readyState;
                     if ( !state || /loaded|complete/.test(state) ) {
-                        tb.require.loadCount--;
                         resolve('1');
                     }
                 };

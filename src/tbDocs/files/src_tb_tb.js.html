@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.71</em>
+            <em>API Docs for: v7.3.72</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.71 - 2017-03-24 */
+/*! twobirds-core - v7.3.72 - 2017-03-25 */
 
 /**
  twoBirds V7 core functionality
@@ -515,14 +515,14 @@ tb = (function(){
                             &amp;&amp; key.indexOf( &#x27;.&#x27; ) &gt; -1
                         ){ 
                             if ( key === &#x27;tb.Require&#x27; ){
-                                console.log(&#x27;tbInstance tb.Require found!&#x27;, key);
+                                //console.log(&#x27;tbInstance tb.Require found!&#x27;, key);
                                 tbInstance[&#x27;tb.Require&#x27;] = tb.require(tbInstance[&#x27;tb.Require&#x27;])
                                     .then(function(pValue){ // jshint ignore:line
-                                        console.log( &#x27;tb.Require init&#x27;, tbInstance, pValue );
+                                        //console.log( &#x27;tb.Require init&#x27;, tbInstance, pValue );
                                         tbInstance.trigger( &#x27;init&#x27; );
                                     });
                             } else { // prop name contains &quot;.&quot;, treat as tb class
-                                console.log(&#x27;tbInstance dotted class found!&#x27;, key);
+                                //console.log(&#x27;tbInstance dotted class found!&#x27;, key);
                                 tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
                             }
                         }
@@ -3733,37 +3733,46 @@ tb.status = {
  */
 tb.idle = function( pCallback ){
 
-
     var f = function(){
 
+        //console.log( &#x27;idle call f()&#x27; );
+
         if ( tb.status.loadCount() === 0 ){
-            f.lastChanged = tb.status.loadCount.lastChanged; // get timestamp for when loadcount has been changed
+
+            //console.log( &#x27;idle create tf()&#x27; );
 
             var tf = function(){
-                var x = tb.status.loadCount();
 
-                if (
-                    x === 0 // nothing loading currently
-                    &amp;&amp; tb.require.loadcount === 0
-                    &amp;&amp; tb.status.loadCount.lastChanged === f.lastChanged // and its still the previous &#x27;0&#x27; loadcount
-                ){
-                    // system is still idle
-                    if ( typeof pCallback === &#x27;function&#x27;){
-                        pCallback();
+                //console.log( &#x27;idle call tf()&#x27; );
+
+                if ( tb.status.loadCount() === 0 ){ // loadCount is (still) 0
+                    if (
+                        tb.status.loadCount.lastChanged === tf.lastChanged // it is still the previous &#x27;0&#x27; loadcount
+                    ){
+                        // system is still idle
+                        if ( typeof pCallback === &#x27;function&#x27;){
+                            //console.log(&#x27;idle&#x27;, tf.lastChanged, tb.status.loadCount.lastChanged );
+                            pCallback();
+                        }
+                    } else {
+                        // probably not idle -&gt; retry in 50 ms
+                        //console.log(&#x27;not yet idle&#x27;, tf.lastChanged, tb.status.loadCount.lastChanged );
+                        tf.lastChanged = tb.status.loadCount.lastChanged;
+                        setTimeout(
+                            tf,
+                            100
+                        );
                     }
-                } else {
-                    // probably not idle -&gt; retry in 50 ms
-                    f.lastChanged = tb.status.loadCount.lastChanged;
-                    setTimeout(
-                        tf,
-                        50
-                    );
+                } else { // loadCount is not 0 -&gt; reattach function
+                    tb.status.loadCount.observe( f, true );
                 }
             };
 
+            tf.lastChanged = 0;
+
             setTimeout(
                 tf,
-                50
+                100
             );
         } else {
             // if idle not yet reached, re-attach function for ONE execution
@@ -3776,6 +3785,10 @@ tb.idle = function( pCallback ){
     tb.status.loadCount.observe( f, true );
 
 };
+
+tb.status.loadCount.observe(function(pValue){
+    //console.log(pValue);
+});
 
 
 /**
@@ -4516,7 +4529,7 @@ tb.require = function( pFiles, pCallback ){
     var promiseArray = [], // used for Promise.all()
         ret;
 
-    console.log( &#x27;tb.require()&#x27;, pFiles);
+    //console.log( &#x27;tb.require()&#x27;, pFiles);
 
     if ( !pFiles ){
         var warn = &#x27;tb.require: no files given.&#x27;;
@@ -4602,19 +4615,18 @@ tb.require = function( pFiles, pCallback ){
             file = pFile + ( pFile.indexOf(&#x27;?&#x27;) &gt; -1 ? &#x27;&amp;&#x27; : &#x27;?&#x27; ) + tb.getId();
         }
 
-        console.log(&#x27;load&#x27;, type, typeConfigs);
+        //console.log(&#x27;load&#x27;, type, typeConfigs);
 
         // do loading
         if ( !!typeConfigs[type] ) { // either *.css or *.js file
 
+            // increase loadcount ( tb.idle() related )
+            tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
+
             promise = new tb.Promise(function(resolve, reject){
                 var element;
 
-                console.log(&#x27;special load&#x27;, type, typeConfigs);
-
-                // increase loadcount ( tb.idle() related )
-                tb.status.loadCount(tb.status.loadCount() + 1); // increase loadCount
-                tb.require.loadCount++;
+                //console.log(&#x27;special load&#x27;, type, typeConfigs);
 
                 // get default config for type
                 typeConfig = typeConfigs[type];
@@ -4625,7 +4637,6 @@ tb.require = function( pFiles, pCallback ){
                 element.onreadystatechange = element.onload = function () {
                     var state = element.readyState;
                     if ( !state || /loaded|complete/.test(state) ) {
-                        tb.require.loadCount--;
                         resolve(&#x27;1&#x27;);
                     }
                 };
