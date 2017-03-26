@@ -24,7 +24,7 @@ You can also [contact me](mailTo:fthuerigen@googlemail.com) if you need a specif
 twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines.
 
 The tB core can be seen as an intermediate step between a simple wrapper/helper library like jQuery and a fully fledged JS framework. 
-Like the first, it has selectors for the dom and reasonable modification methods. Like the latter, is incorporates a higher level abstraction scheme for application objects.
+Like the first, it has selectors for the dom and reasonable modification methods. Like the latter, it incorporates a higher level abstraction scheme for application objects.
 The core does not contain higher level DOM elements like datepickers or the like, but gives you a sufficient set of functionality to implement these as you like. 
 As a result, a widget is just another application object (same type of code, easy understandable). 
 
@@ -127,7 +127,7 @@ Unlike most of these frameworks twoBirds ...
 - ... ensures reusability of your code - since everything is a widget, you will build your own repository from the very start.
 - ... you can use it as simple helper library in an existing plain old website
 - ... you can migrate a plain old website to a SPA bottom-up 
-- ... you can of course creating a new SPA top-down
+- ... you can of course create a new SPA top-down
 
 ## Description
 
