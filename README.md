@@ -30,7 +30,7 @@ As a result, a widget is just another application object (same type of code, eas
 
 It is JS-linted, jasmine tested and this package contains the complete API documentation. 
 
-tB is the minimum possible solution for an application framework.
+tB is the minimum possible toolkit to create application / application framework.
 
 It consists of 3 parts:
 
