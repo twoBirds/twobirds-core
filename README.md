@@ -125,7 +125,9 @@ Unlike most of these frameworks twoBirds ...
 - ... doesnt come with prebuilt widgets - every tB instance is a widget, and usually you will do it yourself.
 - ... strictly follows the KISS and DRY principles.
 - ... ensures reusability of your code - since everything is a widget, you will build your own repository from the very start.
-- ... allows for simple use in an existing plain old website (e.g. like jQuery), as well as migrating it to an SPI bottom-up or creating a new SPI top-down.
+- ... you can use it as simple helper library in an existing plain old website
+- ... you can migrate a plain old website to a SPA bottom-up 
+- ... you can of course creating a new SPA top-down
 
 ## Description
 
