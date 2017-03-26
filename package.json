@@ -1,7 +1,8 @@
 {
   "name": "twobirds-core",
   "description": "twoBirds Web Component Framework",
-  "version": "7.3.74",
+  "keywords": "javacript library framework core extension",
+  "version": "7.3.75",
   "license": "LGPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",
