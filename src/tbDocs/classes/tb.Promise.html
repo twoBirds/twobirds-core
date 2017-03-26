@@ -86,12 +86,9 @@
 <h1>tb.Promise Class</h1>
 <div class="box meta">
 
-        <div class="extends">
-            Extends Tb
-        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l3838"><code>src&#x2F;tb&#x2F;tb.js:3838</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l3859"><code>src&#x2F;tb&#x2F;tb.js:3859</code></a>
         </div>
 
 
@@ -99,7 +96,10 @@
 
 
 <div class="box intro">
-    
+    <ul>
+<li>Promise/A+ compliant promise functionality</li>
+</ul>
+
 </div>
 
     <div class="constructor">
@@ -122,13 +122,14 @@
 
 
 
+        <span class="flag static">static</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3838"><code>src&#x2F;tb&#x2F;tb.js:3838</code></a>
+        <a href="../files/src_tb_tb.js.html#l3859"><code>src&#x2F;tb&#x2F;tb.js:3859</code></a>
         </p>
 
 
@@ -149,9 +150,7 @@
 
 
                     <div class="param-description">
-                        <ul>
-<li>function to execute</li>
-</ul>
+                        <p>function to execute</p>
 
                     </div>
 
@@ -164,10 +163,7 @@
 
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>Promise/A+ compliant promise object</li>
-</ul>
-<p>Promise/A+ compliant promise functionality</p>
+                    <p>Promise/A+ compliant promise object</p>
 
             </div>
         </div>
@@ -177,25 +173,30 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>var p = new tb.Promise(function(resolve, reject){</p>
-<pre class="code prettyprint"><code>   setTimeout(function(){
-       resolve('it worked.');
-   },1000)    
+                <pre class="code prettyprint"><code>   var p = new tb.Promise(function(resolve, reject){
 
-   setTimeout(function(){
-       reject('something went wrong.');
-   },500)    
+       setTimeout(function(){
+           resolve('it worked.');
+       },1000)
+
+       setTimeout(function(){
+           reject('something went wrong.');
+       },500)
+
+   }).then(function(pValue){
+
+       console.log('Yippie! ', pValue);
+
+   }).catch(function(pValue){
+
+       console.log('Oops? ', pValue);
+
+   }).finally(function(pValue){
+
+       console.log('Cleaning up ', pValue);
+
+   });
 </code></pre>
-<p>}).then(function(pValue){</p>
-<pre class="code prettyprint"><code>   console.log('Yippie! ', pValue);
-</code></pre>
-<p>}).catch(function(pValue){</p>
-<pre class="code prettyprint"><code>   console.log('Oops? ', pValue);
-</code></pre>
-<p>}).finally(function(pValue){</p>
-<pre class="code prettyprint"><code>   console.log('Cleaning up ', pValue);
-</code></pre>
-<p>});</p>
 
             </div>
         </div>
@@ -216,137 +217,13 @@
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods extends">
-                            <li class="index-item method inherited">
-                                <a href="#method_add">add</a>
-
-                            </li>
+                    <ul class="index-list methods">
                             <li class="index-item method">
                                 <a href="#method_catch">catch</a>
 
                             </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_children">children</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_concat">concat</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_descendants">descendants</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_every">every</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_filter">filter</a>
-
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_finally">finally</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_first">first</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_flush">flush</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_forEach">forEach</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_get">get</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_indexOf">indexOf</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_last">last</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_map">map</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_next">next</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_not">not</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_off">off</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_on">on</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_one">one</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_parent">parent</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_parents">parents</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_pop">pop</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_prev">prev</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_push">push</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_reduce">reduce</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_reduceRight">reduceRight</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_reverse">reverse</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_set">set</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_shift">shift</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_slice">slice</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_some">some</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_splice">splice</a>
 
                             </li>
                             <li class="index-item method">
@@ -373,26 +250,6 @@
                                 <a href="#method_then">then</a>
 
                             </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_toArray">toArray</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_trigger">trigger</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_unique">unique</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_unshift">unshift</a>
-
-                            </li>
-                            <li class="index-item method private inherited">
-                                <a href="#method_walkSelector">walkSelector</a>
-
-                            </li>
                     </ul>
                 </div>
 
@@ -403,82 +260,6 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_add" class="method item inherited">
-    <h3 class="name"><code>add</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pParam]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_add">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1372"><code>src&#x2F;tb&#x2F;tb.js:1372</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pParam]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any kind of TbSelector parameter</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance (maybe empty) - for chaining</li>
-</ul>
-<p>add() method</p>
-<p>add elements to current result set</p>
-<ul>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
 <div id="method_catch" class="method item">
     <h3 class="name"><code>catch</code></h3>
 
@@ -504,7 +285,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3923"><code>src&#x2F;tb&#x2F;tb.js:3923</code></a>
+        <a href="../files/src_tb_tb.js.html#l3945"><code>src&#x2F;tb&#x2F;tb.js:3945</code></a>
         </p>
 
 
@@ -552,356 +333,15 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>new tb.Promise(function(resolve, reject){
-setTimeout( reject('oops.') );<br>
-}).catch(function(pValue){
-console.log( pValue );  // &gt;oops.
-});</p>
+                <pre class="code prettyprint"><code>   new tb.Promise(function(resolve, reject){
+       setTimeout( reject('oops.') );
+   }).catch(function(pValue){
+       console.log( pValue );  // &gt;oops.
+   });
+</code></pre>
 
             </div>
         </div>
-</div>
-<div id="method_children" class="method item inherited">
-    <h3 class="name"><code>children</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pSelector]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[pLocalOnly]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_children">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1084"><code>src&#x2F;tb&#x2F;tb.js:1084</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pSelector]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any type of tb.Selector parameter</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[pLocalOnly]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>only local children of given tb instance(s)</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance - for chaining</li>
-</ul>
-<p>.children() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get all direct children of tb object</li>
-<li>check them against the filter param pSelector</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_concat" class="method item inherited">
-    <h3 class="name"><code>concat</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_concat">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1422"><code>src&#x2F;tb&#x2F;tb.js:1422</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat">concat</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_descendants" class="method item inherited">
-    <h3 class="name"><code>descendants</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pSelector]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_descendants">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1025"><code>src&#x2F;tb&#x2F;tb.js:1025</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pSelector]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any type of tb.Selector parameter</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance - for chaining</li>
-</ul>
-<p>.descendants() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get all descendants of tb object</li>
-<li>check them against the filter param pSelector</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_every" class="method item inherited">
-    <h3 class="name"><code>every</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_every">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1432"><code>src&#x2F;tb&#x2F;tb.js:1432</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/every">every</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_filter" class="method item inherited">
-    <h3 class="name"><code>filter</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pParam]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_filter">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1297"><code>src&#x2F;tb&#x2F;tb.js:1297</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pParam]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any kind of TbSelector parameter</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance (maybe empty) - for chaining</li>
-</ul>
-<p>filter() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>check them against the filter param pParam</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
 </div>
 <div id="method_finally" class="method item">
     <h3 class="name"><code>finally</code></h3>
@@ -928,7 +368,7 @@ console.log( pValue );  // &gt;oops.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3943"><code>src&#x2F;tb&#x2F;tb.js:3943</code></a>
+        <a href="../files/src_tb_tb.js.html#l3965"><code>src&#x2F;tb&#x2F;tb.js:3965</code></a>
         </p>
 
 
@@ -976,1508 +416,15 @@ console.log( pValue );  // &gt;oops.
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>new tb.Promise(function(resolve, reject){
-setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed<br>
-}).finally(function(pValue){
-console.log( pValue );  // &gt;whatever.
-});</p>
-
-            </div>
-        </div>
-</div>
-<div id="method_first" class="method item inherited">
-    <h3 class="name"><code>first</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_first">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1225"><code>src&#x2F;tb&#x2F;tb.js:1225</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance (maybe empty) - for chaining</li>
-</ul>
-<p>first() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get the first child of the tb object parent</li>
-<li>check it against the filter param pSelector</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_flush" class="method item inherited">
-    <h3 class="name"><code>flush</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_flush">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1394"><code>src&#x2F;tb&#x2F;tb.js:1394</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>mpty tb.Selector instance - for chaining</li>
-</ul>
-<p>flush() method</p>
-<p>empty current result set</p>
-<ul>
-<li>return empty TbSelector result set</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_forEach" class="method item inherited">
-    <h3 class="name"><code>forEach</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_forEach">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1442"><code>src&#x2F;tb&#x2F;tb.js:1442</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">forEach</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_get" class="method item inherited">
-    <h3 class="name"><code>get</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pKey]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_get">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l576"><code>src&#x2F;tb&#x2F;tb.js:576</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pKey]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>name of the property</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                    <p>any value stored in property, or undefined</p>
-<p>get() method</p>
-<p>get an instance property</p>
-
-            </div>
-        </div>
-
-
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <pre class="code prettyprint"><code>var a = new tb(...); // create a tB instance
-a.get( 'x' );
+                <pre class="code prettyprint"><code>   new tb.Promise(function(resolve, reject){
+       setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed
+   }).finally(function(pValue){
+       console.log( pValue );  // &gt;whatever.
+   });
 </code></pre>
 
             </div>
         </div>
-</div>
-<div id="method_indexOf" class="method item inherited">
-    <h3 class="name"><code>indexOf</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_indexOf">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1452"><code>src&#x2F;tb&#x2F;tb.js:1452</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">indexOf</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_last" class="method item inherited">
-    <h3 class="name"><code>last</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_last">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1259"><code>src&#x2F;tb&#x2F;tb.js:1259</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance (maybe empty) - for chaining</li>
-</ul>
-<p>last() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get the last child of the tb object parent</li>
-<li>check it against the filter param pSelector</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_map" class="method item inherited">
-    <h3 class="name"><code>map</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_map">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1461"><code>src&#x2F;tb&#x2F;tb.js:1461</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map">map</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_next" class="method item inherited">
-    <h3 class="name"><code>next</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_next">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1149"><code>src&#x2F;tb&#x2F;tb.js:1149</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance (maybe empty) - for chaining</li>
-</ul>
-<p>next() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get the direct following sibling of tb instance</li>
-<li>check it against the filter param pSelector</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_not" class="method item inherited">
-    <h3 class="name"><code>not</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pParam]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_not">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1339"><code>src&#x2F;tb&#x2F;tb.js:1339</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pParam]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any kind of TbSelector parameter</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance (maybe empty) - for chaining</li>
-</ul>
-<p>not() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>check them against pSelector and remove all that match</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_off" class="method item inherited">
-    <h3 class="name"><code>off</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pEventName</code>
-                </li>
-                <li class="arg">
-                        <code>pHandler</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_off">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l837"><code>src&#x2F;tb&#x2F;tb.js:837</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pEventName</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>name of the handler function</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">pHandler</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>the function to be added to the handler array</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance or tB instance - for chaining</li>
-</ul>
-<p>.off() method</p>
-<p>removes a handler from a twoBirds instance or a tb.Selector result set
-afterwards the handler is deleted from the event handler list</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_on" class="method item inherited">
-    <h3 class="name"><code>on</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pEventName</code>
-                </li>
-                <li class="arg">
-                        <code>pHandler</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[pOnce=false]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_on">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l759"><code>src&#x2F;tb&#x2F;tb.js:759</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pEventName</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>name of the handler function</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">pHandler</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>the function to be added to the handler array</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[pOnce=false]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>true = remove handler after first call, false = keep handler</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance or tB instance - for chaining</li>
-</ul>
-<p>.on() method</p>
-<p>adds a handler to a twoBirds instance or a tb.Selector result set</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_one" class="method item inherited">
-    <h3 class="name"><code>one</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pEventName</code>
-                </li>
-                <li class="arg">
-                        <code>pHandler</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_one">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l812"><code>src&#x2F;tb&#x2F;tb.js:812</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pEventName</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>name of the handler function</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">pHandler</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>the function to be added to the handler array</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance or tB instance - for chaining</li>
-</ul>
-<p>.one() method</p>
-<p>adds a handler to a twoBirds instance or a tb.Selector result set,
-to be called only once when the event fires
-afterwards the handler is deleted from the event handler list</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_parent" class="method item inherited">
-    <h3 class="name"><code>parent</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pSelector]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_parent">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l971"><code>src&#x2F;tb&#x2F;tb.js:971</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pSelector]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any type of tb.Selector parameter</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance - for chaining</li>
-</ul>
-<p>.parent() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get closest parent tb object</li>
-<li>check all of them against the filter param pSelector</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_parents" class="method item inherited">
-    <h3 class="name"><code>parents</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pSelector]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_parents">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l907"><code>src&#x2F;tb&#x2F;tb.js:907</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pSelector]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any type of tb.Selector parameter</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance - for chaining</li>
-</ul>
-<p>.parents() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get all parent tb objects</li>
-<li>check them against the filter param pSelector</li>
-<li>return them as a TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_pop" class="method item inherited">
-    <h3 class="name"><code>pop</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_pop">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1470"><code>src&#x2F;tb&#x2F;tb.js:1470</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb instance</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop">pop</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_prev" class="method item inherited">
-    <h3 class="name"><code>prev</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_prev">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1187"><code>src&#x2F;tb&#x2F;tb.js:1187</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance (maybe empty) - for chaining</li>
-</ul>
-<p>prev() method</p>
-<p>for each this[0...n] or this as tb() instance,</p>
-<ul>
-<li>get the direct previous sibling of tb instance</li>
-<li>check it against the filter param pSelector</li>
-<li>return TbSelector result set (unique)</li>
-</ul>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_push" class="method item inherited">
-    <h3 class="name"><code>push</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_push">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1479"><code>src&#x2F;tb&#x2F;tb.js:1479</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push">push</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_reduce" class="method item inherited">
-    <h3 class="name"><code>reduce</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_reduce">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1488"><code>src&#x2F;tb&#x2F;tb.js:1488</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce">reduce</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_reduceRight" class="method item inherited">
-    <h3 class="name"><code>reduceRight</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_reduceRight">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1497"><code>src&#x2F;tb&#x2F;tb.js:1497</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight">reduceRight</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_reverse" class="method item inherited">
-    <h3 class="name"><code>reverse</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_reverse">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1506"><code>src&#x2F;tb&#x2F;tb.js:1506</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse">reverse</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_set" class="method item inherited">
-    <h3 class="name"><code>set</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[pKey]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[pValue]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_set">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l533"><code>src&#x2F;tb&#x2F;tb.js:533</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[pKey]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>name of the property</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[pValue]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>any kind of value associated with the key</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance or tB instance - for chaining</li>
-</ul>
-<p>set() method</p>
-<p>sets an instance property</p>
-
-            </div>
-        </div>
-
-
-        <div class="example">
-            <h4>Example:</h4>
-
-            <div class="example-content">
-                <p>var a = new tb(...); // create a tB instance
-a.set( 'x': 42 );</p>
-
-            </div>
-        </div>
-</div>
-<div id="method_shift" class="method item inherited">
-    <h3 class="name"><code>shift</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_shift">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1515"><code>src&#x2F;tb&#x2F;tb.js:1515</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">shift</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_slice" class="method item inherited">
-    <h3 class="name"><code>slice</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_slice">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1524"><code>src&#x2F;tb&#x2F;tb.js:1524</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">slice</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_some" class="method item inherited">
-    <h3 class="name"><code>some</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_some">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1533"><code>src&#x2F;tb&#x2F;tb.js:1533</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some">some</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_splice" class="method item inherited">
-    <h3 class="name"><code>splice</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_splice">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1542"><code>src&#x2F;tb&#x2F;tb.js:1542</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">splice</a></p>
-
-            </div>
-        </div>
-
-
 </div>
 <div id="method_tb.Promise.all" class="method item">
     <h3 class="name"><code>tb.Promise.all</code></h3>
@@ -2505,7 +452,7 @@ a.set( 'x': 42 );</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4016"><code>src&#x2F;tb&#x2F;tb.js:4016</code></a>
+        <a href="../files/src_tb_tb.js.html#l4038"><code>src&#x2F;tb&#x2F;tb.js:4038</code></a>
         </p>
 
 
@@ -2553,15 +500,23 @@ a.set( 'x': 42 );</p>
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>// &quot;then&quot; function will be executed when ALL promises have been resolved
-// &quot;catch&quot; function will be executed if one of the promises rejects
-// values in the parameter array will be converted to Promise.resolve(value)</p>
-<p>var p = tb.Promise.all([
-true,
-tb.Promise.resolve('new value')
-]).then(function(pValue){
-console.log(pValue); // &gt;new value
-});</p>
+                <pre class="code prettyprint"><code>   // &quot;then&quot; function will be executed when ALL promises have been resolved
+   // &quot;catch&quot; function will be executed if one of the promises rejects
+   // values in the parameter array will be converted to Promise.resolve(value)
+
+    var p = tb.Promise.all([
+        true,
+        tb.Promise.resolve('new value')
+    ]).finally(function(pValue){
+       console.log(pValue); // &gt;[ true, 'new value' ]
+    });
+
+    var p = tb.Promise.all([
+        true,
+        tb.Promise.reject('oops.')
+    ]).finally(function(pValue){
+       console.log(pValue); // &gt;oops.
+    });</code></pre>
 
             </div>
         </div>
@@ -2572,7 +527,7 @@ console.log(pValue); // &gt;new value
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>pIterable</code>
+                        <code>an</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -2592,7 +547,7 @@ console.log(pValue); // &gt;new value
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4080"><code>src&#x2F;tb&#x2F;tb.js:4080</code></a>
+        <a href="../files/src_tb_tb.js.html#l4109"><code>src&#x2F;tb&#x2F;tb.js:4109</code></a>
         </p>
 
 
@@ -2608,14 +563,12 @@ console.log(pValue); // &gt;new value
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">pIterable</code>
+                        <code class="param-name">an</code>
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
 
 
                     <div class="param-description">
-                        <ul>
-<li>an array containing values and/or promises</li>
-</ul>
+                        <p>array containing values and/or promises</p>
 
                     </div>
 
@@ -2628,9 +581,7 @@ console.log(pValue); // &gt;new value
 
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>a new rejected Promise instance (chaining)</li>
-</ul>
+                    <p>a new rejected Promise instance (chaining)</p>
 
             </div>
         </div>
@@ -2640,27 +591,30 @@ console.log(pValue); // &gt;new value
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>// &quot;then&quot; function will be executed when the fastest promise resolves
-// &quot;catch&quot; function will be executed when the fastest promise rejects
-// values in the parameter array will be converted to Promise.resolve(value)</p>
-<p>var p1 = new tb.Promise(function(resolve,reject){
-setTimeout(function(){
-resolve('ok.');
-},1000);
-});</p>
-<p>var p2 = new tb.Promise(function(resolve,reject){
-setTimeout(function(){
-reject('oops.');
-},2000);
-});</p>
-<p>var p = tb.Promise.race([
-p1,
-p2
-]).then(function(pValue){
-console.log(pValue); // &gt;ok.
-}).catch(function(pValue){
-console.log(pValue); // (will never be reached, p1 resolves first)
-});</p>
+                <pre class="code prettyprint"><code>   // &quot;then&quot; function will be executed when the fastest promise resolves
+   // &quot;catch&quot; function will be executed when the fastest promise rejects
+   // values in the parameter array will be converted to Promise.resolve(value)
+
+   var p1 = new tb.Promise(function(resolve,reject){
+       setTimeout(function(){
+           resolve('ok.');
+       },1000);
+   });
+
+   var p2 = new tb.Promise(function(resolve,reject){
+       setTimeout(function(){
+           reject('oops.');
+       },2000);
+   });
+
+   var p = tb.Promise.race([
+       p1,
+       p2
+   ]).then(function(pValue){
+       console.log(pValue); // &gt;ok.
+   }).catch(function(pValue){
+       console.log(pValue); // (will never be reached, p1 resolves first)
+   });</code></pre>
 
             </div>
         </div>
@@ -2691,7 +645,7 @@ console.log(pValue); // (will never be reached, p1 resolves first)
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3992"><code>src&#x2F;tb&#x2F;tb.js:3992</code></a>
+        <a href="../files/src_tb_tb.js.html#l4014"><code>src&#x2F;tb&#x2F;tb.js:4014</code></a>
         </p>
 
 
@@ -2739,7 +693,8 @@ console.log(pValue); // (will never be reached, p1 resolves first)
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>var p = tb.Promise.reject('rejected');</p>
+                <pre class="code prettyprint"><code>   var p = tb.Promise.reject('rejected');
+</code></pre>
 
             </div>
         </div>
@@ -2770,7 +725,7 @@ console.log(pValue); // (will never be reached, p1 resolves first)
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3968"><code>src&#x2F;tb&#x2F;tb.js:3968</code></a>
+        <a href="../files/src_tb_tb.js.html#l3990"><code>src&#x2F;tb&#x2F;tb.js:3990</code></a>
         </p>
 
 
@@ -2818,7 +773,8 @@ console.log(pValue); // (will never be reached, p1 resolves first)
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>var p = tb.Promise.resolve('resolved');</p>
+                <pre class="code prettyprint"><code>   var p = tb.Promise.resolve('resolved');
+</code></pre>
 
             </div>
         </div>
@@ -2848,7 +804,7 @@ console.log(pValue); // (will never be reached, p1 resolves first)
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3903"><code>src&#x2F;tb&#x2F;tb.js:3903</code></a>
+        <a href="../files/src_tb_tb.js.html#l3925"><code>src&#x2F;tb&#x2F;tb.js:3925</code></a>
         </p>
 
 
@@ -2896,360 +852,15 @@ console.log(pValue); // (will never be reached, p1 resolves first)
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>new tb.Promise(function(resolve, reject){
-setTimeout( resolve('ok.') );<br>
-}).then(function(pValue){
-console.log( pValue );  // &gt;ok.
-});</p>
+                <pre class="code prettyprint"><code>   new tb.Promise(function(resolve, reject){
+       setTimeout( resolve('ok.') );
+   }).then(function(pValue){
+       console.log( pValue );  // &gt;ok.
+   });
+</code></pre>
 
             </div>
         </div>
-</div>
-<div id="method_toArray" class="method item inherited">
-    <h3 class="name"><code>toArray</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_toArray">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1286"><code>src&#x2F;tb&#x2F;tb.js:1286</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>:
-                    <ul>
-<li>TbSelector elements in a plain array</li>
-</ul>
-<p>toArray() method</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_trigger" class="method item inherited">
-    <h3 class="name"><code>trigger</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pEvent</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[pEventData]</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[pBubble=l]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_trigger">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l610"><code>src&#x2F;tb&#x2F;tb.js:610</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pEvent</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>name of event OR tb.Event instance (in this case the only parameter)</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[pEventData]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>event data, usally an object</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[pBubble=l]</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>bubbling indicator : 'l' = local, 'u' = up, 'd' = down - or any combination</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.Selector instance or tB instance - for chaining</li>
-</ul>
-<p>trigger method</p>
-<p>triggers an asynchronous twoBirds event, optionally with data and bubble indicator</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_unique" class="method item inherited">
-    <h3 class="name"><code>unique</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_unique">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1570"><code>src&#x2F;tb&#x2F;tb.js:1570</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>force this tb() result set to be unique</p>
-<p>( being called after using methods inherited from array, force uniqueness )</p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_unshift" class="method item inherited">
-    <h3 class="name"><code>unshift</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_unshift">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l1551"><code>src&#x2F;tb&#x2F;tb.js:1551</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>tb.dom() result set, may be empty</li>
-</ul>
-<p>inherited from Array, see <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift">unshift</a></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_walkSelector" class="method item private inherited">
-    <h3 class="name"><code>walkSelector</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pSelectorObject</code>
-                </li>
-                <li class="arg">
-                        <code>pMethodName</code>
-                </li>
-                <li class="arg">
-                        <code class="optional">[pArguments]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-        </span>
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="#method_walkSelector">tb</a>:
-        <a href="../files/src_tb_tb.js.html#l460"><code>src&#x2F;tb&#x2F;tb.js:460</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>walk all pSelector tb objects, call pMethodName on them
-return a UNIQUE TbSelector result set containing all single results</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pSelectorObject</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>instanceOf TbSelector</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">pMethodName</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>name of method to call</li>
-</ul>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name optional">[pArguments]</code>
-                        <span class="type"></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>arguments</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <p>instance of TbSelector</p>
-
-            </div>
-        </div>
-
-
 </div>
             </div>
 

@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.72 - 2017-03-25 */
+/*! twobirds-core - v7.3.72 - 2017-03-26 */
 
 /**
  twoBirds V7 core functionality
@@ -1668,7 +1668,7 @@ if (typeof module !== 'undefined' && module.exports) {
     (function(){
 
         function domReady () {
-            tb.bind( document.body ); // find all tb dom nodes and add tb objects if not yet done
+            tb.attach( document.body ); // find all tb dom nodes and add tb objects if not yet done
         }
 
         // Mozilla, Opera, Webkit
@@ -3286,43 +3286,28 @@ if (typeof module === 'undefined' ){
 }
 
 
-/*
-YOU MUST KEEP THE ORDER IN THIS FILE!
--functions depend on sequence of appearence partly
-*/
-
 /**
  @class tb.Util
- @constructor
- 
- @param {void}
 
- @return {void}
-
- THIS IS A PLACEHOLDER CLASS!
-
- - all methods and properties documented here are curry properties of the tb constructor.
- - Refer to specific documentation for usage.
-
- @example
-    // see methods
- 
+ @description
+     placeholder class, everything contained herein is a curry property of the tb() constructor
  */
 
 tb.nop = function(){};
 
 /**
- @method tb.observable
+ - creates a function to set/get the inner value
+ - initializes the inner value with the parameter given
+ - returns this function
 
- @param pStartValue - initial content of observable
+ @memberof tb
+ @static
+ @method tb.observable
+ @chainable
+
+ @param {*} [pStartValue] initial content of observable
 
  @return {function} - observableFunction
-
- function tb.observable()
-
- - creates a function
- - initializes a value to observe
- - returns this function
 
  @example
 
@@ -3452,14 +3437,15 @@ tb.observable = function( pStartValue ){
 
 
 /**
- @method  tb.namespace
+ @memberof tb
+ @method tb.namespace
+ @static
+ @chainable
 
  @param {string} pNamespace
- @param {object} [pObject] - object to scan
+ @param {object} [pObject] object to scan
 
- @return {Object} instance of internal Namespace class
-
- tb.namespace() function
+ @return {object} containing set() / get() functions for property in pNamespace
 
  @example
 
@@ -3550,17 +3536,15 @@ tb.namespace = (function(){
 })();
 
 /**
- @method tb.bind
+ @memberof tb
+ @static
+ @method tb.attach
 
- @param   {object} pRootNode - DOM node to start binding in
-
- @return {void}
-
- tb.bind() function
-
+ @param  {object} [pRootNode] DOM node to start binding in
+ 
  @example
 
-     tb.bind( document.body );
+     tb.attach( document.body );
      // scans the given element and all of its descendants
      // in the DOM and looks for attributes "data-tb" in the nodes.
 
@@ -3571,7 +3555,7 @@ tb.namespace = (function(){
      // in the "data-tb" attribute and stores it in the DOM element
     
  */
-tb.bind = function( pRootNode ){
+tb.attach = function( pRootNode ){
 
     var rootNode = pRootNode || document.body,
         foundElements = tb.dom( rootNode.querySelectorAll( '[data-tb]' ) ).toArray();
@@ -3607,6 +3591,8 @@ tb.bind = function( pRootNode ){
 
 
 /**
+ @memberof tb
+ @static
  @property tb.status
  @type Object
 
@@ -3625,13 +3611,11 @@ tb.status = {
 
 
 /**
+ @memberof tb
+ @static
  @method tb.idle
 
- @param   {function} pCallback - function to execute when all loading is finished
-
- @return {void}
-
- tb.idle() function
+ @param {function} pCallback function to execute when all loading is finished
 
  @example
 
@@ -3697,17 +3681,16 @@ tb.idle = function( pCallback ){
 
 };
 
-tb.status.loadCount.observe(function(pValue){
-    //console.log(pValue);
-});
-
 
 /**
+ returns a unique id
+
+ @memberof tb
+ @static
  @method tb.getId
 
  @return {string} - unique id
 
- returns a unique id
  */
 tb.getId = function(){
     return 'id-' + (new Date()).getTime() + '-' + Math.random().toString().replace(/\./, '');
@@ -3716,18 +3699,19 @@ tb.getId = function(){
 
 
 /**
+ - takes any number of objects as parameters
+ - merges content into the first parameter object
+ - always a deep copy
+
+ @memberof tb
+ @static
  @method tb.extend
 
  @param {object} pObj - object to extend
- @param {object} [pObj] - other object
+ @param {...object} [pObj] any number of other objects to merge in
 
- @return {object} - other object
+ @return {object} - extended object
 
- tb.extend() function
-
- takes any number of objects as parameters
- merges content into the first parameter object
- always a deep copy
  */
 tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
@@ -3761,38 +3745,74 @@ tb.extend = function( pObj ){ // any number of arguments may be given
 
 
 /**
+
+ - will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object
+ - if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned
+
+ @memberof tb
+ @static
  @method tb.parse
   
- @param pWhat - text, object or array to parse
- @param {object} pParse - hash object containing replacement key/value pairs
+ @param {(string|object|array)} pWhat string, object or array to parse recursively
+ @param {...object} pParse any number of hash objects containing replacement key/value pairs
 
- @return result, = pWhat parsed
-
- tb.parse() function
-
- will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object
- if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned
+ @return {(string|object|array)} pWhat parsed
 
  @example
 
      tb.parse( "{a} test test", { a: 'done' } )
      // "done test test"
 
+ @example
+
      tb.parse( [ "{a} test test" ], { a: 'done' } )
      // ["done test test"]
+
+ @example
 
      tb.parse( [ "{a} test test", "{b} test test" ], { a: 'done', b: 'processed' } )
      // ["done test test", "processed test test"]
 
+ @example
+
      tb.parse( [ "{a} test test", "{b} test test", { g: "another {silly} test" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )
      // ["done test test", "processed test test", Object { g="another not so silly test"}]
+
+ @example
 
      tb.parse( { a: "{a} test test", b: "{b} test test", c: [ "another {silly} test" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )
      // Object { a="done test test",  b="processed test test",  c=[ "another not so silly test" ] }
 
+ @example
+
+     // multiple hash objects:
+     tb.parse(
+        "{a} {b}",
+        { a: 'done1' },
+        { b: 'done2' }
+     );
+     // "done1 done2"
+
  */
 tb.parse = function( pWhat, pParse ){
+    var args = Array.prototype.slice.call(arguments);
 
+    if (!args.length){
+        console.error('no arguments give to parse');
+        return;
+    }
+
+    if (args.length === 1){
+        return args[1];
+    } else if (args.length > 2) {
+        while (args.length > 1){
+            args[0] = tb.parse( args[0], args[1]);
+            args.splice(1, 1);
+        }
+        return args[0];
+    }
+
+    // implicit else: exactly 2 arguments
     if ( typeof pWhat === 'string' ){
         var vars = pWhat.match( /\{[^\{\}]*\}/g );
 
@@ -3801,10 +3821,11 @@ tb.parse = function( pWhat, pParse ){
                 .forEach(
                     function (pPropname) {
                         var propname = pPropname.substr(1, pPropname.length - 2),
-                            value = tb.namespace( propname, pParse ).get(),
-                            propValue = typeof value === 'undefined' ? propname + ' not found!' : value;
+                            value = tb.namespace( propname, pParse ).get();
 
-                        pWhat = pWhat.replace( pPropname, propValue );
+                        if ( typeof value !== 'undefined' ){
+                            pWhat = pWhat.replace( pPropname, value );
+                        }
                     }
                 );
         }
@@ -3836,41 +3857,42 @@ tb.parse = function( pWhat, pParse ){
 };
 
 /**
+ - Promise/A+ compliant promise functionality
+
+ @memberof tb
+ @static
  @class tb.Promise
  @constructor
- @extends tb
-  
- @param {function} pFunction - function to execute
- 
- @return {object} - Promise/A+ compliant promise object
 
- Promise/A+ compliant promise functionality
+ @param {function} pFunction function to execute
+ 
+ @return {object} Promise/A+ compliant promise object
 
  @example
 
-    var p = new tb.Promise(function(resolve, reject){
+        var p = new tb.Promise(function(resolve, reject){
 
-        setTimeout(function(){
-            resolve('it worked.');
-        },1000)    
+            setTimeout(function(){
+                resolve('it worked.');
+            },1000)
 
-        setTimeout(function(){
-            reject('something went wrong.');
-        },500)    
+            setTimeout(function(){
+                reject('something went wrong.');
+            },500)
 
-    }).then(function(pValue){
+        }).then(function(pValue){
 
-        console.log('Yippie! ', pValue);
+            console.log('Yippie! ', pValue);
 
-    }).catch(function(pValue){
+        }).catch(function(pValue){
 
-        console.log('Oops? ', pValue);
+            console.log('Oops? ', pValue);
 
-    }).finally(function(pValue){
+        }).finally(function(pValue){
 
-        console.log('Cleaning up ', pValue);
+            console.log('Cleaning up ', pValue);
 
-    });
+        });
 
  */
 tb.Promise = (function(){
@@ -3911,11 +3933,11 @@ tb.Promise = (function(){
 
          @example
 
-            new tb.Promise(function(resolve, reject){
-                setTimeout( resolve('ok.') );    
-            }).then(function(pValue){
-                console.log( pValue );  // >ok.
-            });
+                new tb.Promise(function(resolve, reject){
+                    setTimeout( resolve('ok.') );
+                }).then(function(pValue){
+                    console.log( pValue );  // >ok.
+                });
 
          */
         then: _then,
@@ -3931,11 +3953,11 @@ tb.Promise = (function(){
 
          @example
 
-            new tb.Promise(function(resolve, reject){
-                setTimeout( reject('oops.') );    
-            }).catch(function(pValue){
-                console.log( pValue );  // >oops.
-            });
+                new tb.Promise(function(resolve, reject){
+                    setTimeout( reject('oops.') );
+                }).catch(function(pValue){
+                    console.log( pValue );  // >oops.
+                });
 
          */
         'catch': _catch,
@@ -3951,11 +3973,11 @@ tb.Promise = (function(){
 
          @example
 
-            new tb.Promise(function(resolve, reject){
-                setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed    
-            }).finally(function(pValue){
-                console.log( pValue );  // >whatever.
-            });
+                new tb.Promise(function(resolve, reject){
+                    setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed
+                }).finally(function(pValue){
+                    console.log( pValue );  // >whatever.
+                });
 
          */
         'finally': _finally,
@@ -3977,7 +3999,7 @@ tb.Promise = (function(){
 
      @example
 
-        var p = tb.Promise.resolve('resolved');
+            var p = tb.Promise.resolve('resolved');
 
      */
     Promise.resolve = function( pValue ){
@@ -4001,7 +4023,7 @@ tb.Promise = (function(){
 
      @example
 
-        var p = tb.Promise.reject('rejected');
+            var p = tb.Promise.reject('rejected');
 
      */
     Promise.reject = function( pValue ){
@@ -4024,16 +4046,23 @@ tb.Promise = (function(){
 
      @example
 
-        // "then" function will be executed when ALL promises have been resolved
-        // "catch" function will be executed if one of the promises rejects
-        // values in the parameter array will be converted to Promise.resolve(value)
+            // "then" function will be executed when ALL promises have been resolved
+            // "catch" function will be executed if one of the promises rejects
+            // values in the parameter array will be converted to Promise.resolve(value)
 
-        var p = tb.Promise.all([ 
-            true, 
-            tb.Promise.resolve('new value') 
-        ]).then(function(pValue){
-            console.log(pValue); // >new value
-        });
+             var p = tb.Promise.all([
+                 true,
+                 tb.Promise.resolve('new value')
+             ]).finally(function(pValue){
+                console.log(pValue); // >[ true, 'new value' ]
+             });
+
+             var p = tb.Promise.all([
+                 true,
+                 tb.Promise.reject('oops.')
+             ]).finally(function(pValue){
+                console.log(pValue); // >oops.
+             });
      */
     Promise.all = function( pIterable ){
 
@@ -4082,36 +4111,36 @@ tb.Promise = (function(){
      @chainable
      @static
 
-     @param {array} pIterable - an array containing values and/or promises
+     @param {array} an array containing values and/or promises
 
-     @return {object} - a new rejected Promise instance (chaining)
+     @return {object} a new rejected Promise instance (chaining)
 
      @example
 
-        // "then" function will be executed when the fastest promise resolves
-        // "catch" function will be executed when the fastest promise rejects
-        // values in the parameter array will be converted to Promise.resolve(value)
+            // "then" function will be executed when the fastest promise resolves
+            // "catch" function will be executed when the fastest promise rejects
+            // values in the parameter array will be converted to Promise.resolve(value)
 
-        var p1 = new tb.Promise(function(resolve,reject){
-            setTimeout(function(){
-                resolve('ok.');
-            },1000);
-        });
+            var p1 = new tb.Promise(function(resolve,reject){
+                setTimeout(function(){
+                    resolve('ok.');
+                },1000);
+            });
 
-        var p2 = new tb.Promise(function(resolve,reject){
-            setTimeout(function(){
-                reject('oops.');
-            },2000);
-        });
+            var p2 = new tb.Promise(function(resolve,reject){
+                setTimeout(function(){
+                    reject('oops.');
+                },2000);
+            });
 
-        var p = tb.Promise.race([ 
-            p1, 
-            p2 
-        ]).then(function(pValue){
-            console.log(pValue); // >ok.
-        }).catch(function(pValue){
-            console.log(pValue); // (will never be reached, p1 resolves first)
-        });
+            var p = tb.Promise.race([
+                p1,
+                p2
+            ]).then(function(pValue){
+                console.log(pValue); // >ok.
+            }).catch(function(pValue){
+                console.log(pValue); // (will never be reached, p1 resolves first)
+            });
      */
     Promise.race = function( pIterable ){
         var promise = new tb.Promise();
@@ -4346,14 +4375,16 @@ tb.Promise = (function(){
 })();
 
 /**
+ @memberof tb
+ @static
  @class tb.Require
  @constructor
 
- @param   {array} pRequiredFiles - array containing required files
+ @param {(string|string[])} pRequiredFiles string or string array containing required files
 
- @return {object} - Promise/A+ compliant promise object
+ @return {object} Promise/A+ compliant promise object
 
- tb.Require class
+ tb.Require class ( uses tb.require function and returns the promise returned by it )
 
  - add into prototype of your constructor
  - instance will get an 'init' event when all files have loaded.
@@ -4368,8 +4399,7 @@ tb.Promise = (function(){
                   var that = this;
     
                   that.handlers = {
-                      init,
-                      test
+                      init
                   };
     
               }
@@ -4389,7 +4419,9 @@ tb.Promise = (function(){
     
               // Private Methods
     
-              // ...
+              function init(){
+                   // will be called when requirement loading is finished ( both success and error )
+              }
     
          })()
      );
@@ -4398,11 +4430,7 @@ if ( typeof module === 'undefined' ) {
 
     // mapping to tb.require
     tb.Require = function ( pConfig ) {
-        var promise = tb.require( pConfig );
-
-        promise.then(function(){ console.log( 'tb.Require promise', promise ); });
-
-        return promise;
+        return tb.require( pConfig );
     };
 
     tb.Require.prototype = {};
@@ -4413,26 +4441,27 @@ if ( typeof module === 'undefined' ) {
 
 
 /**
- @method tb.require
- @extends tb
+ @memberof tb
  @static
+ @method tb.require
 
- @param {array} pFiles- array of filenames
- @param {function} [pCallback] - optional, a callback after all loading is done
+ @param {(string|string[])} pFiles array of filenames
+ @param {function} [pCallback] optional callback after all loading is done
  
  @return {object} - Promise/A+ compliant promise object
 
  @example
 
-    // in your code ...
-    tb.require([
-        '/app/styles.css',                  // .css will be inserted into head <link>
-        '/app/someJavascript.js',           // .js will be insertid into head <script>
-        '/app/someData.json',               // .json data will be parsed to JS object
-        '/app/templates/someTemplate.html'  // all other file contents will be saved into repo
-    ], function(){
-        // do something when all loading activity has finished
-    });
+        // in your code ...
+        tb.require([
+            '/app/styles.css',                  // .css will be inserted into head <link>
+            '/app/someJavascript.js',           // .js will be inserted into head <script>
+            '/app/someData.json',               // .json data will be parsed to JS object
+            '/app/templates/someTemplate.html'  // all other file contents will be saved into repo
+        ], function( pValue ){
+            // do something when all loading activity has finished
+            console.log(pValue); // >[ 'done', 'done', <someObject>, '<someHtmlString>' ]
+        });
  
  */
 tb.require = function( pFiles, pCallback ){
@@ -4617,6 +4646,8 @@ tb.require.get = function(pFile){
 };
 
 /**
+ @memberof tb
+ @static
  @method tb.request
 
  @param pOptions { object } a hash object containing these options:<br><br><br>

@@ -88,7 +88,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_tb_tb.js.html#l4348"><code>src&#x2F;tb&#x2F;tb.js:4348</code></a>
+            Defined in: <a href="../files/src_tb_tb.js.html#l4377"><code>src&#x2F;tb&#x2F;tb.js:4377</code></a>
         </div>
 
 
@@ -119,13 +119,14 @@
 
 
 
+        <span class="flag static">static</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4348"><code>src&#x2F;tb&#x2F;tb.js:4348</code></a>
+        <a href="../files/src_tb_tb.js.html#l4377"><code>src&#x2F;tb&#x2F;tb.js:4377</code></a>
         </p>
 
 
@@ -142,13 +143,11 @@
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">pRequiredFiles</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <span class="type">(string | String)</span>
 
 
                     <div class="param-description">
-                        <ul>
-<li>array containing required files</li>
-</ul>
+                        <p>string or string array containing required files</p>
 
                     </div>
 
@@ -161,10 +160,8 @@
 
             <div class="returns-description">
                         <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
-                    <ul>
-<li>Promise/A+ compliant promise object</li>
-</ul>
-<p>tb.Require class</p>
+                    <p>Promise/A+ compliant promise object</p>
+<p>tb.Require class ( uses tb.require function and returns the promise returned by it )</p>
 <ul>
 <li>add into prototype of your constructor</li>
 <li>instance will get an 'init' event when all files have loaded.</li>
@@ -186,8 +183,7 @@
              var that = this;
 
              that.handlers = {
-                 init,
-                 test
+                 init
              };
 
          }
@@ -207,7 +203,9 @@
 
          // Private Methods
 
-         // ...
+         function init(){
+              // will be called when requirement loading is finished ( both success and error )
+         }
 
     })()
 );</code></pre>
@@ -235,6 +233,7 @@
                             <li class="index-item method">
                                 <a href="#method_tb.request">tb.request</a>
 
+                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_tb.require">tb.require</a>
@@ -277,13 +276,14 @@
 
 
 
+        <span class="flag static">static</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4619"><code>src&#x2F;tb&#x2F;tb.js:4619</code></a>
+        <a href="../files/src_tb_tb.js.html#l4648"><code>src&#x2F;tb&#x2F;tb.js:4648</code></a>
         </p>
 
 
@@ -463,7 +463,7 @@ ms: number of milliseconds the request will run before being terminated</li>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>pFiles-</code>
+                        <code>pFiles</code>
                 </li>
                 <li class="arg">
                         <code class="optional">[pCallback]</code>
@@ -485,7 +485,7 @@ ms: number of milliseconds the request will run before being terminated</li>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4415"><code>src&#x2F;tb&#x2F;tb.js:4415</code></a>
+        <a href="../files/src_tb_tb.js.html#l4443"><code>src&#x2F;tb&#x2F;tb.js:4443</code></a>
         </p>
 
 
@@ -501,8 +501,8 @@ ms: number of milliseconds the request will run before being terminated</li>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">pFiles-</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                        <code class="param-name">pFiles</code>
+                        <span class="type">(string | String)</span>
 
 
                     <div class="param-description">
@@ -518,9 +518,7 @@ ms: number of milliseconds the request will run before being terminated</li>
 
 
                     <div class="param-description">
-                        <ul>
-<li>optional, a callback after all loading is done</li>
-</ul>
+                        <p>optional callback after all loading is done</p>
 
                     </div>
 
@@ -545,15 +543,17 @@ ms: number of milliseconds the request will run before being terminated</li>
             <h4>Example:</h4>
 
             <div class="example-content">
-                <p>// in your code ...
-tb.require([
-'/app/styles.css',                  // .css will be inserted into head <link>
-'/app/someJavascript.js',           // .js will be insertid into head <script>
-'/app/someData.json',               // .json data will be parsed to JS object
-'/app/templates/someTemplate.html'  // all other file contents will be saved into repo
-], function(){
-// do something when all loading activity has finished
-});</p>
+                <pre class="code prettyprint"><code>   // in your code ...
+   tb.require([
+       '/app/styles.css',                  // .css will be inserted into head &lt;link&gt;
+       '/app/someJavascript.js',           // .js will be inserted into head &lt;script&gt;
+       '/app/someData.json',               // .json data will be parsed to JS object
+       '/app/templates/someTemplate.html'  // all other file contents will be saved into repo
+   ], function( pValue ){
+       // do something when all loading activity has finished
+       console.log(pValue); // &gt;[ 'done', 'done', &lt;someObject&gt;, '&lt;someHtmlString&gt;' ]
+   });
+</code></pre>
 
             </div>
         </div>
@@ -573,7 +573,7 @@ tb.require([
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4824"><code>src&#x2F;tb&#x2F;tb.js:4824</code></a>
+        <a href="../files/src_tb_tb.js.html#l4855"><code>src&#x2F;tb&#x2F;tb.js:4855</code></a>
         </p>
 
 
@@ -612,7 +612,7 @@ tb.require([
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l4983"><code>src&#x2F;tb&#x2F;tb.js:4983</code></a>
+        <a href="../files/src_tb_tb.js.html#l5014"><code>src&#x2F;tb&#x2F;tb.js:5014</code></a>
         </p>
 
 

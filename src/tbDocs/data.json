@@ -167,22 +167,8 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3294,
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "UNKNOWN",
-                    "description": "",
-                    "type": "Void"
-                }
-            ],
-            "return": {
-                "description": "THIS IS A PLACEHOLDER CLASS!\n\n- all methods and properties documented here are curry properties of the tb constructor.\n- Refer to specific documentation for usage.",
-                "type": "Void"
-            },
-            "example": [
-                "\n   // see methods\n"
-            ]
+            "line": 3289,
+            "description": "placeholder class, everything contained herein is a curry property of the tb() constructor"
         },
         "tb.Promise": {
             "name": "tb.Promise",
@@ -193,22 +179,24 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3838,
+            "line": 3859,
+            "description": "- Promise/A+ compliant promise functionality",
+            "memberof": "tb",
+            "static": 1,
             "is_constructor": 1,
-            "extends": "tb",
             "params": [
                 {
                     "name": "pFunction",
-                    "description": "- function to execute",
+                    "description": "function to execute",
                     "type": "Function"
                 }
             ],
             "return": {
-                "description": "- Promise/A+ compliant promise object\n\nPromise/A+ compliant promise functionality",
+                "description": "Promise/A+ compliant promise object",
                 "type": "Object"
             },
             "example": [
-                "\n\n   var p = new tb.Promise(function(resolve, reject){\n\n       setTimeout(function(){\n           resolve('it worked.');\n       },1000)    \n\n       setTimeout(function(){\n           reject('something went wrong.');\n       },500)    \n\n   }).then(function(pValue){\n\n       console.log('Yippie! ', pValue);\n\n   }).catch(function(pValue){\n\n       console.log('Oops? ', pValue);\n\n   }).finally(function(pValue){\n\n       console.log('Cleaning up ', pValue);\n\n   });\n"
+                "\n\n       var p = new tb.Promise(function(resolve, reject){\n\n           setTimeout(function(){\n               resolve('it worked.');\n           },1000)\n\n           setTimeout(function(){\n               reject('something went wrong.');\n           },500)\n\n       }).then(function(pValue){\n\n           console.log('Yippie! ', pValue);\n\n       }).catch(function(pValue){\n\n           console.log('Oops? ', pValue);\n\n       }).finally(function(pValue){\n\n           console.log('Cleaning up ', pValue);\n\n       });\n"
             ]
         },
         "tb.Require": {
@@ -220,21 +208,23 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4348,
+            "line": 4377,
+            "memberof": "tb",
+            "static": 1,
             "is_constructor": 1,
             "params": [
                 {
                     "name": "pRequiredFiles",
-                    "description": "- array containing required files",
-                    "type": "Array"
+                    "description": "string or string array containing required files",
+                    "type": "(string|string[])"
                 }
             ],
             "return": {
-                "description": "- Promise/A+ compliant promise object\n\ntb.Require class\n\n- add into prototype of your constructor\n- instance will get an 'init' event when all files have loaded.",
+                "description": "Promise/A+ compliant promise object\n\ntb.Require class ( uses tb.require function and returns the promise returned by it )\n\n- add into prototype of your constructor\n- instance will get an 'init' event when all files have loaded.",
                 "type": "Object"
             },
             "example": [
-                "\n\n    tb.namespace( 'app.GrandParent' ).set( \n        (function(){\n\n             // Constructor\n             function GrandParent(){\n                 var that = this;\n   \n                 that.handlers = {\n                     init,\n                     test\n                 };\n   \n             }\n   \n             // Prototype\n             GrandParent.prototype = {\n   \n                 namespace: 'app.GrandParent',\n   \n                 'tb.Require': [\n                      '/app/GrandParent.css'\n                 ]\n   \n             };\n   \n             return GrandParent;\n   \n             // Private Methods\n   \n             // ...\n   \n        })()\n    );"
+                "\n\n    tb.namespace( 'app.GrandParent' ).set( \n        (function(){\n\n             // Constructor\n             function GrandParent(){\n                 var that = this;\n   \n                 that.handlers = {\n                     init\n                 };\n   \n             }\n   \n             // Prototype\n             GrandParent.prototype = {\n   \n                 namespace: 'app.GrandParent',\n   \n                 'tb.Require': [\n                      '/app/GrandParent.css'\n                 ]\n   \n             };\n   \n             return GrandParent;\n   \n             // Private Methods\n   \n             function init(){\n                  // will be called when requirement loading is finished ( both success and error )\n             }\n   \n        })()\n    );"
             ]
         },
         "tb.Model": {
@@ -246,7 +236,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 5003,
+            "line": 5034,
             "is_constructor": 1,
             "params": [
                 {
@@ -1588,17 +1578,23 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3314,
+            "line": 3298,
+            "description": "- creates a function to set/get the inner value\n- initializes the inner value with the parameter given\n- returns this function",
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
             "name": "tb.observable",
+            "chainable": 1,
             "params": [
                 {
                     "name": "pStartValue",
-                    "description": "- initial content of observable"
+                    "description": "initial content of observable",
+                    "type": "*",
+                    "optional": true
                 }
             ],
             "return": {
-                "description": "- observableFunction\n\nfunction tb.observable()\n\n- creates a function\n- initializes a value to observe\n- returns this function",
+                "description": "- observableFunction",
                 "type": "Function"
             },
             "example": [
@@ -1609,9 +1605,12 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3454,
+            "line": 3439,
+            "memberof": "tb",
             "itemtype": "method",
             "name": "tb.namespace",
+            "static": 1,
+            "chainable": 1,
             "params": [
                 {
                     "name": "pNamespace",
@@ -1620,13 +1619,13 @@
                 },
                 {
                     "name": "pObject",
-                    "description": "- object to scan",
+                    "description": "object to scan",
                     "type": "Object",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "instance of internal Namespace class\n\ntb.namespace() function",
+                "description": "containing set() / get() functions for property in pNamespace",
                 "type": "Object"
             },
             "example": [
@@ -1638,28 +1637,29 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3552,
+            "line": 3538,
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
-            "name": "tb.bind",
+            "name": "tb.attach",
             "params": [
                 {
                     "name": "pRootNode",
-                    "description": "- DOM node to start binding in",
-                    "type": "Object"
+                    "description": "DOM node to start binding in",
+                    "type": "Object",
+                    "optional": true
                 }
             ],
-            "return": {
-                "description": "tb.bind() function",
-                "type": "Void"
-            },
             "example": [
-                "\n\n    tb.bind( document.body );\n    // scans the given element and all of its descendants\n    // in the DOM and looks for attributes \"data-tb\" in the nodes.\n\n    // Resulting list will be scanned for those nodes that do not already\n    // have a tb object inside which is given as a namespace in the data-tb attribute.\n\n    // Creates missing tb object based on the class namespace given\n    // in the \"data-tb\" attribute and stores it in the DOM element\n   "
+                "\n\n    tb.attach( document.body );\n    // scans the given element and all of its descendants\n    // in the DOM and looks for attributes \"data-tb\" in the nodes.\n\n    // Resulting list will be scanned for those nodes that do not already\n    // have a tb object inside which is given as a namespace in the data-tb attribute.\n\n    // Creates missing tb object based on the class namespace given\n    // in the \"data-tb\" attribute and stores it in the DOM element\n   "
             ],
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3609,
+            "line": 3593,
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "property",
             "name": "tb.status",
             "type": "Object\n\ncontainer for twoBirds status observables",
@@ -1667,7 +1667,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3616,
+            "line": 3602,
             "itemtype": "property",
             "name": "tb.status.loadCount",
             "type": "Function\n\nobservable containing the number of ( script load operations + xHr requests ) currently pending",
@@ -1675,20 +1675,18 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3627,
+            "line": 3613,
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
             "name": "tb.idle",
             "params": [
                 {
                     "name": "pCallback",
-                    "description": "- function to execute when all loading is finished",
+                    "description": "function to execute when all loading is finished",
                     "type": "Function"
                 }
             ],
-            "return": {
-                "description": "tb.idle() function",
-                "type": "Void"
-            },
             "example": [
                 "\n\n   // in code...\n   tb.idle(\n       function(){\n           // do whatever you like\n       }\n   );"
             ],
@@ -1696,18 +1694,24 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3705,
+            "line": 3685,
+            "description": "returns a unique id",
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
             "name": "tb.getId",
             "return": {
-                "description": "- unique id\n\nreturns a unique id",
+                "description": "- unique id",
                 "type": "String"
             },
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3718,
+            "line": 3701,
+            "description": "- takes any number of objects as parameters\n- merges content into the first parameter object\n- always a deep copy",
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
             "name": "tb.extend",
             "params": [
@@ -1718,45 +1722,54 @@
                 },
                 {
                     "name": "pObj",
-                    "description": "- other object",
-                    "type": "Object",
+                    "description": "any number of other objects to merge in",
+                    "type": "...object",
                     "optional": true
                 }
             ],
             "return": {
-                "description": "- other object\n\ntb.extend() function\n\ntakes any number of objects as parameters\nmerges content into the first parameter object\nalways a deep copy",
+                "description": "- extended object",
                 "type": "Object"
             },
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3763,
+            "line": 3747,
+            "description": "- will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object\n - if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned",
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
             "name": "tb.parse",
             "params": [
                 {
                     "name": "pWhat",
-                    "description": "- text, object or array to parse"
+                    "description": "string, object or array to parse recursively",
+                    "type": "(string|object|array)"
                 },
                 {
                     "name": "pParse",
-                    "description": "- hash object containing replacement key/value pairs",
-                    "type": "Object"
+                    "description": "any number of hash objects containing replacement key/value pairs",
+                    "type": "...object"
                 }
             ],
             "return": {
-                "description": "result, = pWhat parsed\n\ntb.parse() function\n\nwill replace all matching  occurrences with values from pParse object\nif typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned",
-                "type": "namespace1.namespace2.etc"
+                "description": "pWhat parsed",
+                "type": "(string|object|array)"
             },
             "example": [
-                "\n\n    tb.parse( \"{a} test test\", { a: 'done' } )\n    // \"done test test\"\n\n    tb.parse( [ \"{a} test test\" ], { a: 'done' } )\n    // [\"done test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\" ], { a: 'done', b: 'processed' } )\n    // [\"done test test\", \"processed test test\"]\n\n    tb.parse( [ \"{a} test test\", \"{b} test test\", { g: \"another {silly} test\" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // [\"done test test\", \"processed test test\", Object { g=\"another not so silly test\"}]\n\n    tb.parse( { a: \"{a} test test\", b: \"{b} test test\", c: [ \"another {silly} test\" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )\n    // Object { a=\"done test test\",  b=\"processed test test\",  c=[ \"another not so silly test\" ] }\n"
+                "\n    tb.parse( \"{a} test test\", { a: 'done' } )\n     // \"done test test\"",
+                "\n    tb.parse( [ \"{a} test test\" ], { a: 'done' } )\n     // [\"done test test\"]",
+                "\n    tb.parse( [ \"{a} test test\", \"{b} test test\" ], { a: 'done', b: 'processed' } )\n     // [\"done test test\", \"processed test test\"]",
+                "\n    tb.parse( [ \"{a} test test\", \"{b} test test\", { g: \"another {silly} test\" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )\n     // [\"done test test\", \"processed test test\", Object { g=\"another not so silly test\"}]",
+                "\n    tb.parse( { a: \"{a} test test\", b: \"{b} test test\", c: [ \"another {silly} test\" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )\n     // Object { a=\"done test test\",  b=\"processed test test\",  c=[ \"another not so silly test\" ] }",
+                "\n    // multiple hash objects:\n     tb.parse(\n        \"{a} {b}\",\n        { a: 'done1' },\n        { b: 'done2' }\n     );\n     // \"done1 done2\"\n"
             ],
             "class": "tb.Util"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3903,
+            "line": 3925,
             "itemtype": "method",
             "name": "then",
             "chainable": 1,
@@ -1772,13 +1785,13 @@
                 "type": "Object"
             },
             "example": [
-                "\n\n   new tb.Promise(function(resolve, reject){\n       setTimeout( resolve('ok.') );    \n   }).then(function(pValue){\n       console.log( pValue );  // >ok.\n   });\n"
+                "\n\n       new tb.Promise(function(resolve, reject){\n           setTimeout( resolve('ok.') );\n       }).then(function(pValue){\n           console.log( pValue );  // >ok.\n       });\n"
             ],
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3923,
+            "line": 3945,
             "itemtype": "method",
             "name": "catch",
             "chainable": 1,
@@ -1794,13 +1807,13 @@
                 "type": "Object"
             },
             "example": [
-                "\n\n   new tb.Promise(function(resolve, reject){\n       setTimeout( reject('oops.') );    \n   }).catch(function(pValue){\n       console.log( pValue );  // >oops.\n   });\n"
+                "\n\n       new tb.Promise(function(resolve, reject){\n           setTimeout( reject('oops.') );\n       }).catch(function(pValue){\n           console.log( pValue );  // >oops.\n       });\n"
             ],
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3943,
+            "line": 3965,
             "itemtype": "method",
             "name": "finally",
             "chainable": 1,
@@ -1816,13 +1829,13 @@
                 "type": "Object"
             },
             "example": [
-                "\n\n   new tb.Promise(function(resolve, reject){\n       setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed    \n   }).finally(function(pValue){\n       console.log( pValue );  // >whatever.\n   });\n"
+                "\n\n       new tb.Promise(function(resolve, reject){\n           setTimeout( reject('whatever.') ); // could also be resolve, finally will always be executed\n       }).finally(function(pValue){\n           console.log( pValue );  // >whatever.\n       });\n"
             ],
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3968,
+            "line": 3990,
             "itemtype": "method",
             "name": "tb.Promise.resolve",
             "chainable": 1,
@@ -1839,13 +1852,13 @@
                 "type": "Object"
             },
             "example": [
-                "\n\n   var p = tb.Promise.resolve('resolved');\n"
+                "\n\n       var p = tb.Promise.resolve('resolved');\n"
             ],
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3992,
+            "line": 4014,
             "itemtype": "method",
             "name": "tb.Promise.reject",
             "chainable": 1,
@@ -1862,13 +1875,13 @@
                 "type": "Object"
             },
             "example": [
-                "\n\n   var p = tb.Promise.reject('rejected');\n"
+                "\n\n       var p = tb.Promise.reject('rejected');\n"
             ],
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4016,
+            "line": 4038,
             "itemtype": "method",
             "name": "tb.Promise.all",
             "chainable": 1,
@@ -1885,55 +1898,55 @@
                 "type": "Object"
             },
             "example": [
-                "\n\n   // \"then\" function will be executed when ALL promises have been resolved\n   // \"catch\" function will be executed if one of the promises rejects\n   // values in the parameter array will be converted to Promise.resolve(value)\n\n   var p = tb.Promise.all([ \n       true, \n       tb.Promise.resolve('new value') \n   ]).then(function(pValue){\n       console.log(pValue); // >new value\n   });"
+                "\n\n       // \"then\" function will be executed when ALL promises have been resolved\n       // \"catch\" function will be executed if one of the promises rejects\n       // values in the parameter array will be converted to Promise.resolve(value)\n\n        var p = tb.Promise.all([\n            true,\n            tb.Promise.resolve('new value')\n        ]).finally(function(pValue){\n           console.log(pValue); // >[ true, 'new value' ]\n        });\n\n        var p = tb.Promise.all([\n            true,\n            tb.Promise.reject('oops.')\n        ]).finally(function(pValue){\n           console.log(pValue); // >oops.\n        });"
             ],
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4080,
+            "line": 4109,
             "itemtype": "method",
             "name": "tb.Promise.race",
             "chainable": 1,
             "static": 1,
             "params": [
                 {
-                    "name": "pIterable",
-                    "description": "- an array containing values and/or promises",
+                    "name": "an",
+                    "description": "array containing values and/or promises",
                     "type": "Array"
                 }
             ],
             "return": {
-                "description": "- a new rejected Promise instance (chaining)",
+                "description": "a new rejected Promise instance (chaining)",
                 "type": "Object"
             },
             "example": [
-                "\n\n   // \"then\" function will be executed when the fastest promise resolves\n   // \"catch\" function will be executed when the fastest promise rejects\n   // values in the parameter array will be converted to Promise.resolve(value)\n\n   var p1 = new tb.Promise(function(resolve,reject){\n       setTimeout(function(){\n           resolve('ok.');\n       },1000);\n   });\n\n   var p2 = new tb.Promise(function(resolve,reject){\n       setTimeout(function(){\n           reject('oops.');\n       },2000);\n   });\n\n   var p = tb.Promise.race([ \n       p1, \n       p2 \n   ]).then(function(pValue){\n       console.log(pValue); // >ok.\n   }).catch(function(pValue){\n       console.log(pValue); // (will never be reached, p1 resolves first)\n   });"
+                "\n\n       // \"then\" function will be executed when the fastest promise resolves\n       // \"catch\" function will be executed when the fastest promise rejects\n       // values in the parameter array will be converted to Promise.resolve(value)\n\n       var p1 = new tb.Promise(function(resolve,reject){\n           setTimeout(function(){\n               resolve('ok.');\n           },1000);\n       });\n\n       var p2 = new tb.Promise(function(resolve,reject){\n           setTimeout(function(){\n               reject('oops.');\n           },2000);\n       });\n\n       var p = tb.Promise.race([\n           p1,\n           p2\n       ]).then(function(pValue){\n           console.log(pValue); // >ok.\n       }).catch(function(pValue){\n           console.log(pValue); // (will never be reached, p1 resolves first)\n       });"
             ],
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4322,
+            "line": 4351,
             "description": "execute promise function",
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4415,
+            "line": 4443,
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
             "name": "tb.require",
-            "extends": "tb",
-            "static": 1,
             "params": [
                 {
-                    "name": "pFiles-",
+                    "name": "pFiles",
                     "description": "array of filenames",
-                    "type": "Array"
+                    "type": "(string|string[])"
                 },
                 {
                     "name": "pCallback",
-                    "description": "- optional, a callback after all loading is done",
+                    "description": "optional callback after all loading is done",
                     "type": "Function",
                     "optional": true
                 }
@@ -1943,13 +1956,15 @@
                 "type": "Object"
             },
             "example": [
-                "\n\n   // in your code ...\n   tb.require([\n       '/app/styles.css',                  // .css will be inserted into head <link>\n       '/app/someJavascript.js',           // .js will be insertid into head <script>\n       '/app/someData.json',               // .json data will be parsed to JS object\n       '/app/templates/someTemplate.html'  // all other file contents will be saved into repo\n   ], function(){\n       // do something when all loading activity has finished\n   });\n"
+                "\n\n       // in your code ...\n       tb.require([\n           '/app/styles.css',                  // .css will be inserted into head <link>\n           '/app/someJavascript.js',           // .js will be inserted into head <script>\n           '/app/someData.json',               // .json data will be parsed to JS object\n           '/app/templates/someTemplate.html'  // all other file contents will be saved into repo\n       ], function( pValue ){\n           // do something when all loading activity has finished\n           console.log(pValue); // >[ 'done', 'done', <someObject>, '<someHtmlString>' ]\n       });\n"
             ],
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4619,
+            "line": 4648,
+            "memberof": "tb",
+            "static": 1,
             "itemtype": "method",
             "name": "tb.request",
             "params": [
@@ -2027,44 +2042,44 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4642,
+            "line": 4673,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4690,
+            "line": 4721,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4707,
+            "line": 4738,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4729,
+            "line": 4760,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4759,
+            "line": 4790,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4796,
+            "line": 4827,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4824,
+            "line": 4855,
             "name": "",
             "itemtype": "method",
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4983,
+            "line": 5014,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -2082,7 +2097,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5150,
+            "line": 5181,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -2097,7 +2112,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5182,
+            "line": 5213,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -2112,7 +2127,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5215,
+            "line": 5246,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -2127,7 +2142,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5247,
+            "line": 5278,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -2163,16 +2178,60 @@
             "line": " src/tb/tb.js:460"
         },
         {
-            "message": "param name missing: {void}",
-            "line": " src/tb/tb.js:3294"
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3298"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3439"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3538"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3593"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3613"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3685"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3701"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3747"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:3859"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:4377"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:4443"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:4648"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:4824"
+            "line": " src/tb/tb.js:4855"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:4824"
+            "line": " src/tb/tb.js:4855"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -2184,31 +2243,31 @@
         },
         {
             "message": "Missing item type\nexecute promise function",
-            "line": " src/tb/tb.js:4322"
+            "line": " src/tb/tb.js:4351"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4642"
+            "line": " src/tb/tb.js:4673"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4690"
+            "line": " src/tb/tb.js:4721"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4707"
+            "line": " src/tb/tb.js:4738"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4729"
+            "line": " src/tb/tb.js:4760"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4759"
+            "line": " src/tb/tb.js:4790"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4796"
+            "line": " src/tb/tb.js:4827"
         }
     ]
 }

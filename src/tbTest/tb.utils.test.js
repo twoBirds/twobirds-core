@@ -119,10 +119,10 @@ describe("tb.utils.js", function() {
 
         });
 
-        describe("tb.bind()", function() {
+        describe("tb.attach()", function() {
 
-            it("tb.bind() present and typeof 'function'", function() {
-                expect( typeof tb.bind === 'function' ).toBe(true);
+            it("tb.attach() present and typeof 'function'", function() {
+                expect( typeof tb.attach === 'function' ).toBe(true);
             });
 
             afterEach(function() {
@@ -145,33 +145,33 @@ describe("tb.utils.js", function() {
 
             describe("on demand", function() {
 
-                it("add a tb instance to DOM *without* selector in .bind() call", function() {
+                it("add a tb instance to DOM *without* selector in .attach() call", function() {
                     var d = document.createElement( 'div' );
 
                     d.setAttribute('data-tb', 'test.GrandChild');
 
                     document.body.appendChild( d );
 
-                    tb.bind();
+                    tb.attach();
 
                     expect( !!tb('body').children().last()[0].target.tb === true ).toBe(true);
                     expect( tb('body').children().last()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
                 });
 
-                it("add a tb instance to DOM *with* selector in .bind() call", function() {
+                it("add a tb instance to DOM *with* selector in .attach() call", function() {
                     var d = document.createElement( 'div' );
 
                     d.setAttribute('data-tb', 'test.GrandChild');
 
                     document.body.appendChild( d );
 
-                    tb.bind( document.body.lastElementChild );
+                    tb.attach( document.body.lastElementChild );
 
                     expect( !!tb('body').children().last()[0].target.tb === true ).toBe(true);
                     expect( tb('body').children().last()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
                 });
 
-                it("add several tb instances to DOM *without* selector in .bind() call", function() {
+                it("add several tb instances to DOM *without* selector in .attach() call", function() {
                     var d1 = document.createElement( 'div' ),
                         d2 = document.createElement( 'div' );
 
@@ -181,7 +181,7 @@ describe("tb.utils.js", function() {
                     document.body.appendChild( d1 );
                     document.body.appendChild( d2 );
 
-                    tb.bind();
+                    tb.attach();
 
                     expect( tb('body').children().last()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
                     expect( tb('body').children().last().prev()[0].target.tb['test.GrandChild'] instanceof test.GrandChild ).toBe(true);
@@ -295,6 +295,14 @@ describe("tb.utils.js", function() {
 
                 expect( typeof o === 'object' ).toBe(true);
                 expect( o.s1 === 'result1' && o.a[0] === 'result2' ).toBe(true);
+            });
+
+            it("parse multiple hash objects", function() {
+                var a = '{test1} {test2}',
+                    r = tb.parse( a, { 'test1': 'result1' }, { 'test2': 'result2' } );
+                
+                expect( typeof r === 'string' ).toBe(true);
+                expect( r === 'result1 result2' ).toBe(true);
             });
 
         });
