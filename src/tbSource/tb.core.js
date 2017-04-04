@@ -105,8 +105,6 @@ tb = (function(){
                     }),
                     selector = selector.join(' '); // jshint ignore:line
 
-                //console.log( pSelector, selector );
-
                 tb.dom( selector )
                     .forEach(
                         function ( pDomNode ) {
@@ -424,14 +422,11 @@ tb = (function(){
                             && key.indexOf( '.' ) > -1
                         ){ 
                             if ( key === 'tb.Require' ){
-                                //console.log('tbInstance tb.Require found!', key);
                                 tbInstance['tb.Require'] = tb.require(tbInstance['tb.Require'])
                                     .then(function(pValue){ // jshint ignore:line
-                                        //console.log( 'tb.Require init', tbInstance, pValue );
                                         tbInstance.trigger( 'init' );
                                     });
                             } else { // prop name contains ".", treat as tb class
-                                //console.log('tbInstance dotted class found!', key);
                                 tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
                             }
                         }

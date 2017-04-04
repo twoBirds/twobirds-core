@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.79 - 2017-03-26 */
+/*! twobirds-core - v7.3.80 - 2017-04-04 */
 
 /**
  twoBirds V7 core functionality
@@ -106,8 +106,6 @@ tb = (function(){
                         return s;
                     }),
                     selector = selector.join(' '); // jshint ignore:line
-
-                //console.log( pSelector, selector );
 
                 tb.dom( selector )
                     .forEach(
@@ -426,14 +424,11 @@ tb = (function(){
                             && key.indexOf( '.' ) > -1
                         ){ 
                             if ( key === 'tb.Require' ){
-                                //console.log('tbInstance tb.Require found!', key);
                                 tbInstance['tb.Require'] = tb.require(tbInstance['tb.Require'])
                                     .then(function(pValue){ // jshint ignore:line
-                                        //console.log( 'tb.Require init', tbInstance, pValue );
                                         tbInstance.trigger( 'init' );
                                     });
                             } else { // prop name contains ".", treat as tb class
-                                //console.log('tbInstance dotted class found!', key);
                                 tbInstance[key] = new tb( key, tbInstance[key], tbInstance );
                             }
                         }
@@ -3630,15 +3625,9 @@ tb.idle = function( pCallback ){
 
     var f = function(){
 
-        //console.log( 'idle call f()' );
-
         if ( tb.status.loadCount() === 0 ){
 
-            //console.log( 'idle create tf()' );
-
             var tf = function(){
-
-                //console.log( 'idle call tf()' );
 
                 if ( tb.status.loadCount() === 0 ){ // loadCount is (still) 0
                     if (
@@ -3646,12 +3635,10 @@ tb.idle = function( pCallback ){
                     ){
                         // system is still idle
                         if ( typeof pCallback === 'function'){
-                            //console.log('idle', tf.lastChanged, tb.status.loadCount.lastChanged );
                             pCallback();
                         }
                     } else {
                         // probably not idle -> retry in 50 ms
-                        //console.log('not yet idle', tf.lastChanged, tb.status.loadCount.lastChanged );
                         tf.lastChanged = tb.status.loadCount.lastChanged;
                         setTimeout(
                             tf,
@@ -4426,18 +4413,11 @@ tb.Promise = (function(){
          })()
      );
  */
-if ( typeof module === 'undefined' ) {
+tb.Require = function ( pFiles ) {
+    return tb.require( pFiles );
+};
 
-    // mapping to tb.require
-    tb.Require = function ( pConfig ) {
-        return tb.require( pConfig );
-    };
-
-    tb.Require.prototype = {};
-
-} else {
-    // todo: local loading in nodeJS
-}
+tb.Require.prototype = {};
 
 
 /**
@@ -4504,7 +4484,8 @@ tb.require = function( pFiles, pCallback ){
 
             // file promise does not exist in container
             if ( !tb.require.repo[type][pFile] ){
-                tb.require.repo[type][pFile] = _load( pFile );
+                // if on client, load from server, if on server, load from file system
+                tb.require.repo[type][pFile] = typeof module === 'undefined' ? _load( pFile ) : _fsLoad( pFile );
             }
 
             // finally push promise
@@ -4525,6 +4506,49 @@ tb.require = function( pFiles, pCallback ){
     return ret;
 
     // private functions
+
+    function _fsLoad(pFile){
+        
+        var fs = require('fs'),
+            type = _getTypeFromSrc(pFile),
+            content,
+            promise;
+
+        promise = new tb.Promise(function(resolve, reject){
+
+            // we resolve all loading operations even if they fail, 
+            // because failure shouldnt halt operations
+            // in case of failure result value will be an error message
+            if ( type === 'js' ){
+                try {
+                    require(pFile);
+                    resolve('done.');
+                } catch (e) {
+                    resolve('error reading file using require("' + pFile + '"")');
+                }
+            } else {
+                if ( fs.existsSync( pFile ) ){
+                    try {
+                        content = fs.readFileSync( pFile, 'utf8' );
+                        resolve('done.');
+                    } catch (e) {
+                        resolve( 'error: could not read file: ', pFile );
+                    }
+
+                } else {
+                    resolve('error: file not found: ', pFile);
+                }
+            }
+
+        }).finally(function(pValue){
+
+            tb.require.repo[type][pFile] = pValue;
+        
+        });
+
+        return promise;
+
+    }
 
     function _load(pFile){
         
