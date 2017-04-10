@@ -1570,7 +1570,7 @@ tb = (function(){
 
      ( being called after using methods inherited from array, force uniqueness )
      */
-    TbSelector.prototype['unique'] = function() {
+    TbSelector.prototype.unique = function() {
         var that = this,
             result = [];
 
@@ -1652,8 +1652,8 @@ tb.Event.prototype = {
 };
 
 // make it a node module
-if (typeof module !== 'undefined' && module.exports) {
-    exports = tb;
+if (typeof module !== 'undefined') {
+    module.exports = tb;
 } else {
     /**
      * document.ready bootstrap

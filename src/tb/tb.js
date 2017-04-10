@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.83 - 2017-04-10 */
+/*! twobirds-core - v7.3.84 - 2017-04-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1654,7 +1654,7 @@ tb.Event.prototype = {
 };
 
 // make it a node module
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof exports !== 'undefined') {
     exports = tb;
 } else {
     /**
