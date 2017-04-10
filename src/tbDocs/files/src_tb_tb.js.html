@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.81 - 2017-04-04 */
+/*! twobirds-core - v7.3.81 - 2017-04-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1744,7 +1744,7 @@ tb.Event.prototype = {
 
 // make it a node module
 if (typeof module !== &#x27;undefined&#x27; &amp;&amp; module.exports) {
-    module.exports.tb = tb;
+    exports = tb;
 } else {
     /**
      * document.ready bootstrap
