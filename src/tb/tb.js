@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.85 - 2017-04-10 */
+/*! twobirds-core - v7.3.86 - 2017-04-10 */
 
 /**
  twoBirds V7 core functionality
@@ -4530,7 +4530,7 @@ tb.require = function( pFiles, pCallback ){
                 if ( fs.existsSync( pFile ) ){
                     try {
                         content = fs.readFileSync( pFile, 'utf8' );
-                        resolve('done.');
+                        resolve(content);
                     } catch (e) {
                         resolve( 'error: could not read file: ', pFile );
                     }
