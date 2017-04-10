@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.84 - 2017-04-10 */
+/*! twobirds-core - v7.3.85 - 2017-04-10 */
 
 /**
  twoBirds V7 core functionality
@@ -1572,7 +1572,7 @@ tb = (function(){
 
      ( being called after using methods inherited from array, force uniqueness )
      */
-    TbSelector.prototype['unique'] = function() {
+    TbSelector.prototype.unique = function() {
         var that = this,
             result = [];
 
@@ -1654,8 +1654,8 @@ tb.Event.prototype = {
 };
 
 // make it a node module
-if (typeof exports !== 'undefined') {
-    exports = tb;
+if (typeof module !== 'undefined') {
+    module.exports = tb;
 } else {
     /**
      * document.ready bootstrap
