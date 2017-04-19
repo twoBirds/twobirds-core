@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.87</em>
+            <em>API Docs for: v7.3.88</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.87 - 2017-04-19 */
+/*! twobirds-core - v7.3.88 - 2017-04-19 */
 
 /**
  twoBirds V7 core functionality
@@ -4623,11 +4623,11 @@ tb.require = function( pFiles, pCallback ){
                         content = fs.readFileSync( pFile, &#x27;utf8&#x27; );
                         resolve(content);
                     } catch (e) {
-                        resolve( &#x27;error: could not read file: &#x27;, pFile );
+                        resolve( &#x27;error: could not read file [&#x27;, pFile, &#x27;]&#x27;);
                     }
 
                 } else {
-                    resolve(&#x27;error: file not found: &#x27;, pFile);
+                    resolve(&#x27;error: file not found [&#x27;, pFile, &#x27;]&#x27;);
                 }
             }
 

@@ -1251,11 +1251,11 @@ tb.require = function( pFiles, pCallback ){
                         content = fs.readFileSync( pFile, 'utf8' );
                         resolve(content);
                     } catch (e) {
-                        resolve( 'error: could not read file: ', pFile );
+                        resolve( 'error: could not read file [', pFile, ']');
                     }
 
                 } else {
-                    resolve('error: file not found: ', pFile);
+                    resolve('error: file not found [', pFile, ']');
                 }
             }
 
