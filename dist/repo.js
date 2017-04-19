@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-/*! twobirds-core - v7.3.86 - 2017-04-19 */
-=======
-/*! twobirds-core - v7.3.81 - 2017-04-12 */
->>>>>>> Stashed changes
+/*! twobirds-core - v7.3.87 - 2017-04-19 */
 
 tb.namespace( 'test.GrandParent' ).set(
     (function(){
