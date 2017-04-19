@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 /*! twobirds-core - v7.3.86 - 2017-04-19 */
+=======
+/*! twobirds-core - v7.3.81 - 2017-04-12 */
+>>>>>>> Stashed changes
 
 /**
  twoBirds V7 core functionality
@@ -4177,21 +4181,23 @@ tb.Promise = (function(){
 
     function _done(onFulfilled, onRejected) {
         var that = arguments.length ? this.then.apply(this, arguments) : this; // jshint ignore:line
-        that.then(null, function (err) {
+        that.then(null, function (pValue) {
             setTimeout(function () {
-                throw err;
+                throw pValue;
             }, 0);
         });
     }
 
     function _finally(f) {
-        return this.then(function (value) { // jshint ignore:line
-            return tb.Promise.resolve(f()).then(function () {
-                return value;
+        var that = this; // jshint ignore:line
+
+        return this.then(function (pValue) { // jshint ignore:line
+            return Promise.resolve(f(that._value)).then(function () {
+                return that._value;
             });
-        }, function (err) {
-            return Promise.resolve(f()).then(function () {
-                throw err;
+        }, function (pValue) {
+            return Promise.resolve(f(that._value)).then(function () {
+                throw that._value;
             });
         });
     }
