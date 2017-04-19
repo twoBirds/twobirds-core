@@ -1235,27 +1235,29 @@ tb.require = function( pFiles, pCallback ){
 
         promise = new tb.Promise(function(resolve, reject){
 
+            var file = pFile;
+
             // we resolve all loading operations even if they fail, 
             // because failure shouldnt halt operations
             // in case of failure result value will be an error message
             if ( type === 'js' ){
                 try {
-                    require(pFile);
+                    require(file);
                     resolve('done.');
                 } catch (e) {
-                    resolve('error reading file using require("' + pFile + '"")');
+                    resolve('error reading file using require("' + file + '"")');
                 }
             } else {
-                if ( fs.existsSync( pFile ) ){
+                if ( fs.existsSync( file ) ){
                     try {
-                        content = fs.readFileSync( pFile, 'utf8' );
+                        content = fs.readFileSync( file, 'utf8' );
                         resolve(content);
                     } catch (e) {
-                        resolve( 'error: could not read file [' + pFile + ']');
+                        resolve( 'error: could not read file [' + file + ']');
                     }
 
                 } else {
-                    resolve('error: file not found [' + pFile + ']');
+                    resolve('error: file not found [' + file + ']');
                 }
             }
 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.89</em>
+            <em>API Docs for: v7.3.90</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.89 - 2017-04-19 */
+/*! twobirds-core - v7.3.90 - 2017-04-19 */
 
 /**
  twoBirds V7 core functionality
@@ -4607,27 +4607,29 @@ tb.require = function( pFiles, pCallback ){
 
         promise = new tb.Promise(function(resolve, reject){
 
+            var file = pFile;
+
             // we resolve all loading operations even if they fail, 
             // because failure shouldnt halt operations
             // in case of failure result value will be an error message
             if ( type === &#x27;js&#x27; ){
                 try {
-                    require(pFile);
+                    require(file);
                     resolve(&#x27;done.&#x27;);
                 } catch (e) {
-                    resolve(&#x27;error reading file using require(&quot;&#x27; + pFile + &#x27;&quot;&quot;)&#x27;);
+                    resolve(&#x27;error reading file using require(&quot;&#x27; + file + &#x27;&quot;&quot;)&#x27;);
                 }
             } else {
-                if ( fs.existsSync( pFile ) ){
+                if ( fs.existsSync( file ) ){
                     try {
-                        content = fs.readFileSync( pFile, &#x27;utf8&#x27; );
+                        content = fs.readFileSync( file, &#x27;utf8&#x27; );
                         resolve(content);
                     } catch (e) {
-                        resolve( &#x27;error: could not read file [&#x27; + pFile + &#x27;]&#x27;);
+                        resolve( &#x27;error: could not read file [&#x27; + file + &#x27;]&#x27;);
                     }
 
                 } else {
-                    resolve(&#x27;error: file not found [&#x27; + pFile + &#x27;]&#x27;);
+                    resolve(&#x27;error: file not found [&#x27; + file + &#x27;]&#x27;);
                 }
             }
 
