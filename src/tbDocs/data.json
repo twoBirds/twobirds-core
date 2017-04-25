@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.3.92",
+        "version": "v7.3.93",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -236,7 +236,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 5066,
+            "line": 5071,
             "is_constructor": 1,
             "params": [
                 {
@@ -2079,7 +2079,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5046,
+            "line": 5051,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -2097,7 +2097,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5213,
+            "line": 5218,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -2112,7 +2112,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5245,
+            "line": 5250,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -2127,7 +2127,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5278,
+            "line": 5283,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -2142,7 +2142,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5310,
+            "line": 5315,
             "itemtype": "method",
             "name": "delete",
             "params": [
