@@ -1296,8 +1296,8 @@ tb.require = function( pFiles, pCallback ){
             promise;
 
         // cache busting
-        if ( !!tb.require.cacheBust ){
-            file = pFile + ( pFile.indexOf('?') > -1 ? '&' : '?' ) + tb.getId();
+        if ( !!tb.require.cacheBust ){ // temporarily disabled
+            //file = pFile + ( pFile.indexOf('?') > -1 ? '&' : '?' ) + tb.getId();
         }
 
         //console.log('load', type, typeConfigs);
@@ -1611,7 +1611,7 @@ if (typeof module === 'undefined' ){
                 errorHandler = pOptions.error || tb.nop,
                 finalHandler = pOptions.finally || tb.nop,
                 stateHandler = pOptions.statechange || tb.nop,
-                isCachable = pOptions.cachable || false,
+                isCachable = pOptions.cachable || true,
                 headers = pOptions.headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
                 isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true,

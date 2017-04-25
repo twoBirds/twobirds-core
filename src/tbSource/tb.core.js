@@ -1684,3 +1684,5 @@ if (typeof module !== 'undefined') {
 
     })();
 }
+
+tb.debug = false;

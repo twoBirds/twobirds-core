@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.90 - 2017-04-19 */
+/*! twobirds-core - v7.3.90 - 2017-04-25 */
 
 /**
  twoBirds V7 core functionality
@@ -1775,6 +1775,8 @@ if (typeof module !== &#x27;undefined&#x27;) {
 
     })();
 }
+
+tb.debug = false;
 
 
 if (typeof module === &#x27;undefined&#x27; ){
@@ -4668,8 +4670,8 @@ tb.require = function( pFiles, pCallback ){
             promise;
 
         // cache busting
-        if ( !!tb.require.cacheBust ){
-            file = pFile + ( pFile.indexOf(&#x27;?&#x27;) &gt; -1 ? &#x27;&amp;&#x27; : &#x27;?&#x27; ) + tb.getId();
+        if ( !!tb.require.cacheBust ){ // temporarily disabled
+            //file = pFile + ( pFile.indexOf(&#x27;?&#x27;) &gt; -1 ? &#x27;&amp;&#x27; : &#x27;?&#x27; ) + tb.getId();
         }
 
         //console.log(&#x27;load&#x27;, type, typeConfigs);
@@ -4983,7 +4985,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                 errorHandler = pOptions.error || tb.nop,
                 finalHandler = pOptions.finally || tb.nop,
                 stateHandler = pOptions.statechange || tb.nop,
-                isCachable = pOptions.cachable || false,
+                isCachable = pOptions.cachable || true,
                 headers = pOptions.headers = pOptions.headers || {},
                 timeout = pOptions.timeout || false,
                 isAsync = (typeof pOptions.async !== &#x27;undefined&#x27; &amp;&amp; pOptions.async === false) ? false : true,
