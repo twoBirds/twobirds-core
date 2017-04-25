@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.91 - 2017-04-25 */
+/*! twobirds-core - v7.3.92 - 2017-04-25 */
 
 /**
  twoBirds V7 core functionality
@@ -4901,6 +4901,8 @@ if (typeof module === 'undefined' ){
                 timeout = pOptions.timeout || false,
                 isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true,
                 ct;
+
+            tb.extend( headers, { Origin: window.location.hostname } );
 
             inc();
 
