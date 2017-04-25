@@ -1617,13 +1617,6 @@ if (typeof module === 'undefined' ){
                 isAsync = (typeof pOptions.async !== 'undefined' && pOptions.async === false) ? false : true,
                 ct;
 
-            tb.extend( 
-                headers, 
-                { 
-                    Origin: ['127.0.0.1', 'localhost'].indexOf(window.location.hostname) === -1 ? window.location.hostname : 'undefined.com' 
-                } 
-            );
-
             inc();
 
             // adjust for JSON data
