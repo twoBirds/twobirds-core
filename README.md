@@ -10,6 +10,8 @@ Welcome Birdies ;-)
 
 You can also [contact me](mailTo:fthuerigen@googlemail.com) if you need a specific twoBirds plugin tailored for your needs. Usually that doesnt take a lot.
 
+INFO: This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
+
 ## Intro
 
 ##### twoBirds is a ...
