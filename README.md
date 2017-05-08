@@ -126,6 +126,8 @@ Yes. This and a few helper methods will allow for JS automation at any level of 
 
 The learning curve is very shallow, since tB only requires JS/ES5 knowledge as a prerequisite and does not have a lot of declarative abstraction.
 
+Everybody who knows some jQuery will feel at home immediately.
+
 ### Comparision
 
 twoBirds can be compared to any web component framework.
