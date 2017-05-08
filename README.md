@@ -21,16 +21,23 @@ INFO: This readme only contains a short description - the repository contains a 
 - event-driven / loosely coupled, 
 - native 
 
-##### ... JavaScript framework that maps objects to DOM nodes.
+##### ... JavaScript framework library that maps objects to DOM nodes.
+
+Even shorter: twoBirds is like jQuery on application level.
 
 twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines.
 
 The tB core can be seen as an intermediate step between a simple wrapper/helper library like jQuery and a fully fledged JS framework. 
-Like the first, it has selectors for the dom and reasonable modification methods. Like the latter, it incorporates a higher level abstraction scheme for application objects.
+
+Like the first, it has selectors for the dom and reasonable modification methods. 
+
+Like the latter, it incorporates a higher level abstraction scheme for application objects.
+
 The core does not contain higher level DOM elements like datepickers or the like, but gives you a sufficient set of functionality to implement these as you like. 
+
 As a result, a widget is just another application object (same type of code, easy understandable). 
 
-It is JS-linted, jasmine tested and this package contains the complete API documentation. 
+tB is JS-linted, jasmine tested and this package contains the complete API documentation. 
 
 tB is the minimum possible toolkit to create an application or reusable js framework.
 
@@ -66,7 +73,7 @@ new tb(
 	document.body
 );
 ```
-same as above, but done at run-time in an event handler or instance method of another tB instance - hence: recursive!
+same as above, but done at run-time in an event handler or instance method of another tB instance - hence: a page can be built top-down recursively!
 
 #### 2.) a selector to adress instances of these objects on the page
 
@@ -80,11 +87,16 @@ tb( /MyClass/ )        // find all instances on page that match the given namesp
 
 There are a lot of parameter options and chained methods to that selector.
 
-##### You also have a document.querySelectorAll() based tb.dom() selector, also with the chained methods you expect. 
+###### You also have a document.querySelectorAll() based tb.dom() selector, also with the chained methods you expect. 
 
 The difference between these selectors is: tb.dom() returns DOM nodes, tb() returns tb instances that are contained therein. 
 
-Map it to a var $ inside your class factory, and you can use it like jQuery.
+If you map it to a var $ inside your class factory, you can use it like jQuery (it even is 90% compatible):
+
+```js
+var $ = tb.dom;
+// more selector stuff below
+```
 
 Read the API documentation included in the package.
 
@@ -159,9 +171,11 @@ The instances usually are saved in a DOM node or in other tB instances.
 
 *namespace*: ... is the namespace of the repo object, and should be set accordingly, since the regEx selector tb( /.../ ) checks against the "namespace" property.
 
-*handlers*: ... is a plain object, where { key: value } is { eventName: function myHandler( pEvent ){ /\*...\*/ } }. 
+*handlers*: ... is a plain object, where { key: value } is e.g. { eventName: function myHandler( pEvent ){ /\*...\*/ } }. 
 
-If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions.  Internally they are stored in an hash object containing arrays anyway.
+If for some reasons you need more than one handler for an eventName, eventName also can be an array of callback functions.  Internally all callbacks are stored in an hash object containing arrays anyway like so:
+
+{ eventName: [ function myHandler( pEvent ){ /\*...\*/ }, function myOtherHandler(){} ] }
 
 ##### As for handlers, there currently is 1 event name that is automatically used by the system:
 
