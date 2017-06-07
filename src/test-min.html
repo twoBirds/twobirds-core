@@ -6,6 +6,54 @@
         <link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
         <link rel="stylesheet" type="text/css" href="test/GrandParent.css">
 
+        <style>
+
+            legend {
+                display: inherit;
+                margin:  inherit;
+                vertical-align:  inherit;
+            }
+
+            label {
+                display: inline;
+                margin-top: 5px;
+                margin-left: 5px;
+                vertical-align: top;
+                width: 10em;
+                text-align: right;
+            }
+
+            label::before {
+                content: ' ';
+                display: block;
+            }
+
+            form input,
+            form select,
+            form textarea {
+                margin-left: 5px;
+                margin-top: 0px;
+                display: inline;
+            }
+
+            form label + textarea {
+                display: inline-block;
+                margin-top: 3px;
+            }
+
+            form input + label {
+                width: inherit;
+                margin-top: 3px;
+                text-align: left;
+            }
+
+            body > form {
+                display: inline-block;
+                width: 49%;
+            }
+
+        </style>
+
         <script type="text/javascript" src="tb/tb.min.js"></script>
 
         <script type="text/javascript" src="repo.js"></script>
@@ -21,5 +69,77 @@
         </script>
     </head>
     <body data-tb="test.GrandParent">
+        <form name="existingForm">
+            <!-- sample form to start with -->
+            <fieldset>
+                <legend>Inputs</legend>
+                <label>text</label><input type="text" name="textInput" value="dfgs sydf g" />&nbsp;<strong>2wB:&nbsp;</strong>{textInput}
+                <label>color</label><input type="color" name="colorInput" value="" />
+                <label>date</label><input type="date" name="dateInput" value="" />
+                <label>datetime-local</label><input type="datetime-local" name="dtlInput" value="" />
+                <label>email</label><input type="email" name="email" value="" />
+                <label>file</label><input type="file" name="fileInput" value="" />
+                <label>hidden</label><input type="hidden" name="hiddenInput" value="hiddenVal" />
+                <label>month</label><input type="month" name="month" value="" />
+                <label>number</label><input type="number" name="number" value="" />
+                <label>password</label><input type="password" name="passInput" value="" />
+                <label>range</label><input type="range" name="rangeInput" value="" />
+                <label>search</label><input type="search" name="searchInput" value="" />
+                <label>tel</label><input type="tel" name="telInput" value="" />
+                <label>time</label><input type="time" name="timeInput" value="" />
+                <label>url</label><input type="url" name="urlInput" value="" />
+                <label>week</label><input type="week" name="weekInput" value="" />
+            </fieldset>
+
+            <fieldset>
+                <legend>Selects</legend>
+
+                    <label>singleSelect</label>
+                    <select name="singleSelect">
+                        <option disabled selected value> -- select -- </option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                        <option value="4">Option 4</option>
+                    </select>
+
+                    <label>multiSelect</label>
+                    <select name="multiSelect" multiple="multiple" type="select-multiple">
+                        <option value="1">Option 1</option>
+                        <option value="2" selected=true>Option 2</option>
+                        <option value="3">Option 3</option>
+                        <option value="4" selected=true>Option 4</option>
+                    </select>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Radiobuttons&nbsp;<strong>2wB:&nbsp;</strong>{myRadio}</legend>
+
+                <label>radio1</label><input type="radio" name="myRadio" value="radio1">
+                <label>radio2</label><input type="radio" name="myRadio" value="radio2">
+                <label>radio3</label><input type="radio" name="myRadio" value="radio3">
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Checkboxes</legend>
+                <label>cb1</label><input type="checkbox" name="cb1">
+                <label>cb2</label><input type="checkbox" name="cb2">
+                <label>cb3</label><input type="checkbox" name="cb3">
+                <label>cb4</label><input type="checkbox" name="cb4">
+                <label>cb5</label><input type="checkbox" name="cb5">
+
+            </fieldset>
+
+            <fieldset>
+                <legend>TextArea</legend>
+
+                    <label>textArea</label><textarea name="textArea"></textarea>
+
+            </fieldset>
+
+        </form>
+
     </body>
 </html>
