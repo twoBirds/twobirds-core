@@ -349,8 +349,8 @@ tb( ... ).parent() // closest parent, in this case body tb object
 tb( ... ).parents() // array of all parent tB objects, nearest first
 tb( ... ).prev() // the previous tb instance in this.parent().children()
 tb( ... ).next() // the next tb instance in this.parent().children()
-tb( ... ).first() // the previous tb instance in this.parent().children()
-tb( ... ).last() // the next tb instance in this.parent().children()
+tb( ... ).first() // the first tb instance in this.parent().children()
+tb( ... ).last() // the last tb instance in this.parent().children()
 
 ...for a complete list see the API documentation contained in the package.
 
