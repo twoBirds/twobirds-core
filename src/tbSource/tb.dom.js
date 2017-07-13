@@ -507,7 +507,7 @@ if (typeof module === 'undefined' ){
                     [].forEach.call(
                         that[0].attributes,
                         function( pAttribute ){
-                            attributes[ pAttribute.name ] = pAttribute.nodeValue;
+                            attributes[ pAttribute.name ] = pAttribute.value;
                         }
                     );
                     return attributes;

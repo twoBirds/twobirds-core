@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.100 - 2017-07-08 */
+/*! twobirds-core - v7.3.101 - 2017-07-13 */
 
 /**
  twoBirds V7 core functionality
@@ -2199,7 +2199,7 @@ if (typeof module === 'undefined' ){
                     [].forEach.call(
                         that[0].attributes,
                         function( pAttribute ){
-                            attributes[ pAttribute.name ] = pAttribute.nodeValue;
+                            attributes[ pAttribute.name ] = pAttribute.value;
                         }
                     );
                     return attributes;
