@@ -21,7 +21,9 @@ INFO: This readme only contains a short description - the repository contains a 
 - event-driven / loosely coupled, 
 - native 
 
-##### ... JavaScript framework library that maps objects to DOM nodes.
+##### ... JavaScript framework library that maps objects to DOM nodes or into other objects.
+
+##### twoBirds works in the FE/browser and inside the BE/nodeJS.
 
 Even shorter: twoBirds is like jQuery on application level.
 
