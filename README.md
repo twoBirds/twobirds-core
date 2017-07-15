@@ -23,9 +23,13 @@ INFO: This readme only contains a short description - the repository contains a 
 
 ##### ... JavaScript framework library that maps objects to DOM nodes or into other objects.
 
-##### twoBirds works in the FE/browser and inside the BE/nodeJS.
-
 Even shorter: twoBirds is like jQuery on application level.
+
+##### twoBirds works in the FE/browser/app and inside the BE/nodeJS.
+
+tB can completely replace your stack from the data source to the display - including microservices, server side rendering, client side rendering and mobile apps (using electron). 
+
+##### Principles
 
 twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines.
 
