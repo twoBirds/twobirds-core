@@ -276,7 +276,7 @@ tb = (function(){
         if ( that instanceof tb ) {    // called as constructor, create and return tb object instance
             var isNamespace = typeof arguments[0] === 'string',
                 isRootedNamespace = isNamespace && arguments[0].substr(0,1) === "/",
-                fileName = '/' + arguments[0].replace( /\./g, '/' ).replace( /^\//, '') + '.js',
+                fileName = isNamespace ? '/' + arguments[0].replace( /\./g, '/' ).replace( /^\//, '') + '.js' : '',
                 tbClass =  isNamespace ? tb.namespace( arguments[0].replace( /^\//), '' ).get() : arguments[0],
                 tbInstance,
                 tempInstance; // empty tb object, used as handler store
