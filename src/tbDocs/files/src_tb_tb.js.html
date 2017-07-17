@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.102</em>
+            <em>API Docs for: v7.3.103</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.102 - 2017-07-15 */
+/*! twobirds-core - v7.3.103 - 2017-07-17 */
 
 /**
  twoBirds V7 core functionality
@@ -366,16 +366,16 @@ tb = (function(){
         // instanciate tb instance OR return tb.Selector result set
         if ( that instanceof tb ) {    // called as constructor, create and return tb object instance
             var isNamespace = typeof arguments[0] === &#x27;string&#x27;,
-                tbClass =  isNamespace ? tb.namespace( arguments[0] ).get() : arguments[0],
+                isRootedNamespace = isNamespace &amp;&amp; arguments[0].substr(0,1) === &quot;/&quot;,
+                fileName = &#x27;/&#x27; + arguments[0].replace( /\./g, &#x27;/&#x27; ).replace( /^\//, &#x27;&#x27;) + &#x27;.js&#x27;,
+                tbClass =  isNamespace ? tb.namespace( arguments[0].replace( /^\//), &#x27;&#x27; ).get() : arguments[0],
                 tbInstance,
-                fileName,
                 tempInstance; // empty tb object, used as handler store
 
             // namespace is a string and corresponding class doesnt exist in repo
             // -&gt; do requirement loading
             // -&gt; return temporary instance ( = instanceof Nop )
             if ( isNamespace &amp;&amp; !tbClass ){
-                fileName = arguments[0].replace( /\./g, &#x27;/&#x27; ) + &#x27;.js&#x27;;
                 tempInstance = new tb( Nop, arguments[1] || {}, arguments[2] || false ); // construct temp tb instance from empty constructor -&gt; temp handler store
 
                 tb.require(

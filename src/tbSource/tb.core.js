@@ -275,16 +275,16 @@ tb = (function(){
         // instanciate tb instance OR return tb.Selector result set
         if ( that instanceof tb ) {    // called as constructor, create and return tb object instance
             var isNamespace = typeof arguments[0] === 'string',
-                tbClass =  isNamespace ? tb.namespace( arguments[0] ).get() : arguments[0],
+                isRootedNamespace = isNamespace && arguments[0].substr(0,1) === "/",
+                fileName = '/' + arguments[0].replace( /\./g, '/' ).replace( /^\//, '') + '.js',
+                tbClass =  isNamespace ? tb.namespace( arguments[0].replace( /^\//), '' ).get() : arguments[0],
                 tbInstance,
-                fileName,
                 tempInstance; // empty tb object, used as handler store
 
             // namespace is a string and corresponding class doesnt exist in repo
             // -> do requirement loading
             // -> return temporary instance ( = instanceof Nop )
             if ( isNamespace && !tbClass ){
-                fileName = arguments[0].replace( /\./g, '/' ) + '.js';
                 tempInstance = new tb( Nop, arguments[1] || {}, arguments[2] || false ); // construct temp tb instance from empty constructor -> temp handler store
 
                 tb.require(
