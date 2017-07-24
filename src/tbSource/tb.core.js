@@ -344,21 +344,26 @@ tb = (function(){
                 }
 
                 // prepare .target property of tb object
-                tbInstance.target = arguments[2] || false; // preset
-                if ( !!arguments[2] ){
-                    if ( !arguments[2]['nodeType']
-                        && !!arguments[2][0]
-                        && !!arguments[2][0]['nodeType']
-                    ){
-                        arguments[2] = arguments[2][0]; // jshint ignore:line
+                tbInstance.target = tbInstance['target'] || arguments[2] || false; // preset
+                
+                // if target was not set in constructor, try third parameter
+                if ( !tbInstance.target ){
+
+                    if ( !!arguments[2] ){
+
                         // get first element of an array-like selector return object
+                        if ( !arguments[2]['nodeType']
+                            && !!arguments[2][0]
+                            && !!arguments[2][0]['nodeType']
+                        ){
+                            arguments[2] = arguments[2][0]; // jshint ignore:line
+                        }
+
+                        tbInstance.target = arguments[2];
                     }
 
-                    tbInstance.target = arguments[2];
-                } else {
-                    tbInstance.target = null;
                 }
-
+                
                 // if target is a DOM element
                 // - add class to DOM data
                 // - if not already there add namespace to target data-tb attribute
