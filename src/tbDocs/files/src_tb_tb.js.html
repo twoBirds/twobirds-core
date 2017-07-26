@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.108</em>
+            <em>API Docs for: v7.3.109</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.108 - 2017-07-24 */
+/*! twobirds-core - v7.3.109 - 2017-07-26 */
 
 /**
  twoBirds V7 core functionality
@@ -2796,6 +2796,7 @@ if (typeof module === &#x27;undefined&#x27; ){
          @chainable
 
          @param [pDomElements] - a tb.dom() selector result set
+         @return {object} - tb.dom() result set containing removed DOM nodes
 
          removes all elements in tb.dom() result set from DOM
          */
@@ -2803,8 +2804,8 @@ if (typeof module === &#x27;undefined&#x27; ){
             var that = this;
 
             that.forEach(
-                function( pDomNode ){
-                    pDomNode.parentNode.removeChild( pDomNode );
+                function( pDomNode, pIndex ){
+                    that[ pIndex ] = pDomNode.parentNode.removeChild( pDomNode );
                 }
             );
 

@@ -1010,6 +1010,7 @@ if (typeof module === 'undefined' ){
          @chainable
 
          @param [pDomElements] - a tb.dom() selector result set
+         @return {object} - tb.dom() result set containing removed DOM nodes
 
          removes all elements in tb.dom() result set from DOM
          */
@@ -1017,8 +1018,8 @@ if (typeof module === 'undefined' ){
             var that = this;
 
             that.forEach(
-                function( pDomNode ){
-                    pDomNode.parentNode.removeChild( pDomNode );
+                function( pDomNode, pIndex ){
+                    that[ pIndex ] = pDomNode.parentNode.removeChild( pDomNode );
                 }
             );
 

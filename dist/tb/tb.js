@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.108 - 2017-07-24 */
+/*! twobirds-core - v7.3.109 - 2017-07-26 */
 
 /**
  twoBirds V7 core functionality
@@ -2707,6 +2707,7 @@ if (typeof module === 'undefined' ){
          @chainable
 
          @param [pDomElements] - a tb.dom() selector result set
+         @return {object} - tb.dom() result set containing removed DOM nodes
 
          removes all elements in tb.dom() result set from DOM
          */
@@ -2714,8 +2715,8 @@ if (typeof module === 'undefined' ){
             var that = this;
 
             that.forEach(
-                function( pDomNode ){
-                    pDomNode.parentNode.removeChild( pDomNode );
+                function( pDomNode, pIndex ){
+                    that[ pIndex ] = pDomNode.parentNode.removeChild( pDomNode );
                 }
             );
 
