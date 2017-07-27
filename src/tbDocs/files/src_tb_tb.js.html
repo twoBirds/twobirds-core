@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.109</em>
+            <em>API Docs for: v7.3.110</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.109 - 2017-07-26 */
+/*! twobirds-core - v7.3.110 - 2017-07-27 */
 
 /**
  twoBirds V7 core functionality
@@ -2093,6 +2093,7 @@ if (typeof module === &#x27;undefined&#x27; ){
             appendTo: appendTo,
             attr: attr,
             children: children,
+            clean: clean,
             descendants: descendants,
             empty: empty,
             hasClass: hasClass,
@@ -2350,6 +2351,38 @@ if (typeof module === &#x27;undefined&#x27; ){
             );
 
             return result;
+        }
+
+        /**
+         @method clean
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         removes empty text nodes &amp; comments
+         */
+        function clean(){
+
+            var that = this;
+
+            function clean( pNode ){
+                for(var n = 0; n &lt; pNode.childNodes.length; n ++){
+                    var child = pNode.childNodes[n];
+                    if ( child.nodeType === 8 || (child.nodeType === 3 &amp;&amp; !/\S/.test(child.nodeValue) ) ){
+                        pNode.removeChild(child);
+                        n --;
+                    } else if( child.nodeType === 1 ){
+                        clean(child);
+                    }
+                }
+            }
+
+            that.forEach(
+                clean
+            );
+
+            return that;
+
         }
 
         /**

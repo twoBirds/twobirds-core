@@ -307,6 +307,7 @@ if (typeof module === 'undefined' ){
             appendTo: appendTo,
             attr: attr,
             children: children,
+            clean: clean,
             descendants: descendants,
             empty: empty,
             hasClass: hasClass,
@@ -564,6 +565,38 @@ if (typeof module === 'undefined' ){
             );
 
             return result;
+        }
+
+        /**
+         @method clean
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         removes empty text nodes & comments
+         */
+        function clean(){
+
+            var that = this;
+
+            function clean( pNode ){
+                for(var n = 0; n < pNode.childNodes.length; n ++){
+                    var child = pNode.childNodes[n];
+                    if ( child.nodeType === 8 || (child.nodeType === 3 && !/\S/.test(child.nodeValue) ) ){
+                        pNode.removeChild(child);
+                        n --;
+                    } else if( child.nodeType === 1 ){
+                        clean(child);
+                    }
+                }
+            }
+
+            that.forEach(
+                clean
+            );
+
+            return that;
+
         }
 
         /**
