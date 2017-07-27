@@ -49,6 +49,7 @@ tb = (function(){
      @extends tb
 
      @param {function|string|object|array} pSelector
+     @param {domNode} [pDomNode] - optional, the DOM node in which to search 
 
      @returns {object} - the twoBirds instance you just created
 
@@ -79,7 +80,7 @@ tb = (function(){
          tb( [ 'body', /myRegEx/ ] )     // any combination of selectors in an array, result is additive, flat and unique
 
      */
-    function TbSelector( pSelector ){
+    function TbSelector( pSelector, pDomNode ){
         var that = this;
 
         that.length = 0;
@@ -105,7 +106,7 @@ tb = (function(){
                     }),
                     selector = selector.join(' '); // jshint ignore:line
 
-                tb.dom( selector )
+                tb.dom( selector, pDomNode || document.body )
                     .forEach(
                         function ( pDomNode ) {
                             if ( !!pDomNode['tb'] ){
@@ -131,7 +132,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( '[data-tb]' )
+                    tb.dom( '[data-tb]', pDomNode || document.body )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -186,7 +187,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case 'function':
 
-                tb.dom( '[data-tb]' )
+                tb.dom( '[data-tb]', pDomNode || document.body )
                     .map(
                         function ( pDomNode ) {
                             Object

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.110</em>
+            <em>API Docs for: v7.3.111</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.110 - 2017-07-27 */
+/*! twobirds-core - v7.3.111 - 2017-07-27 */
 
 /**
  twoBirds V7 core functionality
@@ -140,6 +140,7 @@ tb = (function(){
      @extends tb
 
      @param {function|string|object|array} pSelector
+     @param {domNode} [pDomNode] - optional, the DOM node in which to search 
 
      @returns {object} - the twoBirds instance you just created
 
@@ -170,7 +171,7 @@ tb = (function(){
          tb( [ &#x27;body&#x27;, /myRegEx/ ] )     // any combination of selectors in an array, result is additive, flat and unique
 
      */
-    function TbSelector( pSelector ){
+    function TbSelector( pSelector, pDomNode ){
         var that = this;
 
         that.length = 0;
@@ -196,7 +197,7 @@ tb = (function(){
                     }),
                     selector = selector.join(&#x27; &#x27;); // jshint ignore:line
 
-                tb.dom( selector )
+                tb.dom( selector, pDomNode || document.body )
                     .forEach(
                         function ( pDomNode ) {
                             if ( !!pDomNode[&#x27;tb&#x27;] ){
@@ -222,7 +223,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( &#x27;[data-tb]&#x27; )
+                    tb.dom( &#x27;[data-tb]&#x27;, pDomNode || document.body )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -277,7 +278,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case &#x27;function&#x27;:
 
-                tb.dom( &#x27;[data-tb]&#x27; )
+                tb.dom( &#x27;[data-tb]&#x27;, pDomNode || document.body )
                     .map(
                         function ( pDomNode ) {
                             Object
