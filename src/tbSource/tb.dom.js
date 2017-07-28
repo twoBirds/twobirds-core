@@ -790,7 +790,7 @@ if (typeof module === 'undefined' ){
                 }
             );
 
-            return;
+            return that;
         }
 
         /**
@@ -832,7 +832,7 @@ if (typeof module === 'undefined' ){
                 }
             );
 
-            return;
+            return that;
         }
 
         /**

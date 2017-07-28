@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.111 - 2017-07-27 */
+/*! twobirds-core - v7.3.112 - 2017-07-28 */
 
 /**
  twoBirds V7 core functionality
@@ -2488,7 +2488,7 @@ if (typeof module === 'undefined' ){
                 }
             );
 
-            return;
+            return that;
         }
 
         /**
@@ -2530,7 +2530,7 @@ if (typeof module === 'undefined' ){
                 }
             );
 
-            return;
+            return that;
         }
 
         /**
