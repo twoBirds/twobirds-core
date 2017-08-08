@@ -327,6 +327,7 @@ if (typeof module === 'undefined' ){
             removeClass: removeClass,
             show: show,
             toArray: toArray,
+            toggleClass: toggleClass,
             trigger: trigger,
             unique: unique,
             val: val,

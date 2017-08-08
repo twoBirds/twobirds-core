@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.114 - 2017-08-08 */
+/*! twobirds-core - v7.3.115 - 2017-08-08 */
 
 /**
  twoBirds V7 core functionality
@@ -2025,6 +2025,7 @@ if (typeof module === 'undefined' ){
             removeClass: removeClass,
             show: show,
             toArray: toArray,
+            toggleClass: toggleClass,
             trigger: trigger,
             unique: unique,
             val: val,
