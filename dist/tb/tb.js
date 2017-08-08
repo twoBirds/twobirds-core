@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.112 - 2017-07-28 */
+/*! twobirds-core - v7.3.113 - 2017-08-08 */
 
 /**
  twoBirds V7 core functionality
@@ -2280,7 +2280,7 @@ if (typeof module === 'undefined' ){
             function clean( pNode ){
                 for(var n = 0; n < pNode.childNodes.length; n ++){
                     var child = pNode.childNodes[n];
-                    if ( child.nodeType === 8 || (child.nodeType === 3 && !/\S/.test(child.nodeValue) ) ){
+                    if ( child.nodeType === 8 || (child.nodeType === 3 && !/\S/.test(child.value) ) ){
                         pNode.removeChild(child);
                         n --;
                     } else if( child.nodeType === 1 ){
@@ -2395,6 +2395,7 @@ if (typeof module === 'undefined' ){
 
         /**
          @method hasClass
+         @param pClass {string} - class name
 
          @return {boolean} - true if class in className
          */
@@ -2866,12 +2867,38 @@ if (typeof module === 'undefined' ){
          @method toArray
          @chainable
 
-         @return {array} - tb.dom() result set converted to a plain array of DOM nodes
+         @return {object} - tb.dom() result set converted to a plain array of DOM nodes
 
          convert tb.dom() result set converted to a plain array of DOM nodes
          */
         function toArray(){
             return [].filter.call( this, function(){ return true; } );
+        }
+
+        /**
+         @method toggleClass
+         @param pClassName {string} - class name
+         @chainable
+
+         @return {object} - tb.dom() result set
+
+         if className is set in class attribute, it is deleted, otherwise it is set.
+         */
+        function toggleClass( pClassName ) {
+            var that = this,
+                $pNode;
+
+            that.forEach(
+                function( pNode ){
+
+                    $pNode = tb.dom( pNode );
+
+                    $pNode[ $pNode.hasClass(pClassName) ? 'removeClass' : 'addClass' ]( pClassName );
+
+                }
+            );
+
+            return that;
         }
 
         /**
