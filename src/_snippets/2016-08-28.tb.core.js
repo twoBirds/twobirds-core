@@ -97,16 +97,9 @@ var tb = (function(){
             // selection by dom selector string
             case 'string':
                 // HINT: must be a tb element for every selector of a css selector string
-                var selector = pSelector.split(' ');
+                var selector = (pSelector + '[data-tb]');
 
-                selector = selector.map(function(s){
-                    if (1 < s.length){
-                        return s+':not([data-tb=""])';
-                    }
-                    return s;
-                });
-
-                selector = selector.join(' ');
+                console.log('selector', selector);
 
                 tb.dom( selector )
                     .forEach(

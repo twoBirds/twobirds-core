@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.116</em>
+            <em>API Docs for: v7.3.117</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.116 - 2017-08-08 */
+/*! twobirds-core - v7.3.117 - 2017-08-17 */
 
 /**
  twoBirds V7 core functionality
@@ -187,25 +187,16 @@ tb = (function(){
 
             // selection by dom selector string
             case &#x27;string&#x27;:
-                // HINT: must be a tb element for every selector of a css selector string
-                var selector = pSelector.split(&#x27; &#x27;),
-                    selector = selector.map(function(s){ // jshint ignore:line
-                        if (1 &lt; s.length){
-                            return s+&#x27;:not([data-tb=&quot;&quot;])&#x27;;
-                        }
-                        return s;
-                    }),
-                    selector = selector.join(&#x27; &#x27;); // jshint ignore:line
-
-                tb.dom( selector, pDomNode || document.body )
+                
+                tb.dom( pSelector+&#x27;[data-tb]&#x27;, pDomNode || document.window )
                     .forEach(
-                        function ( pDomNode ) {
-                            if ( !!pDomNode[&#x27;tb&#x27;] ){
+                        function ( pThisNode ) {
+                            if ( !!pThisNode.tb ){
                                 Object
-                                    .keys( pDomNode.tb )
+                                    .keys( pThisNode.tb )
                                     .forEach(
                                         function( pKey ){
-                                            [].push.call( that, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                            [].push.call( that, pThisNode.tb[ pKey ] ); // push dom object to tb selector content
                                         }
                                     );
                             }
@@ -223,7 +214,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( &#x27;[data-tb]&#x27;, pDomNode || document.body )
+                    tb.dom( &#x27;[data-tb]&#x27;, pDomNode || document.window )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -278,7 +269,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case &#x27;function&#x27;:
 
-                tb.dom( &#x27;[data-tb]&#x27;, pDomNode || document.body )
+                tb.dom( &#x27;[data-tb]&#x27;, pDomNode || document.window )
                     .map(
                         function ( pDomNode ) {
                             Object
@@ -1860,7 +1851,9 @@ if (typeof module === &#x27;undefined&#x27; ){
                 nodeList;
 
             if (!pSelector) { // no selector given, or not a string
-                return;
+                var t = tb.dom(document.body); // 1 entry
+                t.shift();
+                return t;
             } else if (!!pSelector[&#x27;nodeType&#x27;] ) { // selector is a dom node
                 if ( [].indexOf.call( that, pSelector ) === -1 ){
                     [].push.call(that, pSelector);
@@ -2337,7 +2330,7 @@ if (typeof module === &#x27;undefined&#x27; ){
 
             that.forEach(
                 function (pDomNode) {
-                    var check = pSelector !== undefined ? tb.dom( pSelector ) : false;
+                    var check = pSelector !== undefined ? tb.dom( pSelector, pDomNode ) : false;
 
                     [].forEach.call(
                         pDomNode.children,

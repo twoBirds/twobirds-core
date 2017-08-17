@@ -73,7 +73,9 @@ if (typeof module === 'undefined' ){
                 nodeList;
 
             if (!pSelector) { // no selector given, or not a string
-                return;
+                var t = tb.dom(document.body); // 1 entry
+                t.shift();
+                return t;
             } else if (!!pSelector['nodeType'] ) { // selector is a dom node
                 if ( [].indexOf.call( that, pSelector ) === -1 ){
                     [].push.call(that, pSelector);
@@ -550,7 +552,7 @@ if (typeof module === 'undefined' ){
 
             that.forEach(
                 function (pDomNode) {
-                    var check = pSelector !== undefined ? tb.dom( pSelector ) : false;
+                    var check = pSelector !== undefined ? tb.dom( pSelector, pDomNode ) : false;
 
                     [].forEach.call(
                         pDomNode.children,

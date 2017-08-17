@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.116 - 2017-08-08 */
+/*! twobirds-core - v7.3.117 - 2017-08-17 */
 
 /**
  twoBirds V7 core functionality
@@ -98,25 +98,16 @@ tb = (function(){
 
             // selection by dom selector string
             case 'string':
-                // HINT: must be a tb element for every selector of a css selector string
-                var selector = pSelector.split(' '),
-                    selector = selector.map(function(s){ // jshint ignore:line
-                        if (1 < s.length){
-                            return s+':not([data-tb=""])';
-                        }
-                        return s;
-                    }),
-                    selector = selector.join(' '); // jshint ignore:line
-
-                tb.dom( selector, pDomNode || document.body )
+                
+                tb.dom( pSelector+'[data-tb]', pDomNode || document.window )
                     .forEach(
-                        function ( pDomNode ) {
-                            if ( !!pDomNode['tb'] ){
+                        function ( pThisNode ) {
+                            if ( !!pThisNode.tb ){
                                 Object
-                                    .keys( pDomNode.tb )
+                                    .keys( pThisNode.tb )
                                     .forEach(
                                         function( pKey ){
-                                            [].push.call( that, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                            [].push.call( that, pThisNode.tb[ pKey ] ); // push dom object to tb selector content
                                         }
                                     );
                             }
@@ -134,7 +125,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( '[data-tb]', pDomNode || document.body )
+                    tb.dom( '[data-tb]', pDomNode || document.window )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -189,7 +180,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case 'function':
 
-                tb.dom( '[data-tb]', pDomNode || document.body )
+                tb.dom( '[data-tb]', pDomNode || document.window )
                     .map(
                         function ( pDomNode ) {
                             Object
@@ -1771,7 +1762,9 @@ if (typeof module === 'undefined' ){
                 nodeList;
 
             if (!pSelector) { // no selector given, or not a string
-                return;
+                var t = tb.dom(document.body); // 1 entry
+                t.shift();
+                return t;
             } else if (!!pSelector['nodeType'] ) { // selector is a dom node
                 if ( [].indexOf.call( that, pSelector ) === -1 ){
                     [].push.call(that, pSelector);
@@ -2248,7 +2241,7 @@ if (typeof module === 'undefined' ){
 
             that.forEach(
                 function (pDomNode) {
-                    var check = pSelector !== undefined ? tb.dom( pSelector ) : false;
+                    var check = pSelector !== undefined ? tb.dom( pSelector, pDomNode ) : false;
 
                     [].forEach.call(
                         pDomNode.children,

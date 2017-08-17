@@ -96,25 +96,16 @@ tb = (function(){
 
             // selection by dom selector string
             case 'string':
-                // HINT: must be a tb element for every selector of a css selector string
-                var selector = pSelector.split(' '),
-                    selector = selector.map(function(s){ // jshint ignore:line
-                        if (1 < s.length){
-                            return s+':not([data-tb=""])';
-                        }
-                        return s;
-                    }),
-                    selector = selector.join(' '); // jshint ignore:line
-
-                tb.dom( selector, pDomNode || document.body )
+                
+                tb.dom( pSelector+'[data-tb]', pDomNode || document.window )
                     .forEach(
-                        function ( pDomNode ) {
-                            if ( !!pDomNode['tb'] ){
+                        function ( pThisNode ) {
+                            if ( !!pThisNode.tb ){
                                 Object
-                                    .keys( pDomNode.tb )
+                                    .keys( pThisNode.tb )
                                     .forEach(
                                         function( pKey ){
-                                            [].push.call( that, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                            [].push.call( that, pThisNode.tb[ pKey ] ); // push dom object to tb selector content
                                         }
                                     );
                             }
@@ -132,7 +123,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( '[data-tb]', pDomNode || document.body )
+                    tb.dom( '[data-tb]', pDomNode || document.window )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -187,7 +178,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case 'function':
 
-                tb.dom( '[data-tb]', pDomNode || document.body )
+                tb.dom( '[data-tb]', pDomNode || document.window )
                     .map(
                         function ( pDomNode ) {
                             Object
