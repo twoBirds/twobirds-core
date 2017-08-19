@@ -27,7 +27,7 @@ Even shorter: twoBirds is like jQuery on application level.
 
 ##### twoBirds works in the FE/browser/app and inside the BE/nodeJS.
 
-tB can completely replace your stack from the data source to the display - including microservices, server side rendering, client side rendering and mobile apps (using electron). 
+tB can completely replace your stack from the data source to the display - including microservices, server side rendering, client side rendering and mobile apps (using electron). PWA programming is supported as well, but doesn't require special tB functionality anyway.
 
 ##### Principles
 
