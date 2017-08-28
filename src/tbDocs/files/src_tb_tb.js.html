@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.118</em>
+            <em>API Docs for: v7.3.119</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.118 - 2017-08-19 */
+/*! twobirds-core - v7.3.119 - 2017-08-28 */
 
 /**
  twoBirds V7 core functionality
@@ -2377,7 +2377,6 @@ if (typeof module === &#x27;undefined&#x27; ){
             );
 
             return that;
-
         }
 
         /**
@@ -2473,7 +2472,6 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             return tb.dom(result);
-
         }
 
         /**
@@ -3272,7 +3270,6 @@ if (typeof module === &#x27;undefined&#x27; ){
             }
 
             return ret;
-
         }
 
         /**
@@ -3411,7 +3408,6 @@ if (typeof module === &#x27;undefined&#x27; ){
         f = function (pSelector, pDomNode) {
 
             return new dom( pSelector, pDomNode );
-
         };
 
         f.innerProto = dom.prototype;
@@ -3649,6 +3645,13 @@ tb.namespace = (function(){
 
             if( that.forceCreation &amp;&amp; typeof that.value !== &#x27;undefined&#x27; ){ // if value is present it is called with set()
                 o[ namespaceArray[0] ] = that.value;
+                if ( typeof that.value === &#x27;function&#x27; 
+                    &amp;&amp; !!that.value.constructor //jshint ignore:line
+                    &amp;&amp; !!that.value.constructor.prototype //jshint ignore:line
+                    &amp;&amp; that.value.constructor.prototype !== Function.prototype //jshint ignore:line
+                ){ //it is a custom class
+                    that.value.prototype.namespace = that.namespace;
+                }
             }
             return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
 

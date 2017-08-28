@@ -1,13 +1,9 @@
 {
   "name": "twobirds-core",
   "description": "twoBirds Web Component Framework",
-<<<<<<< Updated upstream
   "keywords": [ "javacript", "library", "framework", "native", "DOM manipulation", "lightweight", "standalone", "SPA", "PWA", "ES5", "ES2015", 
     "microservice", "microservices", "client", "server", "node", "nodejs", "application", "middleware", "API", "adapter", "core" ],
-=======
-  "keywords": [ "javacript", "library", "framework", "core", "native", "DOM manipulation", "lightweight", "standalone", "SPA", "ES5", "ES6", "ES2015" ],
->>>>>>> Stashed changes
-  "version": "7.3.118",
+  "version": "7.3.119",
   "license": "LGPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",
