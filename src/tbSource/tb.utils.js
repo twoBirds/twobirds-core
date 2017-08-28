@@ -214,6 +214,13 @@ tb.namespace = (function(){
 
             if( that.forceCreation && typeof that.value !== 'undefined' ){ // if value is present it is called with set()
                 o[ namespaceArray[0] ] = that.value;
+                if ( typeof that.value === 'function' 
+                    && !!that.value.constructor //jshint ignore:line
+                    && !!that.value.constructor.prototype //jshint ignore:line
+                    && that.value.constructor.prototype !== Function.prototype //jshint ignore:line
+                ){ //it is a custom class
+                    that.value.prototype.namespace = that.namespace;
+                }
             }
             return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
 

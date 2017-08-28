@@ -599,7 +599,6 @@ if (typeof module === 'undefined' ){
             );
 
             return that;
-
         }
 
         /**
@@ -695,7 +694,6 @@ if (typeof module === 'undefined' ){
             }
 
             return tb.dom(result);
-
         }
 
         /**
@@ -1494,7 +1492,6 @@ if (typeof module === 'undefined' ){
             }
 
             return ret;
-
         }
 
         /**
@@ -1633,7 +1630,6 @@ if (typeof module === 'undefined' ){
         f = function (pSelector, pDomNode) {
 
             return new dom( pSelector, pDomNode );
-
         };
 
         f.innerProto = dom.prototype;
