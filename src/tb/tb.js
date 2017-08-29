@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.119 - 2017-08-28 */
+/*! twobirds-core - v7.3.119 - 2017-08-29 */
 
 /**
  twoBirds V7 core functionality
@@ -3556,13 +3556,6 @@ tb.namespace = (function(){
 
             if( that.forceCreation && typeof that.value !== 'undefined' ){ // if value is present it is called with set()
                 o[ namespaceArray[0] ] = that.value;
-                if ( typeof that.value === 'function' 
-                    && !!that.value.constructor //jshint ignore:line
-                    && !!that.value.constructor.prototype //jshint ignore:line
-                    && that.value.constructor.prototype !== Function.prototype //jshint ignore:line
-                ){ //it is a custom class
-                    that.value.prototype.namespace = that.namespace;
-                }
             }
             return o.hasOwnProperty( namespaceArray[0] ) ? o[ namespaceArray[0] ] : undefined;
 
@@ -3590,6 +3583,13 @@ tb.namespace = (function(){
         var that = this;
 
         that.value = pValue;
+
+        if ( typeof that.value === 'function' 
+            && that.value.constructor.prototype !== Function.prototype //jshint ignore:line
+        ){ //it is a custom class
+            that.value.prototype.namespace = that.namespace;
+        }
+
         that.forceCreation = true;
         return that._walk( !that.target ? window : that.target, that.namespaceArray );
     }
