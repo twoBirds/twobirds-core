@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.121</em>
+            <em>API Docs for: v7.3.122</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1899,7 +1899,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2642"><code>src&#x2F;tb&#x2F;tb.js:2642</code></a>
+        <a href="../files/src_tb_tb.js.html#l2672"><code>src&#x2F;tb&#x2F;tb.js:2672</code></a>
         </p>
 
 
@@ -1965,11 +1965,44 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
 <li>tb.dom() result set, may be empty</li>
 </ul>
 <p>creates a DOM event handler for each element in tb.dom() result set (to be called only once)</p>
+<ul>
+<li>after the first call ALL event handlers that were attached to the dom elements are deleted automatically.</li>
+<li>to remove all these onceHandlers manually, the paramter handler afterwards has a onceHandler property.</li>
+</ul>
 
             </div>
         </div>
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>// create a handler
+var f=function(){ 
+    console.log('a'); 
+}
+
+// attach handler to multiple divs
+tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted
+    .one(
+        'click',
+        f
+    );
+
+// use this if you want to remove certain onceHandlers manually ( not ALL of them which is next )
+console.log( f.onceHandler );   // the onceHandler function created
+
+// remove all handlers created by .one()
+tb.dom( '.myBotton' )   // a click on a certain button will remove ALL onceHandlers
+    .one(
+        'click',
+        f.remove
+    );
+</code></pre>
+
+            </div>
+        </div>
 </div>
 <div id="method_parent" class="method item">
     <h3 class="name"><code>parent</code></h3>
@@ -1996,7 +2029,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2702"><code>src&#x2F;tb&#x2F;tb.js:2702</code></a>
+        <a href="../files/src_tb_tb.js.html#l2760"><code>src&#x2F;tb&#x2F;tb.js:2760</code></a>
         </p>
 
 
@@ -2067,7 +2100,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2664"><code>src&#x2F;tb&#x2F;tb.js:2664</code></a>
+        <a href="../files/src_tb_tb.js.html#l2722"><code>src&#x2F;tb&#x2F;tb.js:2722</code></a>
         </p>
 
 
@@ -2318,7 +2351,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2732"><code>src&#x2F;tb&#x2F;tb.js:2732</code></a>
+        <a href="../files/src_tb_tb.js.html#l2790"><code>src&#x2F;tb&#x2F;tb.js:2790</code></a>
         </p>
 
 
@@ -2390,7 +2423,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2753"><code>src&#x2F;tb&#x2F;tb.js:2753</code></a>
+        <a href="../files/src_tb_tb.js.html#l2811"><code>src&#x2F;tb&#x2F;tb.js:2811</code></a>
         </p>
 
 
@@ -2461,7 +2494,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2784"><code>src&#x2F;tb&#x2F;tb.js:2784</code></a>
+        <a href="../files/src_tb_tb.js.html#l2842"><code>src&#x2F;tb&#x2F;tb.js:2842</code></a>
         </p>
 
 
@@ -2616,7 +2649,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2838"><code>src&#x2F;tb&#x2F;tb.js:2838</code></a>
+        <a href="../files/src_tb_tb.js.html#l2896"><code>src&#x2F;tb&#x2F;tb.js:2896</code></a>
         </p>
 
 
@@ -2797,7 +2830,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2858"><code>src&#x2F;tb&#x2F;tb.js:2858</code></a>
+        <a href="../files/src_tb_tb.js.html#l2916"><code>src&#x2F;tb&#x2F;tb.js:2916</code></a>
         </p>
 
 
@@ -2849,7 +2882,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2870"><code>src&#x2F;tb&#x2F;tb.js:2870</code></a>
+        <a href="../files/src_tb_tb.js.html#l2928"><code>src&#x2F;tb&#x2F;tb.js:2928</code></a>
         </p>
 
 
@@ -2929,7 +2962,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2896"><code>src&#x2F;tb&#x2F;tb.js:2896</code></a>
+        <a href="../files/src_tb_tb.js.html#l2954"><code>src&#x2F;tb&#x2F;tb.js:2954</code></a>
         </p>
 
 
@@ -3036,7 +3069,7 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2947"><code>src&#x2F;tb&#x2F;tb.js:2947</code></a>
+        <a href="../files/src_tb_tb.js.html#l3005"><code>src&#x2F;tb&#x2F;tb.js:3005</code></a>
         </p>
 
 
@@ -3135,7 +3168,7 @@ and we would like to hear about it... )</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l2974"><code>src&#x2F;tb&#x2F;tb.js:2974</code></a>
+        <a href="../files/src_tb_tb.js.html#l3032"><code>src&#x2F;tb&#x2F;tb.js:3032</code></a>
         </p>
 
 
@@ -3204,7 +3237,7 @@ if no pValue given, it is a GET and the method will return the value</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_tb_tb.js.html#l3186"><code>src&#x2F;tb&#x2F;tb.js:3186</code></a>
+        <a href="../files/src_tb_tb.js.html#l3244"><code>src&#x2F;tb&#x2F;tb.js:3244</code></a>
         </p>
 
 

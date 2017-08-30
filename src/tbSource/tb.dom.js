@@ -925,21 +925,51 @@ if (typeof module === 'undefined' ){
                 onceHandler,
                 capture = typeof pCapture === 'boolean' ? pCapture : false;
 
+            // if to be called only once
+            if ( !!pHandler.once ){
+                onceHandler = (function(pHandler, capture) {
+                    return function myOnceHandler(ev){
+                        
+                        onceHandler   // remove from ALL elements the once handler is attached to
+                            .that
+                            .forEach( function( pDomElement ){
+                                _removeEvent( pDomElement, ev.type, onceHandler, capture );
+                            });
+
+                        pHandler.apply( ev, arguments );
+                    };
+                })(pHandler, pCapture);
+
+                // needed to remove handlers from ALL dom elements
+                onceHandler.that = that;
+
+                // needed for .off()
+                pHandler.onceHandler = onceHandler;
+                pHandler.remove = function removeOnceHandlers(){
+
+                    // remove handlers
+                    that.forEach(
+                        function( pDomNode ){
+                            if ( !!pDomNode.nodeType ){
+                                eventNames.forEach(
+                                    function( pThisEventName ){
+                                        _removeEvent( pDomNode, pThisEventName, onceHandler, capture );
+                                    }
+                                );
+                            }
+                        }
+                    );
+
+                };
+
+            }
+
+            // attach handler
             that.forEach(
                 function( pDomNode ){
                     if ( !!pDomNode.nodeType ){
                         eventNames.forEach(
                             function( pThisEventName ){
-
-                                if ( !!pHandler['once'] ){
-                                    onceHandler = (function(pDomNode, pThisEventName, pHandler, capture) {
-                                        return function(){
-                                            _removeEvent( pDomNode, pThisEventName, onceHandler, capture );
-                                            pHandler.apply( pDomNode, arguments );
-                                        };
-                                    })(pDomNode, pThisEventName, pHandler);
-                                }
-
                                 _addEvent( pDomNode, pThisEventName, onceHandler || pHandler, capture );
                             }
                         );
@@ -951,17 +981,45 @@ if (typeof module === 'undefined' ){
         }
 
         /**
-         @method one
-         @chainable
+        @method one
+        @chainable
 
-         @param {string} pEventName(s) - name(s) of the event separated by ' '
-         @param {function} pHandler - callback far event
-         @param {boolean} pCapture - indicates running in capture phase, that is top down
+        @param {string} pEventName(s) - name(s) of the event separated by ' '
+        @param {function} pHandler - callback far event
+        @param {boolean} pCapture - indicates running in capture phase, that is top down
 
-         @return {object} - tb.dom() result set, may be empty
+        @return {object} - tb.dom() result set, may be empty
 
-         creates a DOM event handler for each element in tb.dom() result set (to be called only once)
-         */
+        creates a DOM event handler for each element in tb.dom() result set (to be called only once)
+
+        - after the first call ALL event handlers that were attached to the dom elements are deleted automatically.
+        - to remove all these onceHandlers manually, the paramter handler afterwards has a onceHandler property.
+
+        @example
+
+            // create a handler
+            var f=function(){ 
+                console.log('a'); 
+            }
+
+            // attach handler to multiple divs
+            tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted
+                .one(
+                    'click',
+                    f
+                );
+
+            // use this if you want to remove certain onceHandlers manually ( not ALL of them which is next )
+            console.log( f.onceHandler );   // the onceHandler function created
+
+            // remove all handlers created by .one()
+            tb.dom( '.myBotton' )   // a click on a certain button will remove ALL onceHandlers
+                .one(
+                    'click',
+                    f.remove
+                );
+
+        */
         function one( pEventName, pHandler, pCapture ){
             var that = this;
 
@@ -973,15 +1031,15 @@ if (typeof module === 'undefined' ){
         }
 
         /**
-         @method parents
-         @chainable
+        @method parents
+        @chainable
 
-         @param  pSelector - any valid tb.dom() constructor parameter
+        @param  pSelector - any valid tb.dom() constructor parameter
 
-         @return {object} - tb.dom() result set, may be empty
+        @return {object} - tb.dom() result set, may be empty
 
-         return all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
-         */
+        return all parent nodes of tb.dom() result set, that match nodes in tb.dom( pSelector ) result set
+        */
         function parents(pSelector) {
 
             var that = this,
