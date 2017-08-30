@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.122</em>
+            <em>API Docs for: v7.3.123</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -1886,14 +1886,13 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
         </span>
 
 
 
 
 
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
@@ -1960,14 +1959,15 @@ if pKey is an object or pKey(string) and pValue(string) are given, it is a SET. 
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>:
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>:
                     <ul>
-<li>tb.dom() result set, may be empty</li>
+<li>the onceHandler function</li>
 </ul>
 <p>creates a DOM event handler for each element in tb.dom() result set (to be called only once)</p>
 <ul>
 <li>after the first call ALL event handlers that were attached to the dom elements are deleted automatically.</li>
-<li>to remove all these onceHandlers manually, the paramter handler afterwards has a onceHandler property.</li>
+<li>to remove all these onceHandlers manually, use the returned onceHandler and its .that property.</li>
+<li>use</li>
 </ul>
 
             </div>
@@ -1984,14 +1984,16 @@ var f=function(){
 }
 
 // attach handler to multiple divs
-tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted
+var oh = tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted
     .one(
         'click',
         f
     );
 
 // use this if you want to remove certain onceHandlers manually ( not ALL of them which is next )
-console.log( f.onceHandler );   // the onceHandler function created
+console.log( oh );   // the onceHandler function created
+console.log( oh.that );   // the original tb.dom selection, used to delete some oh handlers manually if needed
+console.log( oh.remove );  // the function that deletes ALL once handlers
 
 // remove all handlers created by .one()
 tb.dom( '.myBotton' )   // a click on a certain button will remove ALL onceHandlers

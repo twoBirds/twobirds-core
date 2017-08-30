@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.3.122",
+        "version": "v7.3.123",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -1377,7 +1377,6 @@
             "line": 2672,
             "itemtype": "method",
             "name": "one",
-            "chainable": 1,
             "params": [
                 {
                     "name": "pEventName(s)",
@@ -1396,11 +1395,11 @@
                 }
             ],
             "return": {
-                "description": "- tb.dom() result set, may be empty\n\ncreates a DOM event handler for each element in tb.dom() result set (to be called only once)\n\n- after the first call ALL event handlers that were attached to the dom elements are deleted automatically.\n- to remove all these onceHandlers manually, the paramter handler afterwards has a onceHandler property.",
-                "type": "Object"
+                "description": "- the onceHandler function\n\ncreates a DOM event handler for each element in tb.dom() result set (to be called only once)\n\n- after the first call ALL event handlers that were attached to the dom elements are deleted automatically.\n- to remove all these onceHandlers manually, use the returned onceHandler and its .that property.\n- use",
+                "type": "Function"
             },
             "example": [
-                "\n\n    // create a handler\n    var f=function(){ \n        console.log('a'); \n    }\n\n    // attach handler to multiple divs\n    tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted\n        .one(\n            'click',\n            f\n        );\n\n    // use this if you want to remove certain onceHandlers manually ( not ALL of them which is next )\n    console.log( f.onceHandler );   // the onceHandler function created\n\n    // remove all handlers created by .one()\n    tb.dom( '.myBotton' )   // a click on a certain button will remove ALL onceHandlers\n        .one(\n            'click',\n            f.remove\n        );\n"
+                "\n\n    // create a handler\n    var f=function(){ \n        console.log('a'); \n    }\n\n    // attach handler to multiple divs\n    var oh = tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted\n        .one(\n            'click',\n            f\n        );\n\n    // use this if you want to remove certain onceHandlers manually ( not ALL of them which is next )\n    console.log( oh );   // the onceHandler function created\n    console.log( oh.that );   // the original tb.dom selection, used to delete some oh handlers manually if needed\n    console.log( oh.remove );  // the function that deletes ALL once handlers\n\n    // remove all handlers created by .one()\n    tb.dom( '.myBotton' )   // a click on a certain button will remove ALL onceHandlers\n        .one(\n            'click',\n            f.remove\n        );\n"
             ],
             "class": "tb.dom"
         },

@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.122 - 2017-08-30 */
+/*! twobirds-core - v7.3.123 - 2017-08-30 */
 
 /**
  twoBirds V7 core functionality
@@ -2616,6 +2616,7 @@ if (typeof module === 'undefined' ){
 
             // if to be called only once
             if ( !!pHandler.once ){
+
                 onceHandler = (function(pHandler, capture) {
                     return function myOnceHandler(ev){
                         
@@ -2633,8 +2634,7 @@ if (typeof module === 'undefined' ){
                 onceHandler.that = that;
 
                 // needed for .off()
-                pHandler.onceHandler = onceHandler;
-                pHandler.remove = function removeOnceHandlers(){
+                onceHandler.remove = function removeOnceHandlers(){
 
                     // remove handlers
                     that.forEach(
@@ -2666,23 +2666,23 @@ if (typeof module === 'undefined' ){
                 }
             );
 
-            return that;
+            return !!onceHandler ? onceHandler : that;
         }
 
         /**
         @method one
-        @chainable
-
+        
         @param {string} pEventName(s) - name(s) of the event separated by ' '
         @param {function} pHandler - callback far event
         @param {boolean} pCapture - indicates running in capture phase, that is top down
 
-        @return {object} - tb.dom() result set, may be empty
+        @return {function} - the onceHandler function
 
         creates a DOM event handler for each element in tb.dom() result set (to be called only once)
 
         - after the first call ALL event handlers that were attached to the dom elements are deleted automatically.
-        - to remove all these onceHandlers manually, the paramter handler afterwards has a onceHandler property.
+        - to remove all these onceHandlers manually, use the returned onceHandler and its .that property.
+        - use 
 
         @example
 
@@ -2692,14 +2692,16 @@ if (typeof module === 'undefined' ){
             }
 
             // attach handler to multiple divs
-            tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted
+            var oh = tb.dom( 'div' ) // each of the divs will respond with handlers, but afterwards all attached handlers are deleted
                 .one(
                     'click',
                     f
                 );
 
             // use this if you want to remove certain onceHandlers manually ( not ALL of them which is next )
-            console.log( f.onceHandler );   // the onceHandler function created
+            console.log( oh );   // the onceHandler function created
+            console.log( oh.that );   // the original tb.dom selection, used to delete some oh handlers manually if needed
+            console.log( oh.remove );  // the function that deletes ALL once handlers
 
             // remove all handlers created by .one()
             tb.dom( '.myBotton' )   // a click on a certain button will remove ALL onceHandlers
@@ -2714,9 +2716,7 @@ if (typeof module === 'undefined' ){
 
             pHandler.once = true;
 
-            that.on( pEventName, pHandler, pCapture );
-
-            return that;
+            return that.on( pEventName, pHandler, pCapture );
         }
 
         /**
