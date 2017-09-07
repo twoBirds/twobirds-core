@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.123 - 2017-08-30 */
+/*! twobirds-core - v7.3.124 - 2017-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -3080,7 +3080,8 @@ if (typeof module === 'undefined' ){
                             }
                         );
 
-                        return ret;
+                        // if multiselect return array if single return value or empty string for not selected
+                        return multiSelect ? ret : !!ret[0] ? ret[0] : '';
 
                     } else { // setter
 

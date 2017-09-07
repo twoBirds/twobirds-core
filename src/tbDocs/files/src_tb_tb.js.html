@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.123</em>
+            <em>API Docs for: v7.3.124</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.123 - 2017-08-30 */
+/*! twobirds-core - v7.3.124 - 2017-09-07 */
 
 /**
  twoBirds V7 core functionality
@@ -3169,7 +3169,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                             }
                         );
 
-                        return ret;
+                        // if multiselect return array if single return value or empty string for not selected
+                        return multiSelect ? ret : !!ret[0] ? ret[0] : &#x27;&#x27;;
 
                     } else { // setter
 

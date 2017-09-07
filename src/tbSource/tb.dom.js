@@ -1391,7 +1391,8 @@ if (typeof module === 'undefined' ){
                             }
                         );
 
-                        return ret;
+                        // if multiselect return array if single return value or empty string for not selected
+                        return multiSelect ? ret : !!ret[0] ? ret[0] : '';
 
                     } else { // setter
 
