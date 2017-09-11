@@ -1664,8 +1664,6 @@ if (typeof module === 'undefined' ){
 
                                                 observable( values );
 
-                                                tb.dom( pField ).trigger('change');
-
                                                 return ret;
                                             }
                                         }

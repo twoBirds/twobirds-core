@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.124 - 2017-09-07 */
+/*! twobirds-core - v7.3.124 - 2017-09-11 */
 
 /**
  twoBirds V7 core functionality
@@ -3353,7 +3353,7 @@ if (typeof module === 'undefined' ){
 
                                                 observable( values );
 
-                                                tb.dom( pField ).trigger('change');
+                                                //tb.dom( pField ).trigger('change');
 
                                                 return ret;
                                             }
