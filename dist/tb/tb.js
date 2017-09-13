@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.124 - 2017-09-11 */
+/*! twobirds-core - v7.3.126 - 2017-09-13 */
 
 /**
  twoBirds V7 core functionality
@@ -3353,8 +3353,6 @@ if (typeof module === 'undefined' ){
 
                                                 observable( values );
 
-                                                //tb.dom( pField ).trigger('change');
-
                                                 return ret;
                                             }
                                         }
@@ -3829,11 +3827,10 @@ tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
     function walk(pKey) {
-        if ( cp[pKey] !== null
-            && !!cp[pKey]['constructor']
-            && (cp[pKey]).constructor === Object
-        ){
+        if ( cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Object ){
             pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
+        } else if ( cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Array ){
+            pObj[pKey] = Array.from(cp[pKey]);
         } else {
             pObj[pKey] = cp[pKey];
         }

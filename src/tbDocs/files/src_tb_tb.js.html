@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.124</em>
+            <em>API Docs for: v7.3.126</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.124 - 2017-09-11 */
+/*! twobirds-core - v7.3.126 - 2017-09-13 */
 
 /**
  twoBirds V7 core functionality
@@ -3442,8 +3442,6 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                                                 observable( values );
 
-                                                //tb.dom( pField ).trigger(&#x27;change&#x27;);
-
                                                 return ret;
                                             }
                                         }
@@ -3918,11 +3916,10 @@ tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
     function walk(pKey) {
-        if ( cp[pKey] !== null
-            &amp;&amp; !!cp[pKey][&#x27;constructor&#x27;]
-            &amp;&amp; (cp[pKey]).constructor === Object
-        ){
+        if ( cp[pKey] !== null &amp;&amp; !!cp[pKey][&#x27;constructor&#x27;] &amp;&amp; (cp[pKey]).constructor === Object ){
             pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
+        } else if ( cp[pKey] !== null &amp;&amp; !!cp[pKey][&#x27;constructor&#x27;] &amp;&amp; (cp[pKey]).constructor === Array ){
+            pObj[pKey] = Array.from(cp[pKey]);
         } else {
             pObj[pKey] = cp[pKey];
         }

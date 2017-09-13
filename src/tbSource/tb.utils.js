@@ -428,11 +428,10 @@ tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
     function walk(pKey) {
-        if ( cp[pKey] !== null
-            && !!cp[pKey]['constructor']
-            && (cp[pKey]).constructor === Object
-        ){
+        if ( cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Object ){
             pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
+        } else if ( cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Array ){
+            pObj[pKey] = Array.from(cp[pKey]);
         } else {
             pObj[pKey] = cp[pKey];
         }
