@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.3.126",
+        "version": "v7.3.127",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -185,7 +185,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3968,
+            "line": 3973,
             "description": "- Promise/A+ compliant promise functionality",
             "memberof": "tb",
             "static": 1,
@@ -214,7 +214,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4488,
+            "line": 4493,
             "memberof": "tb",
             "static": 1,
             "is_constructor": 1,
@@ -242,7 +242,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 5184,
+            "line": 5189,
             "is_constructor": 1,
             "params": [
                 {
@@ -1655,7 +1655,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3550,
+            "line": 3555,
             "memberof": "tb",
             "itemtype": "method",
             "name": "tb.namespace",
@@ -1687,7 +1687,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3656,
+            "line": 3661,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -1707,7 +1707,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3711,
+            "line": 3716,
             "memberof": "tb",
             "static": 1,
             "itemtype": "property",
@@ -1717,7 +1717,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3720,
+            "line": 3725,
             "itemtype": "property",
             "name": "tb.status.loadCount",
             "type": "Function\n\nobservable containing the number of ( script load operations + xHr requests ) currently pending",
@@ -1725,7 +1725,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3731,
+            "line": 3736,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -1744,7 +1744,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3795,
+            "line": 3800,
             "description": "returns a unique id",
             "memberof": "tb",
             "static": 1,
@@ -1758,7 +1758,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3811,
+            "line": 3816,
             "description": "- takes any number of objects as parameters\n- merges content into the first parameter object\n- always a deep copy",
             "memberof": "tb",
             "static": 1,
@@ -1785,7 +1785,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3856,
+            "line": 3861,
             "description": "- will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object\n - if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned",
             "memberof": "tb",
             "static": 1,
@@ -1819,7 +1819,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4034,
+            "line": 4039,
             "itemtype": "method",
             "name": "then",
             "chainable": 1,
@@ -1841,7 +1841,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4054,
+            "line": 4059,
             "itemtype": "method",
             "name": "catch",
             "chainable": 1,
@@ -1863,7 +1863,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4074,
+            "line": 4079,
             "itemtype": "method",
             "name": "finally",
             "chainable": 1,
@@ -1885,7 +1885,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4099,
+            "line": 4104,
             "itemtype": "method",
             "name": "tb.Promise.resolve",
             "chainable": 1,
@@ -1908,7 +1908,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4123,
+            "line": 4128,
             "itemtype": "method",
             "name": "tb.Promise.reject",
             "chainable": 1,
@@ -1931,7 +1931,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4147,
+            "line": 4152,
             "itemtype": "method",
             "name": "tb.Promise.all",
             "chainable": 1,
@@ -1954,7 +1954,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4218,
+            "line": 4223,
             "itemtype": "method",
             "name": "tb.Promise.race",
             "chainable": 1,
@@ -1977,13 +1977,13 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4462,
+            "line": 4467,
             "description": "execute promise function",
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4547,
+            "line": 4552,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2012,7 +2012,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4798,
+            "line": 4803,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2092,44 +2092,44 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4823,
+            "line": 4828,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4871,
+            "line": 4876,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4888,
+            "line": 4893,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4910,
+            "line": 4915,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4940,
+            "line": 4945,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4977,
+            "line": 4982,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5005,
+            "line": 5010,
             "name": "",
             "itemtype": "method",
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5164,
+            "line": 5169,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -2147,7 +2147,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5331,
+            "line": 5336,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -2162,7 +2162,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5363,
+            "line": 5368,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -2177,7 +2177,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5396,
+            "line": 5401,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -2192,7 +2192,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5428,
+            "line": 5433,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -2233,55 +2233,55 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3550"
+            "line": " src/tb/tb.js:3555"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3656"
+            "line": " src/tb/tb.js:3661"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3711"
+            "line": " src/tb/tb.js:3716"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3731"
+            "line": " src/tb/tb.js:3736"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3795"
+            "line": " src/tb/tb.js:3800"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3811"
+            "line": " src/tb/tb.js:3816"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3856"
+            "line": " src/tb/tb.js:3861"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3968"
+            "line": " src/tb/tb.js:3973"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4488"
+            "line": " src/tb/tb.js:4493"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4547"
+            "line": " src/tb/tb.js:4552"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4798"
+            "line": " src/tb/tb.js:4803"
         },
         {
             "message": "unknown tag: name",
-            "line": " src/tb/tb.js:5005"
+            "line": " src/tb/tb.js:5010"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:5005"
+            "line": " src/tb/tb.js:5010"
         },
         {
             "message": "Missing item type\ntwoBirds V7 core functionality",
@@ -2293,31 +2293,31 @@
         },
         {
             "message": "Missing item type\nexecute promise function",
-            "line": " src/tb/tb.js:4462"
+            "line": " src/tb/tb.js:4467"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4823"
+            "line": " src/tb/tb.js:4828"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4871"
+            "line": " src/tb/tb.js:4876"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4888"
+            "line": " src/tb/tb.js:4893"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4910"
+            "line": " src/tb/tb.js:4915"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4940"
+            "line": " src/tb/tb.js:4945"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:4977"
+            "line": " src/tb/tb.js:4982"
         }
     ]
 }

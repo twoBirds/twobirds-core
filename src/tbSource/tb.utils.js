@@ -131,17 +131,22 @@ tb.observable = function( pStartValue ){
             }
         );
 
+        return observableFunction; // chaining
     };
 
     // enable/disable notifications
     observableFunction.enableNotify = function( pEnableNotify ){
         enableNotify = pEnableNotify === false ? false : true;
+
+        return observableFunction; // chaining
     };
 
     // function used to add a callbacks
     observableFunction.observe = function( pFunction, pOnce ){
         pFunction.once = pOnce || false;
         observableFunction.notifiers.push( pFunction );
+
+        return observableFunction; // chaining
     };
 
     return observableFunction;
