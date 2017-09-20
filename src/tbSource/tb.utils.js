@@ -53,6 +53,7 @@ tb.nop = function(){};
      o();            // => { a: 5 }
 
      // each of these will trigger the callback since the data changed
+     // also they return the observable itself for chaining purposes, NOT THE VALUE
      o( 'a', 6 );               // => { a: 6 }
      o( { c: 42 } );            // => { c: 42 }
      o( 'b', { c: 42 } );       // => { a: 6, b: { c: 42 } }
@@ -86,7 +87,7 @@ tb.observable = function( pStartValue ){
                             observedValue[p1] = p2;
                         }
                         notify();
-                    } else {
+                    } else {    // it is a getter
                         return tb.namespace( p1, observedValue ).get();
                     }
                 } else if ( typeof p1 === 'object' && typeof p2 === 'undefined' ){
@@ -95,18 +96,20 @@ tb.observable = function( pStartValue ){
                 } else {
                     console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!');
                 }
-                return observedValue;
             } else {
                 if ( typeof p1 !== 'undefined' ){
                     // value has changed
                     observedValue = p1;
                     notify();
+                } else {    // it is a getter
+                    return observedValue;
                 }
-                return observedValue;
             }
         }
 
-        return observedValue;
+        // it was a setter functionality, so return the observable itself for chaining
+        // getters return the value directly (see above)
+        return observableFunction;
     };
 
     observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.131</em>
+            <em>API Docs for: v7.3.132</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.131 - 2017-09-20 */
+/*! twobirds-core - v7.3.132 - 2017-09-20 */
 
 /**
  twoBirds V7 core functionality
@@ -3545,6 +3545,7 @@ tb.nop = function(){};
      o();            // =&gt; { a: 5 }
 
      // each of these will trigger the callback since the data changed
+     // also they return the observable itself for chaining purposes, NOT THE VALUE
      o( &#x27;a&#x27;, 6 );               // =&gt; { a: 6 }
      o( { c: 42 } );            // =&gt; { c: 42 }
      o( &#x27;b&#x27;, { c: 42 } );       // =&gt; { a: 6, b: { c: 42 } }
@@ -3578,7 +3579,7 @@ tb.observable = function( pStartValue ){
                             observedValue[p1] = p2;
                         }
                         notify();
-                    } else {
+                    } else {    // it is a getter
                         return tb.namespace( p1, observedValue ).get();
                     }
                 } else if ( typeof p1 === &#x27;object&#x27; &amp;&amp; typeof p2 === &#x27;undefined&#x27; ){
@@ -3587,18 +3588,20 @@ tb.observable = function( pStartValue ){
                 } else {
                     console.warn(&#x27;tb.observable() set value: parameter 1 should be a string or object if observed data is an object!&#x27;);
                 }
-                return observedValue;
             } else {
                 if ( typeof p1 !== &#x27;undefined&#x27; ){
                     // value has changed
                     observedValue = p1;
                     notify();
+                } else {    // it is a getter
+                    return observedValue;
                 }
-                return observedValue;
             }
         }
 
-        return observedValue;
+        // it was a setter functionality, so return the observable itself for chaining
+        // getters return the value directly (see above)
+        return observableFunction;
     };
 
     observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
