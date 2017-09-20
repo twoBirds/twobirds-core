@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.136</em>
+            <em>API Docs for: v7.3.137</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.136 - 2017-09-20 */
+/*! twobirds-core - v7.3.137 - 2017-09-20 */
 
 /**
  twoBirds V7 core functionality
@@ -3565,7 +3565,7 @@ tb.observable = function( pStartValue ){
                 return;
             }
             observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-            observableFunction.notify();
+            return observableFunction.notify();
         }
 
         if ( typeof p1 !== &#x27;undefined&#x27; ){

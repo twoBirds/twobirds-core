@@ -73,7 +73,7 @@ tb.observable = function( pStartValue ){
                 return;
             }
             observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-            observableFunction.notify();
+            return observableFunction.notify();
         }
 
         if ( typeof p1 !== 'undefined' ){

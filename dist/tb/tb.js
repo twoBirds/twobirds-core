@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.136 - 2017-09-20 */
+/*! twobirds-core - v7.3.137 - 2017-09-20 */
 
 /**
  twoBirds V7 core functionality
@@ -3476,7 +3476,7 @@ tb.observable = function( pStartValue ){
                 return;
             }
             observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-            observableFunction.notify();
+            return observableFunction.notify();
         }
 
         if ( typeof p1 !== 'undefined' ){
