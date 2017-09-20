@@ -576,26 +576,32 @@ if (typeof module === 'undefined' ){
 
          @return {object} - tb.dom() result set, may be empty
 
-         removes empty text nodes & comments
+         - normalizes text nodes
+         - removes comment nodes
          */
         function clean(){
 
             var that = this;
 
-            function clean( pNode ){
-                for(var n = 0; n < pNode.childNodes.length; n ++){
-                    var child = pNode.childNodes[n];
-                    if ( child.nodeType === 8 || (child.nodeType === 3 && !/\S/.test(child.value) ) ){
-                        pNode.removeChild(child);
-                        n --;
-                    } else if( child.nodeType === 1 ){
-                        clean(child);
+            that.forEach(
+                function( pElement ){
+                    var treeWalker = document.createTreeWalker(
+                            pElement,
+                            128     // comment nodes
+                        );
+
+                    pElement.normalize();
+
+                    while(treeWalker.nextNode()){
+                        console.log( treeWalker.currentNode.nodeName, treeWalker.currentNode.nodeType, /[^\s]/.test(treeWalker.currentNode.textContent) );
+
+                        // we need to IIFE so the node pointer is copied, 
+                        // otherwise it will only remove the last comment node of that while loop
+                        setTimeout((function(pNode){ return function(){
+                            pNode.remove();
+                        }; })( treeWalker.currentNode ), 0);
                     }
                 }
-            }
-
-            that.forEach(
-                clean
             );
 
             return that;
