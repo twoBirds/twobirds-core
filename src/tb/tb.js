@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.129 - 2017-09-20 */
+/*! twobirds-core - v7.3.131 - 2017-09-20 */
 
 /**
  twoBirds V7 core functionality
@@ -2282,8 +2282,6 @@ if (typeof module === 'undefined' ){
                     pElement.normalize();
 
                     while(treeWalker.nextNode()){
-                        console.log( treeWalker.currentNode.nodeName, treeWalker.currentNode.nodeType, /[^\s]/.test(treeWalker.currentNode.textContent) );
-
                         // we need to IIFE so the node pointer is copied, 
                         // otherwise it will only remove the last comment node of that while loop
                         setTimeout((function(pNode){ return function(){
