@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.135 - 2017-09-20 */
+/*! twobirds-core - v7.3.136 - 2017-09-20 */
 
 /**
  twoBirds V7 core functionality
@@ -3508,6 +3508,8 @@ tb.observable = function( pStartValue ){
                     return observedValue;
                 }
             }
+        } else {
+            return observedValue;
         }
 
         // it was a setter functionality, so return the observable itself for chaining

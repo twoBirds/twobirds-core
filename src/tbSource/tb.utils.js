@@ -105,6 +105,8 @@ tb.observable = function( pStartValue ){
                     return observedValue;
                 }
             }
+        } else {
+            return observedValue;
         }
 
         // it was a setter functionality, so return the observable itself for chaining
