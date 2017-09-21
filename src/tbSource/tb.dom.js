@@ -518,7 +518,7 @@ if (typeof module === 'undefined' ){
                 }
 
                 // if no value is given and there are elements, return attribute value of first in list
-                if (!pValue && that.length > 0) {
+                if ( pValue === undefined && that.length > 0 ) {
                     return that[0].getAttribute(pKey);
                 }
 

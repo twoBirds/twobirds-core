@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.137</em>
+            <em>API Docs for: v7.3.138</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.137 - 2017-09-20 */
+/*! twobirds-core - v7.3.138 - 2017-09-21 */
 
 /**
  twoBirds V7 core functionality
@@ -2296,7 +2296,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                 }
 
                 // if no value is given and there are elements, return attribute value of first in list
-                if (!pValue &amp;&amp; that.length &gt; 0) {
+                if ( pValue === undefined &amp;&amp; that.length &gt; 0 ) {
                     return that[0].getAttribute(pKey);
                 }
 
