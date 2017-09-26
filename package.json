@@ -3,7 +3,7 @@
   "description": "twoBirds Web Component Framework",
   "keywords": [ "javacript", "library", "framework", "native", "DOM manipulation", "lightweight", "standalone", "SPA", "PWA", "ES5", "ES2015", 
     "microservice", "microservices", "client", "server", "node", "nodejs", "application", "middleware", "API", "adapter", "core" ],
-  "version": "7.3.138",
+  "version": "7.3.139",
   "license": "LGPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",

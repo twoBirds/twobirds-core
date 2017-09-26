@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.138 - 2017-09-21 */
+/*! twobirds-core - v7.3.139 - 2017-09-26 */
 
 /**
  twoBirds V7 core functionality
@@ -2621,14 +2621,21 @@ if (typeof module === 'undefined' ){
             // if to be called only once
             if ( !!pHandler.once ){
 
-                onceHandler = (function(pHandler, capture) {
+                onceHandler = (function(pHandler, pCapture) {
                     return function myOnceHandler(ev){
                         
-                        onceHandler   // remove from ALL elements the once handler is attached to
-                            .that
-                            .forEach( function( pDomElement ){
-                                _removeEvent( pDomElement, ev.type, onceHandler, capture );
-                            });
+                        // remove handlers
+                        that.forEach(
+                            function( pDomNode ){
+                                if ( !!pDomNode.nodeType ){
+                                    eventNames.forEach(
+                                        function( pThisEventName ){
+                                            _removeEvent( pDomNode, pThisEventName, onceHandler, capture );
+                                        }
+                                    );
+                                }
+                            }
+                        );
 
                         pHandler.apply( ev, arguments );
                     };
