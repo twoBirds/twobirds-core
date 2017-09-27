@@ -438,11 +438,17 @@ tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
     function walk(pKey) {
-        if ( cp.hasOwnProperty(pKey) && cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Object ){
-            pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
-        } else if ( cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Array ){
-            pObj[pKey] = Array.from(cp[pKey]);
-        } else {
+        if ( cp.hasOwnProperty(pKey) && 
+            cp[pKey] instanceof Object && 
+            (cp[pKey]).constructor === Object 
+        ){ // native Object
+            pObj[pKey] = tb.extend( pObj[pKey] instanceof Object ? pObj[pKey] : {}, cp[pKey] ); // deep copy
+        } else if ( cp.hasOwnProperty(pKey) && 
+            cp[pKey] instanceof Object && 
+            (cp[pKey]).constructor === Array 
+        ){ // native Array
+            pObj[pKey] = Array.from(cp[pKey]); // flat copy
+        } else { // copy primitive or reference
             pObj[pKey] = cp[pKey];
         }
     }
