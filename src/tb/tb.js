@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.139 - 2017-09-26 */
+/*! twobirds-core - v7.3.140 - 2017-09-27 */
 
 /**
  twoBirds V7 core functionality
@@ -3848,7 +3848,7 @@ tb.extend = function( pObj ){ // any number of arguments may be given
     var cp;
 
     function walk(pKey) {
-        if ( cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Object ){
+        if ( cp.hasOwnProperty(pKey) && cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Object ){
             pObj[pKey] = tb.extend( pObj[pKey] || {}, cp[pKey] );
         } else if ( cp[pKey] !== null && !!cp[pKey]['constructor'] && (cp[pKey]).constructor === Array ){
             pObj[pKey] = Array.from(cp[pKey]);
