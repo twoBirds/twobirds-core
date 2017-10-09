@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.141 - 2017-09-27 */
+/*! twobirds-core - v7.3.142 - 2017-10-09 */
 
 /**
  twoBirds V7 core functionality
@@ -439,7 +439,10 @@ tb = (function(){
 
         } else { // arguments[0] is string or regex, return selector result
 
-            return new TbSelector( !!arguments[0] ? arguments[0] : undefined );
+            return new TbSelector( 
+                !!arguments[0] ? arguments[0] : undefined, 
+                !!arguments[1] ? arguments[1] : undefined 
+            );
 
         }
 
