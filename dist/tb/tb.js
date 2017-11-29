@@ -1287,16 +1287,9 @@ tb = (function(){
              toArray() method
              */
             toArray: function(){
-                var that = this,
-                    ret = [];
+                var that = this;
 
-                that.forEach(function(pElement){
-                    if ( pElement !== null ){
-                        ret.push( pElement );
-                    }
-                });
-
-                return ret;
+                return Array.from( that );
             },
 
             /**
