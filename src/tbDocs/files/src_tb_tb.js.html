@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.142</em>
+            <em>API Docs for: v7.3.143</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.142 - 2017-10-09 */
+/*! twobirds-core - v7.3.143 - 2017-11-29 */
 
 /**
  twoBirds V7 core functionality
@@ -1023,8 +1023,11 @@ tb = (function(){
                             .toArray()
                             .forEach(
                                 function( pElement ){
+                                    if ( !pElement ){
+                                        return; // @todo: find out where these null elements come from
+                                    }
                                     Object
-                                        .keys( pElement.tb )
+                                        .keys( pElement.tb || {} )
                                         .forEach(
                                             function( pKey ){
                                                 // push dom object to tb selector content
@@ -1090,7 +1093,7 @@ tb = (function(){
                         } // no parent -&gt; empty result set
 
                         Object
-                            .keys(tbParent.target.tb)
+                            .keys(tbParent.target.tb || {})
                             .forEach(function( pKey ){
                                 [].push.call( ret, tbParent.target.tb[pKey] ); // push dom object to tb selector content
                             });
@@ -1853,11 +1856,12 @@ if (typeof module === &#x27;undefined&#x27; ){
                 domNode,
                 nodeList;
 
-            if (!pSelector) { // no selector given, or not a string
-                var t = tb.dom(document.body); // 1 entry
-                t.shift();
-                return t;
-            } else if (!!pSelector[&#x27;nodeType&#x27;] ) { // selector is a dom node
+            if (!pSelector) { // no selector given, or a falsy value
+                return that;
+            } 
+
+            // ... implicit else do:
+            if (!!pSelector[&#x27;nodeType&#x27;] ) { // selector is a dom node
                 if ( [].indexOf.call( that, pSelector ) === -1 ){
                     [].push.call(that, pSelector);
                 }
@@ -1906,16 +1910,17 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                 var DOM = _htmlToElements( pSelector ); // uses &#x27;template&#x27; element to retrieve DOM nodes
 
-                if ( DOM.length === 1 &amp;&amp; DOM[0].nodeType === 3 ){
-                    // it is not a HTML string, but a simple string
-                    // nodeType 3 indicates text node
-                    domNode = pDomNode &amp;&amp; !!pDomNode[&#x27;nodeType&#x27;] ? pDomNode : document;
+                if ( DOM.length === 1 
+                    &amp;&amp; !!DOM[0].nodeType
+                    &amp;&amp; DOM[0].nodeType === 3 // nodeType 3 indicates text node
+                ){ // it is not a HTML string, but a simple string --&gt; it is regarded a CSS selector
+                    domNode = !!pDomNode &amp;&amp; !!pDomNode[&#x27;nodeType&#x27;] ? pDomNode : document;
                     pSelector
                         .split( &#x27;,&#x27; )
                         .forEach(
                             function forEachTbDomSelector( pThisSelector ){
                                 nodeList = domNode.querySelectorAll(pThisSelector.trim());
-                                if (!!nodeList[&#x27;0&#x27;]) {
+                                if (!!nodeList[0]) {
                                     [].forEach.call(
                                         nodeList,
                                         function (pDomElement) {
@@ -2333,7 +2338,7 @@ if (typeof module === &#x27;undefined&#x27; ){
 
             that.forEach(
                 function (pDomNode) {
-                    var check = pSelector !== undefined ? tb.dom( pSelector, pDomNode ) : false;
+                    var check = pSelector !== undefined ? tb.dom( pSelector ) : false;
 
                     [].forEach.call(
                         pDomNode.children,
@@ -4921,7 +4926,7 @@ tb.require.get = function(pFile){
 
  @param pOptions { object } a hash object containing these options:&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
- @param pOptions.url: (string, omitted) the URL to call
+ @param pOptions.url: (string, required) the URL to call
  @param {object} [pOptions.params] - a hash object containing the parameters to post
  @param {string} [pOptions.method] - (string, optional, defaults to &#x27;POST&#x27;) the XHR method
  @param {object} [pOptions.headers] - a hash object containing additional XHR headers

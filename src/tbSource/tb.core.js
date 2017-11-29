@@ -932,8 +932,11 @@ tb = (function(){
                             .toArray()
                             .forEach(
                                 function( pElement ){
+                                    if ( !pElement ){
+                                        return; // @todo: find out where these null elements come from
+                                    }
                                     Object
-                                        .keys( pElement.tb )
+                                        .keys( pElement.tb || {} )
                                         .forEach(
                                             function( pKey ){
                                                 // push dom object to tb selector content
@@ -999,7 +1002,7 @@ tb = (function(){
                         } // no parent -> empty result set
 
                         Object
-                            .keys(tbParent.target.tb)
+                            .keys(tbParent.target.tb || {})
                             .forEach(function( pKey ){
                                 [].push.call( ret, tbParent.target.tb[pKey] ); // push dom object to tb selector content
                             });

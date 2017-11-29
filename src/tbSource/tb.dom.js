@@ -72,11 +72,12 @@ if (typeof module === 'undefined' ){
                 domNode,
                 nodeList;
 
-            if (!pSelector) { // no selector given, or not a string
-                var t = tb.dom(document.body); // 1 entry
-                t.shift();
-                return t;
-            } else if (!!pSelector['nodeType'] ) { // selector is a dom node
+            if (!pSelector) { // no selector given, or a falsy value
+                return that;
+            } 
+
+            // ... implicit else do:
+            if (!!pSelector['nodeType'] ) { // selector is a dom node
                 if ( [].indexOf.call( that, pSelector ) === -1 ){
                     [].push.call(that, pSelector);
                 }
@@ -125,16 +126,17 @@ if (typeof module === 'undefined' ){
 
                 var DOM = _htmlToElements( pSelector ); // uses 'template' element to retrieve DOM nodes
 
-                if ( DOM.length === 1 && DOM[0].nodeType === 3 ){
-                    // it is not a HTML string, but a simple string
-                    // nodeType 3 indicates text node
-                    domNode = pDomNode && !!pDomNode['nodeType'] ? pDomNode : document;
+                if ( DOM.length === 1 
+                    && !!DOM[0].nodeType
+                    && DOM[0].nodeType === 3 // nodeType 3 indicates text node
+                ){ // it is not a HTML string, but a simple string --> it is regarded a CSS selector
+                    domNode = !!pDomNode && !!pDomNode['nodeType'] ? pDomNode : document;
                     pSelector
                         .split( ',' )
                         .forEach(
                             function forEachTbDomSelector( pThisSelector ){
                                 nodeList = domNode.querySelectorAll(pThisSelector.trim());
-                                if (!!nodeList['0']) {
+                                if (!!nodeList[0]) {
                                     [].forEach.call(
                                         nodeList,
                                         function (pDomElement) {
@@ -552,7 +554,7 @@ if (typeof module === 'undefined' ){
 
             that.forEach(
                 function (pDomNode) {
-                    var check = pSelector !== undefined ? tb.dom( pSelector, pDomNode ) : false;
+                    var check = pSelector !== undefined ? tb.dom( pSelector ) : false;
 
                     [].forEach.call(
                         pDomNode.children,

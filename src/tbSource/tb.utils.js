@@ -1419,7 +1419,7 @@ tb.require.get = function(pFile){
 
  @param pOptions { object } a hash object containing these options:<br><br><br>
 
- @param pOptions.url: (string, omitted) the URL to call
+ @param pOptions.url: (string, required) the URL to call
  @param {object} [pOptions.params] - a hash object containing the parameters to post
  @param {string} [pOptions.method] - (string, optional, defaults to 'POST') the XHR method
  @param {object} [pOptions.headers] - a hash object containing additional XHR headers
