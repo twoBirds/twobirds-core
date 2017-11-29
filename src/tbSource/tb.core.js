@@ -929,20 +929,18 @@ tb = (function(){
                         tb.dom( that.target )
                             .parents( '[data-tb]' )
                             .not( 'html' )
-                            .toArray()
                             .forEach(
                                 function( pElement ){
-                                    if ( !pElement ){
-                                        return; // @todo: find out where these null elements come from
+                                    if ( !!pElement && pElement['tb'] ){
+                                        Object
+                                            .keys( pElement.tb )
+                                            .forEach(
+                                                function( pKey ){
+                                                    // push dom object to tb selector content
+                                                    [].push.call( ret, pElement.tb[pKey] );
+                                                }
+                                            );
                                     }
-                                    Object
-                                        .keys( pElement.tb || {} )
-                                        .forEach(
-                                            function( pKey ){
-                                                // push dom object to tb selector content
-                                                [].push.call( ret, pElement.tb[pKey] );
-                                            }
-                                        );
                                 }
                             );
 
@@ -1287,7 +1285,16 @@ tb = (function(){
              toArray() method
              */
             toArray: function(){
-                return [].filter.call( this, function(){ return true; } );
+                var that = this,
+                    ret = [];
+
+                that.forEach(function(pElement){
+                    if ( pElement !== null ){
+                        ret.push( pElement );
+                    }
+                });
+
+                return ret;
             },
 
             /**
