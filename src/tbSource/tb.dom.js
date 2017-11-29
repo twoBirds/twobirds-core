@@ -398,23 +398,41 @@ if (typeof module === 'undefined' ){
 
          add class name to each of tb.dom() result set
          */
-        function addClass(pClassName) {
+        function addClass(pClassNames) {
 
             var that = this;
 
+            if ( !pClassNames || typeof pClassNames !== 'string' ){
+                console.warn( 'method addClass: missing or wrong pClassNames' );
+                return that;
+            }
+
+            var givenClassNames = pClassNames
+                .split(' ')
+                .filter(function(pElement){ 
+                    return !!pElement; 
+                });
+
             that.forEach(
-                function (pDomNode) {
-                    var classes = pDomNode.getAttribute('class') || '',
-                        index;
+                function( pDomNode ){
+                    var existingClasses = ( pDomNode.getAttribute('class') || '' )
+                            .split(' ')
+                            .filter(function(pElement){ 
+                                return !!pElement; 
+                            });
 
-                    classes = !!classes.length ? classes.split(' ') : [];
-                    index = classes.indexOf(pClassName);
+                    givenClassNames.forEach(function(pGivenClassName){
 
-                    if (index === -1) {
-                        classes.push( pClassName );
-                        pDomNode.setAttribute('class', classes.join(' ') );
-                    }
+                        if ( existingClasses.indexOf( pGivenClassName ) === -1) {
+                            existingClasses.push( pGivenClassName );
+                        }
+
+                    });
+
+                    pDomNode.setAttribute('class', existingClasses.join(' ') );
+
                 }
+
             );
 
             return that;
@@ -1173,41 +1191,37 @@ if (typeof module === 'undefined' ){
 
          remove class name from each of tb.dom() result set
          */
-        function removeClass(pClassName) {
+        function removeClass(pRemoveClasses) {
 
             var that = this,
-                pClasses = pClassName.split(' ');
+                removeClasses = pRemoveClasses
+                    .split(' ')
+                    .filter(function(pElement){ 
+                        return !!pElement; 
+                    });
 
             that.forEach(
-                function (pDomNode) {
-                    var classes = pDomNode.getAttribute('class') || '';
+                function ( pDomNode ) {
 
-                    classes = classes.trim();
+                    var existingClasses = ( pDomNode.getAttribute('class') || '' )
+                            .split(' ')
+                            .filter(function(pElement){ 
+                                return !!pElement; 
+                            });
 
-                    if ( classes.indexOf(' ') > -1 ){
-                        classes = classes.split(' ');
-                    } else {
-                        classes = [ classes ];
-                    }
+                    removeClasses.forEach(
+                        function( pRemoveClass ){
 
-                    pClasses.forEach(
-                        function( pClass ){
-                            if ( classes ){
-                                pClassName.split(' ')
-                                    .forEach(
-                                        function( pRemoveClass ){
-                                            while ( classes.indexOf(pRemoveClass) > -1 ){
-                                                classes.splice(classes.indexOf(pRemoveClass), 1);
-                                            }
-                                        }
-                                    );
-
-                                if ( !!classes.length ){
-                                    tb.dom( pDomNode ).attr('class', classes.join(' ') );
-                                } else {
-                                    tb.dom( pDomNode ).removeAttr('class');
-                                }
+                            while ( existingClasses.indexOf(pRemoveClass) > -1 ){
+                                existingClasses.splice(existingClasses.indexOf(pRemoveClass), 1);
                             }
+
+                            if ( !!existingClasses.length ){
+                                tb.dom( pDomNode ).attr('class', existingClasses.join(' ') );
+                            } else {
+                                tb.dom( pDomNode ).removeAttr('class');
+                            }
+                            
                         }
                     );
 
@@ -1246,7 +1260,9 @@ if (typeof module === 'undefined' ){
          convert tb.dom() result set converted to a plain array of DOM nodes
          */
         function toArray(){
-            return [].filter.call( this, function(){ return true; } );
+            var that = this;
+
+            return Array.from(that);
         }
 
         /**

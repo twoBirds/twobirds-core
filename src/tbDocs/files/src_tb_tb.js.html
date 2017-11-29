@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v7.3.144</em>
+            <em>API Docs for: v7.3.146</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v7.3.144 - 2017-11-29 */
+/*! twobirds-core - v7.3.146 - 2017-11-29 */
 
 /**
  twoBirds V7 core functionality
@@ -1022,7 +1022,7 @@ tb = (function(){
                             .not( &#x27;html&#x27; )
                             .forEach(
                                 function( pElement ){
-                                    if ( !!pElement &amp;&amp; pElement[&#x27;tb&#x27;] ){
+                                    if ( !!pElement &amp;&amp; !!pElement[&#x27;tb&#x27;] ){
                                         Object
                                             .keys( pElement.tb )
                                             .forEach(
@@ -2182,23 +2182,41 @@ if (typeof module === &#x27;undefined&#x27; ){
 
          add class name to each of tb.dom() result set
          */
-        function addClass(pClassName) {
+        function addClass(pClassNames) {
 
             var that = this;
 
+            if ( !pClassNames || typeof pClassNames !== &#x27;string&#x27; ){
+                console.warn( &#x27;method addClass: missing or wrong pClassNames&#x27; );
+                return that;
+            }
+
+            var givenClassNames = pClassNames
+                .split(&#x27; &#x27;)
+                .filter(function(pElement){ 
+                    return !!pElement; 
+                });
+
             that.forEach(
-                function (pDomNode) {
-                    var classes = pDomNode.getAttribute(&#x27;class&#x27;) || &#x27;&#x27;,
-                        index;
+                function( pDomNode ){
+                    var existingClasses = ( pDomNode.getAttribute(&#x27;class&#x27;) || &#x27;&#x27; )
+                            .split(&#x27; &#x27;)
+                            .filter(function(pElement){ 
+                                return !!pElement; 
+                            });
 
-                    classes = !!classes.length ? classes.split(&#x27; &#x27;) : [];
-                    index = classes.indexOf(pClassName);
+                    givenClassNames.forEach(function(pGivenClassName){
 
-                    if (index === -1) {
-                        classes.push( pClassName );
-                        pDomNode.setAttribute(&#x27;class&#x27;, classes.join(&#x27; &#x27;) );
-                    }
+                        if ( existingClasses.indexOf( pGivenClassName ) === -1) {
+                            existingClasses.push( pGivenClassName );
+                        }
+
+                    });
+
+                    pDomNode.setAttribute(&#x27;class&#x27;, existingClasses.join(&#x27; &#x27;) );
+
                 }
+
             );
 
             return that;
@@ -2957,41 +2975,37 @@ if (typeof module === &#x27;undefined&#x27; ){
 
          remove class name from each of tb.dom() result set
          */
-        function removeClass(pClassName) {
+        function removeClass(pRemoveClasses) {
 
             var that = this,
-                pClasses = pClassName.split(&#x27; &#x27;);
+                removeClasses = pRemoveClasses
+                    .split(&#x27; &#x27;)
+                    .filter(function(pElement){ 
+                        return !!pElement; 
+                    });
 
             that.forEach(
-                function (pDomNode) {
-                    var classes = pDomNode.getAttribute(&#x27;class&#x27;) || &#x27;&#x27;;
+                function ( pDomNode ) {
 
-                    classes = classes.trim();
+                    var existingClasses = ( pDomNode.getAttribute(&#x27;class&#x27;) || &#x27;&#x27; )
+                            .split(&#x27; &#x27;)
+                            .filter(function(pElement){ 
+                                return !!pElement; 
+                            });
 
-                    if ( classes.indexOf(&#x27; &#x27;) &gt; -1 ){
-                        classes = classes.split(&#x27; &#x27;);
-                    } else {
-                        classes = [ classes ];
-                    }
+                    removeClasses.forEach(
+                        function( pRemoveClass ){
 
-                    pClasses.forEach(
-                        function( pClass ){
-                            if ( classes ){
-                                pClassName.split(&#x27; &#x27;)
-                                    .forEach(
-                                        function( pRemoveClass ){
-                                            while ( classes.indexOf(pRemoveClass) &gt; -1 ){
-                                                classes.splice(classes.indexOf(pRemoveClass), 1);
-                                            }
-                                        }
-                                    );
-
-                                if ( !!classes.length ){
-                                    tb.dom( pDomNode ).attr(&#x27;class&#x27;, classes.join(&#x27; &#x27;) );
-                                } else {
-                                    tb.dom( pDomNode ).removeAttr(&#x27;class&#x27;);
-                                }
+                            while ( existingClasses.indexOf(pRemoveClass) &gt; -1 ){
+                                existingClasses.splice(existingClasses.indexOf(pRemoveClass), 1);
                             }
+
+                            if ( !!existingClasses.length ){
+                                tb.dom( pDomNode ).attr(&#x27;class&#x27;, existingClasses.join(&#x27; &#x27;) );
+                            } else {
+                                tb.dom( pDomNode ).removeAttr(&#x27;class&#x27;);
+                            }
+                            
                         }
                     );
 
@@ -3030,7 +3044,9 @@ if (typeof module === &#x27;undefined&#x27; ){
          convert tb.dom() result set converted to a plain array of DOM nodes
          */
         function toArray(){
-            return [].filter.call( this, function(){ return true; } );
+            var that = this;
+
+            return Array.from(that);
         }
 
         /**

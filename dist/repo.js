@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.144 - 2017-11-29 */
+/*! twobirds-core - v7.3.146 - 2017-11-29 */
 
 tb.namespace( 'test.GrandParent' ).set(
     (function(){
@@ -7,8 +7,8 @@ tb.namespace( 'test.GrandParent' ).set(
             var that = this;
 
             that.handlers = {
-                init,
-                test
+                init: init,
+                test: test
             };
         }
 

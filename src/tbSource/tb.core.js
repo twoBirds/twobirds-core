@@ -931,7 +931,7 @@ tb = (function(){
                             .not( 'html' )
                             .forEach(
                                 function( pElement ){
-                                    if ( !!pElement && pElement['tb'] ){
+                                    if ( !!pElement && !!pElement['tb'] ){
                                         Object
                                             .keys( pElement.tb )
                                             .forEach(

@@ -117,17 +117,17 @@ describe("tb.dom() selector tests", function() {
 
             it("tb.dom('body').addClass('test1class') contains test1class", function() {
                 tb.dom('body').addClass('test1class');
-                expect( tb.dom('body')[0].getAttribute('class').indexOf( 'test1class' ) > -1 ).toBe( true );
+                expect( tb.dom('body')[0].getAttribute('class').split(' ').indexOf( 'test1class' ) > -1 ).toBe( true );
             });
 
             it("tb.dom('body').addClass('test2class test3class') contains 2 new classes now", function() {
                 tb.dom('body').addClass('test2class test3class');
-                expect( tb.dom('body')[0].getAttribute('class').indexOf( 'test2class' ) > -1 ).toBe( true );
-                expect( tb.dom('body')[0].getAttribute('class').indexOf( 'test3class' ) > -1 ).toBe( true );
+                expect( tb.dom('body')[0].getAttribute('class').split(' ').indexOf( 'test2class' ) > -1 ).toBe( true );
+                expect( tb.dom('body')[0].getAttribute('class').split(' ').indexOf( 'test3class' ) > -1 ).toBe( true );
             });
 
             it("tb.dom('body') contains 4 classes now", function() {
-                expect( tb.dom('body')[0].getAttribute('class').split( ' ' ).length === 4 ).toBe( true );
+                expect( tb.dom('body')[0].getAttribute('class').split(' ').length === 4 ).toBe( true );
             });
 
             it("tb.dom('body') remove test classes", function() {

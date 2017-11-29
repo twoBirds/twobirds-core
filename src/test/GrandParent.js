@@ -5,8 +5,8 @@ tb.namespace( 'test.GrandParent' ).set(
             var that = this;
 
             that.handlers = {
-                init,
-                test
+                init: init,
+                test: test
             };
         }
 
