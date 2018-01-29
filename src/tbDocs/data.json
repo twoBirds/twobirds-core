@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v7.3.146",
+        "version": "v8.0.0",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -17,7 +17,7 @@
                 "tb.Util": 1,
                 "tb.Promise": 1,
                 "tb.Require": 1,
-                "tb.Model": 1
+                "tb.CRUD": 1
             },
             "fors": {},
             "namespaces": {}
@@ -233,9 +233,9 @@
                 "\n\n    tb.namespace( 'app.GrandParent' ).set( \n        (function(){\n\n             // Constructor\n             function GrandParent(){\n                 var that = this;\n   \n                 that.handlers = {\n                     init\n                 };\n   \n             }\n   \n             // Prototype\n             GrandParent.prototype = {\n   \n                 namespace: 'app.GrandParent',\n   \n                 'tb.Require': [\n                      '/app/GrandParent.css'\n                 ]\n   \n             };\n   \n             return GrandParent;\n   \n             // Private Methods\n   \n             function init(){\n                  // will be called when requirement loading is finished ( both success and error )\n             }\n   \n        })()\n    );"
             ]
         },
-        "tb.Model": {
-            "name": "tb.Model",
-            "shortname": "tb.Model",
+        "tb.CRUD": {
+            "name": "tb.CRUD",
+            "shortname": "tb.CRUD",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -252,11 +252,11 @@
                 }
             ],
             "return": {
-                "description": "- the model instance\n\ntb.Model constructor\n- create and return a simple CRUD model a \"data\" observable",
+                "description": "- the model instance\n\ntb.CRUD constructor\n- create and return a simple CRUD model a \"data\" observable",
                 "type": "Object"
             },
             "example": [
-                "\n\n    // templates crud model\n    that.templatesModel = new tb.Model({\n               'read': {\n                   url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data\n                   method: 'GET',\n                   type: 'json',\n                   params: {\n                   },\n                   success: function( pResult ){\n                       that.templatesModel.data( JSON.parse( pResult.text ).data );\n                   },\n                   error: function( pResult ){\n                       console.log( 'an error occured', pResult );\n                   }\n               }\n           });\n\n    // ... and later:\n\n    // when template list data has been read, render\n    that.templatesModel.data.observe( function templateModelDataChanged(){\n               that.trigger( 'render' );\n           });\n\n    // read data\n    that.templatesModel.read();",
+                "\n\n    // templates crud model\n    that.templatesCRUD = new tb.CRUD({\n               'read': {\n                   url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data\n                   method: 'GET',\n                   type: 'json',\n                   params: {\n                   },\n                   success: function( pResult ){\n                       that.templatesCRUD.data( JSON.parse( pResult.text ).data );\n                   },\n                   error: function( pResult ){\n                       console.log( 'an error occured', pResult );\n                   }\n               }\n           });\n\n    // ... and later:\n\n    // when template list data has been read, render\n    that.templatesCRUD.data.observe( function templateCRUDDataChanged(){\n               that.trigger( 'render' );\n           });\n\n    // read data\n    that.templatesCRUD.read();",
                 "\n\n    // default config mixin -> result will be in that.config\n    tb.extend(\n    that.config,\n    {   // default settings, reference only\n        'create': {\n            url: '',\n            method: 'POST',\n            success: function( pResult ){\n                that.data( pResult );\n            }\n        },\n        'read': {\n            url: '',\n            method: 'GET',\n            success: function( pResult ){\n                that.data( pResult );\n            }\n        },\n        'update': {\n            url: '',\n            method: 'PUT',\n            success: function( pResult ){\n                that.data( pResult );\n            }\n        },\n        'delete': {\n            url: '',\n            method: 'DELETE',\n            success: function( pResult ){\n                that.data( pResult );\n            }\n        }\n    },\n    pConfig\n    );\n"
             ]
         }
@@ -2158,7 +2158,7 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model"
+            "class": "tb.CRUD"
         },
         {
             "file": "src/tb/tb.js",
@@ -2173,7 +2173,7 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model"
+            "class": "tb.CRUD"
         },
         {
             "file": "src/tb/tb.js",
@@ -2188,7 +2188,7 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model"
+            "class": "tb.CRUD"
         },
         {
             "file": "src/tb/tb.js",
@@ -2203,7 +2203,7 @@
                     "optional": true
                 }
             ],
-            "class": "tb.Model"
+            "class": "tb.CRUD"
         }
     ],
     "warnings": [

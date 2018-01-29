@@ -2,8 +2,8 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "tb",
+        "tb.CRUD",
         "tb.Event",
-        "tb.Model",
         "tb.Promise",
         "tb.Require",
         "tb.Selector",

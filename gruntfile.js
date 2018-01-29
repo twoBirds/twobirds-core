@@ -84,7 +84,7 @@ module.exports = function(grunt) {
                         'src/tbSource/tb.core.js',
                         'src/tbSource/tb.dom.js',
                         'src/tbSource/tb.utils.js',
-                        'src/tbSource/tb.Model.js',
+                        'src/tbSource/tb.CRUD.js',
                         'src/tbSource/tb.Require.js'
                     ],
                     'src/tbTest.js': [

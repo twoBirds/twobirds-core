@@ -1,4 +1,4 @@
-/*! twobirds-core - v7.3.146 - 2017-11-29 */
+/*! twobirds-core - v8.0.0 - 2018-01-29 */
 
 /**
  twoBirds V7 core functionality
@@ -5233,20 +5233,20 @@ tb.stop = (function(pStopIt){
 
 
 /**
- @class tb.Model
+ @class tb.CRUD
  @constructor
 
  @param {object} pConfig - config parameter, usually an object @todo param description
 
  @return {object} - the model instance
 
- tb.Model constructor
+ tb.CRUD constructor
  - create and return a simple CRUD model a "data" observable
 
  @example
 
      // templates crud model
-     that.templatesModel = new tb.Model({
+     that.templatesCRUD = new tb.CRUD({
                 'read': {
                     url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data
                     method: 'GET',
@@ -5254,7 +5254,7 @@ tb.stop = (function(pStopIt){
                     params: {
                     },
                     success: function( pResult ){
-                        that.templatesModel.data( JSON.parse( pResult.text ).data );
+                        that.templatesCRUD.data( JSON.parse( pResult.text ).data );
                     },
                     error: function( pResult ){
                         console.log( 'an error occured', pResult );
@@ -5265,12 +5265,12 @@ tb.stop = (function(pStopIt){
      // ... and later:
 
      // when template list data has been read, render
-     that.templatesModel.data.observe( function templateModelDataChanged(){
+     that.templatesCRUD.data.observe( function templateCRUDDataChanged(){
                 that.trigger( 'render' );
             });
 
      // read data
-     that.templatesModel.read();
+     that.templatesCRUD.read();
 
  @example
 
@@ -5313,7 +5313,7 @@ tb.stop = (function(pStopIt){
  */
 if (typeof module === 'undefined' ){ // will not work as a module
 
-    tb.Model = function ( pConfig ) {
+    tb.CRUD = function ( pConfig ) {
         var that = this;
 
         // result element
@@ -5358,7 +5358,7 @@ if (typeof module === 'undefined' ){ // will not work as a module
 
     };
 
-    tb.Model.prototype = (function(){
+    tb.CRUD.prototype = (function(){
         // private
 
         // create get parameter string
