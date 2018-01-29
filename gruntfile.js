@@ -93,7 +93,7 @@ module.exports = function(grunt) {
                         'src/tbTest/tbJasmineBoot.js',
                         'src/tbTest/tb.core.test.js',
                         'src/tbTest/tb.dom.test.js',
-                        'src/tbTest/tb.Model.test.js',
+                        'src/tbTest/tb.CRUD.test.js',
                         'src/tbTest/tb.Require.test.js',
                         'src/tbTest/tb.utils.test.js'
                     ],
@@ -117,11 +117,11 @@ module.exports = function(grunt) {
             },
             my_target: {
                 options: {
-                    mangle: false
+                    mangle: true
                 },
                 files: [
                     {
-                        'src/tbMin/tb.min.js': [
+                        'src/tbMin/tb-min.js': [
                             'src/tb/tb.js'
                         ]
                     },

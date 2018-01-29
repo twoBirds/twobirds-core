@@ -14,8 +14,8 @@ describe("tb.core.js", function() {
             expect( typeof tb.dom === 'function' ).toBe( true );
         });
 
-        it("tb.Model() present and typeof 'function'", function() {
-            expect( typeof tb.Model === 'function' ).toBe( true );
+        it("tb.CRUD() present and typeof 'function'", function() {
+            expect( typeof tb.CRUD === 'function' ).toBe( true );
         });
 
         it("tb.Event() present and typeof 'function'", function() {
