@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.0</em>
+            <em>API Docs for: v8.0.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.0.0 - 2018-01-29 */
+/*! twobirds-core - v8.0.1 - 2018-01-29 */
 
 /**
  twoBirds V7 core functionality
@@ -5336,67 +5336,69 @@ tb.stop = (function(pStopIt){
 
      // templates crud model
      that.templatesCRUD = new tb.CRUD({
-                &#x27;read&#x27;: {
-                    url: &#x27;demoapp/configuration/mock/demoapp-configuration-templates.json&#x27;, // mock data
-                    method: &#x27;GET&#x27;,
-                    type: &#x27;json&#x27;,
-                    params: {
-                    },
-                    success: function( pResult ){
-                        that.templatesCRUD.data( JSON.parse( pResult.text ).data );
-                    },
-                    error: function( pResult ){
-                        console.log( &#x27;an error occured&#x27;, pResult );
-                    }
-                }
-            });
+        &#x27;read&#x27;: {
+            url: &#x27;demoapp/configuration/mock/demoapp-configuration-templates.json&#x27;, // mock data
+            method: &#x27;GET&#x27;,
+            type: &#x27;json&#x27;,
+            success: function( pResult ){
+                that.templatesCRUD.data( JSON.parse( pResult.text ).data );
+            },
+            error: function( pResult ){
+                console.log( &#x27;an error occured&#x27;, pResult );
+            }
+        }
+     });
 
      // ... and later:
 
      // when template list data has been read, render
      that.templatesCRUD.data.observe( function templateCRUDDataChanged(){
-                that.trigger( &#x27;render&#x27; );
-            });
+        that.trigger( &#x27;render&#x27; );
+     });
 
      // read data
-     that.templatesCRUD.read();
+     that.templatesCRUD.read({
+        // parameters ...
+     });
 
  @example
 
      // default config mixin -&gt; result will be in that.config
+     // just for documentation purposes, will be done by the CRUD model itself
+
      tb.extend(
-     that.config,
-     {   // default settings, reference only
-         &#x27;create&#x27;: {
-             url: &#x27;&#x27;,
-             method: &#x27;POST&#x27;,
-             success: function( pResult ){
-                 that.data( pResult );
+         that.config,
+         {   // default settings, reference only
+             &#x27;create&#x27;: {
+                 url: &#x27;&#x27;,
+                 method: &#x27;POST&#x27;,
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
+             },
+             &#x27;read&#x27;: {
+                 url: &#x27;&#x27;,
+                 method: &#x27;GET&#x27;,
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
+             },
+             &#x27;update&#x27;: {
+                 url: &#x27;&#x27;,
+                 method: &#x27;PUT&#x27;,
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
+             },
+             &#x27;delete&#x27;: {
+                 url: &#x27;&#x27;,
+                 method: &#x27;DELETE&#x27;,
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
              }
          },
-         &#x27;read&#x27;: {
-             url: &#x27;&#x27;,
-             method: &#x27;GET&#x27;,
-             success: function( pResult ){
-                 that.data( pResult );
-             }
-         },
-         &#x27;update&#x27;: {
-             url: &#x27;&#x27;,
-             method: &#x27;PUT&#x27;,
-             success: function( pResult ){
-                 that.data( pResult );
-             }
-         },
-         &#x27;delete&#x27;: {
-             url: &#x27;&#x27;,
-             method: &#x27;DELETE&#x27;,
-             success: function( pResult ){
-                 that.data( pResult );
-             }
-         }
-     },
-     pConfig
+         pConfig // params as given to the constructor 
      );
 
  */

@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.0 - 2018-01-29 */
+/*! twobirds-core - v8.0.1 - 2018-01-29 */
 
 /**
  twoBirds V7 core functionality
@@ -5247,67 +5247,69 @@ tb.stop = (function(pStopIt){
 
      // templates crud model
      that.templatesCRUD = new tb.CRUD({
-                'read': {
-                    url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data
-                    method: 'GET',
-                    type: 'json',
-                    params: {
-                    },
-                    success: function( pResult ){
-                        that.templatesCRUD.data( JSON.parse( pResult.text ).data );
-                    },
-                    error: function( pResult ){
-                        console.log( 'an error occured', pResult );
-                    }
-                }
-            });
+        'read': {
+            url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data
+            method: 'GET',
+            type: 'json',
+            success: function( pResult ){
+                that.templatesCRUD.data( JSON.parse( pResult.text ).data );
+            },
+            error: function( pResult ){
+                console.log( 'an error occured', pResult );
+            }
+        }
+     });
 
      // ... and later:
 
      // when template list data has been read, render
      that.templatesCRUD.data.observe( function templateCRUDDataChanged(){
-                that.trigger( 'render' );
-            });
+        that.trigger( 'render' );
+     });
 
      // read data
-     that.templatesCRUD.read();
+     that.templatesCRUD.read({
+        // parameters ...
+     });
 
  @example
 
      // default config mixin -> result will be in that.config
+     // just for documentation purposes, will be done by the CRUD model itself
+
      tb.extend(
-     that.config,
-     {   // default settings, reference only
-         'create': {
-             url: '',
-             method: 'POST',
-             success: function( pResult ){
-                 that.data( pResult );
+         that.config,
+         {   // default settings, reference only
+             'create': {
+                 url: '',
+                 method: 'POST',
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
+             },
+             'read': {
+                 url: '',
+                 method: 'GET',
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
+             },
+             'update': {
+                 url: '',
+                 method: 'PUT',
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
+             },
+             'delete': {
+                 url: '',
+                 method: 'DELETE',
+                 success: function( pResult ){
+                     that.data( pResult );
+                 }
              }
          },
-         'read': {
-             url: '',
-             method: 'GET',
-             success: function( pResult ){
-                 that.data( pResult );
-             }
-         },
-         'update': {
-             url: '',
-             method: 'PUT',
-             success: function( pResult ){
-                 that.data( pResult );
-             }
-         },
-         'delete': {
-             url: '',
-             method: 'DELETE',
-             success: function( pResult ){
-                 that.data( pResult );
-             }
-         }
-     },
-     pConfig
+         pConfig // params as given to the constructor 
      );
 
  */
