@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.2 - 2018-01-29 */
+/*! twobirds-core - v8.0.3 - 2018-02-08 */
 
 /**
  twoBirds V7 core functionality
@@ -5245,14 +5245,14 @@ tb.stop = (function(pStopIt){
 
  @example
 
-     // templates crud model
-     that.templatesCRUD = new tb.CRUD({
+     // CRUD model
+     that.model = new tb.CRUD({
         'read': {
             url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data
             method: 'GET',
             type: 'json',
             success: function( pResult ){
-                that.templatesCRUD.data( JSON.parse( pResult.text ).data );
+                that.model.data( JSON.parse( pResult.text ).data );
             },
             error: function( pResult ){
                 console.log( 'an error occured', pResult );
@@ -5263,12 +5263,12 @@ tb.stop = (function(pStopIt){
      // ... and later:
 
      // when template list data has been read, render
-     that.templatesCRUD.data.observe( function templateCRUDDataChanged(){
+     that.model.data.observe( function templateCRUDDataChanged(){
         that.trigger( 'render' );
      });
 
      // read data
-     that.templatesCRUD.read({
+     that.model.read({
         // parameters ...
      });
 

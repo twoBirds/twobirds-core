@@ -11,14 +11,14 @@
 
  @example
 
-     // templates crud model
-     that.templatesCRUD = new tb.CRUD({
+     // CRUD model
+     that.model = new tb.CRUD({
         'read': {
             url: 'demoapp/configuration/mock/demoapp-configuration-templates.json', // mock data
             method: 'GET',
             type: 'json',
             success: function( pResult ){
-                that.templatesCRUD.data( JSON.parse( pResult.text ).data );
+                that.model.data( JSON.parse( pResult.text ).data );
             },
             error: function( pResult ){
                 console.log( 'an error occured', pResult );
@@ -29,12 +29,12 @@
      // ... and later:
 
      // when template list data has been read, render
-     that.templatesCRUD.data.observe( function templateCRUDDataChanged(){
+     that.model.data.observe( function templateCRUDDataChanged(){
         that.trigger( 'render' );
      });
 
      // read data
-     that.templatesCRUD.read({
+     that.model.read({
         // parameters ...
      });
 
