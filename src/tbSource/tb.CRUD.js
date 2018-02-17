@@ -29,7 +29,7 @@
      // ... and later:
 
      // when template list data has been read, render
-     that.model.data.observe( function templateCRUDDataChanged(){
+     that.model.data.observe( function modelDataChanged(){
         that.trigger( 'render' );
      });
 

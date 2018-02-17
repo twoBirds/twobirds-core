@@ -197,7 +197,7 @@ tb.namespace = (function(){
 
         that.namespace = pNamespace;
         that.target = pObject;
-        that.namespaceArray =  pNamespace.indexOf( '.' ) ? pNamespace.split('.') : pNamespace;
+        that.namespaceArray =  pNamespace.indexOf( '.' ) ? pNamespace.split('.') : [ pNamespace ];
         that.forceCreation = false;
     }
 
@@ -250,15 +250,15 @@ tb.namespace = (function(){
     function set( pValue ){
         var that = this;
 
-        that.value = pValue;
-
-        if ( typeof that.value === 'function' 
-            && that.value.constructor.prototype !== Function.prototype //jshint ignore:line
+        if ( typeof pValue === 'function' 
+            && pValue.prototype !== Function.prototype //jshint ignore:line
         ){ //it is a custom class
-            that.value.prototype.namespace = that.namespace;
+            pValue.prototype.namespace = that.namespace;
         }
 
+        that.value = pValue;
         that.forceCreation = true;
+
         return that._walk( !that.target ? window : that.target, that.namespaceArray );
     }
 

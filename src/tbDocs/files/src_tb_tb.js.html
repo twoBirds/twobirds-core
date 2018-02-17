@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.3</em>
+            <em>API Docs for: v8.0.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.0.3 - 2018-02-08 */
+/*! twobirds-core - v8.0.4 - 2018-02-17 */
 
 /**
  twoBirds V7 core functionality
@@ -3720,7 +3720,7 @@ tb.namespace = (function(){
 
         that.namespace = pNamespace;
         that.target = pObject;
-        that.namespaceArray =  pNamespace.indexOf( &#x27;.&#x27; ) ? pNamespace.split(&#x27;.&#x27;) : pNamespace;
+        that.namespaceArray =  pNamespace.indexOf( &#x27;.&#x27; ) ? pNamespace.split(&#x27;.&#x27;) : [ pNamespace ];
         that.forceCreation = false;
     }
 
@@ -3773,15 +3773,15 @@ tb.namespace = (function(){
     function set( pValue ){
         var that = this;
 
-        that.value = pValue;
-
-        if ( typeof that.value === &#x27;function&#x27; 
-            &amp;&amp; that.value.constructor.prototype !== Function.prototype //jshint ignore:line
+        if ( typeof pValue === &#x27;function&#x27; 
+            &amp;&amp; pValue.prototype !== Function.prototype //jshint ignore:line
         ){ //it is a custom class
-            that.value.prototype.namespace = that.namespace;
+            pValue.prototype.namespace = that.namespace;
         }
 
+        that.value = pValue;
         that.forceCreation = true;
+
         return that._walk( !that.target ? window : that.target, that.namespaceArray );
     }
 
@@ -5352,7 +5352,7 @@ tb.stop = (function(pStopIt){
      // ... and later:
 
      // when template list data has been read, render
-     that.model.data.observe( function templateCRUDDataChanged(){
+     that.model.data.observe( function modelDataChanged(){
         that.trigger( &#x27;render&#x27; );
      });
 
