@@ -3,14 +3,11 @@
 
 Welcome Birdies ;-)
 
-
-[I dont want to read a lot - give me a setup kick-start](#i-dont-want-to-read-a-lot-give-me-a-kick-start)
-
 [Tutorials](https://gitlab.com/twoBirds/twobirds-core/wikis/twoBirds-Tutorials)
 
 [I want to support this:&nbsp;&nbsp;&nbsp;![Flattr this](//button.flattr.com/flattr-badge-large.png)](https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) 
 
-You can also [contact me](mailTo:fthuerigen@googlemail.com) if you need a specific twoBirds plugin tailored for your needs. Usually that doesnt take a lot.
+You can also [contact me](mailTo:fthuerigen@googlemail.com?subject=regarding%20twoBirds%20...") if you need a specific twoBirds plugin tailored for your needs or if a question arises.
 
 INFO: This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
 
