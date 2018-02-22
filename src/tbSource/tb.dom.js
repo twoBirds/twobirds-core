@@ -1591,7 +1591,7 @@ if (typeof module === 'undefined' ){
 
          get or set all form input values
          */
-        function values() {
+        function values(pData) {
 
             var that = this,
                 node = that[0] || undefined,
@@ -1599,6 +1599,20 @@ if (typeof module === 'undefined' ){
 
             if ( !node ) { // nothing found
                 return that;
+            }
+
+            if ( typeof pData === 'object' && !!node ){ // it is a hash object
+                var v = tb.dom( node ).values();
+
+                Object
+                    .keys( pData )
+                    .forEach(function( pKey ){
+                        if ( v.hasOwnProperty( pKey ) ){
+                            v[pKey] = pData[ pKey ];
+                        }
+                    });
+
+                return;
             }
 
             node['values'] = !!node['values'] ? node['values'] : tb.observable({});
