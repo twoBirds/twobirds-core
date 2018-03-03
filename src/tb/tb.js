@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.4 - 2018-02-22 */
+/*! twobirds-core - v8.0.6 - 2018-03-03 */
 
 /**
  twoBirds V7 core functionality
@@ -2209,43 +2209,42 @@ if (typeof module === 'undefined' ){
                 rootNodes,
                 attributes = {};
 
-            if ( typeof pKey === 'object' && pKey.constructor === Object ){ // hash given
-
+            if ( typeof pKey === 'object' ){ // it is a hash object
+                
                 Object
                     .keys( pKey )
-                    .forEach(
-                        function( thisKey ){
-                            that.attr( thisKey, pKey[thisKey] );
-                        }
-                    );
+                    .forEach(function( pPropName ){
+                        that.forEach( function( pDomNode ){
+                            tb.dom( pDomNode ).attr( pPropName, pKey[pPropName] );
+                        });
+                    });
 
-            } else { // key/value pair expected
+                return that;
+            }
 
-                // if no arguments, return attribute object
-                if (!arguments.length) {
-                    [].forEach.call(
-                        that[0].attributes,
-                        function( pAttribute ){
-                            attributes[ pAttribute.name ] = pAttribute.value;
-                        }
-                    );
-                    return attributes;
-                }
-
-                // if no value is given and there are elements, return attribute value of first in list
-                if ( pValue === undefined && that.length > 0 ) {
-                    return that[0].getAttribute(pKey);
-                }
-
-                // if a value to set is given, apply to all nodes in list
-                rootNodes = that.toArray();
-                rootNodes.forEach(
-                    function (pNode) {
-                        pNode.setAttribute(pKey, pValue);
+            // if no arguments, return attribute object of first in list
+            if (!arguments.length) {
+                [].forEach.call(
+                    that[0].attributes,
+                    function( pAttribute ){
+                        attributes[ pAttribute.name ] = pAttribute.value;
                     }
                 );
-
+                return attributes;
             }
+
+            // if no value is given and there are elements, return attribute value of first in list
+            if ( pValue === undefined && that.length > 0 ) {
+                return that[0].getAttribute(pKey);
+            }
+
+            // if a value to set is given, apply to all nodes in list
+            rootNodes = that.toArray();
+            rootNodes.forEach(
+                function (pNode) {
+                    pNode.setAttribute(pKey, pValue);
+                }
+            );
 
             return that;
         }
