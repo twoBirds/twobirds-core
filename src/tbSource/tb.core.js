@@ -97,7 +97,7 @@ tb = (function(){
             // selection by dom selector string
             case 'string':
                 
-                tb.dom( pSelector+'[data-tb]', pDomNode || document.window )
+                tb.dom( pSelector+'[data-tb]', pDomNode || window )
                     .forEach(
                         function ( pThisNode ) {
                             if ( !!pThisNode.tb ){
@@ -123,7 +123,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( '[data-tb]', pDomNode || document.window )
+                    tb.dom( '[data-tb]', pDomNode || window )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -178,7 +178,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case 'function':
 
-                tb.dom( '[data-tb]', pDomNode || document.window )
+                tb.dom( '[data-tb]', pDomNode || window )
                     .map(
                         function ( pDomNode ) {
                             Object

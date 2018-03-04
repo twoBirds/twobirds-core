@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.6 - 2018-03-03 */
+/*! twobirds-core - v8.0.7 - 2018-03-04 */
 
 /**
  twoBirds V7 core functionality
@@ -99,7 +99,7 @@ tb = (function(){
             // selection by dom selector string
             case 'string':
                 
-                tb.dom( pSelector+'[data-tb]', pDomNode || document.window )
+                tb.dom( pSelector+'[data-tb]', pDomNode || window )
                     .forEach(
                         function ( pThisNode ) {
                             if ( !!pThisNode.tb ){
@@ -125,7 +125,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( '[data-tb]', pDomNode || document.window )
+                    tb.dom( '[data-tb]', pDomNode || window )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -180,7 +180,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case 'function':
 
-                tb.dom( '[data-tb]', pDomNode || document.window )
+                tb.dom( '[data-tb]', pDomNode || window )
                     .map(
                         function ( pDomNode ) {
                             Object
@@ -4827,7 +4827,7 @@ tb.require = function( pFiles, pCallback ){
                     try {
                         tb.require.repo[type][pFile] = JSON.parse(data.text);
                     } catch (e) {
-                        console.error('result parsing, valid JSON expected in:', data);
+                        console.error('invalid JSON: ', data);
                     }
                 } else {
                     tb.require.repo[type][pFile] = data.text;
@@ -4862,6 +4862,115 @@ tb.require.get = function(pFile){
 /**
  @memberof tb
  @static
+ @method tb.WebSocket
+
+ @param pOptions { object } a hash object containing these options:
+
+ @param {string} pOptions.url - the URL to call
+ @param {array} [pOptions.protocols] - array containing protocol names the server can choose from
+
+ @return {object} - a twoBirds compliant websocket implementation instance
+
+ @example
+
+        // hint: you must use ws:// from http:// apps, and wss:// from https:// apps
+        var ws = tb.WebSocket(
+            'ws://localhost:8000'
+        ).on(
+            'error',
+            function(){
+                console.error( 'error establishing connection' );
+            }
+        ).on(
+            'open',
+            function(){
+                console.log( 'connection opened' );
+            }
+        ).on(
+            'close',
+            function(){
+                console.log( 'connection closed' );
+            }
+        ).on(
+            'message',
+            function( pMessage ){
+                console.log( pMessage );
+            }
+        );
+
+        ws.send(JSON.stringify( { id: tb.getId(), msg: 'Hallo' } ));
+
+        ws.close();
+
+ */
+if (typeof module === 'undefined' ){
+    tb.webSocket = (function () {
+
+        function WS( pConfig ){
+            var that = this;
+
+            that.config = pConfig;
+
+            that.handlers = {
+                'open': [],
+                'message': [],
+                'error': [],
+                'close': []
+            };
+
+            that.socket = new WebSocket( // jshint ignore:line
+                that.config.url, 
+                that.config['protocols'] || undefined 
+            );
+
+            that.socket.onopen = function onOpen( ev ){
+                that.trigger( 'open', ev );
+            };
+            
+            that.socket.onerror = function onError( ev ){
+                that.trigger( 'error', ev );
+            };
+            
+            that.socket.onmessage = function onMessage( ev ){
+                that.trigger( 'message', ev.data );
+            };
+            
+            that.socket.onclose = function onClose( ev ){
+                that.trigger( 'close', ev );
+            };
+            
+        } 
+
+        WS.prototype = {
+            send: send,
+            close: close
+        };
+
+        return function( pUrl, pProtocols ){
+            return new tb( 
+                WS, 
+                { 
+                    url: pUrl,
+                    protocols: pProtocols
+                }
+            );
+        };
+
+        function send( pSend ){
+            this.socket.send( pSend );
+        }
+
+        function close(){
+            this.socket.close();
+        }
+
+    })();
+
+}
+
+/**
+ @memberof tb
+ @static
  @method tb.request
 
  @param pOptions { object } a hash object containing these options:<br><br><br>
@@ -4877,7 +4986,7 @@ tb.require.get = function(pFile){
     cb: callback to run when timeout occurs
     ms: number of milliseconds the request will run before being terminated
  @param {boolean} [pOptions.cachable] - defaults to true, indicates whether or not to include a unique id in URL
- @param {boolean} [pOptions.async] - whether or not to make an asynchronous request
+ @param {boolean} [pOptions.async] - defaults to true, indicates whether or not to make an asynchronous request
 
  @return {object} - a Promise/A+ compliant promise object
 
