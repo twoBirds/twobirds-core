@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.8 - 2018-03-04 */
+/*! twobirds-core - v8.0.9 - 2018-03-04 */
 
 /**
  twoBirds V7 core functionality
@@ -321,7 +321,7 @@ tb = (function(){
 
                 // prepare
                 if ( !tbClass.prototype.__tb__ ){
-                    Object.defineProperty( tbClass.prototype, '__tb__', { value: 'V7', enumerable: true } );
+                    Object.defineProperty( tbClass.prototype, '__tb__', { value: 'V8', enumerable: true } );
                     Object.setPrototypeOf( tbClass.prototype, tb.prototype );
                 }
 
@@ -4869,7 +4869,7 @@ tb.require.get = function(pFile){
  @param {string} pOptions.url - the URL to call
  @param {array} [pOptions.protocols] - array containing protocol names the server can choose from
 
- @return {object} - a twoBirds compliant websocket implementation instance
+ @return {object} - a twoBirds compliant websocket implementation
 
  @example
 

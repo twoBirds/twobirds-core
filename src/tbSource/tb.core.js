@@ -319,7 +319,7 @@ tb = (function(){
 
                 // prepare
                 if ( !tbClass.prototype.__tb__ ){
-                    Object.defineProperty( tbClass.prototype, '__tb__', { value: 'V7', enumerable: true } );
+                    Object.defineProperty( tbClass.prototype, '__tb__', { value: 'V8', enumerable: true } );
                     Object.setPrototypeOf( tbClass.prototype, tb.prototype );
                 }
 

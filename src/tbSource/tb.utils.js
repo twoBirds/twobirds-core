@@ -1422,7 +1422,7 @@ tb.require.get = function(pFile){
  @param {string} pOptions.url - the URL to call
  @param {array} [pOptions.protocols] - array containing protocol names the server can choose from
 
- @return {object} - a twoBirds compliant websocket implementation instance
+ @return {object} - a twoBirds compliant websocket implementation
 
  @example
 
