@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.7</em>
+            <em>API Docs for: v8.0.8</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -241,17 +241,13 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_tb.WebSocket">tb.WebSocket</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_"></a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_tb.stop">tb.stop</a>
 
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_tb.webSocket">tb.webSocket</a>
+
+                                    <span class="flag static">static</span>
                             </li>
                     </ul>
                 </div>
@@ -563,8 +559,78 @@ ms: number of milliseconds the request will run before being terminated</li>
             </div>
         </div>
 </div>
-<div id="method_tb.WebSocket" class="method item">
-    <h3 class="name"><code>tb.WebSocket</code></h3>
+<div id="method_tb.stop" class="method item">
+    <h3 class="name"><code>tb.stop</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>pStopit</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_tb_tb.js.html#l5332"><code>src&#x2F;tb&#x2F;tb.js:5332</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">pStopit</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>indicating whether to stop event handling</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
+                    <ul>
+<li>true if event handling stopped, else false</li>
+</ul>
+<p>stops event handling</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_tb.webSocket" class="method item">
+    <h3 class="name"><code>tb.webSocket</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -662,7 +728,7 @@ ms: number of milliseconds the request will run before being terminated</li>
 
             <div class="example-content">
                 <pre class="code prettyprint"><code>   // hint: you must use ws:// from http:// apps, and wss:// from https:// apps
-   var ws = tb.WebSocket(
+   var ws = tb.webSocket(
        'ws://localhost:8000'
    ).on(
        'error',
@@ -693,106 +759,6 @@ ms: number of milliseconds the request will run before being terminated</li>
 
             </div>
         </div>
-</div>
-<div id="method_" class="method item">
-    <h3 class="name"><code></code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_tb_tb.js.html#l5178"><code>src&#x2F;tb&#x2F;tb.js:5178</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_tb.stop" class="method item">
-    <h3 class="name"><code>tb.stop</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pStopit</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_tb_tb.js.html#l5337"><code>src&#x2F;tb&#x2F;tb.js:5337</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pStopit</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-
-
-                    <div class="param-description">
-                        <ul>
-<li>indicating whether to stop event handling</li>
-</ul>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>:
-                    <ul>
-<li>true if event handling stopped, else false</li>
-</ul>
-<p>stops event handling</p>
-
-            </div>
-        </div>
-
-
 </div>
             </div>
 

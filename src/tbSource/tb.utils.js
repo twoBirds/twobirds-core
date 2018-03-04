@@ -1415,7 +1415,7 @@ tb.require.get = function(pFile){
 /**
  @memberof tb
  @static
- @method tb.WebSocket
+ @method tb.webSocket
 
  @param pOptions { object } a hash object containing these options:
 
@@ -1427,7 +1427,7 @@ tb.require.get = function(pFile){
  @example
 
         // hint: you must use ws:// from http:// apps, and wss:// from https:// apps
-        var ws = tb.WebSocket(
+        var ws = tb.webSocket(
             'ws://localhost:8000'
         ).on(
             'error',
@@ -1727,11 +1727,6 @@ if (typeof module === 'undefined' ){
             }
         }
 
-
-        /**
-         @name tb.request
-         @function
-         */
         return function (pOptions) {
             var uid = 'tb' + tb.getId(),
                 xmlreq = getConnection(uid),
