@@ -1456,25 +1456,22 @@ tb.require.get = function(pFile){
         ws.close();
 
  */
-if (typeof module === 'undefined' ){
+if (typeof module === 'undefined') {
     tb.webSocket = (function () {
 
-        function WS( pConfig ){
+         function WS( pConfig ){
             var that = this;
 
             that.config = pConfig;
 
-            that.handlers = {
-                'open': [],
-                'message': [],
-                'error': [],
-                'close': []
-            };
-
-            that.socket = new WebSocket( // jshint ignore:line
-                that.config.url, 
-                that.config['protocols'] || undefined 
-            );
+            that.socket = !!that.config['protocols']
+                ? new WebSocket( // jshint ignore:line
+                    that.config.url, 
+                    that.config['protocols']
+                )
+                : new WebSocket( // jshint ignore:line
+                    that.config.url 
+                );
 
             that.socket.onopen = function onOpen( ev ){
                 that.trigger( 'open', ev );
@@ -1491,7 +1488,7 @@ if (typeof module === 'undefined' ){
             that.socket.onclose = function onClose( ev ){
                 that.trigger( 'close', ev );
             };
-            
+                   
         } 
 
         WS.prototype = {
@@ -1508,12 +1505,12 @@ if (typeof module === 'undefined' ){
                 }
             );
         };
-
-        function send( pSend ){
-            this.socket.send( pSend );
+        
+        function send(pSend) {
+            this.socket.send(pSend);
         }
 
-        function close(){
+        function close() {
             this.socket.close();
         }
 
