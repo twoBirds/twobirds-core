@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.10 - 2018-03-08 */
+/*! twobirds-core - v8.0.11 - 2018-03-15 */
 
 /**
  twoBirds V7 core functionality
@@ -2009,18 +2009,22 @@ if (typeof module === 'undefined' ){
             clean: clean,
             descendants: descendants,
             empty: empty,
+            filter: filter,
+            first: first,
             hasClass: hasClass,
             hide: hide,
             html: html,
             insertBefore: insertBefore,
             insertAfter: insertAfter,
-            filter: filter,
+            last: last,
+            next: next,
             not: not,
             off: off,
             on: on,
             one: one,
             parent: parent,
             parents: parents,
+            previous: previous,
             remove: remove,
             removeAttr: removeAttr,
             removeClass: removeClass,
@@ -2415,6 +2419,26 @@ if (typeof module === 'undefined' ){
         }
 
         /**
+         @method first
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return tb.dom() result set, that contains only the first element in tb.dom( pSelector ) result set
+         */
+        function first() {
+
+            var that = this,
+                result = tb.dom();
+
+            if ( !!tb.dom.length ){
+                result.push( tb.dom[0] );
+            }
+
+            return result;
+        }
+
+        /**
          @method hasClass
          @param pClass {string} - class name
 
@@ -2553,6 +2577,49 @@ if (typeof module === 'undefined' ){
             );
 
             return that;
+        }
+
+        /**
+         @method last
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return tb.dom() result set, that contains only the last element in tb.dom( pSelector ) result set
+         */
+        function last() {
+
+            var that = this,
+                result = tb.dom();
+
+            if ( !!tb.dom.length ){
+                result.push( that.pop() );
+            }
+
+            return result;
+        }
+
+        /**
+         @method next
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return tb.dom() result set, that contains only the next element 
+         of the first element in tb.dom( pSelector ) result set
+         */
+        function next() {
+
+            var that = this,
+                result = tb.dom();
+
+            if ( !!tb.dom.length ){
+                if ( !!that[0].nextSibling ){
+                    result.push( that[0].nextSibling );
+                }
+            }
+
+            return result;
         }
 
         /**
@@ -2819,6 +2886,29 @@ if (typeof module === 'undefined' ){
                     }
                 }
             );
+
+            return result;
+        }
+
+        /**
+         @method previous
+         @chainable
+
+         @return {object} - tb.dom() result set, may be empty
+
+         return tb.dom() result set, that contains only the previous element 
+         of the first element in tb.dom( pSelector ) result set
+         */
+        function previous() {
+
+            var that = this,
+                result = tb.dom();
+
+            if ( !!tb.dom.length ){
+                if ( !!that[0].previousSibling ){
+                    result.push( that[0].previousSibling );
+                }
+            }
 
             return result;
         }
