@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.11 - 2018-03-15 */
+/*! twobirds-core - v8.0.12 - 2018-03-15 */
 
 /**
  twoBirds V7 core functionality
@@ -2432,7 +2432,7 @@ if (typeof module === 'undefined' ){
                 result = tb.dom();
 
             if ( !!tb.dom.length ){
-                result.push( tb.dom[0] );
+                result.push( that[0] );
             }
 
             return result;

@@ -737,7 +737,7 @@ if (typeof module === 'undefined' ){
                 result = tb.dom();
 
             if ( !!tb.dom.length ){
-                result.push( tb.dom[0] );
+                result.push( that[0] );
             }
 
             return result;
