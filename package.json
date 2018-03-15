@@ -21,6 +21,7 @@
     "grunt-contrib-yuidoc": "^1.0.0",
     "jasmine-core": "^2.4.1"
   },
+  
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/twoBirds/twobirds-core"
