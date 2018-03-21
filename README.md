@@ -26,7 +26,7 @@ twoBirds is as easy as jQuery, but on application/framework level.
 
 - build native apps using [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework))
 
-tB can completely replace your stack from the data source to the display - including microservice architecture. [Progressive Web App](https://en.wikipedia.org/wiki/Progressive_Web_Apps) programming is supported as well, but doesn't require special tB functionality anyway.
+**tB can completely replace your stack from the data source to the display** - including microservice architecture. [Progressive Web App](https://en.wikipedia.org/wiki/Progressive_Web_Apps) programming is supported as well, but doesn't require special tB functionality anyway.
 
 All of this is archived using the same coding style. twoBirds classes can render on the server side and on the client side with minimal changes.
 
