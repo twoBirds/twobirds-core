@@ -27,15 +27,15 @@ twoBirds is like jQuery on application level.
 
 - build a plain old website using serverside rendering from ground up ( NodeJS based )
 
-- add JS functionality to an existing serverside rendered webpage in a simple way, no matter which framework is used on the server side.
+- add JS functionality to an existing serverside rendered webpage in a simple way, no matter which framework is used on the server side
 
 - build a [single page application](single page application) from ground up ( client side rendering )
 
-- mix all of the above to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly.
+- mix all of the above to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly
 
-- build mobile apps using phonegap/cordova
+- build mobile apps using [Phonegap/Cordova](https://en.wikipedia.org/wiki/Apache_Cordova)
 
-- build native apps using electron
+- build native apps using [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework))
 
 tB can completely replace your stack from the data source to the display - including microservice architecture. [Progressive Web App](https://en.wikipedia.org/wiki/Progressive_Web_Apps) programming is supported as well, but doesn't require special tB functionality anyway.
 
