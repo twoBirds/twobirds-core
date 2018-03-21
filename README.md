@@ -2,18 +2,14 @@
 
 Welcome Birdies ;-)
 
-### twoBirds is a ...
-
-
+**twoBirds is a ...**
 - lightweight, 
 - component-based, 
 - event-driven / loosely coupled, 
 - vanilla
+**Javascript library that maps objects to DOM nodes or into other objects.**
 
-### ... Javascript library that maps objects to DOM nodes or into other objects.
-
-
-- twoBirds is as easy as jQuery, but on application level.
+twoBirds is as easy as jQuery, but on application/framework level.
 
 ### twoBirds supports all targets and web programming use cases, so using twoBirds alone you can...
 
