@@ -12,7 +12,7 @@ Welcome Birdies ;-)
 
 twoBirds is as easy as jQuery, but on application/framework level.
 
-**twoBirds supports all targets and web programming use cases, so using twoBirds alone you can...**
+twoBirds supports all targets and web programming use cases, so **using twoBirds alone you can...**
 
 - **build a plain old website** using serverside rendering from ground up ( NodeJS based )
 
