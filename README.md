@@ -1,4 +1,3 @@
-
 # twoBirds
 
 Welcome Birdies ;-)
@@ -26,11 +25,11 @@ twoBirds is like jQuery on application level.
 
 **using twoBirds alone you can...**
 
-- build a website using serverside rendering from ground up ( NodeJS based )
+- build a plain old website using serverside rendering from ground up ( NodeJS based )
 
 - add JS functionality to an existing serverside rendered webpage in a simple way, no matter which framework is used on the server side.
 
-- build a single page application from ground up ( client side rendering )
+- build a [single page application](single page application) from ground up ( client side rendering )
 
 - mix all of the above to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly.
 
@@ -38,7 +37,7 @@ twoBirds is like jQuery on application level.
 
 - build native apps using electron
 
-tB can completely replace your stack from the data source to the display - including microservice architecture. PWA programming is supported as well, but doesn't require special tB functionality anyway.
+tB can completely replace your stack from the data source to the display - including microservice architecture. [Progressive Web App](https://en.wikipedia.org/wiki/Progressive_Web_Apps) programming is supported as well, but doesn't require special tB functionality anyway.
 
 All of this is archived using the same coding style. twoBirds classes can render on the server side and on the client side with minimal changes.
 
@@ -48,8 +47,8 @@ twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_
 
 The tB core can be seen as an intermediate step between a simple wrapper/helper library like jQuery and a fully fledged JS framework. 
 
-Like the first, it has selectors for the dom and reasonable modification methods. 
+Like the first, it has selectors for the DOM and reasonable modification methods. 
 
 Like the latter, it incorporates a higher level abstraction scheme for application objects.
 
-tB is JS-linted, jasmine tested and this package contains the complete API documentation. Technically it is the minimum possible toolkit to create an application or reusable js framework.
+tB is JS-linted, Jasmine tested and this package contains the complete API documentation. Technically it is the minimum possible toolkit to create an application or reusable JS library.
