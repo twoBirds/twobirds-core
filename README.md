@@ -11,8 +11,6 @@ You can also [contact me](mailTo:fthuerigen@googlemail.com?subject=regarding%20t
 
 INFO: This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
 
-## Intro
-
 #### twoBirds is a ...
 
 - lightweight, 
@@ -44,7 +42,7 @@ tB can completely replace your stack from the data source to the display - inclu
 
 All of this is archived using the same coding style. twoBirds classes can render on the server side and on the client side with minimal changes.
 
-##### Principles
+#### Principles
 
 twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines.
 
