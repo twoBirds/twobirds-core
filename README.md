@@ -13,28 +13,28 @@ INFO: This readme only contains a short description - the repository contains a 
 
 ## Intro
 
-##### twoBirds is a ...
+#### twoBirds is a ...
 
 - lightweight, 
 - component-based, 
 - event-driven / loosely coupled, 
 - native
 
-##### ... JavaScript library that maps objects to DOM nodes or into other objects.
+#### ... JavaScript library that maps objects to DOM nodes or into other objects.
 
 twoBirds is like jQuery on application level.
 
-##### twoBirds supports all targets and web programming use cases
+#### twoBirds supports all targets and web programming use cases
 
-**with twoBirds alone you can...**
+**using twoBirds alone you can...**
+
+- build a website using serverside rendering from ground up ( NodeJS based )
 
 - add JS functionality to an existing serverside rendered webpage in a simple way, no matter which framework is used on the server side.
 
-- build a single page application from ground up
+- build a single page application from ground up ( client side rendering )
 
-- build a website using serverside rendering from ground up
-
-- mix all of the above to optimize for search engines, or migrate and existing serverside webpage to an SPA on the fly.
+- mix all of the above to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly.
 
 - build mobile apps using phonegap/cordova
 
