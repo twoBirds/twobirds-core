@@ -14,19 +14,21 @@ twoBirds is as easy as jQuery, but on application/framework level.
 
 **twoBirds supports all targets and web programming use cases, so using twoBirds alone you can...**
 
-- build a plain old website using serverside rendering from ground up ( NodeJS based )
+- **build a plain old website** using serverside rendering from ground up ( NodeJS based )
 
-- add JS functionality to an existing serverside rendered webpage in a simple way, no matter which framework was used on the server side
+- **add JS functionality to an existing webpage** in a simple way, no matter which framework was used on the server side
 
-- build a [single page application](single page application) from ground up ( client side rendering )
+- **build a [single page application](single page application)** from ground up ( client side rendering )
 
 - mix all of the above to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly
 
-- build mobile apps using [Phonegap/Cordova](https://en.wikipedia.org/wiki/Apache_Cordova)
+- **build microservices**
 
-- build native apps using [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework))
+- **build mobile apps** using [Phonegap/Cordova](https://en.wikipedia.org/wiki/Apache_Cordova)
 
-**tB can completely replace your stack from the data source to the display** - including microservice architecture. [Progressive Web App](https://en.wikipedia.org/wiki/Progressive_Web_Apps) programming is supported as well, but doesn't require special tB functionality anyway.
+- **build windows, linux and mac apps** using [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework))
+
+**tB can completely replace your stack from the data source to the display**. [Progressive Web App](https://en.wikipedia.org/wiki/Progressive_Web_Apps) programming is supported as well, but doesn't require special tB functionality anyway.
 
 All of this is archived using the same coding style. twoBirds classes can render on the server side and on the client side with minimal changes.
 
