@@ -2,24 +2,20 @@
 
 Welcome Birdies ;-)
 
-This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
-
 #### twoBirds is a ...
+
 
 - lightweight, 
 - component-based, 
 - event-driven / loosely coupled, 
-- native
+- vanilla
 
-#### ... JavaScript library that maps objects to DOM nodes or into other objects.
-
-twoBirds is as easy as jQuery, but on application level.
-
-#### twoBirds supports all targets and web programming use cases
+#### ... Javascript library that maps objects to DOM nodes or into other objects.
 
 
+- twoBirds is as easy as jQuery, but on application level.
 
-**using twoBirds alone you can...**
+### twoBirds supports all targets and web programming use cases, so using twoBirds alone you can...
 
 - build a plain old website using serverside rendering from ground up ( NodeJS based )
 
@@ -37,7 +33,7 @@ tB can completely replace your stack from the data source to the display - inclu
 
 All of this is archived using the same coding style. twoBirds classes can render on the server side and on the client side with minimal changes.
 
-#### Principles
+### Principles
 
 twoBirds strictly follows the [KISS](http://principles-wiki.net/principles:keep_it_simple_stupid) and [DRY](http://principles-wiki.net/principles:don_t_repeat_yourself) doctrines.
 
@@ -49,7 +45,9 @@ Like the latter, it incorporates a higher level abstraction scheme for applicati
 
 tB is JS-linted, Jasmine tested and this package contains the complete API documentation. Technically it is the minimum possible toolkit to create an application or reusable JS library.
 
-#### Supplementary information
+### Supplementary information
+
+This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
 
 [Tutorials](https://gitlab.com/twoBirds/twobirds-core/wikis/twoBirds-Tutorials) (work in progress)
 
