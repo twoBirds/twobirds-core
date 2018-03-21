@@ -2,13 +2,7 @@
 
 Welcome Birdies ;-)
 
-[Tutorials](https://gitlab.com/twoBirds/twobirds-core/wikis/twoBirds-Tutorials) (work in progress)
-
-[I want to support this:&nbsp;&nbsp;&nbsp;![Flattr this](//button.flattr.com/flattr-badge-large.png)](https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) 
-
-You can also [contact me](mailTo:fthuerigen@googlemail.com?subject=regarding%20twoBirds%20...") if you need a specific twoBirds plugin tailored for your needs or if a question arises.
-
-INFO: This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
+This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
 
 #### twoBirds is a ...
 
@@ -52,3 +46,12 @@ Like the first, it has selectors for the DOM and reasonable modification methods
 Like the latter, it incorporates a higher level abstraction scheme for application objects.
 
 tB is JS-linted, Jasmine tested and this package contains the complete API documentation. Technically it is the minimum possible toolkit to create an application or reusable JS library.
+
+#### Supplementary information
+
+[Tutorials](https://gitlab.com/twoBirds/twobirds-core/wikis/twoBirds-Tutorials) (work in progress)
+
+[I want to support this:&nbsp;&nbsp;&nbsp;![Flattr this](//button.flattr.com/flattr-badge-large.png)](https://flattr.com/submit/auto?fid=royvyd&url=https%3A%2F%2Fgitlab.com%2FtwoBirds%2Ftwobirds-core) 
+
+You can also [contact me](mailTo:fthuerigen@googlemail.com?subject=regarding%20twoBirds%20...") if you need a specific twoBirds plugin tailored for your needs or if a question arises.
+
