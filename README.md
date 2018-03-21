@@ -13,15 +13,17 @@ This readme only contains a short description - the repository contains a docume
 
 #### ... JavaScript library that maps objects to DOM nodes or into other objects.
 
-twoBirds is like jQuery on application level.
+twoBirds is as easy as jQuery, but on application level.
 
 #### twoBirds supports all targets and web programming use cases
+
+
 
 **using twoBirds alone you can...**
 
 - build a plain old website using serverside rendering from ground up ( NodeJS based )
 
-- add JS functionality to an existing serverside rendered webpage in a simple way, no matter which framework is used on the server side
+- add JS functionality to an existing serverside rendered webpage in a simple way, no matter which framework was used on the server side
 
 - build a [single page application](single page application) from ground up ( client side rendering )
 
