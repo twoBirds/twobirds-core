@@ -16,19 +16,19 @@ twoBirds supports all targets and web programming use cases, so **using twoBirds
 
 - **add JS functionality to an existing webpage** in a simple way, no matter which framework was used on the server side
 
-- **build a [single page application](single page application)** from ground up ( client side rendering )
+- **build a [single page application](single page application)** from ground up
 
-- **build a plain old website** using serverside rendering from ground up [using NodeJS](https://de.wikipedia.org/wiki/Node.js)
+- **build a plain old website** using serverside rendering from ground up using [NodeJS](https://de.wikipedia.org/wiki/Node.js)
 
 - **mix all of the above** to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly
 
-- **build microservices** [using NodeJS](https://de.wikipedia.org/wiki/Node.js)
+- **build microservices** using [NodeJS](https://de.wikipedia.org/wiki/Node.js)
 
 - **build mobile apps** using [Phonegap/Cordova](https://en.wikipedia.org/wiki/Apache_Cordova)
 
 - **build windows, linux and mac apps** using [Electron](https://en.wikipedia.org/wiki/Electron_(software_framework))
 
-**tB can completely replace your stack from the data source to the display**. It is one coding style using only vanilla Javascript.
+**tB can completely replace your stack from the data source to the display**. It is one coding style using only vanilla Javascript plus some conventions and utilities.
 
 twoBirds visible objects can be rendered on the server side and on the client side with minimal changes, or even be programmed to support both from the beginning.
 
