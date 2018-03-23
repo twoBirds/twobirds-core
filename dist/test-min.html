@@ -60,7 +60,42 @@
 
         <script>
             tb.idle(
+
                 function(){
+
+                    // make svg favicon
+                    var $ = tb.dom,
+                        $c = $('<canvas>'),
+                        i = new Image();
+                    
+                    function loaded(){
+                                
+                        //set canvas to image size
+                        $c.attr({
+                            height: i.height,
+                            width: i.width
+                        });
+
+                        // get context
+                        var ctx = $c[0].getContext('2d');
+                        ctx.globalCompositeOperation = 'copy';
+                        ctx.drawImage(i, 0, 0, $c.attr('width'), $c.attr('height'));
+
+                        // copy context content to link node
+                        $('<link rel="icon">')
+                            .attr(
+                                'href', 
+                                $c[0].toDataURL()
+                            )
+                            .appendTo(
+                                document.head
+                            );
+                    }
+
+                    i.addEventListener('load', loaded)
+                    i.src = '/twoBirds.svg';
+
+                    // run tests
                     tb.Require([
                         'tbTest.js'
                     ]);
@@ -69,12 +104,13 @@
         </script>
     </head>
     <body data-tb="test.GrandParent">
+        <img style="position:fixed;top:10px;right:10px" src="/twoBirds.svg"/>
         <form name="existingForm">
             <!-- sample form to start with -->
             <fieldset>
                 <legend>Inputs</legend>
                 <label>text</label><input type="text" name="textInput" value="Hallo" />&nbsp;<strong>2wB:&nbsp;</strong>{textInput}
-                <label>color</label><input type="color" name="colorInput" value="" />
+                <label>color</label><input type="color" name="colorInput" value="#000000" />
                 <label>date</label><input type="date" name="dateInput" value="" />
                 <label>datetime-local</label><input type="datetime-local" name="dtlInput" value="" />
                 <label>email</label><input type="email" name="email" value="" />

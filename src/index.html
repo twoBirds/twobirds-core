@@ -3,6 +3,50 @@
     <head>
         <title>tb manual testing</title>
         <script src="tb/tb.js"></script>
+        <script>
+            tb.idle(
+
+                function(){
+
+                    // make svg favicon
+                    var $ = tb.dom,
+                        $c = $('<canvas>'),
+                        i = new Image();
+                    
+                    function loaded(){
+                                
+                        //set canvas to image size
+                        $c.attr({
+                            height: i.height,
+                            width: i.width
+                        });
+
+                        // get context
+                        var ctx = $c[0].getContext('2d');
+                        ctx.globalCompositeOperation = 'copy';
+                        ctx.drawImage(i, 0, 0, $c.attr('width'), $c.attr('height'));
+
+                        // copy context content to link node
+                        $('<link rel="icon">')
+                            .attr(
+                                'href', 
+                                $c[0].toDataURL()
+                            )
+                            .appendTo(
+                                document.head
+                            );
+                    }
+
+                    i.addEventListener('load', loaded)
+                    i.src = '/twoBirds.svg';
+
+                    // run tests
+                    tb.Require([
+                        'tbTest.js'
+                    ]);
+                }
+            );
+        </script>
     </head>
     <body>
         <a href="tbDocs/index.html">twoBirds API Documentation</a>

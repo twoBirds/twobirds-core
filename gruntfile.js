@@ -65,7 +65,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'src',
-                        src: [ 'test-min.html', 'repo.js', 'test.json' ],
+                        src: [ 'test-min.html', 'repo.js', 'test.json', 'twoBirds.svg' ],
                         dest: 'dist'
                     }
                 ]

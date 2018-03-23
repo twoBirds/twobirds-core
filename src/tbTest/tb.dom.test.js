@@ -209,9 +209,9 @@ describe("tb.dom() selector tests", function() {
 
         describe(".children()", function() {
 
-            it("tb.dom('body').children().length === 7", function() {
+            it("tb.dom('body').children().length === 8", function() {
                 // includes jasmine din tag
-                expect( tb.dom('body').children().length === 7 ).toBe( true );
+                expect( tb.dom('body').children().length === 8 ).toBe( true );
             });
 
             it("tb.dom('body').children('div.test-parent').length === 5", function() {
