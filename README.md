@@ -1,6 +1,6 @@
-# twoBirds
+<img src="http://twobirds.gitlab.io/twobirds-core/twoBirds.svg" style="float:left">
 
-![twoBirds logo](http://twobirds.gitlab.io/twobirds-core/twoBirds.svg)
+# twoBirds
 
 Welcome Birdies ;-)
 
