@@ -72,7 +72,7 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: 'src',
                         src: [ 'twoBirds.svg' ],
-                        dest: 'src/tbDocs/files'
+                        dest: 'src/tbDocs'
                     }
                 ]
             }
@@ -206,10 +206,10 @@ module.exports = function(grunt) {
             'clean',
             'copy:before',
             'concat',
+            'yuidoc',
             'uglify',
             'jshint',
-            'copy:main',
-            'yuidoc'
+            'copy:main'
         ]
     );
 
