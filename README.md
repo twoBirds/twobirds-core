@@ -1,5 +1,7 @@
 # twoBirds
 
+![twoBirds logo](http://twobirds.gitlab.io/twobirds-core/twoBirds.svg)
+
 Welcome Birdies ;-)
 
 **twoBirds is a ...**
@@ -46,7 +48,7 @@ tB is JS-linted, Jasmine tested and this package contains the complete API docum
 
 ### Supplementary information
 
-This readme only contains a short description - the repository contains a documentation web page in /src/tbDocs/index.html - simply click on it after cloning.
+[API](http://twobirds.gitlab.io/twobirds-core/)
 
 [Tutorials](https://gitlab.com/twoBirds/twobirds-core/wikis/twoBirds-Tutorials) (work in progress)
 
