@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.36 - 2018-03-26 */
+/*! twobirds-core - v8.0.37 - 2018-03-27 */
 
 /**
  twoBirds V7 core functionality
@@ -1666,7 +1666,9 @@ if (typeof module !== 'undefined') {
     (function(){
 
         function domReady () {
-            tb.attach( document.body ); // find all tb dom nodes and add tb objects if not yet done
+            // find all tb head & DOM nodes and add tb objects if not yet done
+            tb.attach( document.head ); 
+            tb.attach( document.body ); 
         }
 
         // Mozilla, Opera, Webkit

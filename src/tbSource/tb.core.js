@@ -1664,7 +1664,9 @@ if (typeof module !== 'undefined') {
     (function(){
 
         function domReady () {
-            tb.attach( document.body ); // find all tb dom nodes and add tb objects if not yet done
+            // find all tb head & DOM nodes and add tb objects if not yet done
+            tb.attach( document.head ); 
+            tb.attach( document.body ); 
         }
 
         // Mozilla, Opera, Webkit
