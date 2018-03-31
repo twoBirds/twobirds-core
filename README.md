@@ -16,7 +16,7 @@ twoBirds is as easy as jQuery, but on application/framework level.
 
 twoBirds supports all targets and web programming use cases, so **using twoBirds alone you can...**
 
-- **add JS functionality to an existing webpage** in the most simple way, no matter which framework was used on the server side ([Progressive enhancement:](https://en.wikipedia.org/wiki/Progressive_enhancement))
+- **add JS functionality to an existing webpage** in the most simple way, no matter which framework was used on the server side ([progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement))
 
 - **build a [single page application](https://en.wikipedia.org/wiki/Single-page_application)** from ground up
 
