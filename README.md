@@ -24,7 +24,7 @@ twoBirds supports all targets and web programming use cases, so **using twoBirds
 
 - **mix all of the above** to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly
 
-- **build microservices** using [NodeJS](https://en.wikipedia.org/wiki/Node.js)
+- **build multi-tier microservices** using [NodeJS](https://en.wikipedia.org/wiki/Node.js)
 
 - **build mobile apps** using [Phonegap/Cordova](https://en.wikipedia.org/wiki/Apache_Cordova)
 
