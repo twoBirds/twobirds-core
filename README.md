@@ -18,13 +18,13 @@ twoBirds supports all targets and web programming use cases, so **using twoBirds
 
 - **add JS functionality to an existing webpage** in a simple way, no matter which framework was used on the server side
 
-- **build a [single page application](single page application)** from ground up
+- **build a [single page application](https://en.wikipedia.org/wiki/Single-page_application)** from ground up
 
-- **build a plain old website** using serverside rendering from ground up using [NodeJS](https://de.wikipedia.org/wiki/Node.js)
+- **build a plain old website** using serverside rendering from ground up using [NodeJS](https://en.wikipedia.org/wiki/Node.js)
 
 - **mix all of the above** to optimize for search engines, or migrate an existing serverside rendered webpage to a SPA on the fly
 
-- **build microservices** using [NodeJS](https://de.wikipedia.org/wiki/Node.js)
+- **build microservices** using [NodeJS](https://en.wikipedia.org/wiki/Node.js)
 
 - **build mobile apps** using [Phonegap/Cordova](https://en.wikipedia.org/wiki/Apache_Cordova)
 
