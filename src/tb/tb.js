@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.37 - 2018-03-27 */
+/*! twobirds-core - v8.0.38 - 2018-03-31 */
 
 /**
  twoBirds V7 core functionality
@@ -3544,7 +3544,58 @@ if (typeof module === 'undefined' ){
      placeholder class, everything contained herein is a curry property of the tb() constructor
  */
 
+/**
+ an empty function just in case you need one
+
+ @memberof tb
+ @static
+ @method tb.nop
+
+ @example
+
+     // this is not very useful, but alas...
+     // append the empty function to the 'click' event handler list
+     this.on('click', tb.nop);
+ */
 tb.nop = function(){};
+
+/**
+ debounce function wrapper
+
+ @memberof tb
+ @static
+ @method tb.debounce
+
+ @example
+
+     // append a debounced handler to the 'myEvent' event
+     this.on(
+        'myEvent', 
+        tb.debounce(
+            function(){
+                console.log('debounced "myEvent" handler');
+            },
+            500 // milliseconds
+        )
+     );
+ */
+tb.debounce = function( pFunction, pMilliseconds ){
+    var timeout;
+    return function(){
+        
+        var that = this,
+            args = arguments;
+
+        clearTimeout( timeout );
+
+        timeout = setTimeout(
+            function(){
+                pFunction.apply( that, args );
+            },
+            pMilliseconds 
+        );
+    }
+};
 
 /**
  - creates a function to set/get the inner value
