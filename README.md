@@ -18,7 +18,7 @@ twoBirds supports all targets and web programming use cases, so **using twoBirds
 
 - **add JS functionality to an existing webpage** in the most simple way, no matter which framework was used on the server side ([progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement))
 
-- **build a [single page application](https://en.wikipedia.org/wiki/Single-page_application)** from ground up
+- **build a [single page application](https://en.wikipedia.org/wiki/Single-page_application)** from ground up and optionally make it a [progressive web app](https://en.wikipedia.org/wiki/Progressive_Web_Apps)
 
 - **build a plain old website** using serverside rendering from ground up using [NodeJS](https://en.wikipedia.org/wiki/Node.js)
 
