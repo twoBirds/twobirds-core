@@ -10,7 +10,7 @@ Welcome Birdies ;-)
 - event-driven / loosely coupled, 
 - vanilla
 
-**Javascript library that maps objects to DOM nodes or into other objects.**
+**Javascript Web Component Library** that maps objects to DOM nodes or into other objects.
 
 twoBirds is as easy as jQuery, but on application/framework level.
 
