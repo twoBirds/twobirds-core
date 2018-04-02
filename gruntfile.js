@@ -73,6 +73,18 @@ module.exports = function(grunt) {
                         cwd: 'src',
                         src: [ 'twoBirds.svg' ],
                         dest: 'src/tbDocs'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/tb',
+                        src: '*.js',
+                        dest: 'src/tbDocs'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'src/tbMin',
+                        src: '*.js',
+                        dest: 'src/tbDocs'
                     }
                 ]
             }
