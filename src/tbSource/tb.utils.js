@@ -76,7 +76,9 @@ tb.debounce = function( pFunction, pMilliseconds ){
  @return {object} - the store instance
 
  the returned store has one method, .observe( myCallbackFunction )
+
  you can use this method to react on changes in the store
+ 
  CAVEAT: the store .observe is debounced to accomodate for bulk changes!
 
  @example

@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.49 - 2018-04-03 */
+/*! twobirds-core - v8.0.50 - 2018-04-03 */
 
 /**
  twoBirds V7 core functionality
@@ -3615,7 +3615,9 @@ tb.debounce = function( pFunction, pMilliseconds ){
  @return {object} - the store instance
 
  the returned store has one method, .observe( myCallbackFunction )
+
  you can use this method to react on changes in the store
+ 
  CAVEAT: the store .observe is debounced to accomodate for bulk changes!
 
  @example
