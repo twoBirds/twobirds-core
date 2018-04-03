@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.50</em>
+            <em>API Docs for: v8.0.51</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.0.50 - 2018-04-03 */
+/*! twobirds-core - v8.0.51 - 2018-04-03 */
 
 /**
  twoBirds V7 core functionality
@@ -3706,7 +3706,7 @@ tb.debounce = function( pFunction, pMilliseconds ){
  the returned store has one method, .observe( myCallbackFunction )
 
  you can use this method to react on changes in the store
- 
+
  CAVEAT: the store .observe is debounced to accomodate for bulk changes!
 
  @example
@@ -3716,11 +3716,12 @@ tb.debounce = function( pFunction, pMilliseconds ){
      tb.store(
      
          that,   // the instance
-         &#x27;store&#x27;,    // the property name inside the instance
+         &#x27;store&#x27;,    // the property name -&gt; that.store
          $( &#x27;form&#x27;, that.target ).values()   // initial values
      
      ).observe(
-     
+         
+         // 1 way data flow
          function( pStoreValues ){
              
              // do something with the store values
@@ -3737,7 +3738,8 @@ tb.debounce = function( pFunction, pMilliseconds ){
      );
 
      // update the store whenever the form values change
-
+     // 2 way data binding
+     
      $( &#x27;form&#x27;, that.target )
         on(
             &#x27;change select&#x27;,

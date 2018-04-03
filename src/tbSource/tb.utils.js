@@ -78,7 +78,7 @@ tb.debounce = function( pFunction, pMilliseconds ){
  the returned store has one method, .observe( myCallbackFunction )
 
  you can use this method to react on changes in the store
- 
+
  CAVEAT: the store .observe is debounced to accomodate for bulk changes!
 
  @example
@@ -88,11 +88,12 @@ tb.debounce = function( pFunction, pMilliseconds ){
      tb.store(
      
          that,   // the instance
-         'store',    // the property name inside the instance
+         'store',    // the property name -> that.store
          $( 'form', that.target ).values()   // initial values
      
      ).observe(
-     
+         
+         // 1 way data flow
          function( pStoreValues ){
              
              // do something with the store values
@@ -109,7 +110,8 @@ tb.debounce = function( pFunction, pMilliseconds ){
      );
 
      // update the store whenever the form values change
-
+     // 2 way data binding
+     
      $( 'form', that.target )
         on(
             'change select',
