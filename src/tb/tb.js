@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.48 - 2018-04-03 */
+/*! twobirds-core - v8.0.49 - 2018-04-03 */
 
 /**
  twoBirds V7 core functionality
@@ -3566,6 +3566,9 @@ tb.nop = function(){};
  @static
  @method tb.debounce
 
+ @param {function} pFunction - callback function to execute
+ @param {number} pMilliseconds - milliseconds to wait before callback is executed
+
  @example
      // expect that to be this tb instance
      // append a debounced handler to the 'myEvent' event
@@ -3599,11 +3602,21 @@ tb.debounce = function( pFunction, pMilliseconds ){
 };
 
 /**
- state wrapper
+ store function
 
  @memberof tb
  @static
  @method tb.store
+
+ @param {object} pObj - object to put the store in
+ @param {string} pName - property name of store
+ @param {string} pConfig - the initial set of properties in a hash object
+
+ @return {object} - the store instance
+
+ the returned store has one method, .observe( myCallbackFunction )
+ you can use this method to react on changes in the store
+ CAVEAT: the store .observe is debounced to accomodate for bulk changes!
 
  @example
      
@@ -3618,8 +3631,16 @@ tb.debounce = function( pFunction, pMilliseconds ){
      ).observe(
      
          function( pStoreValues ){
+             
              // do something with the store values
              // e.g. update some part of the DOM
+
+             console.log( Object.assign( {}, pStoreValues ) );  // convert to plain object
+
+             // other than that you can extract properties like so:
+
+             var a = pStoreValues.myProperty;
+
          }
      
      );
@@ -3629,11 +3650,12 @@ tb.debounce = function( pFunction, pMilliseconds ){
      $( 'form', that.target )
         on(
             'change select',
-            function(){
+            function(ev){
                 tb.extend( 
                     that.store, 
                     $( 'form', that.target ).values() 
                 ); 
+                ev.stopPropagation();
             }
         );
  */
