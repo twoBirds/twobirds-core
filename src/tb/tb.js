@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.47 - 2018-04-02 */
+/*! twobirds-core - v8.0.48 - 2018-04-03 */
 
 /**
  twoBirds V7 core functionality
@@ -3567,13 +3567,14 @@ tb.nop = function(){};
  @method tb.debounce
 
  @example
-
+     // expect that to be this tb instance
      // append a debounced handler to the 'myEvent' event
-     this.on(
+     that.on(
         'myEvent', 
         tb.debounce(
             function(){
-                console.log('debounced "myEvent" handler');
+                // that = tb instance
+                console.log('debounced "myEvent" handler inside', that);
             },
             500 // milliseconds
         )
@@ -3594,8 +3595,136 @@ tb.debounce = function( pFunction, pMilliseconds ){
             },
             pMilliseconds 
         );
-    }
+    };
 };
+
+/**
+ state wrapper
+
+ @memberof tb
+ @static
+ @method tb.store
+
+ @example
+     
+     // expect that to be a tbInstance containing a form
+
+     tb.store(
+     
+         that,   // the instance
+         'store',    // the property name inside the instance
+         $( 'form', that.target ).values()   // initial values
+     
+     ).observe(
+     
+         function( pStoreValues ){
+             // do something with the store values
+             // e.g. update some part of the DOM
+         }
+     
+     );
+
+     // update the store whenever the form values change
+
+     $( 'form', that.target )
+        on(
+            'change select',
+            function(){
+                tb.extend( 
+                    that.store, 
+                    $( 'form', that.target ).values() 
+                ); 
+            }
+        );
+ */
+tb.store = (function(){
+
+    function Store( pConfig, pObservable ){
+
+        var that = this;
+
+        // must be debounced for looped property changes like
+        // ... tb.extend( store, $('form').values() );
+        var onChange = tb.debounce(
+            function(){
+                pObservable( !pObservable() ); // flip
+            },
+            0
+        );
+
+        Object
+            .keys( pConfig )
+            .forEach(function(pKey){
+                var that = this,
+                    value = pConfig[pKey];
+
+                Object.defineProperty(
+                    that,
+                    pKey,
+                    {
+                        enumerable: true,
+                        get: function(){
+                            return value;
+                        },
+                        set: function( pValue ){
+                            value = pValue;
+                            onChange();
+                            return value;
+                        }
+                    }
+                );
+            }.bind(that));
+
+    }
+
+    Store.prototype = {
+        namespace: 'State'
+    };
+
+    return function( pObj, pName, pConfig ){
+
+        var observable = tb.observable( false ),    // only an indicator to flip...
+            value = new Store( pConfig, observable );
+
+        Object.defineProperty(
+            pObj,
+            pName,
+            {
+                enumerable: true,
+                writeable: true,
+                get: function(){
+                    return tb.extend( value );
+                },
+                set: function( pValue ){
+                    value = new Store( pValue );
+                    pObj[pName].observable( !pObj[pName].observable() ); // flip
+                    return value;
+                }
+            }
+        );
+
+        Object.defineProperty(
+            pObj[pName],
+            'observable',
+            {
+                enumerable: false,
+                value: observable 
+            }
+        );
+
+        Object.defineProperty(
+            pObj[pName],
+            'observe',
+            {
+                enumerable: false,
+                value: pObj[pName].observable.observe.bind( pObj[pName].observable ) // just a change indicator to flip
+            }
+        );
+
+        return pObj[pName];
+    };
+
+})();
 
 /**
  - creates a function to set/get the inner value

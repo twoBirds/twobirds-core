@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.47</em>
+            <em>API Docs for: v8.0.48</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.0.47 - 2018-04-02 */
+/*! twobirds-core - v8.0.48 - 2018-04-03 */
 
 /**
  twoBirds V7 core functionality
@@ -3656,13 +3656,14 @@ tb.nop = function(){};
  @method tb.debounce
 
  @example
-
+     // expect that to be this tb instance
      // append a debounced handler to the &#x27;myEvent&#x27; event
-     this.on(
+     that.on(
         &#x27;myEvent&#x27;, 
         tb.debounce(
             function(){
-                console.log(&#x27;debounced &quot;myEvent&quot; handler&#x27;);
+                // that = tb instance
+                console.log(&#x27;debounced &quot;myEvent&quot; handler inside&#x27;, that);
             },
             500 // milliseconds
         )
@@ -3683,8 +3684,136 @@ tb.debounce = function( pFunction, pMilliseconds ){
             },
             pMilliseconds 
         );
-    }
+    };
 };
+
+/**
+ state wrapper
+
+ @memberof tb
+ @static
+ @method tb.store
+
+ @example
+     
+     // expect that to be a tbInstance containing a form
+
+     tb.store(
+     
+         that,   // the instance
+         &#x27;store&#x27;,    // the property name inside the instance
+         $( &#x27;form&#x27;, that.target ).values()   // initial values
+     
+     ).observe(
+     
+         function( pStoreValues ){
+             // do something with the store values
+             // e.g. update some part of the DOM
+         }
+     
+     );
+
+     // update the store whenever the form values change
+
+     $( &#x27;form&#x27;, that.target )
+        on(
+            &#x27;change select&#x27;,
+            function(){
+                tb.extend( 
+                    that.store, 
+                    $( &#x27;form&#x27;, that.target ).values() 
+                ); 
+            }
+        );
+ */
+tb.store = (function(){
+
+    function Store( pConfig, pObservable ){
+
+        var that = this;
+
+        // must be debounced for looped property changes like
+        // ... tb.extend( store, $(&#x27;form&#x27;).values() );
+        var onChange = tb.debounce(
+            function(){
+                pObservable( !pObservable() ); // flip
+            },
+            0
+        );
+
+        Object
+            .keys( pConfig )
+            .forEach(function(pKey){
+                var that = this,
+                    value = pConfig[pKey];
+
+                Object.defineProperty(
+                    that,
+                    pKey,
+                    {
+                        enumerable: true,
+                        get: function(){
+                            return value;
+                        },
+                        set: function( pValue ){
+                            value = pValue;
+                            onChange();
+                            return value;
+                        }
+                    }
+                );
+            }.bind(that));
+
+    }
+
+    Store.prototype = {
+        namespace: &#x27;State&#x27;
+    };
+
+    return function( pObj, pName, pConfig ){
+
+        var observable = tb.observable( false ),    // only an indicator to flip...
+            value = new Store( pConfig, observable );
+
+        Object.defineProperty(
+            pObj,
+            pName,
+            {
+                enumerable: true,
+                writeable: true,
+                get: function(){
+                    return tb.extend( value );
+                },
+                set: function( pValue ){
+                    value = new Store( pValue );
+                    pObj[pName].observable( !pObj[pName].observable() ); // flip
+                    return value;
+                }
+            }
+        );
+
+        Object.defineProperty(
+            pObj[pName],
+            &#x27;observable&#x27;,
+            {
+                enumerable: false,
+                value: observable 
+            }
+        );
+
+        Object.defineProperty(
+            pObj[pName],
+            &#x27;observe&#x27;,
+            {
+                enumerable: false,
+                value: pObj[pName].observable.observe.bind( pObj[pName].observable ) // just a change indicator to flip
+            }
+        );
+
+        return pObj[pName];
+    };
+
+})();
 
 /**
  - creates a function to set/get the inner value
