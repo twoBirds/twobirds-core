@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.53 - 2018-04-04 */
+/*! twobirds-core - v8.0.54 - 2018-04-04 */
 
 /**
  twoBirds V7 core functionality
@@ -3710,6 +3710,7 @@ tb.store = (function(){
 
     // late binding
     function bind( pDomNode ){
+
         var that = this; // the store
 
         function walk( pDomNode ){
@@ -3717,7 +3718,7 @@ tb.store = (function(){
             if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 3 ){ // text node
                 var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
 
-                if (!!vars[0]){
+                if (!!vars){
                     
                     var f=(function( pTemplate ){
                         return function( pStore ){
@@ -3745,7 +3746,7 @@ tb.store = (function(){
 
                             var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
 
-                            if (!!placeholders[0]){
+                            if (!!placeholders){
                                 
                                 var f=(function( pTemplate ){
                                     return function( pStore ){
@@ -3783,7 +3784,7 @@ tb.store = (function(){
     return function( pObj, pName, pConfig ){
 
         var observable = tb.observable( false ),    // only an indicator to flip...
-            value = new Store( pConfig, observable );
+            value = new Store( {}, observable );
 
         // insert store into target object
         Object.defineProperty(
@@ -3796,7 +3797,7 @@ tb.store = (function(){
                     return value;
                 },
                 set: function( pValue ){
-                    value = new Store( pValue );
+                    value = new Store( pValue, observable );
                     observable( tb.extend( {}, value ) ); // flip
                     return value;
                 }

@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.53 - 2018-04-04 */
+/*! twobirds-core - v8.0.54 - 2018-04-04 */
 
 tb.namespace( 'test.GrandParent' ).set(
     (function(){

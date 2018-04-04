@@ -95,6 +95,25 @@
                     i.addEventListener('load', loaded)
                     i.src = '/twoBirds.svg';
 
+                    // bind store to DOM
+                    tb.store( window, 'store', {})
+                        .bind( $('form')[0] );
+
+                    // form values
+                    var f = $('form').values();
+
+                    // feed form changes to store
+                    $('input,select,textarea')
+                        .on(
+                            'keyup change select',
+                            function(){
+                                store = tb.extend( {}, f );
+                            }
+                        );
+
+                    // initial state
+                    store = tb.extend( {}, f );
+
                     // run tests
                     tb.Require([
                         'tbTest.js'

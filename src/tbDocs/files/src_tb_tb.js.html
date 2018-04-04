@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.53</em>
+            <em>API Docs for: v8.0.54</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.0.53 - 2018-04-04 */
+/*! twobirds-core - v8.0.54 - 2018-04-04 */
 
 /**
  twoBirds V7 core functionality
@@ -3799,6 +3799,7 @@ tb.store = (function(){
 
     // late binding
     function bind( pDomNode ){
+
         var that = this; // the store
 
         function walk( pDomNode ){
@@ -3806,7 +3807,7 @@ tb.store = (function(){
             if ( !!pDomNode[&#x27;nodeType&#x27;] &amp;&amp; pDomNode.nodeType === 3 ){ // text node
                 var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
 
-                if (!!vars[0]){
+                if (!!vars){
                     
                     var f=(function( pTemplate ){
                         return function( pStore ){
@@ -3834,7 +3835,7 @@ tb.store = (function(){
 
                             var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
 
-                            if (!!placeholders[0]){
+                            if (!!placeholders){
                                 
                                 var f=(function( pTemplate ){
                                     return function( pStore ){
@@ -3872,7 +3873,7 @@ tb.store = (function(){
     return function( pObj, pName, pConfig ){
 
         var observable = tb.observable( false ),    // only an indicator to flip...
-            value = new Store( pConfig, observable );
+            value = new Store( {}, observable );
 
         // insert store into target object
         Object.defineProperty(
@@ -3885,7 +3886,7 @@ tb.store = (function(){
                     return value;
                 },
                 set: function( pValue ){
-                    value = new Store( pValue );
+                    value = new Store( pValue, observable );
                     observable( tb.extend( {}, value ) ); // flip
                     return value;
                 }
