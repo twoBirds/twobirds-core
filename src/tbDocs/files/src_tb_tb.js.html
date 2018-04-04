@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.52</em>
+            <em>API Docs for: v8.0.53</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.0.52 - 2018-04-03 */
+/*! twobirds-core - v8.0.53 - 2018-04-04 */
 
 /**
  twoBirds V7 core functionality
@@ -3762,7 +3762,7 @@ tb.store = (function(){
         // ... tb.extend( store, $(&#x27;form&#x27;).values() );
         var onChange = tb.debounce(
             function(){
-                pObservable( !pObservable() ); // flip
+                pObservable( tb.extend( {}, that ) ); // flip
             },
             0
         );
@@ -3793,14 +3793,88 @@ tb.store = (function(){
     }
 
     Store.prototype = {
-        namespace: &#x27;State&#x27;
+        namespace: &#x27;Store&#x27;,
+        bind: bind
     };
+
+    // late binding
+    function bind( pDomNode ){
+        var that = this; // the store
+
+        function walk( pDomNode ){
+
+            if ( !!pDomNode[&#x27;nodeType&#x27;] &amp;&amp; pDomNode.nodeType === 3 ){ // text node
+                var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
+
+                if (!!vars[0]){
+                    
+                    var f=(function( pTemplate ){
+                        return function( pStore ){
+                            var t = pTemplate;
+
+                            pDomNode.nodeValue = tb.parse(
+                                t,
+                                tb.extend(
+                                    {},
+                                    pStore
+                                )
+                            );
+                        };
+                    })( pDomNode.nodeValue );
+
+                    that.observe(f);
+                }
+            }
+
+            if ( !!pDomNode[&#x27;nodeType&#x27;] &amp;&amp; pDomNode.nodeType === 1 ){ // HTML element
+
+                Array.from( pDomNode.attributes )
+                    .forEach(
+                        function( pAttributeNode ){
+
+                            var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
+
+                            if (!!placeholders[0]){
+                                
+                                var f=(function( pTemplate ){
+                                    return function( pStore ){
+                                        var t = pTemplate;
+
+                                        tb.dom(pDomNode).attr(
+                                            pAttributeNode.nodeName,
+                                            tb.parse(
+                                                t,
+                                                tb.extend(
+                                                    {},
+                                                    pStore
+                                                )
+                                            )
+                                        );
+                                    };
+                                })( pAttributeNode.value );
+
+                                that.observe(f);
+                            }
+                        }
+                    );
+
+                Array.from( pDomNode.childNodes )
+                    .forEach(function( pChildNode ){
+                        walk( pChildNode );
+                    });
+            }
+        }
+
+        walk( pDomNode );
+
+    }
 
     return function( pObj, pName, pConfig ){
 
         var observable = tb.observable( false ),    // only an indicator to flip...
             value = new Store( pConfig, observable );
 
+        // insert store into target object
         Object.defineProperty(
             pObj,
             pName,
@@ -3808,18 +3882,19 @@ tb.store = (function(){
                 enumerable: true,
                 writeable: true,
                 get: function(){
-                    return tb.extend( value );
+                    return value;
                 },
                 set: function( pValue ){
                     value = new Store( pValue );
-                    pObj[pName].observable( !pObj[pName].observable() ); // flip
+                    observable( tb.extend( {}, value ) ); // flip
                     return value;
                 }
             }
         );
 
+        // define observable
         Object.defineProperty(
-            pObj[pName],
+            value,
             &#x27;observable&#x27;,
             {
                 enumerable: false,
@@ -3828,11 +3903,11 @@ tb.store = (function(){
         );
 
         Object.defineProperty(
-            pObj[pName],
+            value,
             &#x27;observe&#x27;,
             {
                 enumerable: false,
-                value: pObj[pName].observable.observe.bind( pObj[pName].observable ) // just a change indicator to flip
+                value: observable.observe.bind( observable ) // just a change indicator to flip
             }
         );
 
@@ -3842,6 +3917,7 @@ tb.store = (function(){
 })();
 
 /**
+ tb.observable()) function
  - creates a function to set/get the inner value
  - initializes the inner value with the parameter given
  - returns this function

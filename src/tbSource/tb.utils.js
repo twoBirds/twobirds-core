@@ -134,7 +134,7 @@ tb.store = (function(){
         // ... tb.extend( store, $('form').values() );
         var onChange = tb.debounce(
             function(){
-                pObservable( !pObservable() ); // flip
+                pObservable( tb.extend( {}, that ) ); // flip
             },
             0
         );
@@ -165,14 +165,88 @@ tb.store = (function(){
     }
 
     Store.prototype = {
-        namespace: 'State'
+        namespace: 'Store',
+        bind: bind
     };
+
+    // late binding
+    function bind( pDomNode ){
+        var that = this; // the store
+
+        function walk( pDomNode ){
+
+            if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 3 ){ // text node
+                var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
+
+                if (!!vars[0]){
+                    
+                    var f=(function( pTemplate ){
+                        return function( pStore ){
+                            var t = pTemplate;
+
+                            pDomNode.nodeValue = tb.parse(
+                                t,
+                                tb.extend(
+                                    {},
+                                    pStore
+                                )
+                            );
+                        };
+                    })( pDomNode.nodeValue );
+
+                    that.observe(f);
+                }
+            }
+
+            if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 1 ){ // HTML element
+
+                Array.from( pDomNode.attributes )
+                    .forEach(
+                        function( pAttributeNode ){
+
+                            var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
+
+                            if (!!placeholders[0]){
+                                
+                                var f=(function( pTemplate ){
+                                    return function( pStore ){
+                                        var t = pTemplate;
+
+                                        tb.dom(pDomNode).attr(
+                                            pAttributeNode.nodeName,
+                                            tb.parse(
+                                                t,
+                                                tb.extend(
+                                                    {},
+                                                    pStore
+                                                )
+                                            )
+                                        );
+                                    };
+                                })( pAttributeNode.value );
+
+                                that.observe(f);
+                            }
+                        }
+                    );
+
+                Array.from( pDomNode.childNodes )
+                    .forEach(function( pChildNode ){
+                        walk( pChildNode );
+                    });
+            }
+        }
+
+        walk( pDomNode );
+
+    }
 
     return function( pObj, pName, pConfig ){
 
         var observable = tb.observable( false ),    // only an indicator to flip...
             value = new Store( pConfig, observable );
 
+        // insert store into target object
         Object.defineProperty(
             pObj,
             pName,
@@ -180,18 +254,19 @@ tb.store = (function(){
                 enumerable: true,
                 writeable: true,
                 get: function(){
-                    return tb.extend( value );
+                    return value;
                 },
                 set: function( pValue ){
                     value = new Store( pValue );
-                    pObj[pName].observable( !pObj[pName].observable() ); // flip
+                    observable( tb.extend( {}, value ) ); // flip
                     return value;
                 }
             }
         );
 
+        // define observable
         Object.defineProperty(
-            pObj[pName],
+            value,
             'observable',
             {
                 enumerable: false,
@@ -200,11 +275,11 @@ tb.store = (function(){
         );
 
         Object.defineProperty(
-            pObj[pName],
+            value,
             'observe',
             {
                 enumerable: false,
-                value: pObj[pName].observable.observe.bind( pObj[pName].observable ) // just a change indicator to flip
+                value: observable.observe.bind( observable ) // just a change indicator to flip
             }
         );
 
@@ -214,6 +289,7 @@ tb.store = (function(){
 })();
 
 /**
+ tb.observable()) function
  - creates a function to set/get the inner value
  - initializes the inner value with the parameter given
  - returns this function
