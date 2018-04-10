@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.0.54</em>
+            <em>API Docs for: v8.0.55</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.0.54 - 2018-04-04 */
+/*! twobirds-core - v8.0.55 - 2018-04-10 */
 
 /**
  twoBirds V7 core functionality
@@ -3333,8 +3333,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                             );
 
                     }
-
-                    return that;
+                    
+                    return;
                 },
 
                 &#x27;default&#x27;: function defaultVal( pValue ){
@@ -3711,7 +3711,40 @@ tb.debounce = function( pFunction, pMilliseconds ){
 
  @example
      
+     //
+     // EXAMPLE 1: using late binding
+     //
+
+     tb.store(
+     
+         that,   // the instance
+         &#x27;store&#x27;,    // the property name -&gt; that.store
+         $( &#x27;form&#x27;, that.target ).values()   // initial values
+     
+     ).bind( // assuming there are some {placeholder}s in that DOM node descendants attributes or text nodes
+
+         that.target
+
+     );
+
+     // any change in the store from now on will update the {placeholder}s     
+
+     // change complete store:
+     that.store = { 
+        somePlaceHolder: &#x27;someStringValue&#x27; 
+     };
+
+     // or a property within the store:
+     that.store.somePlaceholder = &#x27;someOtherStringValue&#x27;;
+
+
+
+
+     //
+     // EXAMPLE 2: using the observe function
      // expect that to be a tbInstance containing a form
+     //
+
 
      tb.store(
      
@@ -3751,6 +3784,7 @@ tb.debounce = function( pFunction, pMilliseconds ){
                 ev.stopPropagation();
             }
         );
+
  */
 tb.store = (function(){
 

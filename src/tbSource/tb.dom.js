@@ -1547,8 +1547,8 @@ if (typeof module === 'undefined' ){
                             );
 
                     }
-
-                    return that;
+                    
+                    return;
                 },
 
                 'default': function defaultVal( pValue ){

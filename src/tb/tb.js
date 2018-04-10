@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.54 - 2018-04-04 */
+/*! twobirds-core - v8.0.55 - 2018-04-10 */
 
 /**
  twoBirds V7 core functionality
@@ -3244,8 +3244,8 @@ if (typeof module === 'undefined' ){
                             );
 
                     }
-
-                    return that;
+                    
+                    return;
                 },
 
                 'default': function defaultVal( pValue ){
@@ -3622,7 +3622,40 @@ tb.debounce = function( pFunction, pMilliseconds ){
 
  @example
      
+     //
+     // EXAMPLE 1: using late binding
+     //
+
+     tb.store(
+     
+         that,   // the instance
+         'store',    // the property name -> that.store
+         $( 'form', that.target ).values()   // initial values
+     
+     ).bind( // assuming there are some {placeholder}s in that DOM node descendants attributes or text nodes
+
+         that.target
+
+     );
+
+     // any change in the store from now on will update the {placeholder}s     
+
+     // change complete store:
+     that.store = { 
+        somePlaceHolder: 'someStringValue' 
+     };
+
+     // or a property within the store:
+     that.store.somePlaceholder = 'someOtherStringValue';
+
+
+
+
+     //
+     // EXAMPLE 2: using the observe function
      // expect that to be a tbInstance containing a form
+     //
+
 
      tb.store(
      
@@ -3662,6 +3695,7 @@ tb.debounce = function( pFunction, pMilliseconds ){
                 ev.stopPropagation();
             }
         );
+
  */
 tb.store = (function(){
 
