@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.55 - 2018-04-10 */
+/*! twobirds-core - v8.0.56 - 2018-04-10 */
 
 /**
  twoBirds V7 core functionality
@@ -3647,9 +3647,6 @@ tb.debounce = function( pFunction, pMilliseconds ){
 
      // or a property within the store:
      that.store.somePlaceholder = 'someOtherStringValue';
-
-
-
 
      //
      // EXAMPLE 2: using the observe function
