@@ -109,6 +109,9 @@ tb.debounce = function( pFunction, pMilliseconds ){
      // or a property within the store:
      that.store.somePlaceholder = 'someOtherStringValue';
 
+
+
+
      //
      // EXAMPLE 2: using the observe function
      // expect that to be a tbInstance containing a form
