@@ -266,7 +266,7 @@
         {
             "file": "src/tb/tb.js",
             "line": 3,
-            "description": "twoBirds V7 core functionality",
+            "description": "twoBirds V8 core functionality",
             "author": "frank.thuerigen <frank_thuerigen@yahoo.de>",
             "copyright": "copyright (c) 2006- Frank Thürigen",
             "license": "GNU LGPL v3 - read LICENSE.txt",
@@ -2441,7 +2441,7 @@
             "line": " src/tb/tb.js:5377"
         },
         {
-            "message": "Missing item type\ntwoBirds V7 core functionality",
+            "message": "Missing item type\ntwoBirds V8 core functionality",
             "line": " src/tb/tb.js:3"
         },
         {

@@ -1,7 +1,7 @@
-/*! twobirds-core - v8.0.57 - 2018-04-10 */
+/*! twobirds-core - v8.0.57 - 2018-04-18 */
 
 /**
- twoBirds V7 core functionality
+ twoBirds V8 core functionality
 
  @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  @copyright       copyright (c) 2006- Frank Thürigen

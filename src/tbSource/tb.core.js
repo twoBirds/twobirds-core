@@ -1,5 +1,5 @@
 /**
- twoBirds V7 core functionality
+ twoBirds V8 core functionality
 
  @author          frank.thuerigen <frank_thuerigen@yahoo.de>
  @copyright       copyright (c) 2006- Frank Thürigen
