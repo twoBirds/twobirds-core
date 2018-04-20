@@ -1606,7 +1606,6 @@ tb = (function(){
 
 })();
 
-
 /**
  @class tb.Event
  @constructor
