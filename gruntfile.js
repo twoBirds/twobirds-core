@@ -103,7 +103,7 @@ module.exports = function(grunt) {
                         'src/tbSource/tb.dom.js',
                         'src/tbSource/tb.utils.js',
                         'src/tbSource/tb.CRUD.js',
-                        'src/tbSource/tb.Require.js'
+                        'src/tbSource/tb.es6.js'
                     ],
                     'src/tbTest.js': [
                         'src/tbJasmine/jasmine.js',
@@ -112,7 +112,7 @@ module.exports = function(grunt) {
                         'src/tbTest/tb.core.test.js',
                         'src/tbTest/tb.dom.test.js',
                         'src/tbTest/tb.CRUD.test.js',
-                        'src/tbTest/tb.Require.test.js',
+                        'src/tbSource/tb.es6.js',
                         'src/tbTest/tb.utils.test.js'
                     ],
                     'src/repo.js': [
@@ -154,7 +154,7 @@ module.exports = function(grunt) {
 
         jshint: {
             options: {
-                esnext: true,
+                esversion: 6,
                 force: true,
                 curly: true,
                 eqeqeq: true,
@@ -183,7 +183,7 @@ module.exports = function(grunt) {
                 }
             },
             all: [
-                'src/tb/tb.js'
+                'src/tbSource/*.js'
             ]
         },
 
@@ -205,7 +205,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-uglify-es');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');

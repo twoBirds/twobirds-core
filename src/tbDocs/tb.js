@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.0.57 - 2018-04-18 */
+/*! twobirds-core - v8.0.58 - 2018-04-20 */
 
 /**
  twoBirds V8 core functionality
@@ -1607,7 +1607,6 @@ tb = (function(){
     return tb;
 
 })();
-
 
 /**
  @class tb.Event
@@ -3699,126 +3698,202 @@ tb.debounce = function( pFunction, pMilliseconds ){
  */
 tb.store = (function(){
 
-    function Store( pConfig, pObservable ){
+    function Store( pConfig ){
 
-        var that = this;
+        var that = this,
+            observable = Symbol('observable'),
+            onChange = Symbol('onChange'),
+            config = pConfig || {};
+
+        // make anonymous property
+        that[observable] = tb.observable(false);
 
         // must be debounced for looped property changes like
         // ... tb.extend( store, $('form').values() );
-        var onChange = tb.debounce(
+        that[onChange] = tb.debounce(
             function(){
-                pObservable( tb.extend( {}, that ) ); // flip
+                that[observable]( tb.extend( {}, that ) );
             },
             0
         );
 
-        Object
-            .keys( pConfig )
-            .forEach(function(pKey){
-                var that = this,
-                    value = pConfig[pKey];
-
-                Object.defineProperty(
-                    that,
-                    pKey,
-                    {
-                        enumerable: true,
-                        get: function(){
-                            return value;
-                        },
-                        set: function( pValue ){
-                            value = pValue;
-                            onChange();
-                            return value;
-                        }
-                    }
-                );
-            }.bind(that));
+        tb.extend( that, config );
 
     }
 
-    Store.prototype = {
-        namespace: 'Store',
-        bind: bind
-    };
+    // these are prototypal methods, since the prototype is a Proxy instance
+    Store.methods = {
 
-    // late binding
-    function bind( pDomNode ){
+        observe: function( pCallback, pOnce ){
 
-        var that = this; // the store
+            var that = this;
 
-        function walk( pDomNode ){
+            that[Object.getOwnPropertySymbols(that)[0]].observe( pCallback, pOnce );
 
-            if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 3 ){ // text node
-                var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
+        },
 
-                if (!!vars){
-                    
-                    var f=(function( pTemplate ){
-                        return function( pStore ){
-                            var t = pTemplate;
+        bind: function( pDomNode ){
+            var that = this;
+            
+            function walk( pDomNode ){
 
-                            pDomNode.nodeValue = tb.parse(
-                                t,
-                                tb.extend(
-                                    {},
-                                    pStore
-                                )
-                            );
-                        };
-                    })( pDomNode.nodeValue );
+                if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 3 ){ // text node
+                    var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
 
-                    that.observe(f);
+                    if (!!vars){
+                        var f=(function( pTemplate ){
+                            return function( pValues ){
+                                var t = pTemplate;
+
+                                pDomNode.nodeValue = tb.parse(
+                                    t,
+                                    tb.extend(
+                                        {},
+                                        pValues
+                                    )
+                                );
+                            };
+                        })( pDomNode.nodeValue );
+
+                        that[Object.getOwnPropertySymbols(that)[0]].observe(f);
+
+                    }
+                }
+
+                if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 1 ){ // HTML element
+
+                    Array.from( pDomNode.attributes )
+                        .forEach(
+                            function( pAttributeNode ){
+
+                                var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
+
+                                if (!!placeholders){
+                                                                                                
+                                    var f=(function( pTemplate ){
+                                        return function( pValues ){
+                                            var t = pTemplate;
+
+                                            tb.dom(pDomNode).attr(
+                                                pAttributeNode.nodeName,
+                                                tb.parse(
+                                                    t,
+                                                    tb.extend(
+                                                        {},
+                                                        pValues
+                                                    )
+                                                )
+                                            );
+                                        };
+                                    })( pAttributeNode.value );
+
+                                    that[Object.getOwnPropertySymbols(that)[0]].observe(f);
+
+                                }
+                            }
+                        );
+
+                    Array.from( pDomNode.childNodes )
+                        .forEach(function( pChildNode ){
+                            walk( pChildNode );
+                        });
                 }
             }
 
-            if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 1 ){ // HTML element
+            walk( pDomNode );
 
-                Array.from( pDomNode.attributes )
-                    .forEach(
-                        function( pAttributeNode ){
-
-                            var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
-
-                            if (!!placeholders){
-                                
-                                var f=(function( pTemplate ){
-                                    return function( pStore ){
-                                        var t = pTemplate;
-
-                                        tb.dom(pDomNode).attr(
-                                            pAttributeNode.nodeName,
-                                            tb.parse(
-                                                t,
-                                                tb.extend(
-                                                    {},
-                                                    pStore
-                                                )
-                                            )
-                                        );
-                                    };
-                                })( pAttributeNode.value );
-
-                                that.observe(f);
-                            }
-                        }
-                    );
-
-                Array.from( pDomNode.childNodes )
-                    .forEach(function( pChildNode ){
-                        walk( pChildNode );
-                    });
-            }
         }
 
-        walk( pDomNode );
+    };
 
-    }
+    // prototype is a proxy
+    Store.prototype = new Proxy(
+        Store.methods, 
+        {
 
-    return function( pObj, pName, pConfig ){
+            get: function(pObj, pProp, pReceiver) {
+                
+                if (Store.methods[pProp]){
+                    return Store.methods[pProp];
+                }
 
-        var observable = tb.observable( false ),    // only an indicator to flip...
-            value = new Store( {}, observable );
+                if ( pProp in pReceiver === false && pProp in pObj === false ){
+                    
+                    var value = new Store();  // internal value
+
+                    Object.defineProperty(
+                        pReceiver,
+                        pProp,
+                        {
+                            enumerable: true,
+                            get: function(){
+                                return value;
+                            },
+                            set: function( pValue ){
+                                if ( typeof pValue === 'object' ){
+                                    if ( value instanceof Store && pValue.constructor === Object ){
+                                        for ( var key in value ){
+                                            delete value[ key ];
+                                        } 
+                                        tb.extend( value, pValue );
+                                    } else {
+                                        value = new Store( pValue );
+                                    }
+                                } else {
+                                    value = pValue;
+                                }
+
+                                setTimeout(function(){
+                                    pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
+                                },0 );
+
+                                return value;
+                            }
+                        }
+                    );                
+
+                }
+
+                return Reflect.get( pReceiver, pProp );
+            },
+
+            set: function(pObj, pProp, pValue, pReceiver){
+
+                var ret,
+                    args = Array.from(arguments);
+
+                if ( typeof pValue === 'object' ){
+
+                    if ( pReceiver[pProp] instanceof Store && pValue.constructor === Object ){
+                        console.log('old store', pProp, pReceiver, pValue );
+                        for ( var key in pReceiver[pProp] ){
+                            delete pReceiver[pProp][ key ];
+                        } 
+                        tb.extend( Store, pValue );
+                    } else {
+                        args[0] = pReceiver;
+                        args[2] = new Store( pValue );
+                    }
+                    
+                }
+
+                ret = Reflect.set(...args);
+
+                setTimeout(function(){
+                    pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
+                },0);
+
+                return ret;
+            }
+
+        }
+    );
+
+    tb.Store = Store;
+    
+    function makeStore( pObj, pName, pConfig ){
+
+        var value = new Store( pConfig );
 
         // insert store into target object
         Object.defineProperty(
@@ -3831,34 +3906,21 @@ tb.store = (function(){
                     return value;
                 },
                 set: function( pValue ){
-                    value = new Store( pValue, observable );
-                    observable( tb.extend( {}, value ) ); // flip
+                    for ( var key in value ){
+                        delete value[ key ];
+                    } 
+                    tb.extend( value, pValue );
                     return value;
                 }
             }
         );
 
-        // define observable
-        Object.defineProperty(
-            value,
-            'observable',
-            {
-                enumerable: false,
-                value: observable 
-            }
-        );
-
-        Object.defineProperty(
-            value,
-            'observe',
-            {
-                enumerable: false,
-                value: observable.observe.bind( observable ) // just a change indicator to flip
-            }
-        );
-
         return pObj[pName];
-    };
+    }
+
+    makeStore.Store = Store;
+
+    return makeStore;
 
 })();
 
@@ -4004,8 +4066,11 @@ tb.observable = function( pStartValue ){
 
     // function used to add a callbacks
     observableFunction.observe = function( pFunction, pOnce ){
-        pFunction.once = pOnce || false;
-        observableFunction.notifiers.push( pFunction );
+
+        if ( typeof pFunction === 'function' ){
+            pFunction.once = pOnce || false;
+            observableFunction.notifiers.push( pFunction );
+        }
 
         return observableFunction; // chaining
     };
@@ -6037,3 +6102,17 @@ if (typeof module === 'undefined' ){ // will not work as a module
 
     })();
 }
+
+
+/*
+class Tb extends tb.Store{
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
+    }
+}
+
+tb.extend(
+    Tb.prototype,
+    tb.prototype
+);
+*/
