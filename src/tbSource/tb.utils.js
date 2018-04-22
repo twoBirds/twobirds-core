@@ -21,527 +21,6 @@
 tb.nop = function(){};
 
 /**
- debounce function wrapper
-
- @memberof tb
- @static
- @method tb.debounce
-
- @param {function} pFunction - callback function to execute
- @param {number} pMilliseconds - milliseconds to wait before callback is executed
-
- @example
-     // expect that to be this tb instance
-     // append a debounced handler to the 'myEvent' event
-     that.on(
-        'myEvent', 
-        tb.debounce(
-            function(){
-                // that = tb instance
-                console.log('debounced "myEvent" handler inside', that);
-            },
-            500 // milliseconds
-        )
-     );
- */
-tb.debounce = function( pFunction, pMilliseconds ){
-    var timeout;
-    return function(){
-        
-        var that = this,
-            args = arguments;
-
-        clearTimeout( timeout );
-
-        timeout = setTimeout(
-            function(){
-                pFunction.apply( that, args );
-            },
-            pMilliseconds 
-        );
-    };
-};
-
-/**
- store function
-
- @memberof tb
- @static
- @method tb.store
-
- @param {object} pObj - object to put the store in
- @param {string} pName - property name of store
- @param {string} pConfig - the initial set of properties in a hash object
-
- @return {object} - the store instance
-
- the returned store has one method, .observe( myCallbackFunction )
-
- you can use this method to react on changes in the store
-
- CAVEAT: the store .observe is debounced to accomodate for bulk changes!
-
- @example
-     
-     //
-     // EXAMPLE 1: using late binding
-     //
-
-     tb.store(
-     
-         that,   // the instance
-         'store',    // the property name -> that.store
-         $( 'form', that.target ).values()   // initial values
-     
-     ).bind( // assuming there are some {placeholder}s in that DOM node descendants attributes or text nodes
-
-         that.target
-
-     );
-
-     // any change in the store from now on will update the {placeholder}s     
-
-     // change complete store:
-     that.store = { 
-        somePlaceHolder: 'someStringValue' 
-     };
-
-     // or a property within the store:
-     that.store.somePlaceholder = 'someOtherStringValue';
-
-
-
-
-     //
-     // EXAMPLE 2: using the observe function
-     // expect that to be a tbInstance containing a form
-     //
-
-
-     tb.store(
-     
-         that,   // the instance
-         'store',    // the property name -> that.store
-         $( 'form', that.target ).values()   // initial values
-     
-     ).observe(
-         
-         // 1 way data flow
-         function( pStoreValues ){
-             
-             // do something with the store values
-             // e.g. update some part of the DOM
-
-             console.log( Object.assign( {}, pStoreValues ) );  // convert to plain object
-
-             // other than that you can extract properties like so:
-
-             var a = pStoreValues.myProperty;
-
-         }
-     
-     );
-
-     // update the store whenever the form values change
-     // 2 way data binding
-     
-     $( 'form', that.target )
-        on(
-            'change select',
-            function(ev){
-                tb.extend( 
-                    that.store, 
-                    $( 'form', that.target ).values() 
-                ); 
-                ev.stopPropagation();
-            }
-        );
-
- */
-tb.store = (function(){
-
-    function Store( pConfig ){
-
-        var that = this,
-            observable = Symbol('observable'),
-            onChange = Symbol('onChange'),
-            config = pConfig || {};
-
-        // make anonymous property
-        that[observable] = tb.observable(false);
-
-        // must be debounced for looped property changes like
-        // ... tb.extend( store, $('form').values() );
-        that[onChange] = tb.debounce(
-            function(){
-                that[observable]( tb.extend( {}, that ) );
-            },
-            0
-        );
-
-        tb.extend( that, config );
-
-    }
-
-    // these are prototypal methods, since the prototype is a Proxy instance
-    Store.methods = {
-
-        observe: function( pCallback, pOnce ){
-
-            var that = this;
-
-            that[Object.getOwnPropertySymbols(that)[0]].observe( pCallback, pOnce );
-
-        },
-
-        bind: function( pDomNode ){
-            var that = this;
-            
-            function walk( pDomNode ){
-
-                if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 3 ){ // text node
-                    var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
-
-                    if (!!vars){
-                        var f=(function( pTemplate ){
-                            return function( pValues ){
-                                var t = pTemplate;
-
-                                pDomNode.nodeValue = tb.parse(
-                                    t,
-                                    tb.extend(
-                                        {},
-                                        pValues
-                                    )
-                                );
-                            };
-                        })( pDomNode.nodeValue );
-
-                        that[Object.getOwnPropertySymbols(that)[0]].observe(f);
-
-                    }
-                }
-
-                if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 1 ){ // HTML element
-
-                    Array.from( pDomNode.attributes )
-                        .forEach(
-                            function( pAttributeNode ){
-
-                                var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
-
-                                if (!!placeholders){
-                                                                                                
-                                    var f=(function( pTemplate ){
-                                        return function( pValues ){
-                                            var t = pTemplate;
-
-                                            tb.dom(pDomNode).attr(
-                                                pAttributeNode.nodeName,
-                                                tb.parse(
-                                                    t,
-                                                    tb.extend(
-                                                        {},
-                                                        pValues
-                                                    )
-                                                )
-                                            );
-                                        };
-                                    })( pAttributeNode.value );
-
-                                    that[Object.getOwnPropertySymbols(that)[0]].observe(f);
-
-                                }
-                            }
-                        );
-
-                    Array.from( pDomNode.childNodes )
-                        .forEach(function( pChildNode ){
-                            walk( pChildNode );
-                        });
-                }
-            }
-
-            walk( pDomNode );
-
-        }
-
-    };
-
-    // prototype is a proxy
-    Store.prototype = new Proxy(
-        Store.methods, 
-        {
-
-            get: function(pObj, pProp, pReceiver) {
-                
-                if (Store.methods[pProp]){
-                    return Store.methods[pProp];
-                }
-
-                if ( pProp in pReceiver === false && pProp in pObj === false ){
-                    
-                    var value = new Store();  // internal value
-
-                    Object.defineProperty(
-                        pReceiver,
-                        pProp,
-                        {
-                            enumerable: true,
-                            get: function(){
-                                return value;
-                            },
-                            set: function( pValue ){
-                                if ( typeof pValue === 'object' ){
-                                    if ( value instanceof Store && pValue.constructor === Object ){
-                                        for ( var key in value ){
-                                            delete value[ key ];
-                                        } 
-                                        tb.extend( value, pValue );
-                                    } else {
-                                        value = new Store( pValue );
-                                    }
-                                } else {
-                                    value = pValue;
-                                }
-
-                                setTimeout(function(){
-                                    pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
-                                },0 );
-
-                                return value;
-                            }
-                        }
-                    );                
-
-                }
-
-                return Reflect.get( pReceiver, pProp );
-            },
-
-            set: function(pObj, pProp, pValue, pReceiver){
-
-                var ret,
-                    args = Array.from(arguments);
-
-                if ( typeof pValue === 'object' ){
-
-                    if ( pReceiver[pProp] instanceof Store && pValue.constructor === Object ){
-                        console.log('old store', pProp, pReceiver, pValue );
-                        for ( var key in pReceiver[pProp] ){
-                            delete pReceiver[pProp][ key ];
-                        } 
-                        tb.extend( Store, pValue );
-                    } else {
-                        args[0] = pReceiver;
-                        args[2] = new Store( pValue );
-                    }
-                    
-                }
-
-                ret = Reflect.set(...args);
-
-                setTimeout(function(){
-                    pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
-                },0);
-
-                return ret;
-            }
-
-        }
-    );
-
-    tb.Store = Store;
-    
-    function makeStore( pObj, pName, pConfig ){
-
-        var value = new Store( pConfig );
-
-        // insert store into target object
-        Object.defineProperty(
-            pObj,
-            pName,
-            {
-                enumerable: true,
-                writeable: true,
-                get: function(){
-                    return value;
-                },
-                set: function( pValue ){
-                    for ( var key in value ){
-                        delete value[ key ];
-                    } 
-                    tb.extend( value, pValue );
-                    return value;
-                }
-            }
-        );
-
-        return pObj[pName];
-    }
-
-    makeStore.Store = Store;
-
-    return makeStore;
-
-})();
-
-/**
- tb.observable()) function
- - creates a function to set/get the inner value
- - initializes the inner value with the parameter given
- - returns this function
-
- @memberof tb
- @static
- @method tb.observable
- @chainable
-
- @param {*} [pStartValue] initial content of observable
-
- @return {function} - observableFunction
-
- @example
-
-     // observable data IS NOT an object
-     var o = tb.observable( 0 );                // numeric
-
-     o.observe(
-         function( pValue ){                    // callback will be triggered when observable value changes
-             console.log( pValue );
-         },
-         true                                   // true indicates callback will be called only once
-     );
-
-     o( 5 );                                    // change observable value
-
- @example
-
-     // observable data IS an object
-     var o = tb.observable( { a: 5 } );         // object
-
-     o.observe(
-         function( pValue ){                    // callback will be triggered when observable value changes
-                     console.log( pValue );
-                 },
-         false                                  // false or no parameter indicates callback will always be called
-                                                // when the data changes, true will trigger it only once
-     );
-
-     // get data:
-     o( 'a' );       // => 5
-     o();            // => { a: 5 }
-
-     // each of these will trigger the callback since the data changed
-     // also they return the observable itself for chaining purposes, NOT THE VALUE
-     o( 'a', 6 );               // => { a: 6 }
-     o( { c: 42 } );            // => { c: 42 }
-     o( 'b', { c: 42 } );       // => { a: 6, b: { c: 42 } }
-
-
- */
-tb.observable = function( pStartValue ){
-
-    var observedValue = pStartValue,
-        enableNotify = true;
-
-    // make observable function to return in the end
-    var observableFunction = function( p1, p2 ){
-
-        function notify(){
-            if ( !enableNotify ) {
-                return;
-            }
-            observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-            return observableFunction.notify();
-        }
-
-        if ( typeof p1 !== 'undefined' ){
-            if( observedValue.constructor === Object ) {
-                if ( typeof p1 === 'string' ) {
-                    if (typeof p2 !== 'undefined') {
-                        // value has changed, p1 must be key or namespace ( key1.key2 etc ) for object property
-                        if ( p1.indexOf('.') > -1 ){ // its a namespace
-                            tb.namespace( p1, observedValue ).set( p2 );
-                        } else { // it is a simple property
-                            observedValue[p1] = p2;
-                        }
-                        notify();
-                    } else {    // it is a getter
-                        return tb.namespace( p1, observedValue ).get();
-                    }
-                } else if ( typeof p1 === 'object' && typeof p2 === 'undefined' ){
-                    observedValue = p1;
-                    notify();
-                } else {
-                    console.warn('tb.observable() set value: parameter 1 should be a string or object if observed data is an object!');
-                }
-            } else {
-                if ( typeof p1 !== 'undefined' ){
-                    // value has changed
-                    observedValue = p1;
-                    notify();
-                } else {    // it is a getter
-                    return observedValue;
-                }
-            }
-        } else {
-            return observedValue;
-        }
-
-        // it was a setter functionality, so return the observable itself for chaining
-        // getters return the value directly (see above)
-        return observableFunction;
-    };
-
-    observableFunction.lastChanged = (new Date()).getTime(); // needed for tb.idle()
-
-    // list of all callbacks to trigger on observedValue change
-    observableFunction.notifiers = [];
-
-    // function used to execute all callbacks
-    observableFunction.notify = function(){
-
-        // execute all callbacks
-        observableFunction.notifiers.forEach(
-            function( func, key ){
-                if ( typeof func === 'function' ){
-                    func( observedValue );
-                    if ( func.once ){
-                        observableFunction.notifiers.splice(key,1);
-                    }
-                } else {
-                    observableFunction.notifiers.splice(key,1);
-                }
-            }
-        );
-
-        return observableFunction; // chaining
-    };
-
-    // enable/disable notifications
-    observableFunction.enableNotify = function( pEnableNotify ){
-        enableNotify = pEnableNotify === false ? false : true;
-
-        return observableFunction; // chaining
-    };
-
-    // function used to add a callbacks
-    observableFunction.observe = function( pFunction, pOnce ){
-
-        if ( typeof pFunction === 'function' ){
-            pFunction.once = pOnce || false;
-            observableFunction.notifiers.push( pFunction );
-        }
-
-        return observableFunction; // chaining
-    };
-
-    return observableFunction;
-};
-
-
-/**
  @memberof tb
  @method tb.namespace
  @static
@@ -700,92 +179,6 @@ tb.attach = function( pRootNode ){
 
 };
 
-
-
-/**
- @memberof tb
- @static
- @property tb.status
- @type Object
-
- container for twoBirds status observables
- */
-tb.status = {
-    /**
-     @property tb.status.loadCount
-     @type Function
-
-     observable containing the number of ( script load operations + xHr requests ) currently pending
-     */
-    loadCount: tb.observable(0)         // contains the number of ( file loads + xHr requests ) pending
-};
-
-
-
-/**
- @memberof tb
- @static
- @method tb.idle
-
- @param {function} pCallback function to execute when all loading is finished
-
- @example
-
-    // in code...
-    tb.idle(
-        function(){
-            // do whatever you like
-        }
-    );
- */
-tb.idle = function( pCallback ){
-
-    var f = function(){
-
-        if ( tb.status.loadCount() === 0 ){
-
-            var tf = function(){
-
-                if ( tb.status.loadCount() === 0 ){ // loadCount is (still) 0
-                    if (
-                        tb.status.loadCount.lastChanged === tf.lastChanged // it is still the previous '0' loadcount
-                    ){
-                        // system is still idle
-                        if ( typeof pCallback === 'function'){
-                            pCallback();
-                        }
-                    } else {
-                        // probably not idle -> retry in 50 ms
-                        tf.lastChanged = tb.status.loadCount.lastChanged;
-                        setTimeout(
-                            tf,
-                            100
-                        );
-                    }
-                } else { // loadCount is not 0 -> reattach function
-                    tb.status.loadCount.observe( f, true );
-                }
-            };
-
-            tf.lastChanged = 0;
-
-            setTimeout(
-                tf,
-                100
-            );
-        } else {
-            // if idle not yet reached, re-attach function for ONE execution
-            tb.status.loadCount.observe( f, true );
-        }
-
-    };
-
-    // attach function for ONE execution
-    tb.status.loadCount.observe( f, true );
-
-};
-
-
 /**
  returns a unique id
 
@@ -798,171 +191,6 @@ tb.idle = function( pCallback ){
  */
 tb.getId = function(){
     return 'id-' + (new Date()).getTime() + '-' + Math.random().toString().replace(/\./, '');
-};
-
-
-
-/**
- - takes any number of objects as parameters
- - merges content into the first parameter object
- - always a deep copy
-
- @memberof tb
- @static
- @method tb.extend
-
- @param {object} pObj - object to extend
- @param {...object} [pObj] any number of other objects to merge in
-
- @return {object} - extended object
-
- */
-tb.extend = function( pObj ){ // any number of arguments may be given
-    var cp;
-
-    function walk(pKey) {
-        if ( cp.hasOwnProperty(pKey) && 
-            cp[pKey] instanceof Object && 
-            (cp[pKey]).constructor === Object 
-        ){ // native Object
-            pObj[pKey] = tb.extend( pObj[pKey] instanceof Object ? pObj[pKey] : {}, cp[pKey] ); // deep copy
-        } else if ( cp.hasOwnProperty(pKey) && 
-            cp[pKey] instanceof Object && 
-            (cp[pKey]).constructor === Array 
-        ){ // native Array
-            pObj[pKey] = Array.from(cp[pKey]); // flat copy
-        } else { // copy primitive or reference
-            pObj[pKey] = cp[pKey];
-        }
-    }
-
-    while ( arguments[1] ){
-        cp = arguments[1];
-
-        Object
-            .keys(cp)
-            .forEach(
-                walk
-            );
-
-        [].splice.call( arguments, 1, 1 ); // remove object that is done
-    }
-
-    return pObj;
-};
-
-
-
-/**
-
- - will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object
- - if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned
-
- @memberof tb
- @static
- @method tb.parse
-  
- @param {(string|object|array)} pWhat string, object or array to parse recursively
- @param {...object} pParse any number of hash objects containing replacement key/value pairs
-
- @return {(string|object|array)} pWhat parsed
-
- @example
-
-     tb.parse( "{a} test test", { a: 'done' } )
-     // "done test test"
-
- @example
-
-     tb.parse( [ "{a} test test" ], { a: 'done' } )
-     // ["done test test"]
-
- @example
-
-     tb.parse( [ "{a} test test", "{b} test test" ], { a: 'done', b: 'processed' } )
-     // ["done test test", "processed test test"]
-
- @example
-
-     tb.parse( [ "{a} test test", "{b} test test", { g: "another {silly} test" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )
-     // ["done test test", "processed test test", Object { g="another not so silly test"}]
-
- @example
-
-     tb.parse( { a: "{a} test test", b: "{b} test test", c: [ "another {silly} test" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )
-     // Object { a="done test test",  b="processed test test",  c=[ "another not so silly test" ] }
-
- @example
-
-     // multiple hash objects:
-     tb.parse(
-        "{a} {b}",
-        { a: 'done1' },
-        { b: 'done2' }
-     );
-     // "done1 done2"
-
- */
-tb.parse = function( pWhat, pParse ){
-    var args = Array.prototype.slice.call(arguments);
-
-    if (!args.length){
-        console.error('no arguments give to parse');
-        return;
-    }
-
-    if (args.length === 1){
-        return args[1];
-    } else if (args.length > 2) {
-        while (args.length > 1){
-            args[0] = tb.parse( args[0], args[1]);
-            args.splice(1, 1);
-        }
-        return args[0];
-    }
-
-    // implicit else: exactly 2 arguments
-    if ( typeof pWhat === 'string' ){
-        var vars = pWhat.match( /\{[^\{\}]*\}/g );
-
-        if ( !!vars ) {
-            vars
-                .forEach(
-                    function (pPropname) {
-                        var propname = pPropname.substr(1, pPropname.length - 2),
-                            value = tb.namespace( propname, pParse ).get();
-
-                        if ( typeof value !== 'undefined' ){
-                            pWhat = pWhat.replace( pPropname, value );
-                        }
-                    }
-                );
-        }
-    } else if ( !!pWhat.constructor ){
-        switch ( pWhat.constructor ){
-            case Object:
-                Object
-                    .keys( pWhat )
-                    .forEach(
-                        function( pKey ){
-                            if ( pWhat.hasOwnProperty( pKey ) ){
-                                pWhat[ pKey ] = tb.parse( pWhat[ pKey ], pParse );
-                            }
-                        }
-                    );
-                break;
-            case Array:
-                pWhat
-                    .forEach(
-                        function( pValue, pKey ){
-                            pWhat[ pKey ] = tb.parse( pWhat[ pKey ], pParse );
-                        }
-                    );
-                break;
-        }
-    }
-
-    return pWhat;
 };
 
 /**
@@ -1839,67 +1067,64 @@ tb.require.get = function(pFile){
         ws.close();
 
  */
-if (typeof module === 'undefined') {
-    tb.webSocket = (function () {
+tb.webSocket = (function () {
 
-         function WS( pConfig ){
-            var that = this;
+    function WS( pConfig ){
+        var that = this;
 
-            that.config = pConfig;
+        that.config = pConfig;
 
-            that.socket = !!that.config['protocols']
-                ? new WebSocket( // jshint ignore:line
-                    that.config.url, 
-                    that.config['protocols']
-                )
-                : new WebSocket( // jshint ignore:line
-                    that.config.url 
-                );
-
-            that.socket.onopen = function onOpen( ev ){
-                that.trigger( 'open', ev );
-            };
-            
-            that.socket.onerror = function onError( ev ){
-                that.trigger( 'error', ev );
-            };
-            
-            that.socket.onmessage = function onMessage( ev ){
-                that.trigger( 'message', ev.data );
-            };
-            
-            that.socket.onclose = function onClose( ev ){
-                that.trigger( 'close', ev );
-            };
-                   
-        } 
-
-        WS.prototype = {
-            send: send,
-            close: close
-        };
-
-        return function( pUrl, pProtocols ){
-            return new tb( 
-                WS, 
-                { 
-                    url: pUrl,
-                    protocols: pProtocols
-                }
+        that.socket = !!that.config['protocols']
+            ? new WebSocket( // jshint ignore:line
+                that.config.url, 
+                that.config['protocols']
+            )
+            : new WebSocket( // jshint ignore:line
+                that.config.url 
             );
+
+        that.socket.onopen = function onOpen( ev ){
+            that.trigger( 'open', ev );
         };
         
-        function send(pSend) {
-            this.socket.send(pSend);
-        }
+        that.socket.onerror = function onError( ev ){
+            that.trigger( 'error', ev );
+        };
+        
+        that.socket.onmessage = function onMessage( ev ){
+            that.trigger( 'message', ev.data );
+        };
+        
+        that.socket.onclose = function onClose( ev ){
+            that.trigger( 'close', ev );
+        };
+               
+    } 
 
-        function close() {
-            this.socket.close();
-        }
+    WS.prototype = {
+        send: send,
+        close: close
+    };
 
-    })();
+    return function( pUrl, pProtocols ){
+        return new tb( 
+            WS, 
+            { 
+                url: pUrl,
+                protocols: pProtocols
+            }
+        );
+    };
+    
+    function send(pSend) {
+        this.socket.send(pSend);
+    }
 
-}
+    function close() {
+        this.socket.close();
+    }
+
+})();
 
 /**
  @memberof tb
@@ -2261,7 +1486,6 @@ if (typeof module === 'undefined' ){
     // todo: implement module foreign request
 }
 
-
 /**
  @method tb.stop
 
@@ -2278,5 +1502,4 @@ tb.stop = (function(pStopIt){
         return (stopIt = ( !!pStopIt ? pStopIt : stopIt ) );
     };
 })( false );
-
 

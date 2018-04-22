@@ -68,7 +68,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 215,
+            "line": 216,
             "is_constructor": 1,
             "params": [
                 {
@@ -110,7 +110,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 1611,
+            "line": 436,
             "is_constructor": 1,
             "params": [
                 {
@@ -145,7 +145,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 1750,
+            "line": 2520,
             "is_constructor": 1,
             "params": [
                 {
@@ -173,7 +173,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 3539,
+            "line": 4309,
             "description": "placeholder class, everything contained herein is a curry property of the tb() constructor"
         },
         "tb.Promise": {
@@ -185,7 +185,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4506,
+            "line": 4504,
             "description": "- Promise/A+ compliant promise functionality",
             "memberof": "tb",
             "static": 1,
@@ -214,7 +214,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 5026,
+            "line": 5024,
             "memberof": "tb",
             "static": 1,
             "is_constructor": 1,
@@ -242,7 +242,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 5823,
+            "line": 5816,
             "is_constructor": 1,
             "params": [
                 {
@@ -274,7 +274,176 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 455,
+            "line": 456,
+            "itemtype": "method",
+            "name": "stopPropagation",
+            "return": {
+                "description": "tb.Event object\n\nstop propagation after all handlers on this object have run",
+                "type": "Object"
+            },
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 468,
+            "itemtype": "method",
+            "name": "stopImmediatePropagation",
+            "return": {
+                "description": "tb.Event object\n\nstop propagation immediately after this handler has run",
+                "type": "Object"
+            },
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 483,
+            "description": "- takes any number of objects as parameters\n- merges content into the first parameter object\n- always a deep copy",
+            "memberof": "tb",
+            "static": 1,
+            "itemtype": "method",
+            "name": "tb.extend",
+            "params": [
+                {
+                    "name": "pObj",
+                    "description": "- object to extend",
+                    "type": "Object"
+                },
+                {
+                    "name": "pObj",
+                    "description": "any number of other objects to merge in",
+                    "type": "...object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- extended object",
+                "type": "Object"
+            },
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 532,
+            "description": "- will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object\n     - if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned",
+            "memberof": "tb",
+            "static": 1,
+            "itemtype": "method",
+            "name": "tb.parse",
+            "params": [
+                {
+                    "name": "pWhat",
+                    "description": "string, object or array to parse recursively",
+                    "type": "(string|object|array)"
+                },
+                {
+                    "name": "pParse",
+                    "description": "any number of hash objects containing replacement key/value pairs",
+                    "type": "...object"
+                }
+            ],
+            "return": {
+                "description": "pWhat parsed",
+                "type": "(string|object|array)"
+            },
+            "example": [
+                "\n    tb.parse( \"{a} test test\", { a: 'done' } )\n         // \"done test test\"",
+                "\n    tb.parse( [ \"{a} test test\" ], { a: 'done' } )\n         // [\"done test test\"]",
+                "\n    tb.parse( [ \"{a} test test\", \"{b} test test\" ], { a: 'done', b: 'processed' } )\n         // [\"done test test\", \"processed test test\"]",
+                "\n    tb.parse( [ \"{a} test test\", \"{b} test test\", { g: \"another {silly} test\" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )\n         // [\"done test test\", \"processed test test\", Object { g=\"another not so silly test\"}]",
+                "\n    tb.parse( { a: \"{a} test test\", b: \"{b} test test\", c: [ \"another {silly} test\" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )\n         // Object { a=\"done test test\",  b=\"processed test test\",  c=[ \"another not so silly test\" ] }",
+                "\n    // multiple hash objects:\n         tb.parse(\n            \"{a} {b}\",\n            { a: 'done1' },\n            { b: 'done2' }\n         );\n         // \"done1 done2\"\n"
+            ],
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 644,
+            "description": "debounce function wrapper",
+            "memberof": "tb",
+            "static": 1,
+            "itemtype": "method",
+            "name": "tb.debounce",
+            "params": [
+                {
+                    "name": "pFunction",
+                    "description": "- callback function to execute",
+                    "type": "Function"
+                },
+                {
+                    "name": "pMilliseconds",
+                    "description": "- milliseconds to wait before callback is executed",
+                    "type": "Number"
+                }
+            ],
+            "example": [
+                "\n    // expect that to be this tb instance\n    // append a debounced handler to the 'myEvent' event\n    that.on(\n       'myEvent', \n       tb.debounce(\n           function(){\n               // that = tb instance\n               console.log('debounced \"myEvent\" handler inside', that);\n           },\n           500 // milliseconds\n       )\n    );"
+            ],
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 686,
+            "description": "store function",
+            "memberof": "tb",
+            "static": 1,
+            "itemtype": "method",
+            "name": "tb.store",
+            "params": [
+                {
+                    "name": "pObj",
+                    "description": "- object to put the store in",
+                    "type": "Object"
+                },
+                {
+                    "name": "pName",
+                    "description": "- property name of store",
+                    "type": "String"
+                },
+                {
+                    "name": "pConfig",
+                    "description": "- the initial set of properties in a hash object",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "- the store instance\n\nthe returned store has one method, .observe( myCallbackFunction )\n\nyou can use this method to react on changes in the store\n\nCAVEAT: the store .observe is debounced to accomodate for bulk changes!",
+                "type": "Object"
+            },
+            "example": [
+                "\n    \n    //\n    // EXAMPLE 1: using late binding\n    //\n\n    tb.store(\n    \n        that,   // the instance\n        'store',    // the property name -> that.store\n        $( 'form', that.target ).values()   // initial values\n    \n    ).bind( // assuming there are some {placeholder}s in that DOM node descendants attributes or text nodes\n\n        that.target\n\n    );\n\n    // any change in the store from now on will update the {placeholder}s     \n\n    // change complete store:\n    that.store = { \n       somePlaceHolder: 'someStringValue' \n    };\n\n    // or a property within the store:\n    that.store.somePlaceholder = 'someOtherStringValue';\n\n\n\n\n    //\n    // EXAMPLE 2: using the observe function\n    // expect that to be a tbInstance containing a form\n    //\n\n\n    tb.store(\n    \n        that,   // the instance\n        'store',    // the property name -> that.store\n        $( 'form', that.target ).values()   // initial values\n    \n    ).observe(\n        \n        // 1 way data flow\n        function( pStoreValues ){\n            \n            // do something with the store values\n            // e.g. update some part of the DOM\n\n            console.log( Object.assign( {}, pStoreValues ) );  // convert to plain object\n\n            // other than that you can extract properties like so:\n\n            var a = pStoreValues.myProperty;\n\n        }\n    \n    );\n\n    // update the store whenever the form values change\n    // 2 way data binding\n    \n    $( 'form', that.target )\n       on(\n           'change select',\n           function(ev){\n               tb.extend( \n                   that.store, \n                   $( 'form', that.target ).values() \n               ); \n               ev.stopPropagation();\n           }\n       );\n"
+            ],
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1013,
+            "description": "tb.observable()) function\n- creates a function to set/get the inner value\n- initializes the inner value with the parameter given\n- returns this function",
+            "memberof": "tb",
+            "static": 1,
+            "itemtype": "method",
+            "name": "tb.observable",
+            "chainable": 1,
+            "params": [
+                {
+                    "name": "pStartValue",
+                    "description": "initial content of observable",
+                    "type": "*",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "- observableFunction",
+                "type": "Function"
+            },
+            "example": [
+                "\n\n    // observable data IS NOT an object\n    var o = tb.observable( 0 );                // numeric\n\n    o.observe(\n        function( pValue ){                    // callback will be triggered when observable value changes\n            console.log( pValue );\n        },\n        true                                   // true indicates callback will be called only once\n    );\n\n    o( 5 );                                    // change observable value",
+                "\n\n    // observable data IS an object\n    var o = tb.observable( { a: 5 } );         // object\n\n    o.observe(\n        function( pValue ){                    // callback will be triggered when observable value changes\n                    console.log( pValue );\n                },\n        false                                  // false or no parameter indicates callback will always be called\n                                               // when the data changes, true will trigger it only once\n    );\n\n    // get data:\n    o( 'a' );       // => 5\n    o();            // => { a: 5 }\n\n    // each of these will trigger the callback since the data changed\n    // also they return the observable itself for chaining purposes, NOT THE VALUE\n    o( 'a', 6 );               // => { a: 6 }\n    o( { c: 42 } );            // => { c: 42 }\n    o( 'b', { c: 42 } );       // => { a: 6, b: { c: 42 } }\n\n"
+            ],
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 1171,
             "description": "walk all pSelector tb objects, call pMethodName on them\nreturn a UNIQUE TbSelector result set containing all single results",
             "itemtype": "method",
             "name": "walkSelector",
@@ -302,60 +471,11 @@
                 "description": "instance of TbSelector",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 528,
-            "itemtype": "method",
-            "name": "set",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pKey",
-                    "description": "- name of the property",
-                    "type": "String",
-                    "optional": true
-                },
-                {
-                    "name": "pValue",
-                    "description": "- any kind of value associated with the key",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "- tb.Selector instance or tB instance - for chaining\n\nset() method\n\nsets an instance property",
-                "type": "Object"
-            },
-            "example": [
-                "\n\nvar a = new tb(...); // create a tB instance\na.set( 'x': 42 );\n"
-            ],
-            "class": "tb"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 571,
-            "itemtype": "method",
-            "name": "get",
-            "params": [
-                {
-                    "name": "pKey",
-                    "description": "- name of the property",
-                    "type": "String",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "any value stored in property, or undefined\n\nget() method\n\nget an instance property"
-            },
-            "example": [
-                "\n\n    var a = new tb(...); // create a tB instance\n    a.get( 'x' );\n"
-            ],
-            "class": "tb"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 605,
+            "line": 1243,
             "itemtype": "method",
             "name": "trigger",
             "chainable": 1,
@@ -382,11 +502,11 @@
                 "description": "- tb.Selector instance or tB instance - for chaining\n\ntrigger method\n\ntriggers an asynchronous twoBirds event, optionally with data and bubble indicator",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 754,
+            "line": 1392,
             "itemtype": "method",
             "name": "on",
             "chainable": 1,
@@ -413,11 +533,11 @@
                 "description": "- tb.Selector instance or tB instance - for chaining\n\n.on() method\n\nadds a handler to a twoBirds instance or a tb.Selector result set",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 807,
+            "line": 1448,
             "itemtype": "method",
             "name": "one",
             "chainable": 1,
@@ -437,11 +557,11 @@
                 "description": "- tb.Selector instance or tB instance - for chaining\n\n.one() method\n\nadds a handler to a twoBirds instance or a tb.Selector result set,\nto be called only once when the event fires\nafterwards the handler is deleted from the event handler list",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 832,
+            "line": 1473,
             "itemtype": "method",
             "name": "off",
             "chainable": 1,
@@ -461,11 +581,11 @@
                 "description": "- tb.Selector instance or tB instance - for chaining\n\n.off() method\n\nremoves a handler from a twoBirds instance or a tb.Selector result set\nafterwards the handler is deleted from the event handler list",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 902,
+            "line": 1545,
             "itemtype": "method",
             "name": "parents",
             "chainable": 1,
@@ -480,11 +600,11 @@
                 "description": "- tb.Selector instance - for chaining\n\n.parents() method\n\nfor each this[0...n] or this as tb() instance,\n- get all parent tb objects\n- check them against the filter param pSelector\n- return them as a TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 967,
+            "line": 1610,
             "itemtype": "method",
             "name": "parent",
             "chainable": 1,
@@ -499,11 +619,11 @@
                 "description": "- tb.Selector instance - for chaining\n\n.parent() method\n\nfor each this[0...n] or this as tb() instance,\n- get closest parent tb object\n- check all of them against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1021,
+            "line": 1664,
             "itemtype": "method",
             "name": "descendants",
             "chainable": 1,
@@ -518,11 +638,11 @@
                 "description": "- tb.Selector instance - for chaining\n\n.descendants() method\n\nfor each this[0...n] or this as tb() instance,\n- get all descendants of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1080,
+            "line": 1723,
             "itemtype": "method",
             "name": "children",
             "chainable": 1,
@@ -543,11 +663,11 @@
                 "description": "- tb.Selector instance - for chaining\n\n.children() method\n\nfor each this[0...n] or this as tb() instance,\n- get all direct children of tb object\n- check them against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1145,
+            "line": 1788,
             "itemtype": "method",
             "name": "next",
             "chainable": 1,
@@ -555,11 +675,11 @@
                 "description": "- tb.Selector instance (maybe empty) - for chaining\n\nnext() method\n\nfor each this[0...n] or this as tb() instance,\n- get the direct following sibling of tb instance\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1183,
+            "line": 1826,
             "itemtype": "method",
             "name": "prev",
             "chainable": 1,
@@ -567,11 +687,11 @@
                 "description": "- tb.Selector instance (maybe empty) - for chaining\n\nprev() method\n\nfor each this[0...n] or this as tb() instance,\n- get the direct previous sibling of tb instance\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1221,
+            "line": 1864,
             "itemtype": "method",
             "name": "first",
             "chainable": 1,
@@ -579,11 +699,11 @@
                 "description": "- tb.Selector instance (maybe empty) - for chaining\n\nfirst() method\n\nfor each this[0...n] or this as tb() instance,\n- get the first child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1255,
+            "line": 1898,
             "itemtype": "method",
             "name": "last",
             "chainable": 1,
@@ -591,22 +711,22 @@
                 "description": "- tb.Selector instance (maybe empty) - for chaining\n\nlast() method\n\nfor each this[0...n] or this as tb() instance,\n- get the last child of the tb object parent\n- check it against the filter param pSelector\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1282,
+            "line": 1925,
             "itemtype": "method",
             "name": "toArray",
             "return": {
                 "description": "- TbSelector elements in a plain array\n\ntoArray() method",
                 "type": "Array"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1295,
+            "line": 1938,
             "itemtype": "method",
             "name": "filter",
             "chainable": 1,
@@ -621,11 +741,11 @@
                 "description": "- tb.Selector instance (maybe empty) - for chaining\n\nfilter() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against the filter param pParam\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1337,
+            "line": 1980,
             "itemtype": "method",
             "name": "not",
             "chainable": 1,
@@ -640,11 +760,11 @@
                 "description": "- tb.Selector instance (maybe empty) - for chaining\n\nnot() method\n\nfor each this[0...n] or this as tb() instance,\n- check them against pSelector and remove all that match\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1370,
+            "line": 2013,
             "itemtype": "method",
             "name": "add",
             "chainable": 1,
@@ -659,11 +779,11 @@
                 "description": "- tb.Selector instance (maybe empty) - for chaining\n\nadd() method\n\nadd elements to current result set\n- return TbSelector result set (unique)",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1392,
+            "line": 2035,
             "itemtype": "method",
             "name": "flush",
             "chainable": 1,
@@ -671,11 +791,48 @@
                 "description": "- mpty tb.Selector instance - for chaining\n\nflush() method\n\nempty current result set\n- return empty TbSelector result set",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1420,
+            "line": 2159,
+            "memberof": "tb",
+            "static": 1,
+            "itemtype": "property",
+            "name": "tb.status",
+            "type": "Object\n\ncontainer for twoBirds status observables",
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2168,
+            "itemtype": "property",
+            "name": "tb.status.loadCount",
+            "type": "Function\n\nobservable containing the number of ( script load operations + xHr requests ) currently pending",
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2177,
+            "memberof": "tb",
+            "static": 1,
+            "itemtype": "method",
+            "name": "tb.idle",
+            "params": [
+                {
+                    "name": "pCallback",
+                    "description": "function to execute when all loading is finished",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n\n   // in code...\n   tb.idle(\n       function(){\n           // do whatever you like\n       }\n   );"
+            ],
+            "class": "tb.Event"
+        },
+        {
+            "file": "src/tb/tb.js",
+            "line": 2241,
             "itemtype": "method",
             "name": "concat",
             "chainable": 1,
@@ -683,11 +840,11 @@
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/concat\">concat</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1430,
+            "line": 2251,
             "itemtype": "method",
             "name": "every",
             "chainable": 1,
@@ -695,11 +852,11 @@
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/every\">every</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1440,
+            "line": 2261,
             "itemtype": "method",
             "name": "forEach",
             "chainable": 1,
@@ -707,143 +864,143 @@
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach\">forEach</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1450,
+            "line": 2271,
             "itemtype": "method",
             "name": "indexOf",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf\">indexOf</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1459,
+            "line": 2280,
             "itemtype": "method",
             "name": "map",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map\">map</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1468,
+            "line": 2289,
             "itemtype": "method",
             "name": "pop",
             "return": {
                 "description": "- tb instance\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/pop\">pop</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1477,
+            "line": 2298,
             "itemtype": "method",
             "name": "push",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push\">push</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1486,
+            "line": 2307,
             "itemtype": "method",
             "name": "reduce",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce\">reduce</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1495,
+            "line": 2316,
             "itemtype": "method",
             "name": "reduceRight",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight\">reduceRight</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1504,
+            "line": 2325,
             "itemtype": "method",
             "name": "reverse",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse\">reverse</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1513,
+            "line": 2334,
             "itemtype": "method",
             "name": "shift",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/shift\">shift</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1522,
+            "line": 2343,
             "itemtype": "method",
             "name": "slice",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/slice\">slice</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1531,
+            "line": 2352,
             "itemtype": "method",
             "name": "some",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some\">some</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1540,
+            "line": 2361,
             "itemtype": "method",
             "name": "splice",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/splice\">splice</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1549,
+            "line": 2370,
             "itemtype": "method",
             "name": "unshift",
             "return": {
                 "description": "- tb.dom() result set, may be empty\n\ninherited from Array, see <a href=\"https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift\">unshift</a>",
                 "type": "Object"
             },
-            "class": "tb"
+            "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1568,
+            "line": 2385,
             "itemtype": "method",
             "name": "unique",
             "chainable": 1,
@@ -851,39 +1008,17 @@
                 "description": "- tb.dom() result set, may be empty\n\nforce this tb() result set to be unique\n\n( being called after using methods inherited from array, force uniqueness )",
                 "type": "Object"
             },
-            "class": "tb"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 1631,
-            "itemtype": "method",
-            "name": "stopPropagation",
-            "return": {
-                "description": "tb.Event object\n\nstop propagation after all handlers on this object have run",
-                "type": "Object"
-            },
             "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1643,
-            "itemtype": "method",
-            "name": "stopImmediatePropagation",
-            "return": {
-                "description": "tb.Event object\n\nstop propagation immediately after this handler has run",
-                "type": "Object"
-            },
-            "class": "tb.Event"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 1662,
+            "line": 2432,
             "description": "document.ready bootstrap",
             "class": "tb.Event"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1865,
+            "line": 2635,
             "itemtype": "method",
             "name": "concat",
             "chainable": 1,
@@ -895,7 +1030,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1875,
+            "line": 2645,
             "itemtype": "method",
             "name": "every",
             "chainable": 1,
@@ -907,7 +1042,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1885,
+            "line": 2655,
             "itemtype": "method",
             "name": "forEach",
             "chainable": 1,
@@ -919,7 +1054,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1895,
+            "line": 2665,
             "itemtype": "method",
             "name": "indexOf",
             "return": {
@@ -930,7 +1065,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1904,
+            "line": 2674,
             "itemtype": "method",
             "name": "map",
             "return": {
@@ -941,7 +1076,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1913,
+            "line": 2683,
             "itemtype": "method",
             "name": "pop",
             "return": {
@@ -952,7 +1087,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1922,
+            "line": 2692,
             "itemtype": "method",
             "name": "push",
             "return": {
@@ -963,7 +1098,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1931,
+            "line": 2701,
             "itemtype": "method",
             "name": "reduce",
             "return": {
@@ -974,7 +1109,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1940,
+            "line": 2710,
             "itemtype": "method",
             "name": "reduceRight",
             "return": {
@@ -985,7 +1120,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1949,
+            "line": 2719,
             "itemtype": "method",
             "name": "reverse",
             "return": {
@@ -996,7 +1131,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1958,
+            "line": 2728,
             "itemtype": "method",
             "name": "shift",
             "return": {
@@ -1007,7 +1142,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1967,
+            "line": 2737,
             "itemtype": "method",
             "name": "slice",
             "return": {
@@ -1018,7 +1153,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1976,
+            "line": 2746,
             "itemtype": "method",
             "name": "some",
             "return": {
@@ -1029,7 +1164,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1985,
+            "line": 2755,
             "itemtype": "method",
             "name": "splice",
             "return": {
@@ -1040,7 +1175,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 1994,
+            "line": 2764,
             "itemtype": "method",
             "name": "unshift",
             "return": {
@@ -1051,7 +1186,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2043,
+            "line": 2813,
             "itemtype": "method",
             "name": "add",
             "chainable": 1,
@@ -1069,7 +1204,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2091,
+            "line": 2861,
             "itemtype": "method",
             "name": "addClass",
             "chainable": 1,
@@ -1088,7 +1223,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2141,
+            "line": 2911,
             "itemtype": "method",
             "name": "append",
             "chainable": 1,
@@ -1106,7 +1241,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2172,
+            "line": 2942,
             "itemtype": "method",
             "name": "appendTo",
             "params": [
@@ -1119,7 +1254,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2196,
+            "line": 2966,
             "itemtype": "method",
             "name": "attr",
             "chainable": 1,
@@ -1143,7 +1278,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2257,
+            "line": 3027,
             "itemtype": "method",
             "name": "children",
             "chainable": 1,
@@ -1161,7 +1296,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2292,
+            "line": 3062,
             "itemtype": "method",
             "name": "clean",
             "chainable": 1,
@@ -1173,7 +1308,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2327,
+            "line": 3097,
             "itemtype": "method",
             "name": "descendants",
             "chainable": 1,
@@ -1191,7 +1326,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2365,
+            "line": 3135,
             "itemtype": "method",
             "name": "empty",
             "chainable": 1,
@@ -1203,7 +1338,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2385,
+            "line": 3155,
             "itemtype": "method",
             "name": "filter",
             "chainable": 1,
@@ -1222,7 +1357,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2422,
+            "line": 3192,
             "itemtype": "method",
             "name": "first",
             "chainable": 1,
@@ -1234,7 +1369,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2442,
+            "line": 3212,
             "itemtype": "method",
             "name": "hasClass",
             "params": [
@@ -1252,7 +1387,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2458,
+            "line": 3228,
             "itemtype": "method",
             "name": "hide",
             "chainable": 1,
@@ -1264,7 +1399,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2481,
+            "line": 3251,
             "itemtype": "method",
             "name": "html",
             "chainable": 1,
@@ -1283,7 +1418,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2509,
+            "line": 3279,
             "itemtype": "method",
             "name": "insertBefore",
             "params": [
@@ -1296,7 +1431,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2541,
+            "line": 3311,
             "itemtype": "method",
             "name": "insertAfter",
             "params": [
@@ -1309,7 +1444,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2583,
+            "line": 3353,
             "itemtype": "method",
             "name": "last",
             "chainable": 1,
@@ -1321,7 +1456,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2603,
+            "line": 3373,
             "itemtype": "method",
             "name": "next",
             "chainable": 1,
@@ -1333,7 +1468,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2626,
+            "line": 3396,
             "itemtype": "method",
             "name": "not",
             "chainable": 1,
@@ -1351,7 +1486,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2654,
+            "line": 3424,
             "itemtype": "method",
             "name": "off",
             "chainable": 1,
@@ -1381,7 +1516,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2696,
+            "line": 3466,
             "itemtype": "method",
             "name": "on",
             "chainable": 1,
@@ -1410,7 +1545,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2776,
+            "line": 3546,
             "itemtype": "method",
             "name": "one",
             "params": [
@@ -1441,7 +1576,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2826,
+            "line": 3596,
             "itemtype": "method",
             "name": "parents",
             "chainable": 1,
@@ -1459,7 +1594,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2864,
+            "line": 3634,
             "itemtype": "method",
             "name": "parent",
             "chainable": 1,
@@ -1477,7 +1612,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2894,
+            "line": 3664,
             "itemtype": "method",
             "name": "previous",
             "chainable": 1,
@@ -1489,7 +1624,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2917,
+            "line": 3687,
             "itemtype": "method",
             "name": "remove",
             "chainable": 1,
@@ -1508,7 +1643,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2938,
+            "line": 3708,
             "itemtype": "method",
             "name": "removeAttr",
             "chainable": 1,
@@ -1527,7 +1662,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2969,
+            "line": 3739,
             "itemtype": "method",
             "name": "removeClass",
             "chainable": 1,
@@ -1546,7 +1681,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3019,
+            "line": 3789,
             "itemtype": "method",
             "name": "show",
             "chainable": 1,
@@ -1558,7 +1693,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3039,
+            "line": 3809,
             "itemtype": "method",
             "name": "toArray",
             "chainable": 1,
@@ -1570,7 +1705,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3053,
+            "line": 3823,
             "itemtype": "method",
             "name": "toggleClass",
             "params": [
@@ -1589,7 +1724,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3079,
+            "line": 3849,
             "itemtype": "method",
             "name": "trigger",
             "chainable": 1,
@@ -1626,7 +1761,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3130,
+            "line": 3900,
             "itemtype": "method",
             "name": "unique",
             "chainable": 1,
@@ -1638,7 +1773,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3157,
+            "line": 3927,
             "itemtype": "method",
             "name": "val",
             "chainable": 1,
@@ -1657,7 +1792,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3370,
+            "line": 4140,
             "itemtype": "method",
             "name": "values",
             "params": [
@@ -1676,7 +1811,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3546,
+            "line": 4316,
             "description": "an empty function just in case you need one",
             "memberof": "tb",
             "static": 1,
@@ -1689,93 +1824,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3561,
-            "description": "debounce function wrapper",
-            "memberof": "tb",
-            "static": 1,
-            "itemtype": "method",
-            "name": "tb.debounce",
-            "params": [
-                {
-                    "name": "pFunction",
-                    "description": "- callback function to execute",
-                    "type": "Function"
-                },
-                {
-                    "name": "pMilliseconds",
-                    "description": "- milliseconds to wait before callback is executed",
-                    "type": "Number"
-                }
-            ],
-            "example": [
-                "\n    // expect that to be this tb instance\n    // append a debounced handler to the 'myEvent' event\n    that.on(\n       'myEvent', \n       tb.debounce(\n           function(){\n               // that = tb instance\n               console.log('debounced \"myEvent\" handler inside', that);\n           },\n           500 // milliseconds\n       )\n    );"
-            ],
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 3603,
-            "description": "store function",
-            "memberof": "tb",
-            "static": 1,
-            "itemtype": "method",
-            "name": "tb.store",
-            "params": [
-                {
-                    "name": "pObj",
-                    "description": "- object to put the store in",
-                    "type": "Object"
-                },
-                {
-                    "name": "pName",
-                    "description": "- property name of store",
-                    "type": "String"
-                },
-                {
-                    "name": "pConfig",
-                    "description": "- the initial set of properties in a hash object",
-                    "type": "String"
-                }
-            ],
-            "return": {
-                "description": "- the store instance\n\nthe returned store has one method, .observe( myCallbackFunction )\n\nyou can use this method to react on changes in the store\n\nCAVEAT: the store .observe is debounced to accomodate for bulk changes!",
-                "type": "Object"
-            },
-            "example": [
-                "\n    \n    //\n    // EXAMPLE 1: using late binding\n    //\n\n    tb.store(\n    \n        that,   // the instance\n        'store',    // the property name -> that.store\n        $( 'form', that.target ).values()   // initial values\n    \n    ).bind( // assuming there are some {placeholder}s in that DOM node descendants attributes or text nodes\n\n        that.target\n\n    );\n\n    // any change in the store from now on will update the {placeholder}s     \n\n    // change complete store:\n    that.store = { \n       somePlaceHolder: 'someStringValue' \n    };\n\n    // or a property within the store:\n    that.store.somePlaceholder = 'someOtherStringValue';\n\n\n\n\n    //\n    // EXAMPLE 2: using the observe function\n    // expect that to be a tbInstance containing a form\n    //\n\n\n    tb.store(\n    \n        that,   // the instance\n        'store',    // the property name -> that.store\n        $( 'form', that.target ).values()   // initial values\n    \n    ).observe(\n        \n        // 1 way data flow\n        function( pStoreValues ){\n            \n            // do something with the store values\n            // e.g. update some part of the DOM\n\n            console.log( Object.assign( {}, pStoreValues ) );  // convert to plain object\n\n            // other than that you can extract properties like so:\n\n            var a = pStoreValues.myProperty;\n\n        }\n    \n    );\n\n    // update the store whenever the form values change\n    // 2 way data binding\n    \n    $( 'form', that.target )\n       on(\n           'change select',\n           function(ev){\n               tb.extend( \n                   that.store, \n                   $( 'form', that.target ).values() \n               ); \n               ev.stopPropagation();\n           }\n       );\n"
-            ],
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 3927,
-            "description": "tb.observable()) function\n- creates a function to set/get the inner value\n- initializes the inner value with the parameter given\n- returns this function",
-            "memberof": "tb",
-            "static": 1,
-            "itemtype": "method",
-            "name": "tb.observable",
-            "chainable": 1,
-            "params": [
-                {
-                    "name": "pStartValue",
-                    "description": "initial content of observable",
-                    "type": "*",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "- observableFunction",
-                "type": "Function"
-            },
-            "example": [
-                "\n\n    // observable data IS NOT an object\n    var o = tb.observable( 0 );                // numeric\n\n    o.observe(\n        function( pValue ){                    // callback will be triggered when observable value changes\n            console.log( pValue );\n        },\n        true                                   // true indicates callback will be called only once\n    );\n\n    o( 5 );                                    // change observable value",
-                "\n\n    // observable data IS an object\n    var o = tb.observable( { a: 5 } );         // object\n\n    o.observe(\n        function( pValue ){                    // callback will be triggered when observable value changes\n                    console.log( pValue );\n                },\n        false                                  // false or no parameter indicates callback will always be called\n                                               // when the data changes, true will trigger it only once\n    );\n\n    // get data:\n    o( 'a' );       // => 5\n    o();            // => { a: 5 }\n\n    // each of these will trigger the callback since the data changed\n    // also they return the observable itself for chaining purposes, NOT THE VALUE\n    o( 'a', 6 );               // => { a: 6 }\n    o( { c: 42 } );            // => { c: 42 }\n    o( 'b', { c: 42 } );       // => { a: 6, b: { c: 42 } }\n\n"
-            ],
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 4082,
+            "line": 4331,
             "memberof": "tb",
             "itemtype": "method",
             "name": "tb.namespace",
@@ -1807,7 +1856,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4188,
+            "line": 4437,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -1827,44 +1876,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4243,
-            "memberof": "tb",
-            "static": 1,
-            "itemtype": "property",
-            "name": "tb.status",
-            "type": "Object\n\ncontainer for twoBirds status observables",
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 4252,
-            "itemtype": "property",
-            "name": "tb.status.loadCount",
-            "type": "Function\n\nobservable containing the number of ( script load operations + xHr requests ) currently pending",
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 4263,
-            "memberof": "tb",
-            "static": 1,
-            "itemtype": "method",
-            "name": "tb.idle",
-            "params": [
-                {
-                    "name": "pCallback",
-                    "description": "function to execute when all loading is finished",
-                    "type": "Function"
-                }
-            ],
-            "example": [
-                "\n\n   // in code...\n   tb.idle(\n       function(){\n           // do whatever you like\n       }\n   );"
-            ],
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 4327,
+            "line": 4490,
             "description": "returns a unique id",
             "memberof": "tb",
             "static": 1,
@@ -1878,68 +1890,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4343,
-            "description": "- takes any number of objects as parameters\n- merges content into the first parameter object\n- always a deep copy",
-            "memberof": "tb",
-            "static": 1,
-            "itemtype": "method",
-            "name": "tb.extend",
-            "params": [
-                {
-                    "name": "pObj",
-                    "description": "- object to extend",
-                    "type": "Object"
-                },
-                {
-                    "name": "pObj",
-                    "description": "any number of other objects to merge in",
-                    "type": "...object",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "- extended object",
-                "type": "Object"
-            },
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 4394,
-            "description": "- will replace all matching {namespace1.namespace2.etc} occurrences with values from pParse object\n - if typeof pWhat is object or array, it will be done with all strings contained therein and the original pWhat returned",
-            "memberof": "tb",
-            "static": 1,
-            "itemtype": "method",
-            "name": "tb.parse",
-            "params": [
-                {
-                    "name": "pWhat",
-                    "description": "string, object or array to parse recursively",
-                    "type": "(string|object|array)"
-                },
-                {
-                    "name": "pParse",
-                    "description": "any number of hash objects containing replacement key/value pairs",
-                    "type": "...object"
-                }
-            ],
-            "return": {
-                "description": "pWhat parsed",
-                "type": "(string|object|array)"
-            },
-            "example": [
-                "\n    tb.parse( \"{a} test test\", { a: 'done' } )\n     // \"done test test\"",
-                "\n    tb.parse( [ \"{a} test test\" ], { a: 'done' } )\n     // [\"done test test\"]",
-                "\n    tb.parse( [ \"{a} test test\", \"{b} test test\" ], { a: 'done', b: 'processed' } )\n     // [\"done test test\", \"processed test test\"]",
-                "\n    tb.parse( [ \"{a} test test\", \"{b} test test\", { g: \"another {silly} test\" } ], { a: 'done', b: 'processed', silly: 'not so silly' } )\n     // [\"done test test\", \"processed test test\", Object { g=\"another not so silly test\"}]",
-                "\n    tb.parse( { a: \"{a} test test\", b: \"{b} test test\", c: [ \"another {silly} test\" ] }, { a: 'done', b: 'processed', silly: 'not so silly' } )\n     // Object { a=\"done test test\",  b=\"processed test test\",  c=[ \"another not so silly test\" ] }",
-                "\n    // multiple hash objects:\n     tb.parse(\n        \"{a} {b}\",\n        { a: 'done1' },\n        { b: 'done2' }\n     );\n     // \"done1 done2\"\n"
-            ],
-            "class": "tb.Util"
-        },
-        {
-            "file": "src/tb/tb.js",
-            "line": 4572,
+            "line": 4570,
             "itemtype": "method",
             "name": "then",
             "chainable": 1,
@@ -1961,7 +1912,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4592,
+            "line": 4590,
             "itemtype": "method",
             "name": "catch",
             "chainable": 1,
@@ -1983,7 +1934,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4612,
+            "line": 4610,
             "itemtype": "method",
             "name": "finally",
             "chainable": 1,
@@ -2005,7 +1956,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4637,
+            "line": 4635,
             "itemtype": "method",
             "name": "tb.Promise.resolve",
             "chainable": 1,
@@ -2028,7 +1979,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4661,
+            "line": 4659,
             "itemtype": "method",
             "name": "tb.Promise.reject",
             "chainable": 1,
@@ -2051,7 +2002,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4685,
+            "line": 4683,
             "itemtype": "method",
             "name": "tb.Promise.all",
             "chainable": 1,
@@ -2074,7 +2025,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4756,
+            "line": 4754,
             "itemtype": "method",
             "name": "tb.Promise.race",
             "chainable": 1,
@@ -2097,13 +2048,13 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5000,
+            "line": 4998,
             "description": "execute promise function",
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5085,
+            "line": 5083,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2132,7 +2083,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5336,
+            "line": 5334,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2168,7 +2119,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5442,
+            "line": 5437,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2248,37 +2199,37 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5467,
+            "line": 5462,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5515,
+            "line": 5510,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5532,
+            "line": 5527,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5554,
+            "line": 5549,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5584,
+            "line": 5579,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5621,
+            "line": 5616,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5803,
+            "line": 5797,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -2296,7 +2247,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5972,
+            "line": 5965,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -2311,7 +2262,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 6004,
+            "line": 5997,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -2326,7 +2277,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 6037,
+            "line": 6030,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -2341,7 +2292,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 6069,
+            "line": 6062,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -2370,75 +2321,75 @@
         },
         {
             "message": "replacing incorrect tag: returns with return",
-            "line": " src/tb/tb.js:215"
+            "line": " src/tb/tb.js:216"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:483"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:532"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:644"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:686"
+        },
+        {
+            "message": "unknown tag: memberof",
+            "line": " src/tb/tb.js:1013"
         },
         {
             "message": "replacing incorrect tag: function with method",
-            "line": " src/tb/tb.js:455"
+            "line": " src/tb/tb.js:1171"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3546"
+            "line": " src/tb/tb.js:2159"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3561"
+            "line": " src/tb/tb.js:2177"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3603"
+            "line": " src/tb/tb.js:4316"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:3927"
+            "line": " src/tb/tb.js:4331"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4082"
+            "line": " src/tb/tb.js:4437"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4188"
+            "line": " src/tb/tb.js:4490"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4243"
+            "line": " src/tb/tb.js:4504"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4263"
+            "line": " src/tb/tb.js:5024"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4327"
+            "line": " src/tb/tb.js:5083"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4343"
+            "line": " src/tb/tb.js:5334"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4394"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4506"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5026"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5085"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5336"
-        },
-        {
-            "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5442"
+            "line": " src/tb/tb.js:5437"
         },
         {
             "message": "Missing item type\ntwoBirds V8 core functionality",
@@ -2446,35 +2397,35 @@
         },
         {
             "message": "Missing item type\ndocument.ready bootstrap",
-            "line": " src/tb/tb.js:1662"
+            "line": " src/tb/tb.js:2432"
         },
         {
             "message": "Missing item type\nexecute promise function",
-            "line": " src/tb/tb.js:5000"
+            "line": " src/tb/tb.js:4998"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5467"
+            "line": " src/tb/tb.js:5462"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5515"
+            "line": " src/tb/tb.js:5510"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5532"
+            "line": " src/tb/tb.js:5527"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5554"
+            "line": " src/tb/tb.js:5549"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5584"
+            "line": " src/tb/tb.js:5579"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5621"
+            "line": " src/tb/tb.js:5616"
         }
     ]
 }

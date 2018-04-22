@@ -112,7 +112,6 @@ module.exports = function(grunt) {
                         'src/tbTest/tb.core.test.js',
                         'src/tbTest/tb.dom.test.js',
                         'src/tbTest/tb.CRUD.test.js',
-                        'src/tbSource/tb.es6.js',
                         'src/tbTest/tb.utils.test.js'
                     ],
                     'src/repo.js': [

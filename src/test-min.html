@@ -59,9 +59,16 @@
         <script type="text/javascript" src="repo.js"></script>
 
         <script>
-            tb.idle(
+            setTimeout(
 
                 function(){
+
+                    // run tests
+                    setTimeout(function(){
+                        tb.Require([
+                            'tbTest.js'
+                        ]);
+                    }, 2000);
 
                     // make svg favicon
                     var $ = tb.dom,
@@ -114,12 +121,8 @@
                     // initial state
                     store = tb.extend( {}, f );
 
-                    // run tests
-                    tb.Require([
-                        'tbTest.js'
-                    ]);
                 }
-            );
+            , 5000);
         </script>
     </head>
     <body data-tb="test.GrandParent">

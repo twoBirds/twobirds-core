@@ -1,46 +1,42 @@
-tb.namespace( 'test.GrandParent' ).set(
-    (function(){
-        
-        function GrandParent(pConfig) {
-            var that = this;
+var test = new Tb();
 
-            that.handlers = {
-                init: init,
-                test: test
-            };
-        }
+test.GrandParent = ( class GrandParent extends Tb{
 
-        // proto properties and methods
-        GrandParent.prototype = {
-            namespace: 'test.GrandParent',
+    constructor( pConfig, pTarget ){
 
-            'tb.Require': [
-                '/test/GrandParent.css'
-            ],
+        super( pConfig, pTarget );
 
-            test: test
+        var that = this;
+
+        that.handlers = {
+            init: that.init,
+            test: that.test
         };
 
-        return GrandParent;
+        that.storeTest = {};
+        that.storeTest2 = [];
 
-        // private methods
-        function init(){
-            var that = this;
+        that.observe( function(v){ console.log('GrandParent changed:', v) } );
+    }
 
-            for ( var x=0; x < 5; x++ ) {
-                new tb(
-                    'test.Parent',
-                    {},
-                    that.target.appendChild( document.createElement("div") )
-                );
-            }
+    // methods
+    init(){
+        var that = this;
+
+        for ( var x=0; x < 5; x++ ) {
+            new tb(
+                'test.Parent',
+                {},
+                that.target.appendChild( document.createElement("div") )
+            );
         }
+    }
 
-        function test( e ){
-            var that = this;
+    test( e ){
+        var that = this;
 
-            //console.info( ' grandParent ::test()' );
-        }
+        //console.info( ' grandParent ::test()' );
+    }
 
-    })()
-);
+});
+

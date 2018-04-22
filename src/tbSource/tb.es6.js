@@ -1,12 +1,25 @@
-/*
-class Tb extends tb.Store{
-    constructor( pConfig, pTarget ){
-        super( pConfig, pTarget );
-    }
-}
+class Tb extends tb{
 
-tb.extend(
-    Tb.prototype,
-    tb.prototype
-);
-*/
+    constructor( pConfig, pTarget ){
+
+        super( pConfig, pTarget );
+
+        var that = this,
+            observable = Symbol('observable'),
+            onChange = Symbol('onChange');
+        
+        // make anonymous property
+        that[observable] = tb.observable(false);
+
+        // must be debounced for looped property changes like
+        // ... tb.extend( store, $('form').values() );
+        that[onChange] = tb.debounce(
+            function(){
+                this[observable]( tb.extend( {}, this ) );
+            },
+            0
+        );
+
+    }
+
+}

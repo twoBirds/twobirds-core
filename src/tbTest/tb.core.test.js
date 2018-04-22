@@ -266,20 +266,12 @@ describe("tb.core.js", function() {
             it("forEach()", function() {
                 var a = tb( 'div.test-parent' );
                 a.forEach(function(e){
-                    e.set('testProp', 'testForEach');
+                    e.testProp = 'testForEach';
                 });
                 expect( a[4].testProp === 'testForEach' ).toBe( true );
                 a.forEach(function(e){
                     delete e.testProp;
                 });
-            });
-
-        });
-
-        describe(".get()", function() {
-
-            it("tb('div').get('target')", function() {
-                expect( tb('div')[0].get('target').tagName === "DIV" ).toBe( true );
             });
 
         });
@@ -344,12 +336,12 @@ describe("tb.core.js", function() {
 
             it("tb('div').off( 'testEventName', pHandler ) remove one handler at a time", function() {
 
-                var testHandler1 = function(){},
-                    testHandler2 = function(){};
+                var testHandler1 = function testHandler1(){},
+                    testHandler2 = function testHandler2(){};
 
                 tb( test.GrandParent )[0].handlers['testEventName'] = [ testHandler1, testHandler2 ];
 
-                tb( test.GrandParent ).off( 'testEventName', testHandler1 ); // remove first handler
+                tb( test.GrandParent )[0].off( 'testEventName', testHandler1 ); // remove first handler
 
                 expect( tb( test.GrandParent )[0].handlers['testEventName'].length === 1 ).toBe( true );
 
@@ -357,11 +349,11 @@ describe("tb.core.js", function() {
 
             it("tb('div').off( 'testEventName', pHandler ) remove last handler", function() {
 
-                var testHandler1 = function(){};
+                var testHandler1 = function testHandler1(){};
 
                 tb( test.GrandParent )[0].handlers['testEventName'] = [ testHandler1 ];
 
-                tb( test.GrandParent ).off( 'testEventName', testHandler1 ); // remove first handler
+                tb( test.GrandParent )[0].off( 'testEventName', testHandler1 ); // remove first handler
 
                 // 'testhandler' array in this.handlers should be gone when the last handler is removed
                 expect( !tb( test.GrandParent )[0].handlers['testEventName'] ).toBe( true );
@@ -375,7 +367,7 @@ describe("tb.core.js", function() {
 
                 tb( test.GrandParent )[0].handlers['testEventName'] = [ testHandler1, testHandler2 ];
 
-                tb( test.GrandParent ).off( 'testEventName' );
+                tb( test.GrandParent )[0].off( 'testEventName' );
 
                 // 'testhandler' array in this.handlers should be gone when the last handler is removed
                 expect( !tb( test.GrandParent )[0].handlers['testEventName'] ).toBe( true );
@@ -388,10 +380,10 @@ describe("tb.core.js", function() {
 
             it("tb('div').on( 'testEventName', pHandler ) add handler(s)", function() {
 
-                var testHandler1 = function(){},
-                    testHandler2 = function(){};
+                var testHandler1 = function testHandler1(){},
+                    testHandler2 = function testHandler2(){};
 
-                tb( test.GrandParent )
+                tb( test.GrandParent )[0]
                     .on(
                         'testEventName',
                         testHandler1
@@ -413,10 +405,10 @@ describe("tb.core.js", function() {
 
             it("tb('div').one( 'testEventName', pHandler ) add mixed handlers", function() {
 
-                var testHandler1 = function(){},
-                    testHandler2 = function(){};
+                var testHandler1 = function testHandler1(){},
+                    testHandler2 = function testHandler2(){};
 
-                tb( test.GrandParent )
+                tb( test.GrandParent )[0]
                     .one(
                         'testEventName',
                         testHandler1
@@ -439,10 +431,10 @@ describe("tb.core.js", function() {
 
             it("tb('div').one( 'testEventName', pHandler ) only .once handlers", function() {
 
-                var testHandler1 = function(){},
-                    testHandler2 = function(){};
+                var testHandler1 = function testHandler1(){},
+                    testHandler2 = function testHandler2(){};
 
-                tb( test.GrandParent )
+                tb( test.GrandParent )[0]
                     .one(
                         'testEventName',
                         testHandler1
@@ -596,27 +588,6 @@ describe("tb.core.js", function() {
 
             it("tb( 'div.test-parent' ).reverse()", function() {
                 expect( tb( 'div.test-parent' ).reverse()[0] === tb( 'div.test-parent' )[4] ).toBe( true );
-            });
-
-        });
-
-        describe(".set()", function() {
-
-            it("tb('body').set('answer', 42 )[0]['answer'] === 42", function() {
-                expect( tb('body').set('answer', 42 )[0]['answer'] === 42 ).toBe( true );
-                delete tb('body')[0]['answer'];
-            });
-
-            it("tb('div').set('answer', 42 ) all equal 42", function() {
-                tb('div').set('answer', 42 ); // 5 elements
-
-                [].forEach.call(
-                    tb('div'),
-                    function( tbInstance ){
-                        expect( tbInstance['answer'] === 42 ).toBe( true );
-                        delete tbInstance['answer'];
-                    }
-                );
             });
 
         });
