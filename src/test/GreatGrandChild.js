@@ -1,29 +1,19 @@
-tb.namespace( 'test.GreatGrandChild' ).set(
-    (function(){
+test.GreatGrandChild = ( class GreatGrandChild extends Tb{
 
-        // Constructor
-        function GreatGrandChild( pConfig ){
-            var that = this;
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
 
-            that.handlers = {
-                init: init
-            };
+        var that = this;
 
-        }
-
-        // Prototype
-        GreatGrandChild.prototype = {
-            namespace: 'test.GreatGrandChild'
+        that.handlers = {
+            init: that.init
         };
+    }
 
-        return GreatGrandChild;
+    // methods
+    init( e ){
+        var that = this;
 
-        // Methods
-        function init( e ){
-            var that = this;
-
-            //that.trigger( 'test', that, 'u' );
-        }
-
-    })()
-);
+        //that.trigger( 'test', that, 'u' );
+    }
+});

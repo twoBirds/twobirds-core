@@ -1,70 +1,62 @@
-// simple objects...
-test.EmbeddedObject1 = function EmbeddedObject1( pConfig ){
-};
-
-test.EmbeddedObject1.prototype = {
-    namespace: 'test.EmbeddedObject1',
-    'test.EmbeddedObject2': {}
-};
-
-test.EmbeddedObject2 = function EmbeddedObject2( pConfig ){
-    var that = this;
-
-    that.handlers = {
-        'init': function( e ){
-            that.trigger( 'test', that, 'u');
-        }
+// simple internal classes...
+test.Embedded1 = ( class Embedded1 extends Tb{ 
+    constructor(){
+        super();
+        var that = this;
+        that.embedded2 = new test.Embedded2();
     }
-};
+});
 
-test.EmbeddedObject2.prototype = {
-    namespace: 'test.EmbeddedObject2'
-};
+test.Embedded2 = ( class Embedded2 extends Tb{ 
+    constructor(){
+        super();
 
+        var that = this;
 
-tb.namespace( 'test.Child').set(
-    (function(){
-
-        // Constructor
-        function Child( pConfig ){
-            var that = this;
-
-            that.handlers = {
-                init: init,
-                test: test
-            };
-
+        that.handlers = {
+            'init': function( e ){
+                var that = this;
+                //that.trigger( 'test', that, 'u');
+            }
         }
 
-        // Prototype
-        Child.prototype = {
-            namespace: 'test.Child',
-            'test.EmbeddedObject1': {}
+    }
+});
+
+test.Child = ( class Child extends Tb{
+
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
+
+        var that = this;
+
+        that.handlers = {
+            init: that.init,
+            test: that.test
         };
 
-        return Child;
+        that.embedded1 = new test.Embedded1();
+    }
 
-        // Methods
-        function init( e ){
-            var that = this;
+    // methods
+    init(){
+        var that = this;
 
-            for ( var i=0; i<3; i++ ){
-                new tb(
-                    'test.GrandChild',
-                    {},
-                    that.target.appendChild( document.createElement("span") )
-                );
-            }
+        for ( var x=0; x < 3; x++ ) {
+            new tb(
+                'test.GrandChild',
+                {},
+                that.target.appendChild( document.createElement('span') )
+            );
         }
+    }
 
-        function test( e ){
-            var that = this;
-
-            if ( e.data.namespace === 'test.EmbeddedObject2' ){
-                e.stopPropagation();
-            }
-            //console.info( 'child ::test()' );
+    test( e ){
+        var that = this;
+        if ( e.data instanceof test.Embedded2 ){
+            e.stopPropagation();
         }
+        //console.info( 'child ::test() reached' );
+    }
 
-    })()    
-);
+});

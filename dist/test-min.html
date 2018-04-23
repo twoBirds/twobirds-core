@@ -102,24 +102,7 @@
                     i.addEventListener('load', loaded)
                     i.src = '/twoBirds.svg';
 
-                    // bind store to DOM
-                    tb.store( window, 'store', {})
-                        .bind( $('form')[0] );
-
-                    // form values
-                    var f = $('form').values();
-
-                    // feed form changes to store
-                    $('input,select,textarea')
-                        .on(
-                            'keyup change select',
-                            function(){
-                                store = tb.extend( {}, f );
-                            }
-                        );
-
-                    // initial state
-                    store = tb.extend( {}, f );
+                    $('form').show();
 
                 }
             , 5000);
@@ -127,7 +110,7 @@
     </head>
     <body data-tb="test.GrandParent">
         <img style="position:fixed;top:10px;right:10px" src="/twoBirds.svg"/>
-        <form name="existingForm">
+        <form name="existingForm" style="display:none" data-tb="test.TestForm">
             <!-- sample form to start with -->
             <fieldset>
                 <legend>Inputs</legend>

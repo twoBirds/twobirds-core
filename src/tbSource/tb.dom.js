@@ -772,9 +772,10 @@ if (typeof module === 'undefined' ){
 
             that.forEach(
                 function( pNode ){
-                    pNode.style.prevDisplay = ([ '', 'none']).indexOf( pNode.style.display ) === -1
-                        ? pNode.style.display
-                        : '';
+                    var prev = window.getComputedStyle(pNode).getPropertyValue('display');
+                    pNode.style.prevDisplay = !! prev && prev !== 'none'
+                        ? prev
+                        : 'inline';
                     pNode.style.display = 'none';
                 }
             );
@@ -1332,8 +1333,10 @@ if (typeof module === 'undefined' ){
             var that = this;
 
             that.forEach(
-                function( pNode ){
-                    pNode.style.display = pNode.style.prevDisplay;
+                function( pDomNode ){
+                    pDomNode.style.display = !!pDomNode.style.prevDisplay
+                        ? pDomNode.style.prevDisplay
+                        : 'block';
                 }
             );
 
@@ -1684,13 +1687,15 @@ if (typeof module === 'undefined' ){
 
             var that = this,
                 node = that[0] || undefined,
-                values;
+                values,
+                observable;
 
             if ( !node ) { // nothing found
                 return that;
             }
 
-            if ( typeof pData === 'object' && !!node ){ // it is a hash object
+            // it is a hash object -> treat as setter
+            if ( typeof pData === 'object' && !!node ){ 
                 var v = tb.dom( node ).values();
 
                 Object
@@ -1704,6 +1709,23 @@ if (typeof module === 'undefined' ){
                 return;
             }
 
+            // not processed yet
+            if ( !node['getValues'] ){
+                // form changed observable
+                node['getValues'] = tb.observable({});
+
+                // create form change binding
+                tb.dom('input,select,textarea', node)
+                    .on(
+                        'keyup change select',
+                        tb.debounce( function onFormChange(){
+                            //console.log('keyup change select');
+                            node['getValues']( tb.extend( {}, tb.dom(node).values() ) );
+                        }, 5 )
+                    );
+            }
+
+            // form setter observable
             node['values'] = !!node['values'] ? node['values'] : tb.observable({});
 
             // value hash constructor
@@ -1712,6 +1734,22 @@ if (typeof module === 'undefined' ){
 
             // value hash prototype
             Values.prototype = {
+                bind: function( pObject, pOnce ){
+                    //console.log('bind', pObject, pOnce, node['getValues']() );
+                    
+                    node['getValues'].observe(function changeTarget(){
+                        //console.log('formvalues changed -> set object', pObject, node['getValues']() );
+                        tb.extend( pObject, node['getValues']() );
+                        setTimeout(function(){
+                            if(!!Object.getOwnPropertySymbols(pObject)[1]){
+                                pObject[Object.getOwnPropertySymbols(pObject)[1]](); // onChange debounced function
+                            }
+                        }, 0);
+                    }, pOnce);
+                    
+                    node['getValues'].notify(); // push initial setting
+                },
+
                 observe: function( pCallback, pOnce ){
                     node['values'].observe( pCallback, pOnce );
                 },

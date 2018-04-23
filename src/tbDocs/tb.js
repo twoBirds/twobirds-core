@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.0 - 2018-04-22 */
+/*! twobirds-core - v8.1.1 - 2018-04-23 */
 
 /**
  twoBirds V8 core functionality
@@ -267,10 +267,11 @@ tb = (function(){
 
         // instanciate tb instance OR return tb.Selector result set
         if ( that instanceof tb ) {    // called as constructor, create and return tb object instance
-            var isNamespace = typeof arguments[0] === 'string',
-                isRootedNamespace = isNamespace && arguments[0].substr(0,1) === "/",
-                fileName = isNamespace ? '/' + arguments[0].replace( /\./g, '/' ).replace( /^\//, '') + '.js' : '',
-                tbClass =  isNamespace ? tb.namespace( arguments[0].replace( /^\//), '' ).get() : arguments[0],
+            var args = Array.from(arguments),
+                isNamespace = typeof args[0] === 'string',
+                isRootedNamespace = isNamespace && args[0].substr(0,1) === "/",
+                fileName = isNamespace ? '/' + args[0].replace( /\./g, '/' ).replace( /^\//, '') + '.js' : '',
+                tbClass =  isNamespace ? tb.namespace( args[0].replace( /^\//), '' ).get() : args[0],
                 tbInstance,
                 tempInstance; // empty tb object, used as handler store
 
@@ -278,7 +279,7 @@ tb = (function(){
             // -> do requirement loading
             // -> return temporary instance ( = instanceof Nop )
             if ( isNamespace && !tbClass ){
-                tempInstance = new tb( Nop, arguments[1] || {}, arguments[2] || false ); // construct temp tb instance from empty constructor -> temp handler store
+                tempInstance = new tb( Nop, args[1] || {}, args[2] || false ); // construct temp tb instance from empty constructor -> temp handler store
 
                 tb.require(
                     fileName
@@ -309,7 +310,7 @@ tb = (function(){
                             }
 
                         };
-                    })( [].slice.call( arguments ) )
+                    })( args )
                 );
 
                 return tempInstance; // return temp instance so handlers can be attached
@@ -325,34 +326,34 @@ tb = (function(){
                 }
 
                 // make a new instance of given constructor
-                tbInstance = new tbClass( arguments[1] || {}, arguments[2] ); // hidden parameter target
+                tbInstance = new tbClass( args[1] || {}, args[2] ); // hidden parameter target
                 
                 // prepare .namespace property of tb object
                 if ( !tbInstance.namespace
                     && !( tbInstance instanceof Nop )
                 ){
-                    tbInstance.namespace = typeof arguments[0] === 'string'
-                        ? arguments[0]
-                        : arguments[0].namespace || tb.getId(); // if nothing helps, a unique id
+                    tbInstance.namespace = typeof args[0] === 'string'
+                        ? args[0]
+                        : args[0].namespace || tb.getId(); // if nothing helps, a unique id
                 }
 
                 // prepare .target property of tb object
-                tbInstance.target = tbInstance['target'] || arguments[2] || false; // preset
+                tbInstance.target = tbInstance['target'] || args[2] || false; // preset
                 
                 // if target was not set in constructor, try third parameter
                 if ( !tbInstance.target ){
 
-                    if ( !!arguments[2] ){
+                    if ( !!args[2] ){
 
                         // get first element of an array-like selector return object
-                        if ( !arguments[2]['nodeType']
-                            && !!arguments[2][0]
-                            && !!arguments[2][0]['nodeType']
+                        if ( !args[2]['nodeType']
+                            && !!args[2][0]
+                            && !!args[2][0]['nodeType']
                         ){
-                            arguments[2] = arguments[2][0]; // jshint ignore:line
+                            args[2] = args[2][0]; // jshint ignore:line
                         }
 
-                        tbInstance.target = arguments[2];
+                        tbInstance.target = args[2];
                     }
 
                 }
@@ -408,7 +409,9 @@ tb = (function(){
 
                     // trigger init directly if no requirement array
                     if ( !Reflect.get(tbInstance, 'tb.Require') ) {
-                        tbInstance.trigger( 'init' );
+                        setTimeout( function(){
+                            tbInstance.trigger( 'init' );
+                        }, 0);
                     } else { // otherwise tb.require will trigger 'init'
                         tb.require(Reflect.get(tbInstance, 'tb.Require'))
                             .then(function(pValue){ // jshint ignore:line
@@ -902,7 +905,7 @@ tb = (function(){
 
                     if ( pProp in pReceiver === false && pProp in pObj === false ){
                         
-                        var value = new tb.Store({});  // internal value
+                        var value = new tb.Store();  // internal value
 
                         Object.defineProperty(
                             pReceiver,
@@ -931,8 +934,10 @@ tb = (function(){
                                     }
 
                                     setTimeout(function(){
-                                        pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
-                                    },0 );
+                                        if(!!Object.getOwnPropertySymbols(pReceiver)[1]){
+                                            pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
+                                        }
+                                    }, 0);
 
                                     return value;
                                 }
@@ -941,7 +946,7 @@ tb = (function(){
 
                     }
 
-                    return Reflect.get( pReceiver, pProp );
+                    return pReceiver[pProp];
                 },
 
                 set: function(pObj, pProp, pValue, pReceiver){
@@ -963,11 +968,13 @@ tb = (function(){
                         
                     }
 
-                    ret = Reflect.set(...args);
-
                     setTimeout(function(){
-                        pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
-                    },0);
+                        if(!!Object.getOwnPropertySymbols(pReceiver)[1]){
+                            pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
+                        }
+                    }, 0);
+
+                    ret = Reflect.set(...args);
 
                     return ret;
                 }
@@ -1758,12 +1765,14 @@ tb = (function(){
                     selector // all descendants
                         .not( notSelector ) // but not those that are below level 1
                         .forEach(
-                            function( pDomNode ) {
-                                Object
-                                    .keys( pDomNode.tb )
-                                    .forEach(function( pKey ){
-                                        [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
-                                    });
+                            function( pDomNode, pIndex, pList ) {
+                                if ( !!pDomNode['tb'] ){
+                                    Object
+                                        .keys( pDomNode.tb )
+                                        .forEach(function( pKey ){
+                                            [].push.call( ret, pDomNode.tb[ pKey ] ); // push dom object to tb selector content
+                                        });
+                                }
                             }
                         );
 
@@ -2071,8 +2080,8 @@ tb = (function(){
 
                 if ( !Reflect.get( ...args ) ){
                     
-                    var value = new tb.Store({});  // internal value
-
+                    var value = new tb.Store();  // internal value
+                    
                     Object.defineProperty(
                         pReceiver,
                         pProp,
@@ -2102,7 +2111,7 @@ tb = (function(){
                                     if(!!Object.getOwnPropertySymbols(pReceiver)[1]){
                                         pReceiver[Object.getOwnPropertySymbols(pReceiver)[1]](); // onChange debounced function
                                     }
-                                },0 );
+                                }, 0);
 
                                 return value;
                             }
@@ -3238,9 +3247,10 @@ if (typeof module === 'undefined' ){
 
             that.forEach(
                 function( pNode ){
-                    pNode.style.prevDisplay = ([ '', 'none']).indexOf( pNode.style.display ) === -1
-                        ? pNode.style.display
-                        : '';
+                    var prev = window.getComputedStyle(pNode).getPropertyValue('display');
+                    pNode.style.prevDisplay = !! prev && prev !== 'none'
+                        ? prev
+                        : 'inline';
                     pNode.style.display = 'none';
                 }
             );
@@ -3798,8 +3808,10 @@ if (typeof module === 'undefined' ){
             var that = this;
 
             that.forEach(
-                function( pNode ){
-                    pNode.style.display = pNode.style.prevDisplay;
+                function( pDomNode ){
+                    pDomNode.style.display = !!pDomNode.style.prevDisplay
+                        ? pDomNode.style.prevDisplay
+                        : 'block';
                 }
             );
 
@@ -4150,13 +4162,15 @@ if (typeof module === 'undefined' ){
 
             var that = this,
                 node = that[0] || undefined,
-                values;
+                values,
+                observable;
 
             if ( !node ) { // nothing found
                 return that;
             }
 
-            if ( typeof pData === 'object' && !!node ){ // it is a hash object
+            // it is a hash object -> treat as setter
+            if ( typeof pData === 'object' && !!node ){ 
                 var v = tb.dom( node ).values();
 
                 Object
@@ -4170,6 +4184,23 @@ if (typeof module === 'undefined' ){
                 return;
             }
 
+            // not processed yet
+            if ( !node['getValues'] ){
+                // form changed observable
+                node['getValues'] = tb.observable({});
+
+                // create form change binding
+                tb.dom('input,select,textarea', node)
+                    .on(
+                        'keyup change select',
+                        tb.debounce( function onFormChange(){
+                            //console.log('keyup change select');
+                            node['getValues']( tb.extend( {}, tb.dom(node).values() ) );
+                        }, 5 )
+                    );
+            }
+
+            // form setter observable
             node['values'] = !!node['values'] ? node['values'] : tb.observable({});
 
             // value hash constructor
@@ -4178,6 +4209,22 @@ if (typeof module === 'undefined' ){
 
             // value hash prototype
             Values.prototype = {
+                bind: function( pObject, pOnce ){
+                    //console.log('bind', pObject, pOnce, node['getValues']() );
+                    
+                    node['getValues'].observe(function changeTarget(){
+                        //console.log('formvalues changed -> set object', pObject, node['getValues']() );
+                        tb.extend( pObject, node['getValues']() );
+                        setTimeout(function(){
+                            if(!!Object.getOwnPropertySymbols(pObject)[1]){
+                                pObject[Object.getOwnPropertySymbols(pObject)[1]](); // onChange debounced function
+                            }
+                        }, 0);
+                    }, pOnce);
+                    
+                    node['getValues'].notify(); // push initial setting
+                },
+
                 observe: function( pCallback, pOnce ){
                     node['values'].observe( pCallback, pOnce );
                 },

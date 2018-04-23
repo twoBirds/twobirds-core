@@ -1,38 +1,25 @@
-tb.namespace( 'test.Parent' ).set(
-    (function(){
+test.Parent = ( class Parent extends Tb{
 
-        // Constructor
-        function Parent( pConfig ){
-            var that = this;
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
 
-            that.handlers = {
-                init: init
-            };
+        var that = this;
 
-        }
-
-        // Prototype
-        Parent.prototype = {
-            namespace: 'test.Parent',
-
-            
-
+        that.handlers = {
+            init: that.init
         };
+    }
 
-        return Parent;
+    // methods
+    init(){
+        var that = this;
 
-        // Methods
-        function init(){
-            var that = this;
-
-            for ( var i=0; i<10; i++ ){
-                new tb(
-                    'test.Child',
-                    {},
-                    that.target.appendChild( document.createElement("span") )
-                );
-            }
+        for ( var x=0; x < 10; x++ ) {
+            new tb(
+                'test.Child',
+                {},
+                that.target.appendChild( document.createElement('span') )
+            );
         }
-
-    })()
-);
+    }
+});

@@ -1,4 +1,6 @@
-var test = new Tb();
+// globals
+var test = new Tb(),    // repo
+    $ = tb.dom;         // jQuery like selector
 
 test.GrandParent = ( class GrandParent extends Tb{
 
@@ -13,30 +15,41 @@ test.GrandParent = ( class GrandParent extends Tb{
             test: that.test
         };
 
-        that.storeTest = {};
-        that.storeTest2 = [];
+        // implicit: create stores
+        // simply by access of non-existent properties
+        that.a;
+        that.b;
 
-        that.observe( function(v){ console.log('GrandParent changed:', v) } );
     }
 
     // methods
     init(){
         var that = this;
 
+        that.a.observe(function(v){
+            console.log('a changed',v);
+        }, true); // true = once
+
+        that.b.observe(function(v){
+            console.log('b changed',v);
+        }, true); // true = once
+
+        that.b.c.d.e = 5;
+
         for ( var x=0; x < 5; x++ ) {
             new tb(
                 'test.Parent',
                 {},
-                that.target.appendChild( document.createElement("div") )
+                that.target.insertBefore( document.createElement('div'), $('img', that.target)[0] )
             );
         }
+
     }
 
     test( e ){
         var that = this;
 
-        //console.info( ' grandParent ::test()' );
+        //console.info( ' grandParent:test() reached' );
     }
 
 });
-

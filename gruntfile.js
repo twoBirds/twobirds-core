@@ -116,6 +116,7 @@ module.exports = function(grunt) {
                     ],
                     'src/repo.js': [
                         'src/test/GrandParent.js',
+                        'src/test/TestForm.js',
                         'src/test/Parent.js',
                         'src/test/Child.js',
                         'src/test/GrandChild.js',

@@ -1,6 +1,8 @@
-/*! twobirds-core - v8.1.0 - 2018-04-22 */
+/*! twobirds-core - v8.1.1 - 2018-04-23 */
 
-var test = new Tb();
+// globals
+var test = new Tb(),    // repo
+    $ = tb.dom;         // jQuery like selector
 
 test.GrandParent = ( class GrandParent extends Tb{
 
@@ -15,210 +17,205 @@ test.GrandParent = ( class GrandParent extends Tb{
             test: that.test
         };
 
-        that.storeTest = {};
-        that.storeTest2 = [];
+        // implicit: create stores
+        // simply by access of non-existent properties
+        that.a;
+        that.b;
 
-        that.observe( function(v){ console.log('GrandParent changed:', v) } );
     }
 
     // methods
     init(){
         var that = this;
 
+        that.a.observe(function(v){
+            console.log('a changed',v);
+        }, true); // true = once
+
+        that.b.observe(function(v){
+            console.log('b changed',v);
+        }, true); // true = once
+
+        that.b.c.d.e = 5;
+
         for ( var x=0; x < 5; x++ ) {
             new tb(
                 'test.Parent',
                 {},
-                that.target.appendChild( document.createElement("div") )
+                that.target.insertBefore( document.createElement('div'), $('img', that.target)[0] )
+            );
+        }
+
+    }
+
+    test( e ){
+        var that = this;
+
+        //console.info( ' grandParent:test() reached' );
+    }
+
+});
+
+
+test.TestForm = ( class TestForm extends Tb{
+
+    constructor(){
+        super();
+
+        let that = this;
+
+        that.handlers = {
+            init: that.init
+        };
+
+        that.formValues = tb.extend( {}, $('form').values() ); 
+    }
+
+    // methods
+    init(){
+        // bind formValues to DOM -> updates DOM on change
+        this.formValues.bind( this.target );
+
+        // bind form input changes to formValues
+        $('form').values().bind( this.formValues );
+    }
+});
+
+
+test.Parent = ( class Parent extends Tb{
+
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
+
+        var that = this;
+
+        that.handlers = {
+            init: that.init
+        };
+    }
+
+    // methods
+    init(){
+        var that = this;
+
+        for ( var x=0; x < 10; x++ ) {
+            new tb(
+                'test.Child',
+                {},
+                that.target.appendChild( document.createElement('span') )
+            );
+        }
+    }
+});
+
+
+// simple internal classes...
+test.Embedded1 = ( class Embedded1 extends Tb{ 
+    constructor(){
+        super();
+        var that = this;
+        that.embedded2 = new test.Embedded2();
+    }
+});
+
+test.Embedded2 = ( class Embedded2 extends Tb{ 
+    constructor(){
+        super();
+
+        var that = this;
+
+        that.handlers = {
+            'init': function( e ){
+                var that = this;
+                //that.trigger( 'test', that, 'u');
+            }
+        }
+
+    }
+});
+
+test.Child = ( class Child extends Tb{
+
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
+
+        var that = this;
+
+        that.handlers = {
+            init: that.init,
+            test: that.test
+        };
+
+        that.embedded1 = new test.Embedded1();
+    }
+
+    // methods
+    init(){
+        var that = this;
+
+        for ( var x=0; x < 3; x++ ) {
+            new tb(
+                'test.GrandChild',
+                {},
+                that.target.appendChild( document.createElement('span') )
             );
         }
     }
 
     test( e ){
         var that = this;
-
-        //console.info( ' grandParent ::test()' );
+        if ( e.data instanceof test.Embedded2 ){
+            e.stopPropagation();
+        }
+        //console.info( 'child ::test() reached' );
     }
 
 });
 
 
+test.GrandChild = ( class GrandChild extends Tb{
 
-tb.namespace( 'test.Parent' ).set(
-    (function(){
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
 
-        // Constructor
-        function Parent( pConfig ){
-            var that = this;
+        var that = this;
 
-            that.handlers = {
-                init: init
-            };
-
-        }
-
-        // Prototype
-        Parent.prototype = {
-            namespace: 'test.Parent',
-
-            
-
+        that.handlers = {
+            init: that.init
         };
+    }
 
-        return Parent;
+    // methods
+    init(){
+        var that = this;
 
-        // Methods
-        function init(){
-            var that = this;
-
-            for ( var i=0; i<10; i++ ){
-                new tb(
-                    'test.Child',
-                    {},
-                    that.target.appendChild( document.createElement("span") )
-                );
-            }
-        }
-
-    })()
-);
-
-
-// simple objects...
-test.EmbeddedObject1 = function EmbeddedObject1( pConfig ){
-};
-
-test.EmbeddedObject1.prototype = {
-    namespace: 'test.EmbeddedObject1',
-    'test.EmbeddedObject2': {}
-};
-
-test.EmbeddedObject2 = function EmbeddedObject2( pConfig ){
-    var that = this;
-
-    that.handlers = {
-        'init': function( e ){
-            that.trigger( 'test', that, 'u');
+        for ( var x=0; x < 2; x++ ) {
+            new tb(
+                'test.GreatGrandChild',
+                {},
+                that.target.appendChild( document.createElement('span') )
+            );
         }
     }
-};
-
-test.EmbeddedObject2.prototype = {
-    namespace: 'test.EmbeddedObject2'
-};
+});
 
 
-tb.namespace( 'test.Child').set(
-    (function(){
+test.GreatGrandChild = ( class GreatGrandChild extends Tb{
 
-        // Constructor
-        function Child( pConfig ){
-            var that = this;
+    constructor( pConfig, pTarget ){
+        super( pConfig, pTarget );
 
-            that.handlers = {
-                init: init,
-                test: test
-            };
+        var that = this;
 
-        }
-
-        // Prototype
-        Child.prototype = {
-            namespace: 'test.Child',
-            'test.EmbeddedObject1': {}
+        that.handlers = {
+            init: that.init
         };
+    }
 
-        return Child;
+    // methods
+    init( e ){
+        var that = this;
 
-        // Methods
-        function init( e ){
-            var that = this;
-
-            for ( var i=0; i<3; i++ ){
-                new tb(
-                    'test.GrandChild',
-                    {},
-                    that.target.appendChild( document.createElement("span") )
-                );
-            }
-        }
-
-        function test( e ){
-            var that = this;
-
-            if ( e.data.namespace === 'test.EmbeddedObject2' ){
-                e.stopPropagation();
-            }
-            //console.info( 'child ::test()' );
-        }
-
-    })()    
-);
-
-
-tb.namespace( 'test.GrandChild' ).set(
-    (function(){
-
-        // Constructor
-        function GrandChild( pConfig ){
-            var that = this;
-
-            that.handlers = {
-                init: init
-            };
-
-        }
-
-        // Prototype
-        GrandChild.prototype = {
-            namespace: 'test.GrandChild'
-        };
-
-        return GrandChild;
-
-        // Methods
-        function init( e ){
-            var that = this;
-
-            for ( var i=0; i<2; i++ ){
-                new tb(
-                    'test.GreatGrandChild',
-                    {},
-                    that.target.appendChild( document.createElement("span") )
-                );
-            }
-        }
-
-    })()    
-);
-
-
-tb.namespace( 'test.GreatGrandChild' ).set(
-    (function(){
-
-        // Constructor
-        function GreatGrandChild( pConfig ){
-            var that = this;
-
-            that.handlers = {
-                init: init
-            };
-
-        }
-
-        // Prototype
-        GreatGrandChild.prototype = {
-            namespace: 'test.GreatGrandChild'
-        };
-
-        return GreatGrandChild;
-
-        // Methods
-        function init( e ){
-            var that = this;
-
-            //that.trigger( 'test', that, 'u' );
-        }
-
-    })()
-);
+        //that.trigger( 'test', that, 'u' );
+    }
+});
