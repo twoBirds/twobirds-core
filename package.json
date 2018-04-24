@@ -30,7 +30,7 @@
     "adapter",
     "core"
   ],
-  "version": "8.1.1",
+  "version": "8.1.2",
   "license": "LGPL-3.0+",
   "readme": "README.md",
   "author": "Frank Thuerigen <fthuerigen@googlemail.com>",

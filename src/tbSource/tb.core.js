@@ -822,22 +822,26 @@ tb = (function(){
                 function walk( pDomNode ){
 
                     if ( !!pDomNode['nodeType'] && pDomNode.nodeType === 3 ){ // text node
-                        var vars = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
+                        var placeholders = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
 
-                        if (!!vars){
-                            var f=(function( pTemplate ){
+                        if (!!placeholders){
+                            var values = {};
+                            placeholders = Array.from( placeholders ).map((pKey) => pKey.substr(1,pKey.length-2)); 
+                            placeholders.forEach(function(pKey){
+                                values[pKey] = "";
+                            });
+                            var f=(function( pTemplate, values ){
                                 return function( pValues ){
                                     var t = pTemplate;
-
+                                    placeholders.forEach(function(pKey){
+                                        values[pKey] = pValues[pKey] || values[pKey];
+                                    });
                                     pDomNode.nodeValue = tb.parse(
                                         t,
-                                        tb.extend(
-                                            {},
-                                            pValues
-                                        )
+                                        values
                                     );
                                 };
-                            })( pDomNode.nodeValue );
+                            })( pDomNode.nodeValue, values );
 
                             that[Object.getOwnPropertySymbols(that)[0]].observe(f);
 
@@ -853,23 +857,26 @@ tb = (function(){
                                     var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
 
                                     if (!!placeholders){
-                                                                                                    
-                                        var f=(function( pTemplate ){
+                                        var values = {};
+                                        placeholders = Array.from( placeholders ).map((pKey) => pKey.substr(1,pKey.length-2)); 
+                                        placeholders.forEach(function(pKey){
+                                            values[pKey] = "";
+                                        });
+                                        var f=(function( pTemplate, values ){
                                             return function( pValues ){
                                                 var t = pTemplate;
-
+                                                placeholders.forEach(function(pKey){
+                                                    values[pKey] = pValues[pKey] || values[pKey];
+                                                });
                                                 tb.dom(pDomNode).attr(
                                                     pAttributeNode.nodeName,
                                                     tb.parse(
                                                         t,
-                                                        tb.extend(
-                                                            {},
-                                                            pValues
-                                                        )
+                                                        values
                                                     )
                                                 );
                                             };
-                                        })( pAttributeNode.value );
+                                        })( pAttributeNode.value, values );
 
                                         that[Object.getOwnPropertySymbols(that)[0]].observe(f);
 
