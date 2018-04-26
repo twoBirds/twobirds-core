@@ -150,8 +150,8 @@ describe("tb.core.js", function() {
                 expect( tb('body').children() instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').children().length === 5", function() {
-                expect( tb('body').children().length === 5 ).toBe( true );
+            it("tb('body').children().length === 6", function() {
+                expect( tb('body').children().length === 6 ).toBe( true );
             });
 
             it("tb('body').children('div') instanceof tb.Selector", function() {

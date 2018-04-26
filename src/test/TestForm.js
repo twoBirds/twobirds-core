@@ -5,16 +5,26 @@ test.TestForm = ( class TestForm extends Tb{
 
         let that = this;
 
-        that.handlers = {
-            init: that.init
-        };
+        tb.require([
+            '/test/TestForm.html'
+        ]).then(
+            that.render.bind(that)
+        );
 
-        that.formValues = tb.extend( {}, $('form').values() ); 
     }
 
     // methods
-    init(){
-        // bind formValues to DOM -> updates DOM on change
+    render(){
+
+        var fragment = $( tb.require.get('/test/TestForm.html') ).clean();
+
+        // add fragment to DOM
+        $( this.target ).append( fragment );
+
+        // formValues store
+        this.formValues = tb.extend( {}, $('form').values() ); 
+
+        // bind formValues to DOM -> updates DOM on formValues change
         this.formValues.bind( this.target );
 
         // bind form input changes to formValues

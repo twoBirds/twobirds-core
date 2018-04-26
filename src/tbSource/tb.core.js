@@ -389,8 +389,8 @@ tb = (function(){
                 }
 
                 // create handlers array if necessary
-                if ( !Reflect.get(tbInstance, 'handlers') ){
-                    Reflect.set(tbInstance, 'handlers', {});
+                if ( !tbInstance.handlers ){
+                    tbInstance.handlers = [];
                 } else {
                     // if there are single named event handler functions,
                     // convert them to array of functions
@@ -405,6 +405,7 @@ tb = (function(){
 
                 if ( !( tbInstance instanceof Nop ) ){
 
+                    /*
                     // trigger init directly if no requirement array
                     if ( !Reflect.get(tbInstance, 'tb.Require') ) {
                         setTimeout( function(){
@@ -416,6 +417,11 @@ tb = (function(){
                                 tbInstance.trigger( 'init' );
                             });
                     }
+                    */
+
+                    setTimeout( function(){
+                        tbInstance.trigger( 'init' );
+                    }, 0);
 
                 }
 
@@ -1197,7 +1203,7 @@ tb = (function(){
         var that = this,
             instances = Array.from( pSelectorObject ),
             args = Array.from( pArguments ),
-            ret = tb(''); // empty tb selector object
+            ret = tb(); // empty tb selector object
 
         //console.log('pSelectorObject', pSelectorObject);
         if ( pSelectorObject instanceof TbSelector ) {
@@ -1246,7 +1252,7 @@ tb = (function(){
 
     }
 
-    var methods = (function(){
+    tb.methods = (function(){
         // private static
 
         return {
@@ -1316,7 +1322,11 @@ tb = (function(){
                     }
 
                     // local handlers
-                    if ( that instanceof tb && !!that.handlers && !!that.handlers[tbEvent.name] && tbEvent.bubble.indexOf( 'l' ) > -1 ) {
+                    if ( that instanceof tb 
+                        && !!that.handlers 
+                        && !!that.handlers[tbEvent.name] 
+                        && tbEvent.bubble.indexOf( 'l' ) > -1 
+                    ){
 
                         var temp = [];
 
@@ -1752,16 +1762,20 @@ tb = (function(){
 
                 var that = this,
                     ret = tb(),
+                    args =  Array.from(arguments),
                     pLocalOnly = typeof module !== 'undefined' ? true : pLocalOnly; // jshint ignore:line
 
                 if ( that instanceof TbSelector ) {
 
-                    ret = walkSelector( that, 'children', arguments );
+                    ret = walkSelector( that, 'children', args );
 
-                } else if ( that instanceof tb && !!that.target['nodeType'] && !pLocalOnly ) { // it must be a native tb object
+                } else if ( that instanceof tb 
+                    && !!that.target['nodeType'] 
+                    && !pLocalOnly 
+                ){ // it must be a native tb object
                     var id = tb.getId(),
                         selector = tb.dom('[data-tb]', that.target),
-                        notSelector = '['+'data-tempid="'+id+'"] [data-tb] *';
+                        notSelector = '[data-tempid="'+id+'"] [data-tb] [data-tb]';
 
                     // set temporary id for tb.dom/.querySelectorAll()
                     tb.dom( that.target )
@@ -1815,7 +1829,7 @@ tb = (function(){
             next: function( pSelector ){
 
                 var that = this,
-                    ret = tb( '' ), // empty tb selector object
+                    ret = tb(), // empty tb selector object
                     result,
                     index;
 
@@ -1853,7 +1867,7 @@ tb = (function(){
             prev: function( pSelector ){
 
                 var that = this,
-                    ret = tb( '' ), // empty tb selector object
+                    ret = tb(), // empty tb selector object
                     result,
                     index;
 
@@ -1891,7 +1905,7 @@ tb = (function(){
             first: function( pSelector ){
 
                 var that = this,
-                    ret = tb( '' ),
+                    ret = tb(),
                     result;
 
                 if ( that instanceof TbSelector ) {
@@ -1924,7 +1938,7 @@ tb = (function(){
              */
             last: function( pSelector ){
                 var that = this,
-                    ret = tb(''),
+                    ret = tb(),
                     result;
 
                 if ( that instanceof TbSelector ) {
@@ -2005,10 +2019,10 @@ tb = (function(){
              - check them against pSelector and remove all that match
              - return TbSelector result set (unique)
              */
-            not: function( pSelector ){
+            'not': function( pSelector ){
 
                 var that = this,
-                    compare = tb( pSelector ).toArray(), // object array to check against
+                    compare = Array.from( tb( pSelector ) ), // object array to check against
                     ret = tb();
 
                 [].forEach.call(
@@ -2163,11 +2177,11 @@ tb = (function(){
         }
     );
 
-    Object.setPrototypeOf( methods, proxy );
+    Object.setPrototypeOf( tb.methods, proxy );
                     
     //console.log('methods', methods);
     //console.log('proxy', proxy);
-    tb.prototype = methods;
+    tb.prototype = tb.methods;
     //console.log('tb.prototype', tb.prototype);
 
     /**
@@ -2393,7 +2407,7 @@ tb = (function(){
     };
 
     //console.log( 'methods', Object.keys(methods), methods );
-    tb.extend( TbSelector.prototype, methods );
+    tb.extend( TbSelector.prototype, tb.methods );
     //console.log( 'TbSelector.prototype', Object.keys(TbSelector.prototype), TbSelector.prototype );
 
     /**
