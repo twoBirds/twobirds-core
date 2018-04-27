@@ -1,0 +1,25 @@
+[class*="parent"],
+.jasmine_html-reporter {
+  padding: 2px;
+  margin: 2px;
+  border: 1px solid black;
+  background-color: #EAF8F8; 
+}
+
+[class*="child"] {
+  display: inline-block;
+  padding: 2px;
+  margin: 2px;
+  border: 1px solid darkslategray; 
+}
+
+.test-grandparent {
+	border: 0px none;
+}
+
+.test-parent {
+	display: inline-block;
+}
+
+
+/*# sourceMappingURL=GrandParent.css.map */

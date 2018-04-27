@@ -19,7 +19,7 @@ test.GrandParent = ( class GrandParent extends Tb{
     }
 
     // methods
-    init() => {
+    init(){
         var that = this;
 
         $( that.target ).hide();
@@ -40,7 +40,7 @@ test.GrandParent = ( class GrandParent extends Tb{
 
     }
 
-    test( ev ) => {
+    test( ev ){
         //console.info( ' grandParent:test() reached' );
     }
 

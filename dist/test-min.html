@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>tb manual testing</title>
+
+        <link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
+        <link rel="stylesheet" type="text/css" href="test/GrandParent.css">
+
+        <script type="text/javascript" src="tb/tb-min.js"></script>
+
+        <script type="text/javascript" src="repo-min.js"></script>
+
+        <script>
+            tb.idle(
+
+                function(){
+
+                    // run tests
+                    tb.Require([
+                        'tbTest.js'
+                    ]);
+
+                    // make svg favicon
+                    var $ = tb.dom,
+                        $c = $('<canvas>'),
+                        i = new Image();
+                    
+                    function loaded(){
+                                
+                        //set canvas to image size
+                        $c.attr({
+                            height: i.height,
+                            width: i.width
+                        });
+
+                        // get context
+                        var ctx = $c[0].getContext('2d');
+                        ctx.globalCompositeOperation = 'copy';
+                        ctx.drawImage(i, 0, 0, $c.attr('width'), $c.attr('height'));
+
+                        // copy context content to link node
+                        $('<link rel="icon">')
+                            .attr(
+                                'href', 
+                                $c[0].toDataURL()
+                            )
+                            .appendTo(
+                                document.head
+                            );
+                    }
+
+                    i.addEventListener('load', loaded)
+                    i.src = '/twoBirds.svg';
+
+                }
+            );
+        </script>
+    </head>
+    <body data-tb="test.GrandParent">
+        <img style="position:fixed;top:10px;right:10px" src="/twoBirds.svg"/>
+        <form style="background-color:{colorInput}" data-tb="test.TestForm" />
+    </body>
+</html>
