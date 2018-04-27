@@ -4,7 +4,8 @@ test.TestForm = ( class TestForm extends Tb{
         super();
 
         tb.require([
-            '/test/TestForm.html'
+            '/test/TestForm.html',
+            '/test/TestForm.css'
         ]).then(
             this.render.bind(this)
         );

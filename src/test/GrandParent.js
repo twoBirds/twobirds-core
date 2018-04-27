@@ -12,25 +12,17 @@ test.GrandParent = ( class GrandParent extends Tb{
         };
 
         // implicit: create stores
-        // simply by access of non-existent properties
+        // simply by access of non-existing properties
         that.a;
         that.b;
 
     }
 
     // methods
-    init(){
+    init() => {
         var that = this;
 
         $( that.target ).hide();
-
-        that.a.observe(function(v){
-            console.log('a changed',v);
-        }, true); // true = once
-
-        that.b.observe(function(v){
-            console.log('b changed',v);
-        }, true); // true = once
 
         that.b.c.d.e = 5;
 
@@ -43,15 +35,12 @@ test.GrandParent = ( class GrandParent extends Tb{
         }
 
         that.on('ready', function(ev){ 
-            console.log('GrandParent ready', that);
             $( that.target ).show();
         }, true);
 
     }
 
-    test( e ){
-        var that = this;
-
+    test( ev ) => {
         //console.info( ' grandParent:test() reached' );
     }
 

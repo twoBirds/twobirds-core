@@ -13,6 +13,10 @@
   border: 1px solid darkslategray; 
 }
 
+.test-grandparent {
+	border: 0px none;
+}
+
 .test-parent {
 	display: inline-block;
 }
