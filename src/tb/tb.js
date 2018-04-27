@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.3 - 2018-04-26 */
+/*! twobirds-core - v8.1.4 - 2018-04-27 */
 
 /**
  twoBirds V8 core functionality
@@ -407,23 +407,36 @@ tb = (function(){
 
                 if ( !( tbInstance instanceof Nop ) ){
 
-                    /*
-                    // trigger init directly if no requirement array
-                    if ( !Reflect.get(tbInstance, 'tb.Require') ) {
-                        setTimeout( function(){
-                            tbInstance.trigger( 'init' );
-                        }, 0);
-                    } else { // otherwise tb.require will trigger 'init'
-                        tb.require(Reflect.get(tbInstance, 'tb.Require'))
-                            .then(function(pValue){ // jshint ignore:line
-                                tbInstance.trigger( 'init' );
-                            });
-                    }
-                    */
+                    var parentReadyHandler = function(ev){
+                        tbInstance
+                            .parent()
+                            .trigger('ready');
+                    };
 
-                    setTimeout( function(){
-                        tbInstance.trigger( 'init' );
-                    }, 0);
+                    tbInstance.on( 
+                        'ready',
+                        parentReadyHandler,
+                        true
+                    );
+
+                    var parent = !!tbInstance.parent()[0] ? tbInstance.parent()[0] : false,
+                        childReady = function(ev){
+                            ev.stopImmediatePropagation();
+                        };
+
+                    childReady.once = true; 
+                    
+                    if ( parent ){
+                        if ( !parent.handlers ){
+                            parent.handlers = { ready: [] };
+                        } else if ( !parent.handlers.ready ){
+                            parent.handlers.ready = [];
+                        }
+                        parent.handlers.ready.unshift(childReady);
+                    }
+
+                    tbInstance.trigger( 'init' );
+                    tbInstance.trigger( 'ready' );
 
                 }
 
@@ -482,7 +495,7 @@ tb = (function(){
           stop propagation immediately after this handler has run
          */
         stopImmediatePropagation: function(){
-            this.stopPropagation(); // also stop normal propagation
+            this.__stopped__ = true; // also stop normal propagation
             this.__immediateStopped__ = true;
             return this;
         }
@@ -1287,7 +1300,7 @@ tb = (function(){
                 tbEvent = pEvent instanceof tb.Event ? pEvent : new tb.Event( pEvent, pEventData, pBubble );
 
                 // if event __stopped__ , handling is cancelled
-                if ( tbEvent.__stopped__  ) {
+                if ( tbEvent.__stopped__ || tbEvent.__immediateStopped__ ) {
                     return that;
                 }
 
@@ -1330,41 +1343,30 @@ tb = (function(){
                         && tbEvent.bubble.indexOf( 'l' ) > -1 
                     ){
 
-                        var temp = [];
-
-                        that.handlers[tbEvent.name].map(
-                            function (handler) {
-
+                        that.handlers[tbEvent.name] = that.handlers[tbEvent.name]
+                            .reduce(function( pHandlers, pHandler ){
                                 if ( tbEvent.bubble.indexOf('l') > -1
-                                    && !tbEvent.__immediateStopped__
-                                    && !!handler
+                                    && !!pHandler
                                 ){
-                                    setTimeout(
-                                        function(){
-                                            try{
-                                                handler.apply(that, [tbEvent]);
-                                            } catch (e){
-                                                console.error(e);
-                                            }
+                                    try{
+                                        if (!tbEvent.__immediateStopped__){
+                                            pHandler.apply(that, [tbEvent]);
+                                        } else {
+                                            pHandlers.push( pHandler );
                                         }
-                                        ,0
-                                    );
-
-                                    if ( !handler.once ) {
-                                        temp.push( handler );
+                                    } catch (e){
+                                        console.error(e);
                                     }
-                                }
 
+                                    if ( !pHandler.once && !tbEvent.__immediateStopped__ ) {
+                                        pHandlers.push( pHandler );
+                                    }                                }
+                                return pHandlers;
+                            }, []);
+
+                            if (!that.handlers[tbEvent.name].length){
+                                delete that.handlers[tbEvent.name];
                             }
-                        );
-
-                        if ( !!temp.length ){
-                            that.handlers[ tbEvent.name ] = temp;
-                        } else {
-                            that.handlers[ tbEvent.name ] = null;
-                            delete that.handlers[ tbEvent.name ];
-                        }
-
                     }
 
                     // if event __stopped__ , handling is cancelled

@@ -3,31 +3,30 @@ test.TestForm = ( class TestForm extends Tb{
     constructor(){
         super();
 
-        let that = this;
-
         tb.require([
             '/test/TestForm.html'
         ]).then(
-            that.render.bind(that)
+            this.render.bind(this)
         );
-
     }
 
     // methods
     render(){
 
-        var fragment = $( tb.require.get('/test/TestForm.html') ).clean();
+        var fragment = $( tb.require.get('/test/TestForm.html') );
 
         // add fragment to DOM
-        $( this.target ).append( fragment );
+        $( this.target )
+            .append( fragment )
+            .clean();
 
-        // formValues store
-        this.formValues = tb.extend( {}, $('form').values() ); 
+        // create formValues store
+        this.formValues = tb.extend( {}, $('form').values() ); // set initial values from DOM inputs...
 
-        // bind formValues to DOM -> updates DOM on formValues change
+        // update DOM on formValues change
         this.formValues.bind( this.target );
 
-        // bind form input changes to formValues
+        // update formValues store when form content is changed
         $('form').values().bind( this.formValues );
     }
 });

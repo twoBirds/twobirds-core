@@ -383,7 +383,7 @@ describe("tb.core.js", function() {
                 var testHandler1 = function testHandler1(){},
                     testHandler2 = function testHandler2(){};
 
-                tb( test.GrandParent )[0]
+                tb( test.GrandParent )
                     .on(
                         'testEventName',
                         testHandler1
@@ -408,7 +408,7 @@ describe("tb.core.js", function() {
                 var testHandler1 = function testHandler1(){},
                     testHandler2 = function testHandler2(){};
 
-                tb( test.GrandParent )[0]
+                tb( test.GrandParent )
                     .one(
                         'testEventName',
                         testHandler1
@@ -434,7 +434,7 @@ describe("tb.core.js", function() {
                 var testHandler1 = function testHandler1(){},
                     testHandler2 = function testHandler2(){};
 
-                tb( test.GrandParent )[0]
+                tb( test.GrandParent )
                     .one(
                         'testEventName',
                         testHandler1

@@ -1,7 +1,3 @@
-// globals
-var test = new Tb(),    // repo
-    $ = tb.dom;         // jQuery like selector
-
 test.GrandParent = ( class GrandParent extends Tb{
 
     constructor( pConfig, pTarget ){
@@ -26,6 +22,8 @@ test.GrandParent = ( class GrandParent extends Tb{
     init(){
         var that = this;
 
+        $( that.target ).hide();
+
         that.a.observe(function(v){
             console.log('a changed',v);
         }, true); // true = once
@@ -43,6 +41,11 @@ test.GrandParent = ( class GrandParent extends Tb{
                 that.target.insertBefore( document.createElement('div'), $('img', that.target)[0] )
             );
         }
+
+        that.on('ready', function(ev){ 
+            console.log('GrandParent ready', that);
+            $( that.target ).show();
+        }, true);
 
     }
 

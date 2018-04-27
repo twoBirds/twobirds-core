@@ -1,8 +1,10 @@
-/*! twobirds-core - v8.1.3 - 2018-04-26 */
+/*! twobirds-core - v8.1.4 - 2018-04-27 */
 
 // globals
 var test = new Tb(),    // repo
     $ = tb.dom;         // jQuery like selector
+
+
 
 test.GrandParent = ( class GrandParent extends Tb{
 
@@ -28,6 +30,8 @@ test.GrandParent = ( class GrandParent extends Tb{
     init(){
         var that = this;
 
+        $( that.target ).hide();
+
         that.a.observe(function(v){
             console.log('a changed',v);
         }, true); // true = once
@@ -46,6 +50,11 @@ test.GrandParent = ( class GrandParent extends Tb{
             );
         }
 
+        that.on('ready', function(ev){ 
+            console.log('GrandParent ready', that);
+            $( that.target ).show();
+        }, true);
+
     }
 
     test( e ){
@@ -62,31 +71,30 @@ test.TestForm = ( class TestForm extends Tb{
     constructor(){
         super();
 
-        let that = this;
-
         tb.require([
             '/test/TestForm.html'
         ]).then(
-            that.render.bind(that)
+            this.render.bind(this)
         );
-
     }
 
     // methods
     render(){
 
-        var fragment = $( tb.require.get('/test/TestForm.html') ).clean();
+        var fragment = $( tb.require.get('/test/TestForm.html') );
 
         // add fragment to DOM
-        $( this.target ).append( fragment );
+        $( this.target )
+            .append( fragment )
+            .clean();
 
-        // formValues store
-        this.formValues = tb.extend( {}, $('form').values() ); 
+        // create formValues store
+        this.formValues = tb.extend( {}, $('form').values() ); // set initial values from DOM inputs...
 
-        // bind formValues to DOM -> updates DOM on formValues change
+        // update DOM on formValues change
         this.formValues.bind( this.target );
 
-        // bind form input changes to formValues
+        // update formValues store when form content is changed
         $('form').values().bind( this.formValues );
     }
 });

@@ -65,7 +65,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'src',
-                        src: [ 'test-min.html', 'repo.js', 'test.json', 'twoBirds.svg' ],
+                        src: [ 'test-min.html', 'repo.js', 'repo-min.js', 'test.json', 'twoBirds.svg' ],
                         dest: 'dist'
                     },
                     {
@@ -115,6 +115,7 @@ module.exports = function(grunt) {
                         'src/tbTest/tb.utils.test.js'
                     ],
                     'src/repo.js': [
+                        'src/test/global.js',
                         'src/test/GrandParent.js',
                         'src/test/TestForm.js',
                         'src/test/Parent.js',
@@ -141,6 +142,11 @@ module.exports = function(grunt) {
                     {
                         'src/tbMin/tb-min.js': [
                             'src/tb/tb.js'
+                        ]
+                    },
+                    {
+                        'src/repo-min.js': [
+                            'src/repo.js'
                         ]
                     },
                     {
