@@ -844,24 +844,33 @@ tb = (function(){
                         var placeholders = pDomNode.nodeValue.match( /\{[^\{\}]*\}/g );
 
                         if (!!placeholders){
-                            var values = {};
+                            
+                            var f=(function( pTemplate ){
+                                return function( pValues ){
+                                    var t,
+                                        changed = false;
+                                    placeholders.forEach(function(pKey){
+                                        if ( f.values[pKey] !== pValues[pKey] ){
+                                            f.values[pKey] = pValues[pKey];
+                                            changed = true;
+                                        }
+                                    });
+                                    if (changed){ // only reflow if changed
+                                        t = pTemplate;
+                                        pDomNode.nodeValue = tb.parse(
+                                            t,
+                                            f.values
+                                        );
+                                    }
+                                };
+                            })( pDomNode.nodeValue );
+
+                            f.values = {};
                             placeholders = Array.from( placeholders ).map((pKey) => pKey.substr(1,pKey.length-2)); 
                             placeholders.forEach(function(pKey){
-                                values[pKey] = "";
+                                f.values[pKey] = "";
                             });
-                            var f=(function( pTemplate, values ){
-                                return function( pValues ){
-                                    var t = pTemplate;
-                                    placeholders.forEach(function(pKey){
-                                        values[pKey] = pValues[pKey] || values[pKey];
-                                    });
-                                    pDomNode.nodeValue = tb.parse(
-                                        t,
-                                        values
-                                    );
-                                };
-                            })( pDomNode.nodeValue, values );
-
+                            
                             that[Object.getOwnPropertySymbols(that)[0]].observe(f);
 
                         }
@@ -876,26 +885,35 @@ tb = (function(){
                                     var placeholders = pAttributeNode.value.match( /\{[^\{\}]*\}/g );
 
                                     if (!!placeholders){
-                                        var values = {};
+
+                                        var f=(function( pTemplate ){
+                                            return function( pValues ){
+                                                var t,
+                                                    changed = false;
+                                                placeholders.forEach(function(pKey){
+                                                    if ( f.values[pKey] !== pValues[pKey] ){
+                                                        f.values[pKey] = pValues[pKey];
+                                                        changed = true;
+                                                    }
+                                                });
+                                                if (changed){ // only reflow if changed
+                                                    t = pTemplate;
+                                                    tb.dom(pDomNode).attr(
+                                                        pAttributeNode.nodeName,
+                                                        tb.parse(
+                                                            t,
+                                                            f.values
+                                                        )
+                                                    );
+                                                }
+                                            };
+                                        })( pAttributeNode.value );
+
+                                        f.values = {};
                                         placeholders = Array.from( placeholders ).map((pKey) => pKey.substr(1,pKey.length-2)); 
                                         placeholders.forEach(function(pKey){
-                                            values[pKey] = "";
+                                            f.values[pKey] = "";
                                         });
-                                        var f=(function( pTemplate, values ){
-                                            return function( pValues ){
-                                                var t = pTemplate;
-                                                placeholders.forEach(function(pKey){
-                                                    values[pKey] = pValues[pKey] || values[pKey];
-                                                });
-                                                tb.dom(pDomNode).attr(
-                                                    pAttributeNode.nodeName,
-                                                    tb.parse(
-                                                        t,
-                                                        values
-                                                    )
-                                                );
-                                            };
-                                        })( pAttributeNode.value, values );
 
                                         that[Object.getOwnPropertySymbols(that)[0]].observe(f);
 
@@ -907,6 +925,9 @@ tb = (function(){
                             .forEach(function( pChildNode ){
                                 walk( pChildNode );
                             });
+
+                        that[Object.getOwnPropertySymbols(that)[0]].notify();
+
                     }
                 }
 
@@ -978,7 +999,10 @@ tb = (function(){
                     var ret,
                         args = Array.from(arguments);
 
-                    if ( typeof pValue === 'object' && pValue.constructor === Object ){
+                    if ( typeof pValue === 'object' 
+                        && pValue.constructor === Object 
+                        && pValue.constructor.prototype === Object.prototype 
+                    ){
 
                         if ( pReceiver[pProp] instanceof Store ){
                             for ( var key in pReceiver[pProp] ){

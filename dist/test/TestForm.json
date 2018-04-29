@@ -1,0 +1,27 @@
+{
+	"textInput":"Hallo Welt",
+	"colorInput":"#eaf8f8",
+	"dateInput":"",
+	"dtlInput":"",
+	"email":"",
+	"hiddenInput":
+	"hiddenVal",
+	"month":"",
+	"number":"",
+	"passInput":"",
+	"rangeInput":"50",
+	"searchInput":"",
+	"telInput":"",
+	"timeInput":"",
+	"urlInput":"",
+	"weekInput":"",
+	"myRadio":"",
+	"cb1":false,
+	"cb2":false,
+	"cb3":false,
+	"cb4":false,
+	"cb5":false,
+	"singleSelect":"",
+	"multiSelect":["2","4"],
+	"textArea":"This is some example\rtext..."
+}

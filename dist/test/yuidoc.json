@@ -1,0 +1,8 @@
+{
+    "name": "app",
+    "description": "app - shows requirement loading",
+    "version": ".alpha",
+    "options": {
+        "outdir": "./docs"
+    }
+}
