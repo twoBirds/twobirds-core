@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.9 - 2018-04-29 */
+/*! twobirds-core - v8.1.10 - 2018-04-30 */
 
 // globals
 var test = new Tb(),    // repo
@@ -19,11 +19,7 @@ test.GrandParent = ( class GrandParent extends Tb{
             test: that.test
         };
 
-        // implicit: create stores
-        // simply by access of non-existing properties
-        that.a;
-        that.b;
-
+        that.b = {};
     }
 
     // methods
@@ -42,9 +38,14 @@ test.GrandParent = ( class GrandParent extends Tb{
             );
         }
 
-        that.on('ready', function(ev){ 
-            $( that.target ).show();
-        }, true);
+        // when all children have run their inits
+        that.on(
+            'ready', 
+            function(ev){ 
+                $( that.target ).show();
+            }, 
+            true
+        );
 
     }
 
@@ -63,7 +64,6 @@ test.TestForm = ( class TestForm extends Tb{
         var that = this;
 
         // model to read data from
-        that.crud = "";
         that.crud = new tb.CRUD({
             'read': {
                 url: '/test/TestForm.json', // mock data
@@ -106,7 +106,7 @@ test.TestForm = ( class TestForm extends Tb{
         */
 
         // create formValues store
-        that.formValues;
+        that.formValues = {};
 
         // update DOM on formValues change
         that.formValues.bind( that.target );

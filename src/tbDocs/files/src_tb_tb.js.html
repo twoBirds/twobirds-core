@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.9</em>
+            <em>API Docs for: v8.1.10</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.9 - 2018-04-29 */
+/*! twobirds-core - v8.1.10 - 2018-04-30 */
 
 /**
  twoBirds V8 core functionality
@@ -2227,10 +2227,7 @@ tb = (function(){
                                 return value;
                             },
                             set: function( pValue ){
-                                if ( typeof pValue === &#x27;object&#x27; 
-                                    &amp;&amp; !!pValue.constructor 
-                                    &amp;&amp; pValue.constructor === Object 
-                                ){
+                                if ( typeof pValue === &#x27;object&#x27; &amp;&amp; pValue.__proto__ === Object.prototype ){ // jshint ignore:line
                                     if ( value instanceof tb.Store ){
                                         for ( var key in value ){
                                             delete value[ key ];
@@ -2266,16 +2263,16 @@ tb = (function(){
 
                 //console.log( &#x27;tb.set&#x27;, ...args );
 
-                if ( pProp !== &#x27;handlers&#x27; &amp;&amp; typeof pValue === &#x27;object&#x27; &amp;&amp; pValue.constructor === Object ){
+                if ( pProp !== &#x27;handlers&#x27; &amp;&amp; typeof pValue === &#x27;object&#x27; ){
 
-                    if ( pReceiver[pProp] instanceof tb.Store &amp;&amp; pValue.constructor === Object ){
+                    if ( pReceiver[pProp] instanceof tb.Store &amp;&amp; pValue.__proto__ === Object.prototype ){ // jshint ignore:line
                         for ( var key in pReceiver[pProp] ){
                             delete pReceiver[pProp][ key ];
                         } 
                         tb.extend( pReceiver[pProp], pValue );
                     } else {
                         args[0] = pReceiver;
-                        args[2] = new tb.Store( pValue );
+                        //args[2] = new tb.Store( pValue );
                     }
                     
                 }
@@ -4327,27 +4324,6 @@ if (typeof module === &#x27;undefined&#x27; ){
 
                     observe: function( pCallback, pOnce ){
                         node[&#x27;values&#x27;].observe( pCallback, pOnce );
-                    },
-                    encodeURIComponents: function( pNameArray ){
-                        var values = {},
-                            that = this;
-
-                        Object
-                            .keys( this )
-                            .forEach(
-                                function( pKey ){
-                                    var val = that[pKey];
-
-                                    if ( typeof val === &#x27;string&#x27; &amp;&amp; ( !pNameArray || pNameArray.indexOf( pKey ) &gt; -1 ) ){
-                                        values[ pKey ] = encodeURIComponent( val );
-                                    } else {
-                                        values[ pKey ] = val;
-                                    }
-
-                                }
-                            );
-
-                        return values;
                     }
                 };
 

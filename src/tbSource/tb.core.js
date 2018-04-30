@@ -2136,10 +2136,7 @@ tb = (function(){
                                 return value;
                             },
                             set: function( pValue ){
-                                if ( typeof pValue === 'object' 
-                                    && !!pValue.constructor 
-                                    && pValue.constructor === Object 
-                                ){
+                                if ( typeof pValue === 'object' && pValue.__proto__ === Object.prototype ){ // jshint ignore:line
                                     if ( value instanceof tb.Store ){
                                         for ( var key in value ){
                                             delete value[ key ];
@@ -2175,16 +2172,16 @@ tb = (function(){
 
                 //console.log( 'tb.set', ...args );
 
-                if ( pProp !== 'handlers' && typeof pValue === 'object' && pValue.constructor === Object ){
+                if ( pProp !== 'handlers' && typeof pValue === 'object' ){
 
-                    if ( pReceiver[pProp] instanceof tb.Store && pValue.constructor === Object ){
+                    if ( pReceiver[pProp] instanceof tb.Store && pValue.__proto__ === Object.prototype ){ // jshint ignore:line
                         for ( var key in pReceiver[pProp] ){
                             delete pReceiver[pProp][ key ];
                         } 
                         tb.extend( pReceiver[pProp], pValue );
                     } else {
                         args[0] = pReceiver;
-                        args[2] = new tb.Store( pValue );
+                        //args[2] = new tb.Store( pValue );
                     }
                     
                 }

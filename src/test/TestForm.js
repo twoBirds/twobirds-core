@@ -6,7 +6,6 @@ test.TestForm = ( class TestForm extends Tb{
         var that = this;
 
         // model to read data from
-        that.crud = "";
         that.crud = new tb.CRUD({
             'read': {
                 url: '/test/TestForm.json', // mock data
@@ -49,7 +48,7 @@ test.TestForm = ( class TestForm extends Tb{
         */
 
         // create formValues store
-        that.formValues;
+        that.formValues = {};
 
         // update DOM on formValues change
         that.formValues.bind( that.target );

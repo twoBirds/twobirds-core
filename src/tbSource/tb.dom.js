@@ -1716,27 +1716,6 @@ if (typeof module === 'undefined' ){
 
                     observe: function( pCallback, pOnce ){
                         node['values'].observe( pCallback, pOnce );
-                    },
-                    encodeURIComponents: function( pNameArray ){
-                        var values = {},
-                            that = this;
-
-                        Object
-                            .keys( this )
-                            .forEach(
-                                function( pKey ){
-                                    var val = that[pKey];
-
-                                    if ( typeof val === 'string' && ( !pNameArray || pNameArray.indexOf( pKey ) > -1 ) ){
-                                        values[ pKey ] = encodeURIComponent( val );
-                                    } else {
-                                        values[ pKey ] = val;
-                                    }
-
-                                }
-                            );
-
-                        return values;
                     }
                 };
 

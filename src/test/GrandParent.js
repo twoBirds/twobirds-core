@@ -11,11 +11,7 @@ test.GrandParent = ( class GrandParent extends Tb{
             test: that.test
         };
 
-        // implicit: create stores
-        // simply by access of non-existing properties
-        that.a;
-        that.b;
-
+        that.b = {};
     }
 
     // methods
@@ -34,9 +30,14 @@ test.GrandParent = ( class GrandParent extends Tb{
             );
         }
 
-        that.on('ready', function(ev){ 
-            $( that.target ).show();
-        }, true);
+        // when all children have run their inits
+        that.on(
+            'ready', 
+            function(ev){ 
+                $( that.target ).show();
+            }, 
+            true
+        );
 
     }
 
