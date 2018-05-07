@@ -41,12 +41,6 @@ test.TestForm = ( class TestForm extends Tb{
             .append( fragment )
             .clean();
 
-        /*
-        data flow:
-        - form -> that.formValues -> DOM
-        - that.crud read() -> form 
-        */
-
         // create formValues store
         that.formValues = {};
 

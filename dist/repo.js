@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.10 - 2018-04-30 */
+/*! twobirds-core - v8.1.11 - 2018-05-07 */
 
 // globals
 var test = new Tb(),    // repo
@@ -98,12 +98,6 @@ test.TestForm = ( class TestForm extends Tb{
         $( that.target )
             .append( fragment )
             .clean();
-
-        /*
-        data flow:
-        - form -> that.formValues -> DOM
-        - that.crud read() -> form 
-        */
 
         // create formValues store
         that.formValues = {};

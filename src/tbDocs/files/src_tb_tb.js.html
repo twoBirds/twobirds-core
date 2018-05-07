@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.10</em>
+            <em>API Docs for: v8.1.11</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.10 - 2018-04-30 */
+/*! twobirds-core - v8.1.11 - 2018-05-07 */
 
 /**
  twoBirds V8 core functionality
@@ -543,53 +543,6 @@ tb = (function(){
         }
 
     }
-
-    /**
-     @class tb.Event
-     @constructor
-
-     @param {string} pEventName - name of event
-     @param [pEventData] - data to be appended to this event
-     @param {string} [pBubble=l] - bubbling indicator, &#x27;l&#x27; = local, &#x27;u&#x27; = up, &#x27;d&#x27; = down or any combination
-
-     @return {object} tb.Event instance
-     */
-    tb.Event = function( pEventName, pEventData, pBubble ){
-        var that = this;
-        that.bubble = pBubble || &#x27;l&#x27;;
-        that.data = pEventData || {};
-        that.name = pEventName || &#x27;&#x27;;
-        that.__stopped__ = that.__immediateStopped__ = false;
-    };
-
-    tb.Event.prototype = {
-
-        /**
-         @method stopPropagation
-         
-         @return {object} tb.Event object
-
-         stop propagation after all handlers on this object have run
-         */
-        stopPropagation: function(){
-            this.__stopped__ = true;
-            return this;
-        },
-
-        /**
-          @method stopImmediatePropagation
-         
-          @return {object} tb.Event object
-
-          stop propagation immediately after this handler has run
-         */
-        stopImmediatePropagation: function(){
-            this.__stopped__ = true; // also stop normal propagation
-            this.__immediateStopped__ = true;
-            return this;
-        }
-
-    };
 
     /**
      - takes any number of objects as parameters
@@ -2602,6 +2555,53 @@ if (typeof module !== &#x27;undefined&#x27;) {
 
     })();
 }
+
+/**
+ @class tb.Event
+ @constructor
+
+ @param {string} pEventName - name of event
+ @param [pEventData] - data to be appended to this event
+ @param {string} [pBubble=l] - bubbling indicator, &#x27;l&#x27; = local, &#x27;u&#x27; = up, &#x27;d&#x27; = down or any combination
+
+ @return {object} tb.Event instance
+ */
+tb.Event = function( pEventName, pEventData, pBubble ){
+    var that = this;
+    that.bubble = pBubble || &#x27;l&#x27;;
+    that.data = pEventData || {};
+    that.name = pEventName || &#x27;&#x27;;
+    that.__stopped__ = that.__immediateStopped__ = false;
+};
+
+tb.Event.prototype = {
+
+    /**
+     @method stopPropagation
+     
+     @return {object} tb.Event object
+
+     stop propagation after all handlers on this object have run
+     */
+    stopPropagation: function(){
+        this.__stopped__ = true;
+        return this;
+    },
+
+    /**
+      @method stopImmediatePropagation
+     
+      @return {object} tb.Event object
+
+      stop propagation immediately after this handler has run
+     */
+    stopImmediatePropagation: function(){
+        this.__stopped__ = true; // also stop normal propagation
+        this.__immediateStopped__ = true;
+        return this;
+    }
+
+};
 
 tb.debug = false;
 

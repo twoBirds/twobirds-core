@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.10 - 2018-04-30 */
+/*! twobirds-core - v8.1.11 - 2018-05-07 */
 
 /**
  twoBirds V8 core functionality
@@ -454,53 +454,6 @@ tb = (function(){
         }
 
     }
-
-    /**
-     @class tb.Event
-     @constructor
-
-     @param {string} pEventName - name of event
-     @param [pEventData] - data to be appended to this event
-     @param {string} [pBubble=l] - bubbling indicator, 'l' = local, 'u' = up, 'd' = down or any combination
-
-     @return {object} tb.Event instance
-     */
-    tb.Event = function( pEventName, pEventData, pBubble ){
-        var that = this;
-        that.bubble = pBubble || 'l';
-        that.data = pEventData || {};
-        that.name = pEventName || '';
-        that.__stopped__ = that.__immediateStopped__ = false;
-    };
-
-    tb.Event.prototype = {
-
-        /**
-         @method stopPropagation
-         
-         @return {object} tb.Event object
-
-         stop propagation after all handlers on this object have run
-         */
-        stopPropagation: function(){
-            this.__stopped__ = true;
-            return this;
-        },
-
-        /**
-          @method stopImmediatePropagation
-         
-          @return {object} tb.Event object
-
-          stop propagation immediately after this handler has run
-         */
-        stopImmediatePropagation: function(){
-            this.__stopped__ = true; // also stop normal propagation
-            this.__immediateStopped__ = true;
-            return this;
-        }
-
-    };
 
     /**
      - takes any number of objects as parameters
@@ -2513,6 +2466,53 @@ if (typeof module !== 'undefined') {
 
     })();
 }
+
+/**
+ @class tb.Event
+ @constructor
+
+ @param {string} pEventName - name of event
+ @param [pEventData] - data to be appended to this event
+ @param {string} [pBubble=l] - bubbling indicator, 'l' = local, 'u' = up, 'd' = down or any combination
+
+ @return {object} tb.Event instance
+ */
+tb.Event = function( pEventName, pEventData, pBubble ){
+    var that = this;
+    that.bubble = pBubble || 'l';
+    that.data = pEventData || {};
+    that.name = pEventName || '';
+    that.__stopped__ = that.__immediateStopped__ = false;
+};
+
+tb.Event.prototype = {
+
+    /**
+     @method stopPropagation
+     
+     @return {object} tb.Event object
+
+     stop propagation after all handlers on this object have run
+     */
+    stopPropagation: function(){
+        this.__stopped__ = true;
+        return this;
+    },
+
+    /**
+      @method stopImmediatePropagation
+     
+      @return {object} tb.Event object
+
+      stop propagation immediately after this handler has run
+     */
+    stopImmediatePropagation: function(){
+        this.__stopped__ = true; // also stop normal propagation
+        this.__immediateStopped__ = true;
+        return this;
+    }
+
+};
 
 tb.debug = false;
 
