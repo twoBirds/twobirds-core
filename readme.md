@@ -52,7 +52,7 @@ tB is JS-linted, Jasmine tested and this package contains the complete API docum
 
 [Tutorials](https://gitlab.com/twoBirds/twobirds-core/wikis/twoBirds-Tutorials) (work in progress)
 
-[Use Patreon to support this:&nbsp;&nbsp;&nbsp;](https://www.patreon.com/twoBirds) 
+[Use Patreon to support this](https://www.patreon.com/twoBirds) 
 
 You can also [contact me](mailTo:fthuerigen@googlemail.com?subject=regarding%20twoBirds%20...") if you need a specific twoBirds plugin tailored for your needs or if a question arises.
 
