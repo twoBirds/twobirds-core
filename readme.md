@@ -44,7 +44,7 @@ Like the first, it has selectors for the DOM and reasonable modification methods
 
 Like the latter, it incorporates a higher level abstraction scheme for application objects.
 
-tB is JS-linted, Jasmine tested and this package contains the complete API documentation. Technically it is the minimum possible toolkit to create an application or reusable JS library.
+tB is JS-linted, Jasmine tested and this package contains the complete API documentation. Technically it is the minimum possible toolkit to create an application.
 
 ### Supplementary information
 
@@ -53,6 +53,8 @@ tB is JS-linted, Jasmine tested and this package contains the complete API docum
 [Tutorials](https://gitlab.com/twoBirds/twobirds-core/wikis/twoBirds-Tutorials) (work in progress)
 
 [Use Patreon to support this](https://www.patreon.com/twoBirds) 
+
+[Donate via PayPal](https://paypal.me/FThuerigen)
 
 You can also [contact me](mailTo:fthuerigen@googlemail.com?subject=regarding%20twoBirds%20...") if you need a specific twoBirds plugin tailored for your needs or if a question arises.
 
