@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.12 - 2018-05-08 */
+/*! twobirds-core - v8.1.13 - 2018-05-10 */
 
 /**
  twoBirds V8 core functionality
@@ -375,6 +375,7 @@ tb = (function(){
                     if ( tbInstance.target.nodeName !== 'head'
                         && dom.parents().toArray().indexOf( document.head ) === -1
                         && !!tbInstance['namespace']
+                        && tbInstance.namespace.replace(/\./g, '-').toUpperCase() !== tbInstance.target.tagName
                     ){
                         dom.addClass( tbInstance.namespace.replace( /\./g, '-').toLowerCase() );
                     }

@@ -373,6 +373,7 @@ tb = (function(){
                     if ( tbInstance.target.nodeName !== 'head'
                         && dom.parents().toArray().indexOf( document.head ) === -1
                         && !!tbInstance['namespace']
+                        && tbInstance.namespace.replace(/\./g, '-').toUpperCase() !== tbInstance.target.tagName
                     ){
                         dom.addClass( tbInstance.namespace.replace( /\./g, '-').toLowerCase() );
                     }

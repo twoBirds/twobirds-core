@@ -187,8 +187,8 @@ describe("tb.core.js", function() {
                 expect( tb('body').descendants() instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants('div.test-parent,span').length === 505", function() {
-                expect( tb('body').descendants('div.test-parent,span').length === 505 ).toBe( true );
+            it("tb('body').descendants('div.test-parent,span,test-greatgrandchild').length === 505", function() {
+                expect( tb('body').descendants('div.test-parent,span,test-greatgrandchild').length === 505 ).toBe( true );
             });
 
             it("tb('body').descendants('div') instanceof tb.Selector", function() {
@@ -203,8 +203,8 @@ describe("tb.core.js", function() {
                 expect( tb('body').descendants('span') instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants('div.test-parent span').length === 500", function() {
-                expect( tb('body').descendants('span').length === 500 ).toBe( true );
+            it("tb('body').descendants('div.test-parent span,test-greatgrandchild').length === 500", function() {
+                expect( tb('body').descendants('div.test-parent span,test-greatgrandchild').length === 500 ).toBe( true );
             });
 
         });

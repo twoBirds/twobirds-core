@@ -107,8 +107,8 @@ describe("tb.dom() selector tests", function() {
                 expect( tb.dom('body').add('div.test-parent').length === 6 ).toBe( true );
             });
 
-            it("tb.dom('body').add('span.test-grandchild, span.test-greatgrandchild').length === 451", function() {
-                expect( tb.dom('body').add('span.test-grandchild, span.test-greatgrandchild').length === 451 ).toBe( true );
+            it("tb.dom('body').add('span.test-grandchild, span.test-greatgrandchild, test-greatgrandchild').length === 451", function() {
+                expect( tb.dom('body').add('span.test-grandchild,span.test-greatgrandchild,test-greatgrandchild').length === 451 ).toBe( true );
             });
 
         });
@@ -243,8 +243,8 @@ describe("tb.dom() selector tests", function() {
                 expect( tb.dom('div.test-parent').descendants('div').length === 0 ).toBe( true );
             });
 
-            it("tb.dom('div.test-parent').descendants('span').length === 500", function() {
-                expect( tb.dom('div.test-parent').descendants('span').length === 500 ).toBe( true );
+            it("tb.dom('div.test-parent').descendants('span,test-greatgrandchild').length === 500", function() {
+                expect( tb.dom('div.test-parent').descendants('span,test-greatgrandchild').length === 500 ).toBe( true );
             });
 
         });

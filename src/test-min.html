@@ -15,49 +15,56 @@
 
                 function(){
 
-                    // run tests
-                    tb.Require([
-                        'tbTest.js'
-                    ]);
+                    setTimeout(function(){
 
-                    // make svg favicon
-                    var $ = tb.dom,
-                        $c = $('<canvas>'),
-                        i = new Image();
-                    
-                    function loaded(){
-                                
-                        //set canvas to image size
-                        $c.attr({
-                            height: i.height,
-                            width: i.width
-                        });
+                        // run tests
+                        tb.Require([
+                            'tbTest.js'
+                        ]);
 
-                        // get context
-                        var ctx = $c[0].getContext('2d');
-                        ctx.globalCompositeOperation = 'copy';
-                        ctx.drawImage(i, 0, 0, $c.attr('width'), $c.attr('height'));
-
-                        // copy context content to link node
-                        $('<link rel="icon">')
-                            .attr(
-                                'href', 
-                                $c[0].toDataURL()
-                            )
-                            .appendTo(
-                                document.head
-                            );
-                    }
-
-                    i.addEventListener('load', loaded)
-                    i.src = '/twoBirds.svg';
+                    },1000);
 
                 }
             );
+
+            // svg favicon
+            setTimeout(function(){
+                // make svg favicon
+                var $ = tb.dom,
+                    $c = $('<canvas>'),
+                    i = new Image();
+                
+                function loaded(){
+                            
+                    //set canvas to image size
+                    $c.attr({
+                        height: i.height,
+                        width: i.width
+                    });
+
+                    // get context
+                    var ctx = $c[0].getContext('2d');
+                    ctx.globalCompositeOperation = 'copy';
+                    ctx.drawImage(i, 0, 0, $c.attr('width'), $c.attr('height'));
+
+                    // copy context content to link node
+                    $('<link rel="icon">')
+                        .attr(
+                            'href', 
+                            $c[0].toDataURL()
+                        )
+                        .appendTo(
+                            document.head
+                        );
+                }
+
+                i.addEventListener('load', loaded)
+                i.src = '/twoBirds.svg';
+            }, 5000);
         </script>
     </head>
     <body data-tb="test.GrandParent">
-        <img style="position:fixed;top:10px;right:10px" src="/twoBirds.svg"/>
+        <img style="position:fixed;top:10px;right:10px;z-index:-1" src="/twoBirds.svg"/>
         <form style="background-color:{colorInput}" data-tb="test.TestForm" />
     </body>
 </html>
