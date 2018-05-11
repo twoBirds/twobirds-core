@@ -22,5 +22,7 @@ test-greatgrandchild {
 	display: inline-block;
 }
 
-
+.jasmine_html-reporter {
+  background-color: transparent;
+}
 /*# sourceMappingURL=GrandParent.css.map */

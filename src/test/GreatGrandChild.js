@@ -1,4 +1,4 @@
-test.GreatGrandChild = ( class ggc extends Tb{
+test.GreatGrandChild = class GreatGrandChild extends Tb{
 
     constructor(){
         super();
@@ -17,7 +17,7 @@ test.GreatGrandChild = ( class ggc extends Tb{
     }
 
     // methods
-    init( e ){
+    init(){
 
         var that = this;
 
@@ -43,26 +43,29 @@ test.GreatGrandChild = ( class ggc extends Tb{
 
     }
 
-});
+};
 
 /* 
-autonomous custom element
+Autonomous Custom Element
 */
-class GreatGrandChild extends HTMLElement{
+(function(){ // IIFE hiding ACE class
 
-    constructor(){
-        super();
+    class GreatGrandChild extends HTMLElement{
+
+        constructor(){
+            super();
+        }
+
+        connectedCallback(){
+            new tb(
+                test.GreatGrandChild,
+                {},
+                this
+            );
+        }
+
     }
 
-    connectedCallback(){
-        new tb(
-            test.GreatGrandChild,
-            {},
-            this
-        );
+    customElements.define('test-greatgrandchild', GreatGrandChild);
 
-    }
-
-}
-
-customElements.define('test-greatgrandchild', GreatGrandChild);
+})();
