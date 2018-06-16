@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.14</em>
+            <em>API Docs for: v8.1.15</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.14 - 2018-05-11 */
+/*! twobirds-core - v8.1.15 - 2018-06-16 */
 
 /**
  twoBirds V8 core functionality
@@ -2531,9 +2531,9 @@ if (typeof module !== &#x27;undefined&#x27;) {
     (function(){
 
         function domReady () {
-            // find all tb head &amp; DOM nodes and add tb objects if not yet done
-            tb.attach( document.head ); 
-            tb.attach( document.body ); 
+            // find all tb head &amp; body nodes and add tb objects if not yet done
+            tb.attach( document.head );
+            tb.attach( document.body );
         }
 
         // Mozilla, Opera, Webkit
@@ -2604,8 +2604,78 @@ tb.Event.prototype = {
 
 };
 
-tb.debug = false;
+tb.debug = false; // todo: rethink / implement
 
+tb.assumeTb = (function(pSetter){ 
+    var isTb = pSetter;
+    return function(pParam){
+        if ( 
+            typeof pParam === &#x27;object&#x27;
+            &amp;&amp; !!pParam.nodeType
+            &amp;&amp; pParam.nodeType === 1
+            &amp;&amp; tb.assumeTb()
+        ){
+            // scan for AACEs and load + re-insert
+            //console.log(&#x27;scan for ACEs: &#x27;, pParam);
+            
+            var selection = tb.dom(&#x27;*&#x27;, pParam)
+                .filter(function(pElement){
+                    var isUndefinedACE = 
+                        !!pElement.nodeType
+                        &amp;&amp; pElement.nodeType === 1
+                        &amp;&amp; pElement.tagName.indexOf(&#x27;-&#x27;) !== -1
+                        &amp;&amp; Object.getPrototypeOf(pElement).constructor === HTMLElement
+                        &amp;&amp; Object.getPrototypeOf(Object.getPrototypeOf(pElement)).constructor === Element;
+
+                    if (isUndefinedACE){
+                        //console.log(&#x27;found undefined ACE: &#x27;, pElement);
+                    }
+                    return isUndefinedACE;
+                })
+                .forEach(function(pElement){
+                    var fileName = pElement.tagName.toLowerCase().split(&#x27;-&#x27;),
+                        lastIndex = fileName.length - 1;
+
+                    // normalize filename -&gt; class name
+                    fileName[lastIndex] = 
+                        fileName[lastIndex].substr(0,1).toUpperCase() +
+                        fileName[lastIndex].substr(1).toLowerCase();
+
+                    var plainClass = tb.namespace( fileName.join(&#x27;.&#x27;) ).get();
+
+                    if ( !!plainClass ){
+                        new tb(
+                            plainClass,
+                            {},
+                            pElement
+                        );
+                    } else {
+
+                        fileName = &#x27;/&#x27;+fileName.join(&#x27;/&#x27;) + &#x27;.js&#x27;;
+
+                        //console.log(&#x27;load file: &#x27;, fileName );
+                        
+                        tb.require( fileName )
+                            .then(function(){
+                                //console.log(&#x27;loaded: &#x27;, fileName);
+                                // force recreation
+                                pElement.parentNode.replaceChild( 
+                                    pElement, 
+                                    tb.dom(pElement.outerHTML) 
+                                );
+                            });
+                    }
+
+                });
+
+            return selection;
+
+        } else if ( typeof pParam === &#x27;boolean&#x27;){
+            isTb = pParam;
+        }
+        return isTb;
+    };
+})(false); // dont assume custom tags to resolve to tB classes
 
 if (typeof module === &#x27;undefined&#x27; ){
     tb.dom = (function () {
@@ -3037,6 +3107,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                             function( pThisElement ){
                                 if ( !!pThisElement[&#x27;nodeType&#x27;] ){
                                     pDomNode.appendChild( pThisElement );
+                                    tb.assumeTb( pDomNode );
                                 }
                             }
                         );
@@ -3066,6 +3137,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                         }
                     );
                 }
+
+                tb.assumeTb( pElement );
 
                 return that;
             }
@@ -3413,6 +3486,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                     }
                 );
 
+                tb.assumeTb( pTarget );
+
                 return that;
             }
 
@@ -3454,6 +3529,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                         }
                     }
                 );
+
+                tb.assumeTb( pTarget );
 
                 return that;
             }

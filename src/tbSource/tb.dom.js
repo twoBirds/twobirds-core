@@ -428,6 +428,7 @@ if (typeof module === 'undefined' ){
                             function( pThisElement ){
                                 if ( !!pThisElement['nodeType'] ){
                                     pDomNode.appendChild( pThisElement );
+                                    tb.assumeTb( pDomNode );
                                 }
                             }
                         );
@@ -457,6 +458,8 @@ if (typeof module === 'undefined' ){
                         }
                     );
                 }
+
+                tb.assumeTb( pElement );
 
                 return that;
             }
@@ -804,6 +807,8 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
+                tb.assumeTb( pTarget );
+
                 return that;
             }
 
@@ -845,6 +850,8 @@ if (typeof module === 'undefined' ){
                         }
                     }
                 );
+
+                tb.assumeTb( pTarget );
 
                 return that;
             }

@@ -1,9 +1,11 @@
-/*! twobirds-core - v8.1.14 - 2018-05-11 */
+/*! twobirds-core - v8.1.15 - 2018-06-16 */
 
 // globals
-var test = new Tb(),    // repo
+var test = {},    // repo
+	app = {},		// testing
     $ = tb.dom;         // jQuery like selector
 
+tb.assumeTb(true);		// treat unknown tags as tb automatic ACEs
 
 
 test.GrandParent = ( class GrandParent extends Tb{

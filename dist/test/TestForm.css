@@ -38,7 +38,6 @@ form input + label {
 }
 
 body > form {
-    width: 100%;
     display: inline-block;
 }
 

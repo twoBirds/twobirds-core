@@ -28,21 +28,9 @@ module.exports = function(grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'src/tb',
-                        src: '*.js',
-                        dest: 'dist/tb'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/tbMin',
-                        src: '*.js',
-                        dest: 'dist/tb'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/tbMin',
-                        src: '*.js.map',
-                        dest: 'dist/tb'
+                        cwd: 'src/app',
+                        src: '*.*',
+                        dest: 'dist/app'
                     },
                     {
                         expand: true,
@@ -76,13 +64,7 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: 'src/tb',
-                        src: '*.js',
-                        dest: 'src/tbDocs'
-                    },
-                    {
-                        expand: true,
-                        cwd: 'src/tbMin',
+                        cwd: 'dist/tb',
                         src: '*.js',
                         dest: 'src/tbDocs'
                     }
@@ -104,6 +86,10 @@ module.exports = function(grunt) {
                         'src/tbSource/tb.utils.js',
                         'src/tbSource/tb.CRUD.js',
                         'src/tbSource/tb.es6.js'
+                    ],
+                    'dist/tb/tb.js': [
+                        'node_modules/@webcomponents/custom-elements/custom-elements.min.js',
+                        'src/tb/tb.js'
                     ],
                     'src/tbTest.js': [
                         'src/tbJasmine/jasmine.js',
@@ -131,7 +117,7 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 mangle: {
-                    //except:	['jQuery']
+                    except:	['node_modules/@webcomponents/custom-elements/custom-elements.min.js']
                 }
             },
             my_target: {
@@ -140,7 +126,8 @@ module.exports = function(grunt) {
                 },
                 files: [
                     {
-                        'src/tbMin/tb-min.js': [
+                        'dist/tb/tb-min.js': [
+                            'node_modules/@webcomponents/custom-elements/custom-elements.min.js',
                             'src/tb/tb.js'
                         ]
                     },
@@ -182,6 +169,8 @@ module.exports = function(grunt) {
                     tb: true,
                     "window": false,
                     "document": false,
+                    "HTMLElement": false,
+                    "Element": false,
                     "HTMLCollection": false,
                     "NodeList": false,
                     "XMLHttpRequest": false,

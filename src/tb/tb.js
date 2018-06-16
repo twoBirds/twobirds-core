@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.14 - 2018-05-11 */
+/*! twobirds-core - v8.1.15 - 2018-06-16 */
 
 /**
  twoBirds V8 core functionality
@@ -2442,9 +2442,9 @@ if (typeof module !== 'undefined') {
     (function(){
 
         function domReady () {
-            // find all tb head & DOM nodes and add tb objects if not yet done
-            tb.attach( document.head ); 
-            tb.attach( document.body ); 
+            // find all tb head & body nodes and add tb objects if not yet done
+            tb.attach( document.head );
+            tb.attach( document.body );
         }
 
         // Mozilla, Opera, Webkit
@@ -2515,8 +2515,78 @@ tb.Event.prototype = {
 
 };
 
-tb.debug = false;
+tb.debug = false; // todo: rethink / implement
 
+tb.assumeTb = (function(pSetter){ 
+    var isTb = pSetter;
+    return function(pParam){
+        if ( 
+            typeof pParam === 'object'
+            && !!pParam.nodeType
+            && pParam.nodeType === 1
+            && tb.assumeTb()
+        ){
+            // scan for AACEs and load + re-insert
+            //console.log('scan for ACEs: ', pParam);
+            
+            var selection = tb.dom('*', pParam)
+                .filter(function(pElement){
+                    var isUndefinedACE = 
+                        !!pElement.nodeType
+                        && pElement.nodeType === 1
+                        && pElement.tagName.indexOf('-') !== -1
+                        && Object.getPrototypeOf(pElement).constructor === HTMLElement
+                        && Object.getPrototypeOf(Object.getPrototypeOf(pElement)).constructor === Element;
+
+                    if (isUndefinedACE){
+                        //console.log('found undefined ACE: ', pElement);
+                    }
+                    return isUndefinedACE;
+                })
+                .forEach(function(pElement){
+                    var fileName = pElement.tagName.toLowerCase().split('-'),
+                        lastIndex = fileName.length - 1;
+
+                    // normalize filename -> class name
+                    fileName[lastIndex] = 
+                        fileName[lastIndex].substr(0,1).toUpperCase() +
+                        fileName[lastIndex].substr(1).toLowerCase();
+
+                    var plainClass = tb.namespace( fileName.join('.') ).get();
+
+                    if ( !!plainClass ){
+                        new tb(
+                            plainClass,
+                            {},
+                            pElement
+                        );
+                    } else {
+
+                        fileName = '/'+fileName.join('/') + '.js';
+
+                        //console.log('load file: ', fileName );
+                        
+                        tb.require( fileName )
+                            .then(function(){
+                                //console.log('loaded: ', fileName);
+                                // force recreation
+                                pElement.parentNode.replaceChild( 
+                                    pElement, 
+                                    tb.dom(pElement.outerHTML) 
+                                );
+                            });
+                    }
+
+                });
+
+            return selection;
+
+        } else if ( typeof pParam === 'boolean'){
+            isTb = pParam;
+        }
+        return isTb;
+    };
+})(false); // dont assume custom tags to resolve to tB classes
 
 if (typeof module === 'undefined' ){
     tb.dom = (function () {
@@ -2948,6 +3018,7 @@ if (typeof module === 'undefined' ){
                             function( pThisElement ){
                                 if ( !!pThisElement['nodeType'] ){
                                     pDomNode.appendChild( pThisElement );
+                                    tb.assumeTb( pDomNode );
                                 }
                             }
                         );
@@ -2977,6 +3048,8 @@ if (typeof module === 'undefined' ){
                         }
                     );
                 }
+
+                tb.assumeTb( pElement );
 
                 return that;
             }
@@ -3324,6 +3397,8 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
+                tb.assumeTb( pTarget );
+
                 return that;
             }
 
@@ -3365,6 +3440,8 @@ if (typeof module === 'undefined' ){
                         }
                     }
                 );
+
+                tb.assumeTb( pTarget );
 
                 return that;
             }
