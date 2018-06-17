@@ -2545,7 +2545,9 @@ tb.assumeTb = (function(pSetter){
                 .forEach(function(pElement){
                     var fileName = pElement.tagName.toLowerCase().split('-'),
                         lastIndex = fileName.length - 1,
-                        outerHTML = pElement.outerHTML;
+                        element = pElement,
+                        outerHTML = element.outerHTML,
+                        parent = element.parentNode;
 
                     // normalize filename -> class name
                     fileName[lastIndex] = 
@@ -2570,8 +2572,8 @@ tb.assumeTb = (function(pSetter){
                             .then(function(){
                                 //console.log('loaded: ', fileName);
                                 // force recreation
-                                pElement.parentNode.replaceChild( 
-                                    pElement, 
+                                parent.replaceChild( 
+                                    element, 
                                     tb.dom(outerHTML)[0] 
                                 );
                             });

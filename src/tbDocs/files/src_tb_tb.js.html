@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.19</em>
+            <em>API Docs for: v8.1.20</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.19 - 2018-06-17 */
+/*! twobirds-core - v8.1.20 - 2018-06-17 */
 
 /**
  twoBirds V8 core functionality
@@ -2636,7 +2636,9 @@ tb.assumeTb = (function(pSetter){
                 .forEach(function(pElement){
                     var fileName = pElement.tagName.toLowerCase().split(&#x27;-&#x27;),
                         lastIndex = fileName.length - 1,
-                        outerHTML = pElement.outerHTML;
+                        element = pElement,
+                        outerHTML = element.outerHTML,
+                        parent = element.parentNode;
 
                     // normalize filename -&gt; class name
                     fileName[lastIndex] = 
@@ -2661,8 +2663,8 @@ tb.assumeTb = (function(pSetter){
                             .then(function(){
                                 //console.log(&#x27;loaded: &#x27;, fileName);
                                 // force recreation
-                                pElement.parentNode.replaceChild( 
-                                    pElement, 
+                                parent.replaceChild( 
+                                    element, 
                                     tb.dom(outerHTML)[0] 
                                 );
                             });
