@@ -97,7 +97,7 @@ tb = (function(){
             // selection by dom selector string
             case 'string':
                 
-                tb.dom( pSelector+'[data-tb]', pDomNode || window )
+                tb.dom( pSelector+'[data-tb]', pDomNode || document )
                     .forEach(
                         function ( pThisNode ) {
                             if ( !!pThisNode.tb ){
@@ -123,7 +123,7 @@ tb = (function(){
                 }
 
                 if ( pSelector instanceof RegExp ){ // it is a regular expression
-                    tb.dom( '[data-tb]', pDomNode || window )
+                    tb.dom( '[data-tb]', pDomNode || document )
                         .forEach(
                             function ( pDomNode ) {
                                 Object
@@ -178,7 +178,7 @@ tb = (function(){
             // check whether their prototype matches constructor prototype
             case 'function':
 
-                tb.dom( '[data-tb]', pDomNode || window )
+                tb.dom( '[data-tb]', pDomNode || document )
                     .map(
                         function ( pDomNode ) {
                             Object
@@ -372,7 +372,7 @@ tb = (function(){
                     var dom = tb.dom( tbInstance.target );
                     if ( tbInstance.target.nodeName !== 'head'
                         && dom.parents().toArray().indexOf( document.head ) === -1
-                        && tbInstance.target.tagName.split('').indexOf('-') !== -1
+                        && tbInstance.target.tagName.split('').indexOf('-') === -1
                         && !!tbInstance['namespace']
                         && tbInstance.namespace.replace(/\./g, '-').toUpperCase() !== tbInstance.target.tagName
                     ){

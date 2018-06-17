@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.21 - 2018-06-17 */
+/*! twobirds-core - v8.1.22 - 2018-06-18 */
 
 // globals
 var test = {},    // repo
