@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.15 - 2018-06-16 */
+/*! twobirds-core - v8.1.16 - 2018-06-17 */
 
 /**
  twoBirds V8 core functionality
@@ -2529,7 +2529,8 @@ tb.assumeTb = (function(pSetter){
             // scan for AACEs and load + re-insert
             //console.log('scan for ACEs: ', pParam);
             
-            var selection = tb.dom('*', pParam)
+            var selection = tb.dom(pParam)
+                .children()
                 .filter(function(pElement){
                     var isUndefinedACE = 
                         !!pElement.nodeType
@@ -2578,6 +2579,21 @@ tb.assumeTb = (function(pSetter){
                     }
 
                 });
+
+                // only recurse on those that are no ACEs
+                tb.dom(pParam)
+                    .children()
+                    .filter(function(pElement){
+                        var isNoACE = 
+                            !!pElement.nodeType
+                            && pElement.nodeType === 1
+                            && pElement.tagName.indexOf('-') === -1;
+
+                        return isNoACE;
+                    })
+                    .forEach(function(pElement){
+                        tb.assumeTb(pElement);
+                    });
 
             return selection;
 

@@ -1,8 +1,8 @@
-/*! twobirds-core - v8.1.15 - 2018-06-16 */
+/*! twobirds-core - v8.1.16 - 2018-06-17 */
 
 // globals
 var test = {},    // repo
-	app = {},		// testing
+	app = {},		// testing <app-mist />
     $ = tb.dom;         // jQuery like selector
 
 tb.assumeTb(true);		// treat unknown tags as tb automatic ACEs

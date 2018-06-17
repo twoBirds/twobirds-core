@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.15 - 2018-06-16 */
+/*! twobirds-core - v8.1.16 - 2018-06-17 */
 
 (function(){
 'use strict';var h=new function(){};var aa=new Set("annotation-xml color-profile font-face font-face-src font-face-uri font-face-format font-face-name missing-glyph".split(" "));function m(b){var a=aa.has(b);b=/^[a-z][.0-9_a-z]*-[\-.0-9_a-z]*$/.test(b);return!a&&b}function n(b){var a=b.isConnected;if(void 0!==a)return a;for(;b&&!(b.__CE_isImportDocument||b instanceof Document);)b=b.parentNode||(window.ShadowRoot&&b instanceof ShadowRoot?b.host:void 0);return!(!b||!(b.__CE_isImportDocument||b instanceof Document))}
@@ -42,7 +42,7 @@ var Z=window.customElements;if(!Z||Z.forcePolyfill||"function"!=typeof Z.define|
 //# sourceMappingURL=custom-elements.min.js.map
 
 
-/*! twobirds-core - v8.1.15 - 2018-06-16 */
+/*! twobirds-core - v8.1.16 - 2018-06-17 */
 
 /**
  twoBirds V8 core functionality
@@ -2573,7 +2573,8 @@ tb.assumeTb = (function(pSetter){
             // scan for AACEs and load + re-insert
             //console.log('scan for ACEs: ', pParam);
             
-            var selection = tb.dom('*', pParam)
+            var selection = tb.dom(pParam)
+                .children()
                 .filter(function(pElement){
                     var isUndefinedACE = 
                         !!pElement.nodeType
@@ -2622,6 +2623,21 @@ tb.assumeTb = (function(pSetter){
                     }
 
                 });
+
+                // only recurse on those that are no ACEs
+                tb.dom(pParam)
+                    .children()
+                    .filter(function(pElement){
+                        var isNoACE = 
+                            !!pElement.nodeType
+                            && pElement.nodeType === 1
+                            && pElement.tagName.indexOf('-') === -1;
+
+                        return isNoACE;
+                    })
+                    .forEach(function(pElement){
+                        tb.assumeTb(pElement);
+                    });
 
             return selection;
 
