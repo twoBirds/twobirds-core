@@ -22,7 +22,7 @@ test.GrandChild = ( class GrandChild extends Tb{
                 that.target.appendChild( document.createElement('span') )
             );
             */
-            that.target.appendChild(document.createElement('test-GreatGrandChild'))
+            that.target.appendChild(document.createElement('test-greatgrandchild'))
         }
     }
 });

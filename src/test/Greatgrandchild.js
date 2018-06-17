@@ -1,4 +1,4 @@
-test.GreatGrandChild = class GreatGrandChild extends Tb{
+test.Greatgrandchild = class extends Tb{
 
     constructor(){
         super();
@@ -13,7 +13,7 @@ test.GreatGrandChild = class GreatGrandChild extends Tb{
 
     // omitted if autonomous custom element 
     static get namespace(){
-        return 'test.GreatGrandChild';
+        return 'test.Greatgrandchild';
     }
 
     // methods
@@ -58,7 +58,7 @@ Autonomous Custom Element
 
         connectedCallback(){
             new tb(
-                test.GreatGrandChild,
+                test.Greatgrandchild,
                 {},
                 this
             );

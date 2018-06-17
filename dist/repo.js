@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.22 - 2018-06-18 */
+/*! twobirds-core - v8.1.23 - 2018-06-18 */
 
 // globals
 var test = {},    // repo
@@ -232,13 +232,13 @@ test.GrandChild = ( class GrandChild extends Tb{
                 that.target.appendChild( document.createElement('span') )
             );
             */
-            that.target.appendChild(document.createElement('test-GreatGrandChild'))
+            that.target.appendChild(document.createElement('test-greatgrandchild'))
         }
     }
 });
 
 
-test.GreatGrandChild = class GreatGrandChild extends Tb{
+test.Greatgrandchild = class extends Tb{
 
     constructor(){
         super();
@@ -253,7 +253,7 @@ test.GreatGrandChild = class GreatGrandChild extends Tb{
 
     // omitted if autonomous custom element 
     static get namespace(){
-        return 'test.GreatGrandChild';
+        return 'test.Greatgrandchild';
     }
 
     // methods
@@ -298,7 +298,7 @@ Autonomous Custom Element
 
         connectedCallback(){
             new tb(
-                test.GreatGrandChild,
+                test.Greatgrandchild,
                 {},
                 this
             );

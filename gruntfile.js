@@ -107,7 +107,7 @@ module.exports = function(grunt) {
                         'src/test/Parent.js',
                         'src/test/Child.js',
                         'src/test/GrandChild.js',
-                        'src/test/GreatGrandChild.js'
+                        'src/test/Greatgrandchild.js'
                     ]
                 },
                 nonull: true

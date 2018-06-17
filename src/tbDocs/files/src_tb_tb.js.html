@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.22</em>
+            <em>API Docs for: v8.1.23</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.22 - 2018-06-18 */
+/*! twobirds-core - v8.1.23 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2623,25 +2623,19 @@ tb.assumeTb = (function(pSetter){
                 .children()
                 .filter(function(pElement){
                     var isUndefinedACE = 
-                        !!pElement.nodeType
-                        &amp;&amp; pElement.nodeType === 1
-                        &amp;&amp; pElement.tagName.indexOf(&#x27;-&#x27;) !== -1
-                        &amp;&amp; Object.getPrototypeOf(pElement).constructor === HTMLElement
-                        &amp;&amp; Object.getPrototypeOf(Object.getPrototypeOf(pElement)).constructor === Element;
-
-                    if (isUndefinedACE){
-                        //console.log(&#x27;found undefined ACE: &#x27;, pElement);
-                    }
+                            pElement.nodeType === 1
+                            &amp;&amp; pElement.tagName.indexOf(&#x27;-&#x27;) !== -1
+                            &amp;&amp; !window.customElements.get(pElement.tagName.toLowerCase);
                     return isUndefinedACE;
                 })
-                .forEach(function(pElement){
+                .forEach(function(pElement){    // pElement is an undefined ACE
                     var fileName = pElement.tagName.toLowerCase().split(&#x27;-&#x27;),
                         lastIndex = fileName.length - 1,
                         element = pElement,
                         outerHTML = element.outerHTML,
                         parent = element.parentNode;
 
-                    // normalize filename -&gt; class name
+                    // normalize filename -&gt;
                     fileName[lastIndex] = 
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
@@ -2658,17 +2652,20 @@ tb.assumeTb = (function(pSetter){
 
                         fileName = &#x27;/&#x27;+fileName.join(&#x27;/&#x27;) + &#x27;.js&#x27;;
 
-                        //console.log(&#x27;load file: &#x27;, fileName );
+                        console.log(&#x27;load file: &#x27;, fileName );
                         
-                        tb.require( fileName )
+                        window
+                            .customElements
+                            .whenDefined(element.tagName.toLowerCase())
                             .then(function(){
-                                //console.log(&#x27;loaded: &#x27;, fileName);
                                 // force recreation
                                 parent.replaceChild( 
                                     element, 
                                     tb.dom(outerHTML)[0] 
                                 );
                             });
+
+                        tb.require( fileName );
                     }
 
                 });

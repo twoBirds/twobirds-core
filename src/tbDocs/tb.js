@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.22 - 2018-06-18 */
+/*! twobirds-core - v8.1.23 - 2018-06-18 */
 
 (function(){
 'use strict';var h=new function(){};var aa=new Set("annotation-xml color-profile font-face font-face-src font-face-uri font-face-format font-face-name missing-glyph".split(" "));function m(b){var a=aa.has(b);b=/^[a-z][.0-9_a-z]*-[\-.0-9_a-z]*$/.test(b);return!a&&b}function n(b){var a=b.isConnected;if(void 0!==a)return a;for(;b&&!(b.__CE_isImportDocument||b instanceof Document);)b=b.parentNode||(window.ShadowRoot&&b instanceof ShadowRoot?b.host:void 0);return!(!b||!(b.__CE_isImportDocument||b instanceof Document))}
@@ -42,7 +42,7 @@ var Z=window.customElements;if(!Z||Z.forcePolyfill||"function"!=typeof Z.define|
 //# sourceMappingURL=custom-elements.min.js.map
 
 
-/*! twobirds-core - v8.1.22 - 2018-06-18 */
+/*! twobirds-core - v8.1.23 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2578,25 +2578,19 @@ tb.assumeTb = (function(pSetter){
                 .children()
                 .filter(function(pElement){
                     var isUndefinedACE = 
-                        !!pElement.nodeType
-                        && pElement.nodeType === 1
-                        && pElement.tagName.indexOf('-') !== -1
-                        && Object.getPrototypeOf(pElement).constructor === HTMLElement
-                        && Object.getPrototypeOf(Object.getPrototypeOf(pElement)).constructor === Element;
-
-                    if (isUndefinedACE){
-                        //console.log('found undefined ACE: ', pElement);
-                    }
+                            pElement.nodeType === 1
+                            && pElement.tagName.indexOf('-') !== -1
+                            && !window.customElements.get(pElement.tagName.toLowerCase);
                     return isUndefinedACE;
                 })
-                .forEach(function(pElement){
+                .forEach(function(pElement){    // pElement is an undefined ACE
                     var fileName = pElement.tagName.toLowerCase().split('-'),
                         lastIndex = fileName.length - 1,
                         element = pElement,
                         outerHTML = element.outerHTML,
                         parent = element.parentNode;
 
-                    // normalize filename -> class name
+                    // normalize filename ->
                     fileName[lastIndex] = 
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
@@ -2613,17 +2607,20 @@ tb.assumeTb = (function(pSetter){
 
                         fileName = '/'+fileName.join('/') + '.js';
 
-                        //console.log('load file: ', fileName );
+                        console.log('load file: ', fileName );
                         
-                        tb.require( fileName )
+                        window
+                            .customElements
+                            .whenDefined(element.tagName.toLowerCase())
                             .then(function(){
-                                //console.log('loaded: ', fileName);
                                 // force recreation
                                 parent.replaceChild( 
                                     element, 
                                     tb.dom(outerHTML)[0] 
                                 );
                             });
+
+                        tb.require( fileName );
                     }
 
                 });

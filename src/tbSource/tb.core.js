@@ -2532,25 +2532,19 @@ tb.assumeTb = (function(pSetter){
                 .children()
                 .filter(function(pElement){
                     var isUndefinedACE = 
-                        !!pElement.nodeType
-                        && pElement.nodeType === 1
-                        && pElement.tagName.indexOf('-') !== -1
-                        && Object.getPrototypeOf(pElement).constructor === HTMLElement
-                        && Object.getPrototypeOf(Object.getPrototypeOf(pElement)).constructor === Element;
-
-                    if (isUndefinedACE){
-                        //console.log('found undefined ACE: ', pElement);
-                    }
+                            pElement.nodeType === 1
+                            && pElement.tagName.indexOf('-') !== -1
+                            && !window.customElements.get(pElement.tagName.toLowerCase);
                     return isUndefinedACE;
                 })
-                .forEach(function(pElement){
+                .forEach(function(pElement){    // pElement is an undefined ACE
                     var fileName = pElement.tagName.toLowerCase().split('-'),
                         lastIndex = fileName.length - 1,
                         element = pElement,
                         outerHTML = element.outerHTML,
                         parent = element.parentNode;
 
-                    // normalize filename -> class name
+                    // normalize filename ->
                     fileName[lastIndex] = 
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
@@ -2567,17 +2561,20 @@ tb.assumeTb = (function(pSetter){
 
                         fileName = '/'+fileName.join('/') + '.js';
 
-                        //console.log('load file: ', fileName );
+                        console.log('load file: ', fileName );
                         
-                        tb.require( fileName )
+                        window
+                            .customElements
+                            .whenDefined(element.tagName.toLowerCase())
                             .then(function(){
-                                //console.log('loaded: ', fileName);
                                 // force recreation
                                 parent.replaceChild( 
                                     element, 
                                     tb.dom(outerHTML)[0] 
                                 );
                             });
+
+                        tb.require( fileName );
                     }
 
                 });
