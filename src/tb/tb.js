@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.16 - 2018-06-17 */
+/*! twobirds-core - v8.1.17 - 2018-06-17 */
 
 /**
  twoBirds V8 core functionality
@@ -2546,7 +2546,8 @@ tb.assumeTb = (function(pSetter){
                 })
                 .forEach(function(pElement){
                     var fileName = pElement.tagName.toLowerCase().split('-'),
-                        lastIndex = fileName.length - 1;
+                        lastIndex = fileName.length - 1,
+                        outerHTML = pElement.outerHTML;
 
                     // normalize filename -> class name
                     fileName[lastIndex] = 
@@ -2573,7 +2574,7 @@ tb.assumeTb = (function(pSetter){
                                 // force recreation
                                 pElement.parentNode.replaceChild( 
                                     pElement, 
-                                    tb.dom(pElement.outerHTML) 
+                                    tb.dom(outerHTML)[0] 
                                 );
                             });
                     }

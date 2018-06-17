@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v8.1.16",
+        "version": "v8.1.17",
         "url": "http://www.tb-core.org"
     },
     "files": {
@@ -145,7 +145,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 2660,
+            "line": 2661,
             "is_constructor": 1,
             "params": [
                 {
@@ -173,7 +173,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4479,
+            "line": 4480,
             "description": "placeholder class, everything contained herein is a curry property of the tb() constructor"
         },
         "tb.Promise": {
@@ -185,7 +185,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 4674,
+            "line": 4675,
             "description": "- Promise/A+ compliant promise functionality",
             "memberof": "tb",
             "static": 1,
@@ -214,7 +214,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 5194,
+            "line": 5195,
             "memberof": "tb",
             "static": 1,
             "is_constructor": 1,
@@ -242,7 +242,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/tb/tb.js",
-            "line": 5986,
+            "line": 5987,
             "is_constructor": 1,
             "params": [
                 {
@@ -1018,7 +1018,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2775,
+            "line": 2776,
             "itemtype": "method",
             "name": "concat",
             "chainable": 1,
@@ -1030,7 +1030,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2785,
+            "line": 2786,
             "itemtype": "method",
             "name": "every",
             "chainable": 1,
@@ -1042,7 +1042,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2795,
+            "line": 2796,
             "itemtype": "method",
             "name": "forEach",
             "chainable": 1,
@@ -1054,7 +1054,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2805,
+            "line": 2806,
             "itemtype": "method",
             "name": "indexOf",
             "return": {
@@ -1065,7 +1065,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2814,
+            "line": 2815,
             "itemtype": "method",
             "name": "map",
             "return": {
@@ -1076,7 +1076,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2823,
+            "line": 2824,
             "itemtype": "method",
             "name": "pop",
             "return": {
@@ -1087,7 +1087,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2832,
+            "line": 2833,
             "itemtype": "method",
             "name": "push",
             "return": {
@@ -1098,7 +1098,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2841,
+            "line": 2842,
             "itemtype": "method",
             "name": "reduce",
             "return": {
@@ -1109,7 +1109,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2850,
+            "line": 2851,
             "itemtype": "method",
             "name": "reduceRight",
             "return": {
@@ -1120,7 +1120,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2859,
+            "line": 2860,
             "itemtype": "method",
             "name": "reverse",
             "return": {
@@ -1131,7 +1131,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2868,
+            "line": 2869,
             "itemtype": "method",
             "name": "shift",
             "return": {
@@ -1142,7 +1142,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2877,
+            "line": 2878,
             "itemtype": "method",
             "name": "slice",
             "return": {
@@ -1153,7 +1153,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2886,
+            "line": 2887,
             "itemtype": "method",
             "name": "some",
             "return": {
@@ -1164,7 +1164,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2895,
+            "line": 2896,
             "itemtype": "method",
             "name": "splice",
             "return": {
@@ -1175,7 +1175,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2904,
+            "line": 2905,
             "itemtype": "method",
             "name": "unshift",
             "return": {
@@ -1186,7 +1186,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2917,
+            "line": 2918,
             "itemtype": "method",
             "name": "add",
             "chainable": 1,
@@ -1204,7 +1204,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 2965,
+            "line": 2966,
             "itemtype": "method",
             "name": "addClass",
             "chainable": 1,
@@ -1223,7 +1223,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3015,
+            "line": 3016,
             "itemtype": "method",
             "name": "append",
             "chainable": 1,
@@ -1241,7 +1241,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3047,
+            "line": 3048,
             "itemtype": "method",
             "name": "appendTo",
             "params": [
@@ -1254,7 +1254,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3073,
+            "line": 3074,
             "itemtype": "method",
             "name": "attr",
             "chainable": 1,
@@ -1278,7 +1278,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3134,
+            "line": 3135,
             "itemtype": "method",
             "name": "children",
             "chainable": 1,
@@ -1296,7 +1296,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3169,
+            "line": 3170,
             "itemtype": "method",
             "name": "clean",
             "chainable": 1,
@@ -1308,7 +1308,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3204,
+            "line": 3205,
             "itemtype": "method",
             "name": "descendants",
             "chainable": 1,
@@ -1326,7 +1326,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3242,
+            "line": 3243,
             "itemtype": "method",
             "name": "empty",
             "chainable": 1,
@@ -1338,7 +1338,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3262,
+            "line": 3263,
             "itemtype": "method",
             "name": "filter",
             "chainable": 1,
@@ -1357,7 +1357,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3299,
+            "line": 3300,
             "itemtype": "method",
             "name": "first",
             "chainable": 1,
@@ -1369,7 +1369,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3319,
+            "line": 3320,
             "itemtype": "method",
             "name": "hasClass",
             "params": [
@@ -1387,7 +1387,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3335,
+            "line": 3336,
             "itemtype": "method",
             "name": "hide",
             "chainable": 1,
@@ -1399,7 +1399,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3359,
+            "line": 3360,
             "itemtype": "method",
             "name": "html",
             "chainable": 1,
@@ -1418,7 +1418,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3387,
+            "line": 3388,
             "itemtype": "method",
             "name": "insertBefore",
             "params": [
@@ -1431,7 +1431,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3421,
+            "line": 3422,
             "itemtype": "method",
             "name": "insertAfter",
             "params": [
@@ -1444,7 +1444,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3465,
+            "line": 3466,
             "itemtype": "method",
             "name": "last",
             "chainable": 1,
@@ -1456,7 +1456,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3485,
+            "line": 3486,
             "itemtype": "method",
             "name": "next",
             "chainable": 1,
@@ -1468,7 +1468,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3508,
+            "line": 3509,
             "itemtype": "method",
             "name": "not",
             "chainable": 1,
@@ -1486,7 +1486,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3536,
+            "line": 3537,
             "itemtype": "method",
             "name": "off",
             "chainable": 1,
@@ -1516,7 +1516,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3578,
+            "line": 3579,
             "itemtype": "method",
             "name": "on",
             "chainable": 1,
@@ -1545,7 +1545,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3658,
+            "line": 3659,
             "itemtype": "method",
             "name": "one",
             "params": [
@@ -1576,7 +1576,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3708,
+            "line": 3709,
             "itemtype": "method",
             "name": "parents",
             "chainable": 1,
@@ -1594,7 +1594,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3746,
+            "line": 3747,
             "itemtype": "method",
             "name": "parent",
             "chainable": 1,
@@ -1612,7 +1612,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3776,
+            "line": 3777,
             "itemtype": "method",
             "name": "previous",
             "chainable": 1,
@@ -1624,7 +1624,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3799,
+            "line": 3800,
             "itemtype": "method",
             "name": "remove",
             "chainable": 1,
@@ -1643,7 +1643,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3820,
+            "line": 3821,
             "itemtype": "method",
             "name": "removeAttr",
             "chainable": 1,
@@ -1662,7 +1662,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3851,
+            "line": 3852,
             "itemtype": "method",
             "name": "removeClass",
             "chainable": 1,
@@ -1681,7 +1681,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3901,
+            "line": 3902,
             "itemtype": "method",
             "name": "show",
             "chainable": 1,
@@ -1693,7 +1693,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3923,
+            "line": 3924,
             "itemtype": "method",
             "name": "toArray",
             "chainable": 1,
@@ -1705,7 +1705,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3937,
+            "line": 3938,
             "itemtype": "method",
             "name": "toggleClass",
             "params": [
@@ -1724,7 +1724,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 3963,
+            "line": 3964,
             "itemtype": "method",
             "name": "trigger",
             "chainable": 1,
@@ -1761,7 +1761,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4014,
+            "line": 4015,
             "itemtype": "method",
             "name": "unique",
             "chainable": 1,
@@ -1773,7 +1773,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4041,
+            "line": 4042,
             "itemtype": "method",
             "name": "val",
             "chainable": 1,
@@ -1792,7 +1792,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4254,
+            "line": 4255,
             "itemtype": "method",
             "name": "values",
             "params": [
@@ -1811,7 +1811,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4486,
+            "line": 4487,
             "description": "an empty function just in case you need one",
             "memberof": "tb",
             "static": 1,
@@ -1824,7 +1824,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4501,
+            "line": 4502,
             "memberof": "tb",
             "itemtype": "method",
             "name": "tb.namespace",
@@ -1856,7 +1856,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4607,
+            "line": 4608,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -1876,7 +1876,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4660,
+            "line": 4661,
             "description": "returns a unique id",
             "memberof": "tb",
             "static": 1,
@@ -1890,7 +1890,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4740,
+            "line": 4741,
             "itemtype": "method",
             "name": "then",
             "chainable": 1,
@@ -1912,7 +1912,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4760,
+            "line": 4761,
             "itemtype": "method",
             "name": "catch",
             "chainable": 1,
@@ -1934,7 +1934,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4780,
+            "line": 4781,
             "itemtype": "method",
             "name": "finally",
             "chainable": 1,
@@ -1956,7 +1956,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4805,
+            "line": 4806,
             "itemtype": "method",
             "name": "tb.Promise.resolve",
             "chainable": 1,
@@ -1979,7 +1979,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4829,
+            "line": 4830,
             "itemtype": "method",
             "name": "tb.Promise.reject",
             "chainable": 1,
@@ -2002,7 +2002,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4853,
+            "line": 4854,
             "itemtype": "method",
             "name": "tb.Promise.all",
             "chainable": 1,
@@ -2025,7 +2025,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 4924,
+            "line": 4925,
             "itemtype": "method",
             "name": "tb.Promise.race",
             "chainable": 1,
@@ -2048,13 +2048,13 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5168,
+            "line": 5169,
             "description": "execute promise function",
             "class": "tb.Promise"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5253,
+            "line": 5254,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2083,7 +2083,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5504,
+            "line": 5505,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2119,7 +2119,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5607,
+            "line": 5608,
             "memberof": "tb",
             "static": 1,
             "itemtype": "method",
@@ -2199,37 +2199,37 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5632,
+            "line": 5633,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5680,
+            "line": 5681,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5697,
+            "line": 5698,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5719,
+            "line": 5720,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5749,
+            "line": 5750,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5786,
+            "line": 5787,
             "class": "tb.Require"
         },
         {
             "file": "src/tb/tb.js",
-            "line": 5967,
+            "line": 5968,
             "itemtype": "method",
             "name": "tb.stop",
             "params": [
@@ -2247,7 +2247,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 6135,
+            "line": 6136,
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -2262,7 +2262,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 6167,
+            "line": 6168,
             "itemtype": "method",
             "name": "read",
             "params": [
@@ -2277,7 +2277,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 6200,
+            "line": 6201,
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -2292,7 +2292,7 @@
         },
         {
             "file": "src/tb/tb.js",
-            "line": 6232,
+            "line": 6233,
             "itemtype": "method",
             "name": "delete",
             "params": [
@@ -2357,39 +2357,39 @@
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4486"
+            "line": " src/tb/tb.js:4487"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4501"
+            "line": " src/tb/tb.js:4502"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4607"
+            "line": " src/tb/tb.js:4608"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4660"
+            "line": " src/tb/tb.js:4661"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:4674"
+            "line": " src/tb/tb.js:4675"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5194"
+            "line": " src/tb/tb.js:5195"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5253"
+            "line": " src/tb/tb.js:5254"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5504"
+            "line": " src/tb/tb.js:5505"
         },
         {
             "message": "unknown tag: memberof",
-            "line": " src/tb/tb.js:5607"
+            "line": " src/tb/tb.js:5608"
         },
         {
             "message": "Missing item type\ntwoBirds V8 core functionality",
@@ -2401,31 +2401,31 @@
         },
         {
             "message": "Missing item type\nexecute promise function",
-            "line": " src/tb/tb.js:5168"
+            "line": " src/tb/tb.js:5169"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5632"
+            "line": " src/tb/tb.js:5633"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5680"
+            "line": " src/tb/tb.js:5681"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5697"
+            "line": " src/tb/tb.js:5698"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5719"
+            "line": " src/tb/tb.js:5720"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5749"
+            "line": " src/tb/tb.js:5750"
         },
         {
             "message": "Missing item type",
-            "line": " src/tb/tb.js:5786"
+            "line": " src/tb/tb.js:5787"
         }
     ]
 }
