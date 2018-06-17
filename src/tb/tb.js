@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.20 - 2018-06-17 */
+/*! twobirds-core - v8.1.21 - 2018-06-17 */
 
 /**
  twoBirds V8 core functionality
@@ -374,6 +374,7 @@ tb = (function(){
                     var dom = tb.dom( tbInstance.target );
                     if ( tbInstance.target.nodeName !== 'head'
                         && dom.parents().toArray().indexOf( document.head ) === -1
+                        && tbInstance.target.tagName.split('').indexOf('-') !== -1
                         && !!tbInstance['namespace']
                         && tbInstance.namespace.replace(/\./g, '-').toUpperCase() !== tbInstance.target.tagName
                     ){

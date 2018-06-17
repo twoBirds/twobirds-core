@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.20</em>
+            <em>API Docs for: v8.1.21</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.20 - 2018-06-17 */
+/*! twobirds-core - v8.1.21 - 2018-06-17 */
 
 /**
  twoBirds V8 core functionality
@@ -463,6 +463,7 @@ tb = (function(){
                     var dom = tb.dom( tbInstance.target );
                     if ( tbInstance.target.nodeName !== &#x27;head&#x27;
                         &amp;&amp; dom.parents().toArray().indexOf( document.head ) === -1
+                        &amp;&amp; tbInstance.target.tagName.split(&#x27;&#x27;).indexOf(&#x27;-&#x27;) !== -1
                         &amp;&amp; !!tbInstance[&#x27;namespace&#x27;]
                         &amp;&amp; tbInstance.namespace.replace(/\./g, &#x27;-&#x27;).toUpperCase() !== tbInstance.target.tagName
                     ){

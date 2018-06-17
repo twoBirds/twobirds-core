@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.20 - 2018-06-17 */
+/*! twobirds-core - v8.1.21 - 2018-06-17 */
 
 (function(){
 'use strict';var h=new function(){};var aa=new Set("annotation-xml color-profile font-face font-face-src font-face-uri font-face-format font-face-name missing-glyph".split(" "));function m(b){var a=aa.has(b);b=/^[a-z][.0-9_a-z]*-[\-.0-9_a-z]*$/.test(b);return!a&&b}function n(b){var a=b.isConnected;if(void 0!==a)return a;for(;b&&!(b.__CE_isImportDocument||b instanceof Document);)b=b.parentNode||(window.ShadowRoot&&b instanceof ShadowRoot?b.host:void 0);return!(!b||!(b.__CE_isImportDocument||b instanceof Document))}
@@ -42,7 +42,7 @@ var Z=window.customElements;if(!Z||Z.forcePolyfill||"function"!=typeof Z.define|
 //# sourceMappingURL=custom-elements.min.js.map
 
 
-/*! twobirds-core - v8.1.20 - 2018-06-17 */
+/*! twobirds-core - v8.1.21 - 2018-06-17 */
 
 /**
  twoBirds V8 core functionality
@@ -418,6 +418,7 @@ tb = (function(){
                     var dom = tb.dom( tbInstance.target );
                     if ( tbInstance.target.nodeName !== 'head'
                         && dom.parents().toArray().indexOf( document.head ) === -1
+                        && tbInstance.target.tagName.split('').indexOf('-') !== -1
                         && !!tbInstance['namespace']
                         && tbInstance.namespace.replace(/\./g, '-').toUpperCase() !== tbInstance.target.tagName
                     ){
