@@ -2545,7 +2545,7 @@ tb.assumeTb = (function(pSetter){
                                 .whenDefined(element.tagName.toLowerCase())
                                 .then(function(){
                                     // force recreation
-                                    if (parent.childNodes.indexOf(element) > -1){
+                                    if (Array.from(parent.childNodes).indexOf(element) > -1){
                                         parent.replaceChild( 
                                             element, 
                                             tb.dom(outerHTML)[0] 
