@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.30 - 2018-06-18 */
+/*! twobirds-core - v8.1.31 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2532,70 +2532,77 @@ tb.assumeTb = (function(pSetter){
             
             var selection = tb.dom(pParam)
                 .children()
-                .forEach(function(pElement){
+                .filter(function(pElement){
                     var isUndefinedACE = 
                             pElement.nodeType === 1
                             && pElement.tagName.indexOf('-') !== -1
-                            && !window.customElements.get(pElement.tagName.toLowerCase),
+                            && !window.customElements.get(pElement.tagName.toLowerCase);
+                    return isUndefinedACE;
+                })
+                .forEach(function(pElement){    // pElement is an undefined ACE
+                    var fileName = pElement.tagName.toLowerCase().split('-'),
+                        lastIndex = fileName.length - 1,
                         element = pElement,
                         outerHTML = element.outerHTML,
-                        fileName = element.tagName.toLowerCase().split('-'),
-                        lastIndex = fileName.length - 1;
-
-                    // re-render when defined
-                    if (isUndefinedACE){
+                        parent = element.parentNode;
+ 
+                    // normalize filename ->
+                    fileName[lastIndex] = 
+                        fileName[lastIndex].substr(0,1).toUpperCase() +
+                        fileName[lastIndex].substr(1).toLowerCase();
+ 
+                    var plainClass = tb.namespace( fileName.join('.') ).get();
+ 
+                    if ( !!plainClass ){
+                        new tb(
+                            plainClass,
+                            {},
+                            pElement
+                        );
+                    } else {
+                        fileName = '/'+fileName.join('/') + '.js';
+ 
+                        console.log('load file: ', fileName );
+                        
                         window
                             .customElements
                             .whenDefined(element.tagName.toLowerCase())
                             .then(function(){
                                 // force recreation
-                                element.parentNode.replaceChild(
-                                    element,
+                                parent.replaceChild( 
+                                    element, 
                                     tb.dom(outerHTML)[0] 
                                 );
                             });
-                    }
-
-                    // load if not loading
-                    if ( !tb.require.get( fileName ) ){
-                        // normalize filename ->
-                        fileName[lastIndex] = 
-                            fileName[lastIndex].substr(0,1).toUpperCase() +
-                            fileName[lastIndex].substr(1).toLowerCase();
-
-                        fileName = '/'+fileName.join('/') + '.js';
-
-                        console.log('load file: ', fileName, tb.require.get( fileName ) );
-
+ 
                         tb.require( fileName );
                     }
-
+ 
                 });
-
+ 
                 // only recurse on those that are no ACEs
                 tb.dom(pParam)
                     .children()
                     .filter(function(pElement){
-                        var isElement = 
+                        var isNoACE = 
                             !!pElement.nodeType
                             && pElement.nodeType === 1
                             && pElement.tagName.indexOf('-') === -1;
-
-                        return isElement;
+ 
+                        return isNoACE;
                     })
                     .forEach(function(pElement){
-                        console.log('Element:', pElement.tagName);
                         tb.assumeTb(pElement);
                     });
-
+ 
             return selection;
-
         } else if ( typeof pParam === 'boolean'){
             isTb = pParam;
         }
         return isTb;
     };
 })(false); // dont assume custom tags to resolve to tB classes
+
 
 if (typeof module === 'undefined' ){
     tb.dom = (function () {
