@@ -128,7 +128,7 @@ if (typeof module === 'undefined' ){
                 var DOM = _htmlToElements( 
                     pSelector   // compress template string
                         .trim()
-                        .replace(/↵/g, '\r')
+                        .replace(/↵/g, '\r') // todo: \r in backtick strings ???
                         .split('\r')
                         .map(function(pString){
                             return pString.trim().replace( /\t/g, '');

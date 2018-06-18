@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.46 - 2018-06-19 */
+/*! twobirds-core - v8.1.48 - 2018-06-19 */
 
 /**
  twoBirds V8 core functionality
@@ -2529,46 +2529,45 @@ tb.assumeTb = (function(pSetter){
         ){
             // scan for AACEs and load + re-insert
             //console.log('scan for ACEs: ', pParam);
-            
+            var fileName, lastIndex;
+
             var selection = tb.dom(pParam)
                 .children()
                 .filter(function(pElement){
                     var isUndefinedACE = 
                             pElement.nodeType === 1
                             && pElement.tagName.indexOf('-') !== -1
-                            && !window.customElements.get(pElement.tagName.toLowerCase()),
-                        element = pElement,
-                        outerHTML = element.outerHTML,
-                        parent = element.parentNode;
+                            && !window.customElements.get(pElement.tagName.toLowerCase());
 
-                        if (isUndefinedACE){
+                        fileName = pElement.tagName.toLowerCase().split('-');
+                        lastIndex = fileName.length - 1;
+
+                        // normalize filename ->
+                            fileName[lastIndex] = 
+                                fileName[lastIndex].substr(0,1).toUpperCase() +
+                                fileName[lastIndex].substr(1).toLowerCase();
+                                
+                        fileName = '/'+fileName.join('/') + '.js';     
+
+                        if (isUndefinedACE && !tb.require.get( fileName )){
                             window
                                 .customElements
-                                .whenDefined(element.tagName.toLowerCase())
-                                .then(function(){
+                                .whenDefined(pElement.tagName.toLowerCase())
+                                .then((function(element){ return function whenDefined(){ // jshint ignore:line
+                                    var outerHTML = element.outerHTML,
+                                        parent = element.parentNode;
                                     // force recreation
-                                    if (Array.from(parent.childNodes).indexOf(element) > -1){
-                                        parent.replaceChild( 
-                                            element, 
-                                            tb.dom(outerHTML)[0] 
-                                        );
-                                    }
-                                });
+                                    parent.replaceChild( 
+                                        element, 
+                                        tb.dom(outerHTML)[0] 
+                                    );
+                                };})(pElement));
                         }
  
                     return isUndefinedACE;
                 })
                 .forEach(function(pElement){    // pElement is an undefined ACE
-                    var fileName = pElement.tagName.toLowerCase().split('-'),
-                        lastIndex = fileName.length - 1;
- 
-                    // normalize filename ->
-                    fileName[lastIndex] = 
-                        fileName[lastIndex].substr(0,1).toUpperCase() +
-                        fileName[lastIndex].substr(1).toLowerCase();
- 
-                    fileName = '/'+fileName.join('/') + '.js';     
-
+                     
                     if ( !tb.require.get( fileName ) ){
                         //console.log('load file: ', fileName );
                         tb.require( fileName );
@@ -2730,7 +2729,7 @@ if (typeof module === 'undefined' ){
                 var DOM = _htmlToElements( 
                     pSelector   // compress template string
                         .trim()
-                        .replace(/↵/g, '\r')
+                        .replace(/↵/g, '\r') // todo: \r in backtick strings ???
                         .split('\r')
                         .map(function(pString){
                             return pString.trim().replace( /\t/g, '');

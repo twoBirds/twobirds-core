@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.46</em>
+            <em>API Docs for: v8.1.48</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.46 - 2018-06-19 */
+/*! twobirds-core - v8.1.48 - 2018-06-19 */
 
 /**
  twoBirds V8 core functionality
@@ -2618,46 +2618,45 @@ tb.assumeTb = (function(pSetter){
         ){
             // scan for AACEs and load + re-insert
             //console.log(&#x27;scan for ACEs: &#x27;, pParam);
-            
+            var fileName, lastIndex;
+
             var selection = tb.dom(pParam)
                 .children()
                 .filter(function(pElement){
                     var isUndefinedACE = 
                             pElement.nodeType === 1
                             &amp;&amp; pElement.tagName.indexOf(&#x27;-&#x27;) !== -1
-                            &amp;&amp; !window.customElements.get(pElement.tagName.toLowerCase()),
-                        element = pElement,
-                        outerHTML = element.outerHTML,
-                        parent = element.parentNode;
+                            &amp;&amp; !window.customElements.get(pElement.tagName.toLowerCase());
 
-                        if (isUndefinedACE){
+                        fileName = pElement.tagName.toLowerCase().split(&#x27;-&#x27;);
+                        lastIndex = fileName.length - 1;
+
+                        // normalize filename -&gt;
+                            fileName[lastIndex] = 
+                                fileName[lastIndex].substr(0,1).toUpperCase() +
+                                fileName[lastIndex].substr(1).toLowerCase();
+                                
+                        fileName = &#x27;/&#x27;+fileName.join(&#x27;/&#x27;) + &#x27;.js&#x27;;     
+
+                        if (isUndefinedACE &amp;&amp; !tb.require.get( fileName )){
                             window
                                 .customElements
-                                .whenDefined(element.tagName.toLowerCase())
-                                .then(function(){
+                                .whenDefined(pElement.tagName.toLowerCase())
+                                .then((function(element){ return function whenDefined(){ // jshint ignore:line
+                                    var outerHTML = element.outerHTML,
+                                        parent = element.parentNode;
                                     // force recreation
-                                    if (Array.from(parent.childNodes).indexOf(element) &gt; -1){
-                                        parent.replaceChild( 
-                                            element, 
-                                            tb.dom(outerHTML)[0] 
-                                        );
-                                    }
-                                });
+                                    parent.replaceChild( 
+                                        element, 
+                                        tb.dom(outerHTML)[0] 
+                                    );
+                                };})(pElement));
                         }
  
                     return isUndefinedACE;
                 })
                 .forEach(function(pElement){    // pElement is an undefined ACE
-                    var fileName = pElement.tagName.toLowerCase().split(&#x27;-&#x27;),
-                        lastIndex = fileName.length - 1;
- 
-                    // normalize filename -&gt;
-                    fileName[lastIndex] = 
-                        fileName[lastIndex].substr(0,1).toUpperCase() +
-                        fileName[lastIndex].substr(1).toLowerCase();
- 
-                    fileName = &#x27;/&#x27;+fileName.join(&#x27;/&#x27;) + &#x27;.js&#x27;;     
-
+                     
                     if ( !tb.require.get( fileName ) ){
                         //console.log(&#x27;load file: &#x27;, fileName );
                         tb.require( fileName );
@@ -2819,7 +2818,7 @@ if (typeof module === &#x27;undefined&#x27; ){
                 var DOM = _htmlToElements( 
                     pSelector   // compress template string
                         .trim()
-                        .replace(/↵/g, &#x27;\r&#x27;)
+                        .replace(/↵/g, &#x27;\r&#x27;) // todo: \r in backtick strings ???
                         .split(&#x27;\r&#x27;)
                         .map(function(pString){
                             return pString.trim().replace( /\t/g, &#x27;&#x27;);
