@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.41 - 2018-06-18 */
+/*! twobirds-core - v8.1.42 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2726,7 +2726,16 @@ if (typeof module === 'undefined' ){
                 return;
             } else { // pSelector is a string
 
-                var DOM = _htmlToElements( pSelector.trim() ); // uses 'template' element to retrieve DOM nodes
+                // uses 'template' element to retrieve DOM nodes
+                var DOM = _htmlToElements( 
+                    pSelector
+                        .trim()
+                        .split('\n')
+                        .map(function(pString){
+                            return pString.trim().replace( /\s/g, '');
+                        })
+                        .join('')
+                ); 
 
                 if ( DOM.length === 1 
                     && !!DOM[0].nodeType
@@ -3189,16 +3198,16 @@ if (typeof module === 'undefined' ){
                                 );
 
                             while(treeWalker.nextNode()){
-                                // we need to IIFE so the node pointer is copied, 
-                                // otherwise it will only remove the last comment node of that while loop
                                 node = treeWalker.currentNode; 
                                 if (
                                     node.nodeType === 8
                                     || (
                                         node.nodeType === 3
-                                        && node.innerText.replace( /\s↵/g,'').length === 0
+                                        && node.textContent.replace( /\s↵/g,'').length === 0
                                     )
                                 ){
+                                    // we need to IIFE so the node pointer is copied, 
+                                    // otherwise it will only remove the last comment node of that while loop
                                     setTimeout((function(pNode){ return function(){ // jshint ignore:line
                                         console.log('remove', pNode);
                                         pNode.remove();
