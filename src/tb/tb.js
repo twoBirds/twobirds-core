@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.33 - 2018-06-18 */
+/*! twobirds-core - v8.1.35 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2565,22 +2565,10 @@ tb.assumeTb = (function(pSetter){
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
  
-                    var plainClass = tb.namespace( fileName.join('.') ).get();
- 
-                    if ( !!plainClass ){
-                        new tb(
-                            plainClass,
-                            {},
-                            pElement
-                        );
-                    } else {
-                        fileName = '/'+fileName.join('/') + '.js';
- 
+                    if ( !tb.require.get( fileName ) ){
+                        fileName = '/'+fileName.join('/') + '.js';     
                         console.log('load file: ', fileName );
-                        
-                        if ( !tb.require.get( fileName ) ){
-                            tb.require( fileName );
-                        }
+                        tb.require( fileName );
                     }
  
                 });
@@ -2763,7 +2751,7 @@ if (typeof module === 'undefined' ){
 
                 } else { // it is a HTML string
                     // return html content as a set of nodes
-                    return tb.dom( DOM );
+                    return tb.dom( DOM ).clean();
                 }
             }
 
@@ -3196,7 +3184,7 @@ if (typeof module === 'undefined' ){
                                     128     // comment nodes
                                 );
 
-                            pElement.normalize();
+                            pElement.normalize(); // no empty text nodes recursively
 
                             while(treeWalker.nextNode()){
                                 // we need to IIFE so the node pointer is copied, 

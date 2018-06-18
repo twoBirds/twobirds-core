@@ -2563,22 +2563,10 @@ tb.assumeTb = (function(pSetter){
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
  
-                    var plainClass = tb.namespace( fileName.join('.') ).get();
- 
-                    if ( !!plainClass ){
-                        new tb(
-                            plainClass,
-                            {},
-                            pElement
-                        );
-                    } else {
-                        fileName = '/'+fileName.join('/') + '.js';
- 
+                    if ( !tb.require.get( fileName ) ){
+                        fileName = '/'+fileName.join('/') + '.js';     
                         console.log('load file: ', fileName );
-                        
-                        if ( !tb.require.get( fileName ) ){
-                            tb.require( fileName );
-                        }
+                        tb.require( fileName );
                     }
  
                 });

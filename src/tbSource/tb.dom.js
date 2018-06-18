@@ -152,7 +152,7 @@ if (typeof module === 'undefined' ){
 
                 } else { // it is a HTML string
                     // return html content as a set of nodes
-                    return tb.dom( DOM );
+                    return tb.dom( DOM ).clean();
                 }
             }
 
@@ -585,7 +585,7 @@ if (typeof module === 'undefined' ){
                                     128     // comment nodes
                                 );
 
-                            pElement.normalize();
+                            pElement.normalize(); // no empty text nodes recursively
 
                             while(treeWalker.nextNode()){
                                 // we need to IIFE so the node pointer is copied, 
