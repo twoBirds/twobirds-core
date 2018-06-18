@@ -124,7 +124,7 @@ if (typeof module === 'undefined' ){
                 return;
             } else { // pSelector is a string
 
-                var DOM = _htmlToElements( pSelector ); // uses 'template' element to retrieve DOM nodes
+                var DOM = _htmlToElements( pSelector.trim() ); // uses 'template' element to retrieve DOM nodes
 
                 if ( DOM.length === 1 
                     && !!DOM[0].nodeType
@@ -429,6 +429,7 @@ if (typeof module === 'undefined' ){
                                 if ( !!pThisElement['nodeType'] ){
                                     pDomNode.appendChild( pThisElement );
                                     tb.assumeTb( pDomNode );
+                                    tb.dom(pDomNode).clean();
                                 }
                             }
                         );
@@ -460,6 +461,7 @@ if (typeof module === 'undefined' ){
                 }
 
                 tb.assumeTb( pElement );
+                that.clean();
 
                 return that;
             }
@@ -569,31 +571,34 @@ if (typeof module === 'undefined' ){
              - normalizes text nodes
              - removes comment nodes
              */
-            function clean(){
+            var clean = (function(doClean){ return function clean(pParam){
 
                 var that = this;
 
-                that.forEach(
-                    function( pElement ){
-                        var treeWalker = document.createTreeWalker(
-                                pElement,
-                                128     // comment nodes
-                            );
+                if (pParam !== undefined){
+                    doClean = !pParam ? false : true;
+                } else if (doClean){
+                    that.forEach(
+                        function( pElement ){
+                            var treeWalker = document.createTreeWalker(
+                                    pElement,
+                                    128     // comment nodes
+                                );
 
-                        pElement.normalize();
+                            pElement.normalize();
 
-                        while(treeWalker.nextNode()){
-                            // we need to IIFE so the node pointer is copied, 
-                            // otherwise it will only remove the last comment node of that while loop
-                            setTimeout((function(pNode){ return function(){
-                                pNode.remove();
-                            }; })( treeWalker.currentNode ), 0);
+                            while(treeWalker.nextNode()){
+                                // we need to IIFE so the node pointer is copied, 
+                                // otherwise it will only remove the last comment node of that while loop
+                                setTimeout((function(pNode){ return function(){
+                                    pNode.remove();
+                                }; })( treeWalker.currentNode ), 0);
+                            }
                         }
-                    }
-                );
-
+                    );
+                }
                 return that;
-            }
+            };})(true);
 
             /**
              @method descendants
@@ -779,40 +784,6 @@ if (typeof module === 'undefined' ){
             }
 
             /**
-             @method insertBefore
-
-             @param pElement - a single DOM node or tb.dom() selector result set, [0] is taken
-
-             prepends all elements in tb.dom() result set to given DOM node
-             */
-            function insertBefore( pTarget ){
-                var that = this,
-                    target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false;
-
-                if ( !target ) {
-                    return;
-                }
-
-                that.forEach(
-                    function( pDomNode ){
-                        if ( !!pDomNode.nodeType ){
-
-                            target.parentElement
-                                .insertBefore(
-                                    pDomNode.cloneNode( true ),
-                                    pTarget
-                                );
-
-                        }
-                    }
-                );
-
-                tb.assumeTb( pTarget );
-
-                return that;
-            }
-
-            /**
              @method insertAfter
 
              @param pElement - a single DOM node or tb.dom() selector result set, [0] is taken
@@ -851,6 +822,42 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
+                tb.dom( pTarget ).clean();
+                tb.assumeTb( pTarget );
+
+                return that;
+            }
+
+            /**
+             @method insertBefore
+
+             @param pElement - a single DOM node or tb.dom() selector result set, [0] is taken
+
+             prepends all elements in tb.dom() result set to given DOM node
+             */
+            function insertBefore( pTarget ){
+                var that = this,
+                    target = tb.dom( pTarget )['0'] ? tb.dom( pTarget )['0'] : false;
+
+                if ( !target ) {
+                    return;
+                }
+
+                that.forEach(
+                    function( pDomNode ){
+                        if ( !!pDomNode.nodeType ){
+
+                            target.parentElement
+                                .insertBefore(
+                                    pDomNode.cloneNode( true ),
+                                    pTarget
+                                );
+
+                        }
+                    }
+                );
+
+                tb.dom( pTarget ).clean();
                 tb.assumeTb( pTarget );
 
                 return that;
