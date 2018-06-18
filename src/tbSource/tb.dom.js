@@ -126,9 +126,10 @@ if (typeof module === 'undefined' ){
 
                 // uses 'template' element to retrieve DOM nodes
                 var DOM = _htmlToElements( 
-                    pSelector
+                    pSelector   // compress template string
                         .trim()
-                        .replace(/↵/g, '')
+                        .replace(/↵/g, '\r')
+                        .split('\r')
                         .map(function(pString){
                             return pString.trim().replace( /\t/g, '');
                         })

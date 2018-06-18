@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.44 - 2018-06-19 */
+/*! twobirds-core - v8.1.45 - 2018-06-19 */
 
 /**
  twoBirds V8 core functionality
@@ -2728,9 +2728,10 @@ if (typeof module === 'undefined' ){
 
                 // uses 'template' element to retrieve DOM nodes
                 var DOM = _htmlToElements( 
-                    pSelector
+                    pSelector   // compress template string
                         .trim()
-                        .replace(/↵/g, '')
+                        .replace(/↵/g, '\r')
+                        .split('\r')
                         .map(function(pString){
                             return pString.trim().replace( /\t/g, '');
                         })
