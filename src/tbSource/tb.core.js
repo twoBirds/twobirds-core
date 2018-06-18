@@ -2530,51 +2530,42 @@ tb.assumeTb = (function(pSetter){
             
             var selection = tb.dom(pParam)
                 .children()
-                .filter(function(pElement){
+                .forEach(function(pElement){
                     var isUndefinedACE = 
                             pElement.nodeType === 1
                             && pElement.tagName.indexOf('-') !== -1
-                            && !window.customElements.get(pElement.tagName.toLowerCase);
-                    return isUndefinedACE;
+                            && !window.customElements.get(pElement.tagName.toLowerCase),
+                        element = pElement,
+                        outerHTML = element.outerHTML;
+
+                    if (isUndefinedACE){
+                        window
+                            .customElements
+                            .whenDefined(element.tagName.toLowerCase())
+                            .then(function(){
+                                // force recreation
+                                element.parentNode.replaceChild(
+                                    element,
+                                    tb.dom(outerHTML)[0] 
+                                );
+                            });
+                    }
                 })
                 .forEach(function(pElement){    // pElement is an undefined ACE
                     var fileName = pElement.tagName.toLowerCase().split('-'),
-                        lastIndex = fileName.length - 1,
-                        element = pElement,
-                        outerHTML = element.outerHTML;
+                        lastIndex = fileName.length - 1;
 
                     // normalize filename ->
                     fileName[lastIndex] = 
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
 
-                    var plainClass = tb.namespace( fileName.join('.') ).get();
-
-                    if ( !!plainClass ){
-                        new tb(
-                            plainClass,
-                            {},
-                            pElement
-                        );
-                    } else {
-
+                    if ( !tb.require.get( fileName ) ){
                         fileName = '/'+fileName.join('/') + '.js';
 
                         console.log('load file: ', fileName, tb.require.get( fileName ) );
-                        
-                        window
-                            .customElements
-                            .whenDefined(element.tagName.toLowerCase())
-                            .then(function(){
-                                // force recreation
-                                element.replaceWith(
-                                    tb.dom(outerHTML)[0] 
-                                );
-                            });
 
-                        if ( !tb.require.get( fileName ) ){
-                            tb.require( fileName );
-                        }
+                        tb.require( fileName );
                     }
 
                 });
@@ -2591,6 +2582,7 @@ tb.assumeTb = (function(pSetter){
                         return isNoACE;
                     })
                     .forEach(function(pElement){
+                        console.log('noACE:', pElement.tagName)
                         tb.assumeTb(pElement);
                     });
 
