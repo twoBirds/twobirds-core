@@ -2560,7 +2560,7 @@ tb.assumeTb = (function(pSetter){
 
                         fileName = '/'+fileName.join('/') + '.js';
 
-                        console.log('load file: ', fileName );
+                        console.log('load file: ', fileName, tb.require.get( fileName ) );
                         
                         window
                             .customElements
@@ -2572,7 +2572,6 @@ tb.assumeTb = (function(pSetter){
                                 );
                             });
 
-                        console.log(tb.require.get( fileName ));
                         tb.require( fileName );
                     }
 
