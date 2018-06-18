@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.26 - 2018-06-18 */
+/*! twobirds-core - v8.1.28 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2574,7 +2574,9 @@ tb.assumeTb = (function(pSetter){
                                 );
                             });
 
-                        tb.require( fileName );
+                        if ( !tb.require.get( fileName ) ){
+                            tb.require( fileName );
+                        }
                     }
 
                 });

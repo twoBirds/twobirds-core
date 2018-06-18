@@ -2572,7 +2572,9 @@ tb.assumeTb = (function(pSetter){
                                 );
                             });
 
-                        tb.require( fileName );
+                        if ( !tb.require.get( fileName ) ){
+                            tb.require( fileName );
+                        }
                     }
 
                 });
