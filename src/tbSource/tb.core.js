@@ -2576,7 +2576,9 @@ tb.assumeTb = (function(pSetter){
  
                         console.log('load file: ', fileName );
                         
-                        tb.require( fileName );
+                        if ( !tb.require.get( fileName ) ){
+                            tb.require( fileName );
+                        }
                     }
  
                 });

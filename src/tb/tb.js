@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.32 - 2018-06-18 */
+/*! twobirds-core - v8.1.33 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2578,7 +2578,9 @@ tb.assumeTb = (function(pSetter){
  
                         console.log('load file: ', fileName );
                         
-                        tb.require( fileName );
+                        if ( !tb.require.get( fileName ) ){
+                            tb.require( fileName );
+                        }
                     }
  
                 });
