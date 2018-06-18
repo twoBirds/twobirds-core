@@ -130,7 +130,7 @@ if (typeof module === 'undefined' ){
                         .trim()
                         .replace(/↵/g, '')
                         .map(function(pString){
-                            return pString.trim().replace( /\s/g, '');
+                            return pString.trim().replace( /\t/g, '');
                         })
                         .join('')
                 ); 

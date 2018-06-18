@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.43 - 2018-06-19 */
+/*! twobirds-core - v8.1.44 - 2018-06-19 */
 
 /**
  twoBirds V8 core functionality
@@ -2732,7 +2732,7 @@ if (typeof module === 'undefined' ){
                         .trim()
                         .replace(/↵/g, '')
                         .map(function(pString){
-                            return pString.trim().replace( /\s/g, '');
+                            return pString.trim().replace( /\t/g, '');
                         })
                         .join('')
                 ); 
