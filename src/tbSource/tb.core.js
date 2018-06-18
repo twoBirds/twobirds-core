@@ -2549,9 +2549,11 @@ tb.assumeTb = (function(pSetter){
                                 
                         fileName = '/'+fileName.join('/') + '.js';     
 
+                        /*
                         if (!tb.require.get( fileName )){
                             console.log('load file: ', fileName );
                         }
+                        */
 
                         tb.require( fileName )
                             .then((function(element){ return function whenLoaded(){ // jshint ignore:line

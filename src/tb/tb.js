@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.49 - 2018-06-19 */
+/*! twobirds-core - v8.1.50 - 2018-06-19 */
 
 /**
  twoBirds V8 core functionality
@@ -2551,9 +2551,11 @@ tb.assumeTb = (function(pSetter){
                                 
                         fileName = '/'+fileName.join('/') + '.js';     
 
+                        /*
                         if (!tb.require.get( fileName )){
                             console.log('load file: ', fileName );
                         }
+                        */
 
                         tb.require( fileName )
                             .then((function(element){ return function whenLoaded(){ // jshint ignore:line
