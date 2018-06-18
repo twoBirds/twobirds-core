@@ -594,7 +594,7 @@ if (typeof module === 'undefined' ){
                                     node.nodeType === 8
                                     || (
                                         node.nodeType === 3
-                                        && node.innerText.replace( /\s/,'').length === 0
+                                        && node.innerText.replace( /\s↵/g,'').length === 0
                                     )
                                 ){
                                     setTimeout((function(pNode){ return function(){ // jshint ignore:line
