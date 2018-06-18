@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.35 - 2018-06-18 */
+/*! twobirds-core - v8.1.36 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2565,8 +2565,9 @@ tb.assumeTb = (function(pSetter){
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
  
+                    fileName = '/'+fileName.join('/') + '.js';     
+
                     if ( !tb.require.get( fileName ) ){
-                        fileName = '/'+fileName.join('/') + '.js';     
                         console.log('load file: ', fileName );
                         tb.require( fileName );
                     }

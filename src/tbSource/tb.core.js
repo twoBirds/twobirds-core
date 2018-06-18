@@ -2563,8 +2563,9 @@ tb.assumeTb = (function(pSetter){
                         fileName[lastIndex].substr(0,1).toUpperCase() +
                         fileName[lastIndex].substr(1).toLowerCase();
  
+                    fileName = '/'+fileName.join('/') + '.js';     
+
                     if ( !tb.require.get( fileName ) ){
-                        fileName = '/'+fileName.join('/') + '.js';     
                         console.log('load file: ', fileName );
                         tb.require( fileName );
                     }
