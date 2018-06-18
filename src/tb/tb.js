@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.31 - 2018-06-18 */
+/*! twobirds-core - v8.1.32 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2536,15 +2536,29 @@ tb.assumeTb = (function(pSetter){
                     var isUndefinedACE = 
                             pElement.nodeType === 1
                             && pElement.tagName.indexOf('-') !== -1
-                            && !window.customElements.get(pElement.tagName.toLowerCase);
+                            && !window.customElements.get(pElement.tagName.toLowerCase()),
+                        element = pElement,
+                        outerHTML = element.outerHTML,
+                        parent = element.parentNode;
+
+                        if (isUndefinedACE){
+                            window
+                                .customElements
+                                .whenDefined(element.tagName.toLowerCase())
+                                .then(function(){
+                                    // force recreation
+                                    parent.replaceChild( 
+                                        element, 
+                                        tb.dom(outerHTML)[0] 
+                                    );
+                                });
+                        }
+ 
                     return isUndefinedACE;
                 })
                 .forEach(function(pElement){    // pElement is an undefined ACE
                     var fileName = pElement.tagName.toLowerCase().split('-'),
-                        lastIndex = fileName.length - 1,
-                        element = pElement,
-                        outerHTML = element.outerHTML,
-                        parent = element.parentNode;
+                        lastIndex = fileName.length - 1;
  
                     // normalize filename ->
                     fileName[lastIndex] = 
@@ -2564,17 +2578,6 @@ tb.assumeTb = (function(pSetter){
  
                         console.log('load file: ', fileName );
                         
-                        window
-                            .customElements
-                            .whenDefined(element.tagName.toLowerCase())
-                            .then(function(){
-                                // force recreation
-                                parent.replaceChild( 
-                                    element, 
-                                    tb.dom(outerHTML)[0] 
-                                );
-                            });
- 
                         tb.require( fileName );
                     }
  

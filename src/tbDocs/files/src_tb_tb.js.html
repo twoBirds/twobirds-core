@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.31</em>
+            <em>API Docs for: v8.1.32</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.31 - 2018-06-18 */
+/*! twobirds-core - v8.1.32 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -2625,15 +2625,29 @@ tb.assumeTb = (function(pSetter){
                     var isUndefinedACE = 
                             pElement.nodeType === 1
                             &amp;&amp; pElement.tagName.indexOf(&#x27;-&#x27;) !== -1
-                            &amp;&amp; !window.customElements.get(pElement.tagName.toLowerCase);
+                            &amp;&amp; !window.customElements.get(pElement.tagName.toLowerCase()),
+                        element = pElement,
+                        outerHTML = element.outerHTML,
+                        parent = element.parentNode;
+
+                        if (isUndefinedACE){
+                            window
+                                .customElements
+                                .whenDefined(element.tagName.toLowerCase())
+                                .then(function(){
+                                    // force recreation
+                                    parent.replaceChild( 
+                                        element, 
+                                        tb.dom(outerHTML)[0] 
+                                    );
+                                });
+                        }
+ 
                     return isUndefinedACE;
                 })
                 .forEach(function(pElement){    // pElement is an undefined ACE
                     var fileName = pElement.tagName.toLowerCase().split(&#x27;-&#x27;),
-                        lastIndex = fileName.length - 1,
-                        element = pElement,
-                        outerHTML = element.outerHTML,
-                        parent = element.parentNode;
+                        lastIndex = fileName.length - 1;
  
                     // normalize filename -&gt;
                     fileName[lastIndex] = 
@@ -2653,17 +2667,6 @@ tb.assumeTb = (function(pSetter){
  
                         console.log(&#x27;load file: &#x27;, fileName );
                         
-                        window
-                            .customElements
-                            .whenDefined(element.tagName.toLowerCase())
-                            .then(function(){
-                                // force recreation
-                                parent.replaceChild( 
-                                    element, 
-                                    tb.dom(outerHTML)[0] 
-                                );
-                            });
- 
                         tb.require( fileName );
                     }
  
