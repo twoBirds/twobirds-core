@@ -2536,8 +2536,11 @@ tb.assumeTb = (function(pSetter){
                             && pElement.tagName.indexOf('-') !== -1
                             && !window.customElements.get(pElement.tagName.toLowerCase),
                         element = pElement,
-                        outerHTML = element.outerHTML;
+                        outerHTML = element.outerHTML,
+                        fileName = element.tagName.toLowerCase().split('-'),
+                        lastIndex = fileName.length - 1;
 
+                    // re-render when defined
                     if (isUndefinedACE){
                         window
                             .customElements
@@ -2550,17 +2553,14 @@ tb.assumeTb = (function(pSetter){
                                 );
                             });
                     }
-                })
-                .forEach(function(pElement){    // pElement is an undefined ACE
-                    var fileName = pElement.tagName.toLowerCase().split('-'),
-                        lastIndex = fileName.length - 1;
 
-                    // normalize filename ->
-                    fileName[lastIndex] = 
-                        fileName[lastIndex].substr(0,1).toUpperCase() +
-                        fileName[lastIndex].substr(1).toLowerCase();
-
+                    // load if not loading
                     if ( !tb.require.get( fileName ) ){
+                        // normalize filename ->
+                        fileName[lastIndex] = 
+                            fileName[lastIndex].substr(0,1).toUpperCase() +
+                            fileName[lastIndex].substr(1).toLowerCase();
+
                         fileName = '/'+fileName.join('/') + '.js';
 
                         console.log('load file: ', fileName, tb.require.get( fileName ) );
@@ -2574,15 +2574,15 @@ tb.assumeTb = (function(pSetter){
                 tb.dom(pParam)
                     .children()
                     .filter(function(pElement){
-                        var isNoACE = 
+                        var isElement = 
                             !!pElement.nodeType
                             && pElement.nodeType === 1
                             && pElement.tagName.indexOf('-') === -1;
 
-                        return isNoACE;
+                        return isElement;
                     })
                     .forEach(function(pElement){
-                        console.log('noACE:', pElement.tagName)
+                        console.log('Element:', pElement.tagName);
                         tb.assumeTb(pElement);
                     });
 
