@@ -128,7 +128,7 @@ if (typeof module === 'undefined' ){
                 var DOM = _htmlToElements( 
                     pSelector
                         .trim()
-                        .split('\n')
+                        .replace(/↵/g, '')
                         .map(function(pString){
                             return pString.trim().replace( /\s/g, '');
                         })

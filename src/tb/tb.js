@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.42 - 2018-06-18 */
+/*! twobirds-core - v8.1.43 - 2018-06-19 */
 
 /**
  twoBirds V8 core functionality
@@ -2730,7 +2730,7 @@ if (typeof module === 'undefined' ){
                 var DOM = _htmlToElements( 
                     pSelector
                         .trim()
-                        .split('\n')
+                        .replace(/↵/g, '')
                         .map(function(pString){
                             return pString.trim().replace( /\s/g, '');
                         })
