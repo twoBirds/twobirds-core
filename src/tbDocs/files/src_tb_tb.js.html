@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.39</em>
+            <em>API Docs for: v8.1.40</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.39 - 2018-06-18 */
+/*! twobirds-core - v8.1.40 - 2018-06-18 */
 
 /**
  twoBirds V8 core functionality
@@ -3264,7 +3264,8 @@ if (typeof module === &#x27;undefined&#x27; ){
              */
             var clean = (function(doClean){ return function clean(pParam){
 
-                var that = this;
+                var that = this,
+                    node;
 
                 if (pParam !== undefined){
                     doClean = !pParam ? false : true;
@@ -3273,17 +3274,25 @@ if (typeof module === &#x27;undefined&#x27; ){
                         function( pElement ){
                             var treeWalker = document.createTreeWalker(
                                     pElement,
-                                    128     // comment nodes
+                                    128 + 4    // comment nodes + text nodes
                                 );
-
-                            pElement.normalize(); // no empty text nodes recursively
 
                             while(treeWalker.nextNode()){
                                 // we need to IIFE so the node pointer is copied, 
                                 // otherwise it will only remove the last comment node of that while loop
-                                setTimeout((function(pNode){ return function(){
-                                    pNode.remove();
-                                }; })( treeWalker.currentNode ), 0);
+                                node = treeWalker.currentNode; 
+                                if (
+                                    node.nodeType === 8
+                                    || (
+                                        node.nodeType === 3
+                                        &amp;&amp; node.innerText.replace( /\s/,&#x27;&#x27;).length === 0
+                                    )
+                                ){
+                                    setTimeout((function(pNode){ return function(){ // jshint ignore:line
+                                        console.log(&#x27;remove&#x27;, pNode);
+                                        pNode.remove();
+                                    }; })( node ), 0);
+                                }
                             }
                         }
                     );

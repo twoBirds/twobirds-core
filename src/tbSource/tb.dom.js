@@ -573,7 +573,8 @@ if (typeof module === 'undefined' ){
              */
             var clean = (function(doClean){ return function clean(pParam){
 
-                var that = this;
+                var that = this,
+                    node;
 
                 if (pParam !== undefined){
                     doClean = !pParam ? false : true;
@@ -582,17 +583,25 @@ if (typeof module === 'undefined' ){
                         function( pElement ){
                             var treeWalker = document.createTreeWalker(
                                     pElement,
-                                    128     // comment nodes
+                                    128 + 4    // comment nodes + text nodes
                                 );
-
-                            pElement.normalize(); // no empty text nodes recursively
 
                             while(treeWalker.nextNode()){
                                 // we need to IIFE so the node pointer is copied, 
                                 // otherwise it will only remove the last comment node of that while loop
-                                setTimeout((function(pNode){ return function(){
-                                    pNode.remove();
-                                }; })( treeWalker.currentNode ), 0);
+                                node = treeWalker.currentNode; 
+                                if (
+                                    node.nodeType === 8
+                                    || (
+                                        node.nodeType === 3
+                                        && node.innerText.replace( /\s/,'').length === 0
+                                    )
+                                ){
+                                    setTimeout((function(pNode){ return function(){ // jshint ignore:line
+                                        console.log('remove', pNode);
+                                        pNode.remove();
+                                    }; })( node ), 0);
+                                }
                             }
                         }
                     );
