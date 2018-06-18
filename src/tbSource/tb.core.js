@@ -2531,44 +2531,38 @@ tb.assumeTb = (function(pSetter){
 
             var selection = tb.dom(pParam)
                 .children()
-                .filter(function(pElement){
+                .forEach(function(pElement){
                     var isUndefinedACE = 
                             pElement.nodeType === 1
                             && pElement.tagName.indexOf('-') !== -1
                             && !window.customElements.get(pElement.tagName.toLowerCase());
 
+                    if (isUndefinedACE){
+
                         fileName = pElement.tagName.toLowerCase().split('-');
                         lastIndex = fileName.length - 1;
 
                         // normalize filename ->
-                            fileName[lastIndex] = 
-                                fileName[lastIndex].substr(0,1).toUpperCase() +
-                                fileName[lastIndex].substr(1).toLowerCase();
+                        fileName[lastIndex] = 
+                            fileName[lastIndex].substr(0,1).toUpperCase() +
+                            fileName[lastIndex].substr(1).toLowerCase();
                                 
                         fileName = '/'+fileName.join('/') + '.js';     
 
-                        if (isUndefinedACE && !tb.require.get( fileName )){
-                            window
-                                .customElements
-                                .whenDefined(pElement.tagName.toLowerCase())
-                                .then((function(element){ return function whenDefined(){ // jshint ignore:line
-                                    var outerHTML = element.outerHTML,
-                                        parent = element.parentNode;
-                                    // force recreation
-                                    parent.replaceChild( 
-                                        element, 
-                                        tb.dom(outerHTML)[0] 
-                                    );
-                                };})(pElement));
+                        if (!tb.require.get( fileName )){
+                            console.log('load file: ', fileName );
                         }
- 
-                    return isUndefinedACE;
-                })
-                .forEach(function(pElement){    // pElement is an undefined ACE
-                     
-                    if ( !tb.require.get( fileName ) ){
-                        //console.log('load file: ', fileName );
-                        tb.require( fileName );
+
+                        tb.require( fileName )
+                            .then((function(element){ return function whenLoaded(){ // jshint ignore:line
+                                var outerHTML = element.outerHTML,
+                                    parent = element.parentNode;
+                                // force recreation
+                                parent.replaceChild( 
+                                    element, 
+                                    tb.dom(outerHTML)[0] 
+                                );
+                            };})(pElement));
                     }
  
                 });
