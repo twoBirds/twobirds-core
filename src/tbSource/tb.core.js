@@ -2545,10 +2545,12 @@ tb.assumeTb = (function(pSetter){
                                 .whenDefined(element.tagName.toLowerCase())
                                 .then(function(){
                                     // force recreation
-                                    parent.replaceChild( 
-                                        element, 
-                                        tb.dom(outerHTML)[0] 
-                                    );
+                                    if (parent.childNodes.indexOf(element) > -1){
+                                        parent.replaceChild( 
+                                            element, 
+                                            tb.dom(outerHTML)[0] 
+                                        );
+                                    }
                                 });
                         }
  
@@ -2566,7 +2568,7 @@ tb.assumeTb = (function(pSetter){
                     fileName = '/'+fileName.join('/') + '.js';     
 
                     if ( !tb.require.get( fileName ) ){
-                        console.log('load file: ', fileName );
+                        //console.log('load file: ', fileName );
                         tb.require( fileName );
                     }
  
