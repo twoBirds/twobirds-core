@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.50 - 2018-06-19 */
+/*! twobirds-core - v8.1.51 - 2018-06-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2529,7 +2529,10 @@ tb.assumeTb = (function(pSetter){
         ){
             // scan for AACEs and load + re-insert
             //console.log('scan for ACEs: ', pParam);
-            var fileName, lastIndex;
+            var fileName, 
+                lastIndex, 
+                nameSpace,
+                tagName;
 
             var selection = tb.dom(pParam)
                 .children()
@@ -2541,7 +2544,8 @@ tb.assumeTb = (function(pSetter){
 
                     if (isUndefinedACE){
 
-                        fileName = pElement.tagName.toLowerCase().split('-');
+                        tagName = pElement.tagName.toLowerCase();
+                        fileName = tagName.split('-');
                         lastIndex = fileName.length - 1;
 
                         // normalize filename ->
@@ -2549,15 +2553,54 @@ tb.assumeTb = (function(pSetter){
                             fileName[lastIndex].substr(0,1).toUpperCase() +
                             fileName[lastIndex].substr(1).toLowerCase();
                                 
+                        nameSpace = fileName.join('');
                         fileName = '/'+fileName.join('/') + '.js';     
 
-                        /*
-                        if (!tb.require.get( fileName )){
-                            console.log('load file: ', fileName );
-                        }
-                        */
 
                         tb.require( fileName )
+                            .then(function wrapInACE(){
+
+                                // auto-define autonomous custom element
+                                customElements.define(
+                                    tagName, 
+                                    class extends HTMLElement{
+
+                                        constructor(){
+                                            super();
+                                        }
+
+                                        static get observedAttributes(){
+                                            return Array
+                                                .from( this.attributes )
+                                                .map( function(pAttribute){ 
+                                                    return pAttribute.name; 
+                                                });
+                                        }
+
+                                        connectedCallback(){
+                                            var e = new tb(
+                                                tb.namespace(nameSpace).get(),
+                                                {},
+                                                this
+                                            );
+                                            e.trigger('connected');
+                                        }
+
+                                        disconnectedCallback(){
+                                            tb(this).trigger('disconnected');
+                                        }
+
+                                        adoptedCallback(){
+                                            tb(this).trigger('adopted');
+                                        }
+
+                                        attributeChangedCallback( name, oldValue, newValue ){
+                                            tb(this).trigger('attributeChanged', { name: name, oldValue: oldValue, newValue: newValue} );
+                                        }
+
+                                    }
+                                );
+                            })
                             .then((function(element){ return function whenLoaded(){ // jshint ignore:line
                                 var outerHTML = element.outerHTML,
                                     parent = element.parentNode;
@@ -2724,13 +2767,11 @@ if (typeof module === 'undefined' ){
                 // uses 'template' element to retrieve DOM nodes
                 var DOM = _htmlToElements( 
                     pSelector   // compress template string
-                        .trim()
-                        .replace(/↵/g, '\r') // todo: \r in backtick strings ???
-                        .split('\r')
-                        .map(function(pString){
-                            return pString.trim().replace( /\t/g, '');
-                        })
+                        .split('\n')
+                        .map( (e) => e.trim().replace( /\t/g, '') )
+                        .map( (e) => e.substr(-1) === '>' ? e : e + ' ' )
                         .join('')
+                        .trim()
                 ); 
 
                 if ( DOM.length === 1 

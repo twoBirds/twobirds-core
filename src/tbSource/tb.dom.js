@@ -127,13 +127,11 @@ if (typeof module === 'undefined' ){
                 // uses 'template' element to retrieve DOM nodes
                 var DOM = _htmlToElements( 
                     pSelector   // compress template string
-                        .trim()
-                        .replace(/↵/g, '\r') // todo: \r in backtick strings ???
-                        .split('\r')
-                        .map(function(pString){
-                            return pString.trim().replace( /\t/g, '');
-                        })
+                        .split('\n')
+                        .map( (e) => e.trim().replace( /\t/g, '') )
+                        .map( (e) => e.substr(-1) === '>' ? e : e + ' ' )
                         .join('')
+                        .trim()
                 ); 
 
                 if ( DOM.length === 1 

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.50</em>
+            <em>API Docs for: v8.1.51</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.50 - 2018-06-19 */
+/*! twobirds-core - v8.1.51 - 2018-06-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2618,7 +2618,10 @@ tb.assumeTb = (function(pSetter){
         ){
             // scan for AACEs and load + re-insert
             //console.log(&#x27;scan for ACEs: &#x27;, pParam);
-            var fileName, lastIndex;
+            var fileName, 
+                lastIndex, 
+                nameSpace,
+                tagName;
 
             var selection = tb.dom(pParam)
                 .children()
@@ -2630,7 +2633,8 @@ tb.assumeTb = (function(pSetter){
 
                     if (isUndefinedACE){
 
-                        fileName = pElement.tagName.toLowerCase().split(&#x27;-&#x27;);
+                        tagName = pElement.tagName.toLowerCase();
+                        fileName = tagName.split(&#x27;-&#x27;);
                         lastIndex = fileName.length - 1;
 
                         // normalize filename -&gt;
@@ -2638,15 +2642,54 @@ tb.assumeTb = (function(pSetter){
                             fileName[lastIndex].substr(0,1).toUpperCase() +
                             fileName[lastIndex].substr(1).toLowerCase();
                                 
+                        nameSpace = fileName.join(&#x27;&#x27;);
                         fileName = &#x27;/&#x27;+fileName.join(&#x27;/&#x27;) + &#x27;.js&#x27;;     
 
-                        /*
-                        if (!tb.require.get( fileName )){
-                            console.log(&#x27;load file: &#x27;, fileName );
-                        }
-                        */
 
                         tb.require( fileName )
+                            .then(function wrapInACE(){
+
+                                // auto-define autonomous custom element
+                                customElements.define(
+                                    tagName, 
+                                    class extends HTMLElement{
+
+                                        constructor(){
+                                            super();
+                                        }
+
+                                        static get observedAttributes(){
+                                            return Array
+                                                .from( this.attributes )
+                                                .map( function(pAttribute){ 
+                                                    return pAttribute.name; 
+                                                });
+                                        }
+
+                                        connectedCallback(){
+                                            var e = new tb(
+                                                tb.namespace(nameSpace).get(),
+                                                {},
+                                                this
+                                            );
+                                            e.trigger(&#x27;connected&#x27;);
+                                        }
+
+                                        disconnectedCallback(){
+                                            tb(this).trigger(&#x27;disconnected&#x27;);
+                                        }
+
+                                        adoptedCallback(){
+                                            tb(this).trigger(&#x27;adopted&#x27;);
+                                        }
+
+                                        attributeChangedCallback( name, oldValue, newValue ){
+                                            tb(this).trigger(&#x27;attributeChanged&#x27;, { name: name, oldValue: oldValue, newValue: newValue} );
+                                        }
+
+                                    }
+                                );
+                            })
                             .then((function(element){ return function whenLoaded(){ // jshint ignore:line
                                 var outerHTML = element.outerHTML,
                                     parent = element.parentNode;
@@ -2813,13 +2856,11 @@ if (typeof module === &#x27;undefined&#x27; ){
                 // uses &#x27;template&#x27; element to retrieve DOM nodes
                 var DOM = _htmlToElements( 
                     pSelector   // compress template string
-                        .trim()
-                        .replace(/↵/g, &#x27;\r&#x27;) // todo: \r in backtick strings ???
-                        .split(&#x27;\r&#x27;)
-                        .map(function(pString){
-                            return pString.trim().replace( /\t/g, &#x27;&#x27;);
-                        })
+                        .split(&#x27;\n&#x27;)
+                        .map( (e) =&gt; e.trim().replace( /\t/g, &#x27;&#x27;) )
+                        .map( (e) =&gt; e.substr(-1) === &#x27;&gt;&#x27; ? e : e + &#x27; &#x27; )
                         .join(&#x27;&#x27;)
+                        .trim()
                 ); 
 
                 if ( DOM.length === 1 

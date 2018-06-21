@@ -171,6 +171,7 @@ module.exports = function(grunt) {
                     "document": false,
                     "HTMLElement": false,
                     "Element": false,
+                    "customElements": false,
                     "HTMLCollection": false,
                     "NodeList": false,
                     "XMLHttpRequest": false,
