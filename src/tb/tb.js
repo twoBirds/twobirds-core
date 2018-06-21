@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.51 - 2018-06-21 */
+/*! twobirds-core - v8.1.52 - 2018-06-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2553,17 +2553,19 @@ tb.assumeTb = (function(pSetter){
                             fileName[lastIndex].substr(0,1).toUpperCase() +
                             fileName[lastIndex].substr(1).toLowerCase();
                                 
-                        nameSpace = fileName.join('');
+                        nameSpace = fileName.join('.');
                         fileName = '/'+fileName.join('/') + '.js';     
 
+                        console.log( tagName, nameSpace, fileName);
 
                         tb.require( fileName )
                             .then(function wrapInACE(){
+                                console.log('define custom element');
 
                                 // auto-define autonomous custom element
                                 customElements.define(
                                     tagName, 
-                                    class extends HTMLElement{
+                                    class CustomElement extends HTMLElement{
 
                                         constructor(){
                                             super();
@@ -2583,6 +2585,7 @@ tb.assumeTb = (function(pSetter){
                                                 {},
                                                 this
                                             );
+                                            console.log('connectedCallback...');
                                             e.trigger('connected');
                                         }
 

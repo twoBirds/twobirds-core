@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.51 - 2018-06-21 */
+/*! twobirds-core - v8.1.52 - 2018-06-21 */
 
 // globals
 var test = {},    // repo
@@ -284,28 +284,3 @@ test.Greatgrandchild = class extends Tb{
     }
 
 };
-
-/* 
-Autonomous Custom Element
-*/
-(function(){ // IIFE hiding ACE class
-
-    class GreatGrandChild extends HTMLElement{
-
-        constructor(){
-            super();
-        }
-
-        connectedCallback(){
-            new tb(
-                test.Greatgrandchild,
-                {},
-                this
-            );
-        }
-
-    }
-
-    customElements.define('test-greatgrandchild', GreatGrandChild);
-
-})();

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.51</em>
+            <em>API Docs for: v8.1.52</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.51 - 2018-06-21 */
+/*! twobirds-core - v8.1.52 - 2018-06-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2642,17 +2642,19 @@ tb.assumeTb = (function(pSetter){
                             fileName[lastIndex].substr(0,1).toUpperCase() +
                             fileName[lastIndex].substr(1).toLowerCase();
                                 
-                        nameSpace = fileName.join(&#x27;&#x27;);
+                        nameSpace = fileName.join(&#x27;.&#x27;);
                         fileName = &#x27;/&#x27;+fileName.join(&#x27;/&#x27;) + &#x27;.js&#x27;;     
 
+                        console.log( tagName, nameSpace, fileName);
 
                         tb.require( fileName )
                             .then(function wrapInACE(){
+                                console.log(&#x27;define custom element&#x27;);
 
                                 // auto-define autonomous custom element
                                 customElements.define(
                                     tagName, 
-                                    class extends HTMLElement{
+                                    class CustomElement extends HTMLElement{
 
                                         constructor(){
                                             super();
@@ -2672,6 +2674,7 @@ tb.assumeTb = (function(pSetter){
                                                 {},
                                                 this
                                             );
+                                            console.log(&#x27;connectedCallback...&#x27;);
                                             e.trigger(&#x27;connected&#x27;);
                                         }
 

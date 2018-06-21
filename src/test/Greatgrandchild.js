@@ -44,28 +44,3 @@ test.Greatgrandchild = class extends Tb{
     }
 
 };
-
-/* 
-Autonomous Custom Element
-*/
-(function(){ // IIFE hiding ACE class
-
-    class GreatGrandChild extends HTMLElement{
-
-        constructor(){
-            super();
-        }
-
-        connectedCallback(){
-            new tb(
-                test.Greatgrandchild,
-                {},
-                this
-            );
-        }
-
-    }
-
-    customElements.define('test-greatgrandchild', GreatGrandChild);
-
-})();
