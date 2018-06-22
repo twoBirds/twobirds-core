@@ -1020,7 +1020,11 @@ tb.require.cacheBust = true;
 tb.require.loadcount = 0;
 
 tb.require.get = function(pFile){
-    return tb.require.repo[pFile.split('?')[0].split('.').pop()][pFile] || undefined;
+    let extension = pFile.split('?')[0].split('.').pop();
+    if (tb.require.repo[extension]){
+        return tb.require.repo[extension][pFile] || undefined;
+    }
+    return false;
 };
 
 /**

@@ -2522,7 +2522,9 @@ tb.assumeTb = (function(pSetter){
         if ( 
             typeof pParam === 'object'
             && !!pParam.nodeType
-            && pParam.nodeType === 1
+            && pParam.nodeType === 1    // html node
+            && pParam !== document.head
+            && pParam.parentNode !== document.head
             && tb.assumeTb()
         ){
             // scan for AACEs and load + re-insert
@@ -2537,88 +2539,91 @@ tb.assumeTb = (function(pSetter){
                 .forEach(function(pElement){
                     var tagName = pElement.tagName.toLowerCase(),
                         isUndefinedACE = 
-                            pElement.nodeType === 1
-                            && tagName.indexOf('-') !== -1
-                            && !window.customElements.get(tagName);
+                            tagName.indexOf('-') !== -1
+                            && !window.customElements.get(tagName),
+                        isLoading,
+                        fileName,
+                        hasTbClassCode;
+
+                    fileName = tagName.split('-');
+                    lastIndex = fileName.length - 1;
+
+                    // normalize filename ->
+                    fileName[lastIndex] = 
+                        fileName[lastIndex].substr(0,1).toUpperCase() +
+                        fileName[lastIndex].substr(1).toLowerCase();
+                            
+                    nameSpace = fileName.join('.');
+
+                    fileName = '/'+fileName.join('/') + '.js';     
+
+                    isLoading = !!tb.require.get(fileName),
+                    hasTbClassCode = !!tb.namespace(nameSpace).get(); // jshint ignore:line
+
+                    // create element definition callback
+                    var define = (function( nameSpace, tagName, element ){ return function define(){
+
+                        if( !window.customElements.get(tagName) ){
+
+                            // auto-define autonomous custom element
+                            customElements.define(
+                                tagName, 
+                                class extends HTMLElement{
+
+                                    constructor(){
+                                        super();
+                                    }
+
+                                    static get observedAttributes(){
+                                        return Array
+                                            .from( element.attributes )
+                                            .map( function(pAttribute){ 
+                                                return pAttribute.name; 
+                                            });
+                                    }
+
+                                    connectedCallback(){
+                                        var e = new tb(
+                                            tb.namespace(nameSpace).get() || class extends Tb{}, // jshint ignore:line
+                                            {},
+                                            this
+                                        );
+                                        e.trigger('connected');
+                                    }
+
+                                    disconnectedCallback(){
+                                        tb(this).trigger('disconnected');
+                                    }
+
+                                    adoptedCallback(){
+                                        tb(this).trigger('adopted');
+                                    }
+
+                                    attributeChangedCallback( name, oldValue, newValue ){
+                                        tb(this).trigger('attributeChanged', { name: name, oldValue: oldValue, newValue: newValue} );
+                                    }
+
+                                }
+                            );
+
+                        }
+
+                    };})( nameSpace, tagName, pElement );
+
+                    // create element replace callback
+                    var replace = (function(element){ return function replace(){ // jshint ignore:line
+                        // force recreation
+                        element.outerHTML = element.outerHTML;
+                    };})(pElement);
 
                     if (isUndefinedACE){
-
-                        fileName = tagName.split('-');
-                        lastIndex = fileName.length - 1;
-
-                        // normalize filename ->
-                        fileName[lastIndex] = 
-                            fileName[lastIndex].substr(0,1).toUpperCase() +
-                            fileName[lastIndex].substr(1).toLowerCase();
-                                
-                        nameSpace = fileName.join('.');
-                        fileName = '/'+fileName.join('/') + '.js';     
-
-                        var cb = (function( nameSpace, tagName, element ){ return function wrapInACE(){
-
-                            if( !window.customElements.get(tagName) ){
-
-                                // auto-define autonomous custom element
-                                customElements.define(
-                                    tagName, 
-                                    class extends HTMLElement{
-
-                                        constructor(){
-                                            super();
-                                        }
-
-                                        static get observedAttributes(){
-                                            return Array
-                                                .from( element.attributes )
-                                                .map( function(pAttribute){ 
-                                                    return pAttribute.name; 
-                                                });
-                                        }
-
-                                        connectedCallback(){
-                                            var e = new tb(
-                                                tb.namespace(nameSpace).get() || class extends Tb{},
-                                                {},
-                                                this
-                                            );
-                                            e.trigger('connected');
-                                        }
-
-                                        disconnectedCallback(){
-                                            tb(this).trigger('disconnected');
-                                        }
-
-                                        adoptedCallback(){
-                                            tb(this).trigger('adopted');
-                                        }
-
-                                        attributeChangedCallback( name, oldValue, newValue ){
-                                            tb(this).trigger('attributeChanged', { name: name, oldValue: oldValue, newValue: newValue} );
-                                        }
-
-                                    }
-                                );
-
-                            }
-
-                        };})( nameSpace, tagName, pElement );
-
-                        var replace = (function(element){ return function replace(){ // jshint ignore:line
-                            var outerHTML = element.outerHTML,
-                                parent = element.parentNode;
-                            // force recreation
-                            parent.replaceChild( 
-                                element, 
-                                tb.dom(outerHTML)[0] 
-                            );
-                        };})(pElement);
-
-                        if ( !tb.namespace(nameSpace).get() ){
+                        //console.log('tagName', tagName, 'in', pElement.parentNode );
+                        if ( !hasTbClassCode ){
                             tb.require( fileName )
-                                .then( cb )
+                                .then( define )
                                 .then( replace );
                         } else {
-                            cb();
+                            define();
                             replace();
                         }
                     }

@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.53 - 2018-06-22 */
+/*! twobirds-core - v8.1.54 - 2018-06-22 */
 
 // globals
 var test = {},    // repo
@@ -26,7 +26,8 @@ test.GrandParent = ( class GrandParent extends Tb{
 
     // methods
     init(){
-        var that = this;
+        var that = this,
+            img = $('img', that.target)[0];
 
         $( that.target ).hide();
 
@@ -36,7 +37,7 @@ test.GrandParent = ( class GrandParent extends Tb{
             new tb(
                 'test.Parent',
                 {},
-                that.target.insertBefore( document.createElement('div'), $('img', that.target)[0] )
+                that.target.insertBefore( document.createElement('div'), img )
             );
         }
 
@@ -58,7 +59,7 @@ test.GrandParent = ( class GrandParent extends Tb{
 });
 
 
-test.TestForm = ( class TestForm extends Tb{
+test.TestForm = class extends Tb{
 
     constructor(){
         super();
@@ -98,8 +99,7 @@ test.TestForm = ( class TestForm extends Tb{
 
         // add fragment to DOM
         $( that.target )
-            .append( fragment )
-            .clean();
+            .append( fragment );
 
         // create formValues store
         that.formValues = {};
@@ -114,7 +114,7 @@ test.TestForm = ( class TestForm extends Tb{
         that.crud.read();
 
     }
-});
+};
 
 
 test.Parent = ( class Parent extends Tb{

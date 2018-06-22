@@ -19,10 +19,12 @@ test-greatgrandchild {
 }
 
 .test-parent {
-	display: inline-block;
+	display: block;
 }
 
 .jasmine_html-reporter {
   background-color: transparent;
+  display: block;
+  clear: both;
 }
 /*# sourceMappingURL=GrandParent.css.map */

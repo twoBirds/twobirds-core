@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.53 - 2018-06-22 */
+/*! twobirds-core - v8.1.54 - 2018-06-22 */
 
 /**
  twoBirds V8 core functionality
@@ -2524,7 +2524,9 @@ tb.assumeTb = (function(pSetter){
         if ( 
             typeof pParam === 'object'
             && !!pParam.nodeType
-            && pParam.nodeType === 1
+            && pParam.nodeType === 1    // html node
+            && pParam !== document.head
+            && pParam.parentNode !== document.head
             && tb.assumeTb()
         ){
             // scan for AACEs and load + re-insert
@@ -2539,88 +2541,91 @@ tb.assumeTb = (function(pSetter){
                 .forEach(function(pElement){
                     var tagName = pElement.tagName.toLowerCase(),
                         isUndefinedACE = 
-                            pElement.nodeType === 1
-                            && tagName.indexOf('-') !== -1
-                            && !window.customElements.get(tagName);
+                            tagName.indexOf('-') !== -1
+                            && !window.customElements.get(tagName),
+                        isLoading,
+                        fileName,
+                        hasTbClassCode;
+
+                    fileName = tagName.split('-');
+                    lastIndex = fileName.length - 1;
+
+                    // normalize filename ->
+                    fileName[lastIndex] = 
+                        fileName[lastIndex].substr(0,1).toUpperCase() +
+                        fileName[lastIndex].substr(1).toLowerCase();
+                            
+                    nameSpace = fileName.join('.');
+
+                    fileName = '/'+fileName.join('/') + '.js';     
+
+                    isLoading = !!tb.require.get(fileName),
+                    hasTbClassCode = !!tb.namespace(nameSpace).get(); // jshint ignore:line
+
+                    // create element definition callback
+                    var define = (function( nameSpace, tagName, element ){ return function define(){
+
+                        if( !window.customElements.get(tagName) ){
+
+                            // auto-define autonomous custom element
+                            customElements.define(
+                                tagName, 
+                                class extends HTMLElement{
+
+                                    constructor(){
+                                        super();
+                                    }
+
+                                    static get observedAttributes(){
+                                        return Array
+                                            .from( element.attributes )
+                                            .map( function(pAttribute){ 
+                                                return pAttribute.name; 
+                                            });
+                                    }
+
+                                    connectedCallback(){
+                                        var e = new tb(
+                                            tb.namespace(nameSpace).get() || class extends Tb{}, // jshint ignore:line
+                                            {},
+                                            this
+                                        );
+                                        e.trigger('connected');
+                                    }
+
+                                    disconnectedCallback(){
+                                        tb(this).trigger('disconnected');
+                                    }
+
+                                    adoptedCallback(){
+                                        tb(this).trigger('adopted');
+                                    }
+
+                                    attributeChangedCallback( name, oldValue, newValue ){
+                                        tb(this).trigger('attributeChanged', { name: name, oldValue: oldValue, newValue: newValue} );
+                                    }
+
+                                }
+                            );
+
+                        }
+
+                    };})( nameSpace, tagName, pElement );
+
+                    // create element replace callback
+                    var replace = (function(element){ return function replace(){ // jshint ignore:line
+                        // force recreation
+                        element.outerHTML = element.outerHTML;
+                    };})(pElement);
 
                     if (isUndefinedACE){
-
-                        fileName = tagName.split('-');
-                        lastIndex = fileName.length - 1;
-
-                        // normalize filename ->
-                        fileName[lastIndex] = 
-                            fileName[lastIndex].substr(0,1).toUpperCase() +
-                            fileName[lastIndex].substr(1).toLowerCase();
-                                
-                        nameSpace = fileName.join('.');
-                        fileName = '/'+fileName.join('/') + '.js';     
-
-                        var cb = (function( nameSpace, tagName, element ){ return function wrapInACE(){
-
-                            if( !window.customElements.get(tagName) ){
-
-                                // auto-define autonomous custom element
-                                customElements.define(
-                                    tagName, 
-                                    class extends HTMLElement{
-
-                                        constructor(){
-                                            super();
-                                        }
-
-                                        static get observedAttributes(){
-                                            return Array
-                                                .from( element.attributes )
-                                                .map( function(pAttribute){ 
-                                                    return pAttribute.name; 
-                                                });
-                                        }
-
-                                        connectedCallback(){
-                                            var e = new tb(
-                                                tb.namespace(nameSpace).get() || class extends Tb{},
-                                                {},
-                                                this
-                                            );
-                                            e.trigger('connected');
-                                        }
-
-                                        disconnectedCallback(){
-                                            tb(this).trigger('disconnected');
-                                        }
-
-                                        adoptedCallback(){
-                                            tb(this).trigger('adopted');
-                                        }
-
-                                        attributeChangedCallback( name, oldValue, newValue ){
-                                            tb(this).trigger('attributeChanged', { name: name, oldValue: oldValue, newValue: newValue} );
-                                        }
-
-                                    }
-                                );
-
-                            }
-
-                        };})( nameSpace, tagName, pElement );
-
-                        var replace = (function(element){ return function replace(){ // jshint ignore:line
-                            var outerHTML = element.outerHTML,
-                                parent = element.parentNode;
-                            // force recreation
-                            parent.replaceChild( 
-                                element, 
-                                tb.dom(outerHTML)[0] 
-                            );
-                        };})(pElement);
-
-                        if ( !tb.namespace(nameSpace).get() ){
+                        //console.log('tagName', tagName, 'in', pElement.parentNode );
+                        if ( !hasTbClassCode ){
                             tb.require( fileName )
-                                .then( cb )
+                                .then( define )
                                 .then( replace );
                         } else {
-                            cb();
+                            define();
                             replace();
                         }
                     }
@@ -2683,7 +2688,10 @@ if (typeof module === 'undefined' ){
         function _htmlToElements(html) {
             var template = document.createElement('template');
             template.innerHTML = html;
-            return !template['content']['childNodes'] ? template.childNodes : template.content.childNodes;
+            template.normalize();
+            return !template['content']['childNodes'] 
+                ? Array.from(template.childNodes) 
+                : Array.from(template.content.childNodes);
         }
 
         function _mapArrayMethod( pMethodName ){
@@ -2813,7 +2821,9 @@ if (typeof module === 'undefined' ){
 
                 } else { // it is a HTML string
                     // return html content as a set of nodes
-                    return tb.dom( DOM ).clean();
+                    var dom = tb.dom( DOM );
+                    //dom.clean();
+                    return dom;
                 }
             }
 
@@ -3089,11 +3099,12 @@ if (typeof module === 'undefined' ){
                             function( pThisElement ){
                                 if ( !!pThisElement['nodeType'] ){
                                     pDomNode.appendChild( pThisElement );
-                                    tb.assumeTb( pDomNode );
-                                    tb.dom(pDomNode).clean();
                                 }
                             }
                         );
+                        setTimeout(function(){
+                            tb.assumeTb( pDomNode );
+                        },0);
                     }
                 );
 
@@ -3121,8 +3132,9 @@ if (typeof module === 'undefined' ){
                     );
                 }
 
-                tb.assumeTb( pElement );
-                that.clean();
+                setTimeout(function(){
+                    tb.assumeTb( pElement );
+                },0);
 
                 return that;
             }
@@ -3253,7 +3265,7 @@ if (typeof module === 'undefined' ){
                                     node.nodeType === 8
                                     || (
                                         node.nodeType === 3
-                                        && node.textContent.replace( /\s↵/g,'').length === 0
+                                        && node.textContent.replace( /[\s]/g,'').length === 0
                                     )
                                 ){
                                     // we need to IIFE so the node pointer is copied, 
@@ -3263,6 +3275,11 @@ if (typeof module === 'undefined' ){
                                     }; })( node ), 0);
                                 }
                             }
+
+                            setTimeout( function(){ 
+                                pElement.normalize();
+                            }, 0);
+
                         }
                     );
                 }
@@ -3491,8 +3508,9 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
-                tb.dom( pTarget ).clean();
-                tb.assumeTb( pTarget );
+                setTimeout(function(){
+                    tb.assumeTb( pTarget );
+                },0);
 
                 return that;
             }
@@ -5568,7 +5586,11 @@ tb.require.cacheBust = true;
 tb.require.loadcount = 0;
 
 tb.require.get = function(pFile){
-    return tb.require.repo[pFile.split('?')[0].split('.').pop()][pFile] || undefined;
+    let extension = pFile.split('?')[0].split('.').pop();
+    if (tb.require.repo[extension]){
+        return tb.require.repo[extension][pFile] || undefined;
+    }
+    return false;
 };
 
 /**

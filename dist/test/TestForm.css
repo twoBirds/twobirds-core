@@ -38,7 +38,7 @@ form input + label {
 }
 
 body > form {
-    display: inline-block;
+    display: block;
 }
 
 form fieldset {

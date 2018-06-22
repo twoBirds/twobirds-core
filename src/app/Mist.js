@@ -26,8 +26,7 @@ app.Mist = class Mist extends Tb{
         let that = this;
 
         $(that.target)
-            .append( $(that.template.trim()) )
-            .clean();
+            .append( $(that.template.trim()) );
 
     }
 

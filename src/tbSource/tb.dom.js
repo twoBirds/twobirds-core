@@ -30,7 +30,10 @@ if (typeof module === 'undefined' ){
         function _htmlToElements(html) {
             var template = document.createElement('template');
             template.innerHTML = html;
-            return !template['content']['childNodes'] ? template.childNodes : template.content.childNodes;
+            template.normalize();
+            return !template['content']['childNodes'] 
+                ? Array.from(template.childNodes) 
+                : Array.from(template.content.childNodes);
         }
 
         function _mapArrayMethod( pMethodName ){
@@ -160,7 +163,9 @@ if (typeof module === 'undefined' ){
 
                 } else { // it is a HTML string
                     // return html content as a set of nodes
-                    return tb.dom( DOM ).clean();
+                    var dom = tb.dom( DOM );
+                    //dom.clean();
+                    return dom;
                 }
             }
 
@@ -436,11 +441,12 @@ if (typeof module === 'undefined' ){
                             function( pThisElement ){
                                 if ( !!pThisElement['nodeType'] ){
                                     pDomNode.appendChild( pThisElement );
-                                    tb.assumeTb( pDomNode );
-                                    tb.dom(pDomNode).clean();
                                 }
                             }
                         );
+                        setTimeout(function(){
+                            tb.assumeTb( pDomNode );
+                        },0);
                     }
                 );
 
@@ -468,8 +474,9 @@ if (typeof module === 'undefined' ){
                     );
                 }
 
-                tb.assumeTb( pElement );
-                that.clean();
+                setTimeout(function(){
+                    tb.assumeTb( pElement );
+                },0);
 
                 return that;
             }
@@ -600,7 +607,7 @@ if (typeof module === 'undefined' ){
                                     node.nodeType === 8
                                     || (
                                         node.nodeType === 3
-                                        && node.textContent.replace( /\s↵/g,'').length === 0
+                                        && node.textContent.replace( /[\s]/g,'').length === 0
                                     )
                                 ){
                                     // we need to IIFE so the node pointer is copied, 
@@ -610,6 +617,11 @@ if (typeof module === 'undefined' ){
                                     }; })( node ), 0);
                                 }
                             }
+
+                            setTimeout( function(){ 
+                                pElement.normalize();
+                            }, 0);
+
                         }
                     );
                 }
@@ -838,8 +850,9 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
-                tb.dom( pTarget ).clean();
-                tb.assumeTb( pTarget );
+                setTimeout(function(){
+                    tb.assumeTb( pTarget );
+                },0);
 
                 return that;
             }

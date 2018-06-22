@@ -1,4 +1,4 @@
-test.TestForm = ( class TestForm extends Tb{
+test.TestForm = class extends Tb{
 
     constructor(){
         super();
@@ -38,8 +38,7 @@ test.TestForm = ( class TestForm extends Tb{
 
         // add fragment to DOM
         $( that.target )
-            .append( fragment )
-            .clean();
+            .append( fragment );
 
         // create formValues store
         that.formValues = {};
@@ -54,4 +53,4 @@ test.TestForm = ( class TestForm extends Tb{
         that.crud.read();
 
     }
-});
+};

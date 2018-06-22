@@ -16,7 +16,8 @@ test.GrandParent = ( class GrandParent extends Tb{
 
     // methods
     init(){
-        var that = this;
+        var that = this,
+            img = $('img', that.target)[0];
 
         $( that.target ).hide();
 
@@ -26,7 +27,7 @@ test.GrandParent = ( class GrandParent extends Tb{
             new tb(
                 'test.Parent',
                 {},
-                that.target.insertBefore( document.createElement('div'), $('img', that.target)[0] )
+                that.target.insertBefore( document.createElement('div'), img )
             );
         }
 
