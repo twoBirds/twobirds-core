@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.52</em>
+            <em>API Docs for: v8.1.53</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.52 - 2018-06-21 */
+/*! twobirds-core - v8.1.53 - 2018-06-22 */
 
 /**
  twoBirds V8 core functionality
@@ -2626,14 +2626,14 @@ tb.assumeTb = (function(pSetter){
             var selection = tb.dom(pParam)
                 .children()
                 .forEach(function(pElement){
-                    var isUndefinedACE = 
+                    var tagName = pElement.tagName.toLowerCase(),
+                        isUndefinedACE = 
                             pElement.nodeType === 1
-                            &amp;&amp; pElement.tagName.indexOf(&#x27;-&#x27;) !== -1
-                            &amp;&amp; !window.customElements.get(pElement.tagName.toLowerCase());
+                            &amp;&amp; tagName.indexOf(&#x27;-&#x27;) !== -1
+                            &amp;&amp; !window.customElements.get(tagName);
 
                     if (isUndefinedACE){
 
-                        tagName = pElement.tagName.toLowerCase();
                         fileName = tagName.split(&#x27;-&#x27;);
                         lastIndex = fileName.length - 1;
 
@@ -2645,16 +2645,14 @@ tb.assumeTb = (function(pSetter){
                         nameSpace = fileName.join(&#x27;.&#x27;);
                         fileName = &#x27;/&#x27;+fileName.join(&#x27;/&#x27;) + &#x27;.js&#x27;;     
 
-                        console.log( tagName, nameSpace, fileName);
+                        var cb = (function( nameSpace, tagName, element ){ return function wrapInACE(){
 
-                        tb.require( fileName )
-                            .then(function wrapInACE(){
-                                console.log(&#x27;define custom element&#x27;);
+                            if( !window.customElements.get(tagName) ){
 
                                 // auto-define autonomous custom element
                                 customElements.define(
                                     tagName, 
-                                    class CustomElement extends HTMLElement{
+                                    class extends HTMLElement{
 
                                         constructor(){
                                             super();
@@ -2662,7 +2660,7 @@ tb.assumeTb = (function(pSetter){
 
                                         static get observedAttributes(){
                                             return Array
-                                                .from( this.attributes )
+                                                .from( element.attributes )
                                                 .map( function(pAttribute){ 
                                                     return pAttribute.name; 
                                                 });
@@ -2670,11 +2668,10 @@ tb.assumeTb = (function(pSetter){
 
                                         connectedCallback(){
                                             var e = new tb(
-                                                tb.namespace(nameSpace).get(),
+                                                tb.namespace(nameSpace).get() || class extends Tb{},
                                                 {},
                                                 this
                                             );
-                                            console.log(&#x27;connectedCallback...&#x27;);
                                             e.trigger(&#x27;connected&#x27;);
                                         }
 
@@ -2692,16 +2689,29 @@ tb.assumeTb = (function(pSetter){
 
                                     }
                                 );
-                            })
-                            .then((function(element){ return function whenLoaded(){ // jshint ignore:line
-                                var outerHTML = element.outerHTML,
-                                    parent = element.parentNode;
-                                // force recreation
-                                parent.replaceChild( 
-                                    element, 
-                                    tb.dom(outerHTML)[0] 
-                                );
-                            };})(pElement));
+
+                            }
+
+                        };})( nameSpace, tagName, pElement );
+
+                        var replace = (function(element){ return function replace(){ // jshint ignore:line
+                            var outerHTML = element.outerHTML,
+                                parent = element.parentNode;
+                            // force recreation
+                            parent.replaceChild( 
+                                element, 
+                                tb.dom(outerHTML)[0] 
+                            );
+                        };})(pElement);
+
+                        if ( !tb.namespace(nameSpace).get() ){
+                            tb.require( fileName )
+                                .then( cb )
+                                .then( replace );
+                        } else {
+                            cb();
+                            replace();
+                        }
                     }
  
                 });
@@ -3338,7 +3348,6 @@ if (typeof module === &#x27;undefined&#x27; ){
                                     // we need to IIFE so the node pointer is copied, 
                                     // otherwise it will only remove the last comment node of that while loop
                                     setTimeout((function(pNode){ return function(){ // jshint ignore:line
-                                        console.log(&#x27;remove&#x27;, pNode);
                                         pNode.remove();
                                     }; })( node ), 0);
                                 }

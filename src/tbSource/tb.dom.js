@@ -606,7 +606,6 @@ if (typeof module === 'undefined' ){
                                     // we need to IIFE so the node pointer is copied, 
                                     // otherwise it will only remove the last comment node of that while loop
                                     setTimeout((function(pNode){ return function(){ // jshint ignore:line
-                                        console.log('remove', pNode);
                                         pNode.remove();
                                     }; })( node ), 0);
                                 }

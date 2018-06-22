@@ -32,28 +32,3 @@ app.Mist = class Mist extends Tb{
     }
 
 };
-
-/* 
-Autonomous Custom Element
-*/
-(function(){ // IIFE hiding ACE class
-
-    class Mist extends HTMLElement{
-
-        constructor(){
-            super();
-        }
-
-        connectedCallback(){
-            new tb(
-                app.Mist,
-                {},
-                this
-            );
-        }
-
-    }
-
-    customElements.define('app-mist', Mist);
-
-})();

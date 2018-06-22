@@ -2535,14 +2535,14 @@ tb.assumeTb = (function(pSetter){
             var selection = tb.dom(pParam)
                 .children()
                 .forEach(function(pElement){
-                    var isUndefinedACE = 
+                    var tagName = pElement.tagName.toLowerCase(),
+                        isUndefinedACE = 
                             pElement.nodeType === 1
-                            && pElement.tagName.indexOf('-') !== -1
-                            && !window.customElements.get(pElement.tagName.toLowerCase());
+                            && tagName.indexOf('-') !== -1
+                            && !window.customElements.get(tagName);
 
                     if (isUndefinedACE){
 
-                        tagName = pElement.tagName.toLowerCase();
                         fileName = tagName.split('-');
                         lastIndex = fileName.length - 1;
 
@@ -2554,16 +2554,14 @@ tb.assumeTb = (function(pSetter){
                         nameSpace = fileName.join('.');
                         fileName = '/'+fileName.join('/') + '.js';     
 
-                        console.log( tagName, nameSpace, fileName);
+                        var cb = (function( nameSpace, tagName, element ){ return function wrapInACE(){
 
-                        tb.require( fileName )
-                            .then(function wrapInACE(){
-                                console.log('define custom element');
+                            if( !window.customElements.get(tagName) ){
 
                                 // auto-define autonomous custom element
                                 customElements.define(
                                     tagName, 
-                                    class CustomElement extends HTMLElement{
+                                    class extends HTMLElement{
 
                                         constructor(){
                                             super();
@@ -2571,7 +2569,7 @@ tb.assumeTb = (function(pSetter){
 
                                         static get observedAttributes(){
                                             return Array
-                                                .from( this.attributes )
+                                                .from( element.attributes )
                                                 .map( function(pAttribute){ 
                                                     return pAttribute.name; 
                                                 });
@@ -2579,11 +2577,10 @@ tb.assumeTb = (function(pSetter){
 
                                         connectedCallback(){
                                             var e = new tb(
-                                                tb.namespace(nameSpace).get(),
+                                                tb.namespace(nameSpace).get() || class extends Tb{},
                                                 {},
                                                 this
                                             );
-                                            console.log('connectedCallback...');
                                             e.trigger('connected');
                                         }
 
@@ -2601,16 +2598,29 @@ tb.assumeTb = (function(pSetter){
 
                                     }
                                 );
-                            })
-                            .then((function(element){ return function whenLoaded(){ // jshint ignore:line
-                                var outerHTML = element.outerHTML,
-                                    parent = element.parentNode;
-                                // force recreation
-                                parent.replaceChild( 
-                                    element, 
-                                    tb.dom(outerHTML)[0] 
-                                );
-                            };})(pElement));
+
+                            }
+
+                        };})( nameSpace, tagName, pElement );
+
+                        var replace = (function(element){ return function replace(){ // jshint ignore:line
+                            var outerHTML = element.outerHTML,
+                                parent = element.parentNode;
+                            // force recreation
+                            parent.replaceChild( 
+                                element, 
+                                tb.dom(outerHTML)[0] 
+                            );
+                        };})(pElement);
+
+                        if ( !tb.namespace(nameSpace).get() ){
+                            tb.require( fileName )
+                                .then( cb )
+                                .then( replace );
+                        } else {
+                            cb();
+                            replace();
+                        }
                     }
  
                 });
