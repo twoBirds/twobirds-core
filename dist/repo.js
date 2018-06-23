@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.54 - 2018-06-22 */
+/*! twobirds-core - v8.1.55 - 2018-06-23 */
 
 // globals
 var test = {},    // repo
@@ -225,14 +225,7 @@ test.GrandChild = ( class GrandChild extends Tb{
         var that = this;
 
         for ( var x=0; x < 2; x++ ) {
-            /*
-            new tb(
-                'test.GreatGrandChild',
-                {},
-                that.target.appendChild( document.createElement('span') )
-            );
-            */
-            that.target.appendChild(document.createElement('test-greatgrandchild'))
+            $(that.target).append('<test-greatgrandchild a b c>');
         }
     }
 });
@@ -246,13 +239,17 @@ test.Greatgrandchild = class extends Tb{
         var that = this;
 
         that.handlers = {
-            init: that.init
+            init: that.init,
+            connected: that.connected,
+            disconnected: that.disconnected,
+            attributeChanged: that.attributeChanged,
+            adopted: that.adopted
         };
 
     }
 
     // omitted if autonomous custom element 
-    static get namespace(){
+    get namespace(){
         return 'test.Greatgrandchild';
     }
 
@@ -281,6 +278,34 @@ test.Greatgrandchild = class extends Tb{
 
         $(that.target).attr('style', 'border-color:'+randomBorderColor() );
 
+    }
+
+    connected(){
+
+        var that = this;
+
+        //console.log('connected', that.target);
+    }
+
+    disconnected(){
+
+        var that = this;
+
+        //console.log('disconnected', that.target);
+    }
+
+    attributeChanged(ev){
+
+        var that = this;
+
+        console.log('attributeChanged', ev.data);
+    }
+
+    adopted(){
+
+        var that = this;
+
+        //console.log('adopted', that.target);
     }
 
 };

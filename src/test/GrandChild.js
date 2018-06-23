@@ -15,14 +15,7 @@ test.GrandChild = ( class GrandChild extends Tb{
         var that = this;
 
         for ( var x=0; x < 2; x++ ) {
-            /*
-            new tb(
-                'test.GreatGrandChild',
-                {},
-                that.target.appendChild( document.createElement('span') )
-            );
-            */
-            that.target.appendChild(document.createElement('test-greatgrandchild'))
+            $(that.target).append('<test-greatgrandchild a b c>');
         }
     }
 });

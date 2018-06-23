@@ -42,5 +42,5 @@ body > form {
 }
 
 form fieldset {
-    float: left;
+    /*float: left;*/
 }

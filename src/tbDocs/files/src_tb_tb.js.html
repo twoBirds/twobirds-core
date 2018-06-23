@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.54</em>
+            <em>API Docs for: v8.1.55</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.54 - 2018-06-22 */
+/*! twobirds-core - v8.1.55 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -2656,6 +2656,7 @@ tb.assumeTb = (function(pSetter){
 
                         if( !window.customElements.get(tagName) ){
 
+                            //console.log(&#x27;define&#x27;, tagName);
                             // auto-define autonomous custom element
                             customElements.define(
                                 tagName, 
@@ -2701,21 +2702,13 @@ tb.assumeTb = (function(pSetter){
 
                     };})( nameSpace, tagName, pElement );
 
-                    // create element replace callback
-                    var replace = (function(element){ return function replace(){ // jshint ignore:line
-                        // force recreation
-                        element.outerHTML = element.outerHTML;
-                    };})(pElement);
-
                     if (isUndefinedACE){
                         //console.log(&#x27;tagName&#x27;, tagName, &#x27;in&#x27;, pElement.parentNode );
                         if ( !hasTbClassCode ){
                             tb.require( fileName )
-                                .then( define )
-                                .then( replace );
+                                .then( define );
                         } else {
                             define();
-                            replace();
                         }
                     }
  

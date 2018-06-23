@@ -2565,6 +2565,7 @@ tb.assumeTb = (function(pSetter){
 
                         if( !window.customElements.get(tagName) ){
 
+                            //console.log('define', tagName);
                             // auto-define autonomous custom element
                             customElements.define(
                                 tagName, 
@@ -2610,21 +2611,13 @@ tb.assumeTb = (function(pSetter){
 
                     };})( nameSpace, tagName, pElement );
 
-                    // create element replace callback
-                    var replace = (function(element){ return function replace(){ // jshint ignore:line
-                        // force recreation
-                        element.outerHTML = element.outerHTML;
-                    };})(pElement);
-
                     if (isUndefinedACE){
                         //console.log('tagName', tagName, 'in', pElement.parentNode );
                         if ( !hasTbClassCode ){
                             tb.require( fileName )
-                                .then( define )
-                                .then( replace );
+                                .then( define );
                         } else {
                             define();
-                            replace();
                         }
                     }
  
