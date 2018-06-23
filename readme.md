@@ -18,7 +18,7 @@ twoBirds supports all targets and web programming use cases, so **using twoBirds
 
 - **add JS functionality to an existing webpage** in the most simple way, no matter which framework was used on the server side ([progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement))
 
-- **build completely encapsuled ACEs ( ([custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements)) )** to use in your own project or deliver as a standalone element to a customers web project.
+- **build completely encapsuled ACEs ( [Autonomous Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) )** to use in your own project or deliver as a standalone element to a customers web project.
 
 - **build a [single page application](https://en.wikipedia.org/wiki/Single-page_application)** from ground up and optionally make it a [progressive web app](https://en.wikipedia.org/wiki/Progressive_Web_Apps)
 
