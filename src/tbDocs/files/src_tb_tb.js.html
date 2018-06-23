@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.66</em>
+            <em>API Docs for: v8.1.67</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.66 - 2018-06-23 */
+/*! twobirds-core - v8.1.67 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1408,29 +1408,30 @@ tb = (function(){
                     if ( that instanceof tb 
                         &amp;&amp; !!that.handlers 
                         &amp;&amp; !!that.handlers[tbEvent.name] 
-                        &amp;&amp; !!that.handlers[tbEvent.name] instanceof Array 
                         &amp;&amp; tbEvent.bubble.indexOf( &#x27;l&#x27; ) &gt; -1 
                     ){
-                        that.handlers[tbEvent.name] = that.handlers[tbEvent.name].reduce(
-                            function( pHandlers, pHandler ){
-                                if ( tbEvent.bubble.indexOf(&#x27;l&#x27;) &gt; -1
-                                    &amp;&amp; !!pHandler
-                                ){
-                                    try{
-                                        if (!tbEvent.__immediateStopped__){
-                                            pHandler.apply(that, [tbEvent]);
-                                        } else {
-                                            pHandlers.push( pHandler );
+                        if ( !!that.handlers[tbEvent.name].reduce ){
+                            that.handlers[tbEvent.name] = that.handlers[tbEvent.name].reduce(
+                                function( pHandlers, pHandler ){
+                                    if ( tbEvent.bubble.indexOf(&#x27;l&#x27;) &gt; -1
+                                        &amp;&amp; !!pHandler
+                                    ){
+                                        try{
+                                            if (!tbEvent.__immediateStopped__){
+                                                pHandler.apply(that, [tbEvent]);
+                                            } else {
+                                                pHandlers.push( pHandler );
+                                            }
+                                        } catch (e){
+                                            console.error(e);
                                         }
-                                    } catch (e){
-                                        console.error(e);
-                                    }
 
-                                    if ( !pHandler.once &amp;&amp; !tbEvent.__immediateStopped__ ) {
-                                        pHandlers.push( pHandler );
-                                    }                                }
-                                return pHandlers;
-                            }, []);
+                                        if ( !pHandler.once &amp;&amp; !tbEvent.__immediateStopped__ ) {
+                                            pHandlers.push( pHandler );
+                                        }                                }
+                                    return pHandlers;
+                                }, []);
+                        }
 
                         if (!that.handlers[tbEvent.name].length){
                             delete that.handlers[tbEvent.name];
