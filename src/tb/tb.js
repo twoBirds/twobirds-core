@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.62 - 2018-06-23 */
+/*! twobirds-core - v8.1.63 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1323,7 +1323,7 @@ tb = (function(){
                     ){
 
                         that.handlers[tbEvent.name] = Array
-                            .from(that.handlers[tbEvent.name])
+                            .from(Reflect.get(that.handlers[tbEvent.name]))
                             .reduce(function( pHandlers, pHandler ){
                                 if ( tbEvent.bubble.indexOf('l') > -1
                                     && !!pHandler
@@ -1344,9 +1344,9 @@ tb = (function(){
                                 return pHandlers;
                             }, []);
 
-                            if (!that.handlers[tbEvent.name].length){
-                                delete that.handlers[tbEvent.name];
-                            }
+                        if (!that.handlers[tbEvent.name].length){
+                            delete that.handlers[tbEvent.name];
+                        }
                     }
 
                     // if event __stopped__ , handling is cancelled
