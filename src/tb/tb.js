@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.60 - 2018-06-23 */
+/*! twobirds-core - v8.1.61 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1322,8 +1322,8 @@ tb = (function(){
                         && tbEvent.bubble.indexOf( 'l' ) > -1 
                     ){
 
-                        that.handlers[tbEvent.name] = that.handlers[tbEvent.name]
-                            .reduce(function( pHandlers, pHandler ){
+                        that.handlers[tbEvent.name] = [].reduce.call( that.handlers[tbEvent.name],
+                            function( pHandlers, pHandler ){
                                 if ( tbEvent.bubble.indexOf('l') > -1
                                     && !!pHandler
                                 ){

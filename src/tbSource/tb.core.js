@@ -1320,8 +1320,8 @@ tb = (function(){
                         && tbEvent.bubble.indexOf( 'l' ) > -1 
                     ){
 
-                        that.handlers[tbEvent.name] = that.handlers[tbEvent.name]
-                            .reduce(function( pHandlers, pHandler ){
+                        that.handlers[tbEvent.name] = [].reduce.call( that.handlers[tbEvent.name],
+                            function( pHandlers, pHandler ){
                                 if ( tbEvent.bubble.indexOf('l') > -1
                                     && !!pHandler
                                 ){
