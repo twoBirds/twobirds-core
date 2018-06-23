@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.57</em>
+            <em>API Docs for: v8.1.58</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.57 - 2018-06-23 */
+/*! twobirds-core - v8.1.58 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1524,12 +1524,11 @@ tb = (function(){
                                 that.handlers = {};
                             }
 
-                            setTimeout(function(){ // Refflect uses a timeout to actually set the property
-                                if ( !Reflect.get( that.handlers, pThisEventName ) ){
-                                    that.handlers[ pThisEventName ] = [ pHandler ];
-                                } else {
-                                    that.handlers[ pThisEventName ].push( pHandler );
+                            setTimeout(function(){ // Reflect uses a timeout to actually set the property
+                                if ( false === Reflect.get( that.handlers, pThisEventName ) instanceof Array){
+                                    that.handlers[ pThisEventName ] = [];
                                 }
+                                that.handlers[ pThisEventName ].push( pHandler );
                             },0);
 
                         }

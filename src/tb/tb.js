@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.57 - 2018-06-23 */
+/*! twobirds-core - v8.1.58 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1435,12 +1435,11 @@ tb = (function(){
                                 that.handlers = {};
                             }
 
-                            setTimeout(function(){ // Refflect uses a timeout to actually set the property
-                                if ( !Reflect.get( that.handlers, pThisEventName ) ){
-                                    that.handlers[ pThisEventName ] = [ pHandler ];
-                                } else {
-                                    that.handlers[ pThisEventName ].push( pHandler );
+                            setTimeout(function(){ // Reflect uses a timeout to actually set the property
+                                if ( false === Reflect.get( that.handlers, pThisEventName ) instanceof Array){
+                                    that.handlers[ pThisEventName ] = [];
                                 }
+                                that.handlers[ pThisEventName ].push( pHandler );
                             },0);
 
                         }
