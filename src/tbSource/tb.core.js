@@ -1317,13 +1317,11 @@ tb = (function(){
                     if ( that instanceof tb 
                         && !!that.handlers 
                         && !!that.handlers[tbEvent.name] 
+                        && !!that.handlers[tbEvent.name] instanceof Array 
                         && tbEvent.bubble.indexOf( 'l' ) > -1 
                     ){
-                        console.log( tbEvent.name, that.handlers);
-
-                        that.handlers[tbEvent.name] = Array
-                            .from(that.handlers[tbEvent.name])
-                            .reduce(function( pHandlers, pHandler ){
+                        that.handlers[tbEvent.name] = that.handlers[tbEvent.name].reduce(
+                            function( pHandlers, pHandler ){
                                 if ( tbEvent.bubble.indexOf('l') > -1
                                     && !!pHandler
                                 ){
