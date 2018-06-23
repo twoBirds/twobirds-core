@@ -1320,8 +1320,9 @@ tb = (function(){
                         && tbEvent.bubble.indexOf( 'l' ) > -1 
                     ){
 
-                        that.handlers[tbEvent.name] = [].reduce.call( that.handlers[tbEvent.name],
-                            function( pHandlers, pHandler ){
+                        that.handlers[tbEvent.name] = Array
+                            .from(that.handlers[tbEvent.name])
+                            .reduce(function( pHandlers, pHandler ){
                                 if ( tbEvent.bubble.indexOf('l') > -1
                                     && !!pHandler
                                 ){
@@ -1429,7 +1430,7 @@ tb = (function(){
                     eventNames.forEach(
                         function(pThisEventName){
 
-                            if ( !Reflect.get( that, 'handlers' ) ){
+                            if ( !Reflect.get( that, 'handlers' ) ){ 
                                 that.handlers = {};
                             }
 

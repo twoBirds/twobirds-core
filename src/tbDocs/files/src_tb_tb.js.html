@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.1.61</em>
+            <em>API Docs for: v8.1.62</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.1.61 - 2018-06-23 */
+/*! twobirds-core - v8.1.62 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1411,8 +1411,9 @@ tb = (function(){
                         &amp;&amp; tbEvent.bubble.indexOf( &#x27;l&#x27; ) &gt; -1 
                     ){
 
-                        that.handlers[tbEvent.name] = [].reduce.call( that.handlers[tbEvent.name],
-                            function( pHandlers, pHandler ){
+                        that.handlers[tbEvent.name] = Array
+                            .from(that.handlers[tbEvent.name])
+                            .reduce(function( pHandlers, pHandler ){
                                 if ( tbEvent.bubble.indexOf(&#x27;l&#x27;) &gt; -1
                                     &amp;&amp; !!pHandler
                                 ){
@@ -1520,7 +1521,7 @@ tb = (function(){
                     eventNames.forEach(
                         function(pThisEventName){
 
-                            if ( !Reflect.get( that, &#x27;handlers&#x27; ) ){
+                            if ( !Reflect.get( that, &#x27;handlers&#x27; ) ){ 
                                 that.handlers = {};
                             }
 
