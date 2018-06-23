@@ -1437,9 +1437,7 @@ tb = (function(){
                                 that.handlers[ pThisEventName ] = [];
                             }
 
-                            setTimeout(function(){ // Reflect uses a timeout to actually set the property
-                                that.handlers[ pThisEventName ].push( pHandler );
-                            },0);
+                            [].push.call( that.handlers[ pThisEventName ], pHandler );
 
                         }
                     );

@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.59 - 2018-06-23 */
+/*! twobirds-core - v8.1.60 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1439,9 +1439,7 @@ tb = (function(){
                                 that.handlers[ pThisEventName ] = [];
                             }
 
-                            setTimeout(function(){ // Reflect uses a timeout to actually set the property
-                                that.handlers[ pThisEventName ].push( pHandler );
-                            },0);
+                            [].push.call( that.handlers[ pThisEventName ], pHandler );
 
                         }
                     );
