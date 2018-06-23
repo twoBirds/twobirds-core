@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.63 - 2018-06-23 */
+/*! twobirds-core - v8.1.64 - 2018-06-23 */
 
 /**
  twoBirds V8 core functionality
@@ -1321,28 +1321,29 @@ tb = (function(){
                         && !!that.handlers[tbEvent.name] 
                         && tbEvent.bubble.indexOf( 'l' ) > -1 
                     ){
-
-                        that.handlers[tbEvent.name] = Array
-                            .from(Reflect.get(that.handlers[tbEvent.name]))
-                            .reduce(function( pHandlers, pHandler ){
-                                if ( tbEvent.bubble.indexOf('l') > -1
-                                    && !!pHandler
-                                ){
-                                    try{
-                                        if (!tbEvent.__immediateStopped__){
-                                            pHandler.apply(that, [tbEvent]);
-                                        } else {
-                                            pHandlers.push( pHandler );
+                        if ( !!that.handlers[tbEvent.name].length ){
+                            that.handlers[tbEvent.name] = Array
+                                .from(Reflect.get(that.handlers[tbEvent.name]))
+                                .reduce(function( pHandlers, pHandler ){
+                                    if ( tbEvent.bubble.indexOf('l') > -1
+                                        && !!pHandler
+                                    ){
+                                        try{
+                                            if (!tbEvent.__immediateStopped__){
+                                                pHandler.apply(that, [tbEvent]);
+                                            } else {
+                                                pHandlers.push( pHandler );
+                                            }
+                                        } catch (e){
+                                            console.error(e);
                                         }
-                                    } catch (e){
-                                        console.error(e);
-                                    }
 
-                                    if ( !pHandler.once && !tbEvent.__immediateStopped__ ) {
-                                        pHandlers.push( pHandler );
-                                    }                                }
-                                return pHandlers;
-                            }, []);
+                                        if ( !pHandler.once && !tbEvent.__immediateStopped__ ) {
+                                            pHandlers.push( pHandler );
+                                        }                                }
+                                    return pHandlers;
+                                }, []);
+                        }
 
                         if (!that.handlers[tbEvent.name].length){
                             delete that.handlers[tbEvent.name];
