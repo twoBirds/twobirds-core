@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.70 - 2018-06-23 */
+/*! twobirds-core - v8.1.71 - 2018-06-24 */
 
 /**
  twoBirds V8 core functionality
@@ -2587,8 +2587,16 @@ tb.assumeTb = (function(pSetter){
                                     }
 
                                     connectedCallback(){
-                                        var e = new tb(
-                                            tb.namespace(nameSpace).get() || class extends Tb{}, // jshint ignore:line
+                                        var c = tb.namespace(nameSpace).get() 
+                                                || class extends Tb{ // jshint ignore:line
+                                                    constructor(){ super(); }
+                                                },
+                                            e;
+                                        
+                                        c.prototype.namespace = nameSpace;
+
+                                        e = new tb(
+                                            c,
                                             {},
                                             this
                                         );

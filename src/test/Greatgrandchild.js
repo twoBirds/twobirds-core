@@ -15,11 +15,6 @@ test.Greatgrandchild = class extends Tb{
 
     }
 
-    // omitted if autonomous custom element 
-    get namespace(){
-        return 'test.Greatgrandchild';
-    }
-
     // methods
     init(){
 

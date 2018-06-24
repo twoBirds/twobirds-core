@@ -2585,8 +2585,16 @@ tb.assumeTb = (function(pSetter){
                                     }
 
                                     connectedCallback(){
-                                        var e = new tb(
-                                            tb.namespace(nameSpace).get() || class extends Tb{}, // jshint ignore:line
+                                        var c = tb.namespace(nameSpace).get() 
+                                                || class extends Tb{ // jshint ignore:line
+                                                    constructor(){ super(); }
+                                                },
+                                            e;
+                                        
+                                        c.prototype.namespace = nameSpace;
+
+                                        e = new tb(
+                                            c,
                                             {},
                                             this
                                         );

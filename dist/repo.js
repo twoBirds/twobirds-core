@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.70 - 2018-06-23 */
+/*! twobirds-core - v8.1.71 - 2018-06-24 */
 
 // globals
 var test = {},    // repo
@@ -246,11 +246,6 @@ test.Greatgrandchild = class extends Tb{
             adopted: that.adopted
         };
 
-    }
-
-    // omitted if autonomous custom element 
-    get namespace(){
-        return 'test.Greatgrandchild';
     }
 
     // methods
