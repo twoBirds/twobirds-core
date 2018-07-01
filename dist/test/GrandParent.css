@@ -1,25 +1,22 @@
-[class*="parent"],
+[data-tb~="test.GrandParent"] {
+  border: 0px none;
+  background-color: #eaf8f8;
+}
+
+[data-tb*="Parent"],
 .jasmine_html-reporter {
   padding: 2px;
   margin: 2px;
   border: 1px solid black;
+  display: block;
 }
 
-[class*="child"],
+[data-tb*="Child"],
 test-greatgrandchild {
   display: inline-block;
   padding: 2px;
   margin: 2px;
   border: 1px solid darkslategray; 
-}
-
-.test-grandparent {
-	border: 0px none;
-  background-color: #eaf8f8;
-}
-
-.test-parent {
-	display: block;
 }
 
 .jasmine_html-reporter {

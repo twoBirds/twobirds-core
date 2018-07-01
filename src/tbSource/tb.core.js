@@ -368,17 +368,6 @@ tb = (function(){
                     tbInstance.target.tb = tbInstance.target['tb'] || {};
                     tbInstance.target.tb[tbInstance.namespace] = tbInstance;
 
-                    // if element does not reside in the DOM <head> add class
-                    var dom = tb.dom( tbInstance.target );
-                    if ( tbInstance.target.nodeName !== 'head'
-                        && dom.parents().toArray().indexOf( document.head ) === -1
-                        && tbInstance.target.tagName.split('').indexOf('-') === -1
-                        && !!tbInstance['namespace']
-                        && tbInstance.namespace.replace(/\./g, '-').toUpperCase() !== tbInstance.target.tagName
-                    ){
-                        dom.addClass( tbInstance.namespace.replace( /\./g, '-').toLowerCase() );
-                    }
-
                     // add namespace to DOM "data-tb" attribute
                     if ( !!tbInstance.target && !!tbInstance.target['nodeType'] ){
                         var dataTb = tbInstance.target.getAttribute( 'data-tb' );

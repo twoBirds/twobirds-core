@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.73 - 2018-06-25 */
+/*! twobirds-core - v8.2.0 - 2018-07-01 */
 
 /**
  twoBirds V8 core functionality
@@ -369,17 +369,6 @@ tb = (function(){
                     // put tb instance in dom node
                     tbInstance.target.tb = tbInstance.target['tb'] || {};
                     tbInstance.target.tb[tbInstance.namespace] = tbInstance;
-
-                    // if element does not reside in the DOM <head> add class
-                    var dom = tb.dom( tbInstance.target );
-                    if ( tbInstance.target.nodeName !== 'head'
-                        && dom.parents().toArray().indexOf( document.head ) === -1
-                        && tbInstance.target.tagName.split('').indexOf('-') === -1
-                        && !!tbInstance['namespace']
-                        && tbInstance.namespace.replace(/\./g, '-').toUpperCase() !== tbInstance.target.tagName
-                    ){
-                        dom.addClass( tbInstance.namespace.replace( /\./g, '-').toLowerCase() );
-                    }
 
                     // add namespace to DOM "data-tb" attribute
                     if ( !!tbInstance.target && !!tbInstance.target['nodeType'] ){

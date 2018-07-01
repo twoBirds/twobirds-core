@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.1.73 - 2018-06-25 */
+/*! twobirds-core - v8.2.0 - 2018-07-01 */
 
 // globals
 var test = {},    // repo
@@ -43,10 +43,8 @@ test.GrandParent = ( class GrandParent extends Tb{
 
         // when all children have run their inits
         that.on(
-            'ready', 
-            function(ev){ 
-                $( that.target ).show();
-            }, 
+            'ready',
+            () => $( that.target ).show(), 
             true
         );
 

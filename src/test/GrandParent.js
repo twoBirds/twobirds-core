@@ -33,10 +33,8 @@ test.GrandParent = ( class GrandParent extends Tb{
 
         // when all children have run their inits
         that.on(
-            'ready', 
-            function(ev){ 
-                $( that.target ).show();
-            }, 
+            'ready',
+            () => $( that.target ).show(), 
             true
         );
 
