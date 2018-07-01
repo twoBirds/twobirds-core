@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.2.1 - 2018-07-01 */
+/*! twobirds-core - v8.2.2 - 2018-07-01 */
 
 /**
  twoBirds V8 core functionality

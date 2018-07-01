@@ -42,5 +42,6 @@ body > form {
 }
 
 form fieldset {
-    /*float: left;*/
+    border: 1px solid darkslategrey;
+    border-radius: 3px;
 }
