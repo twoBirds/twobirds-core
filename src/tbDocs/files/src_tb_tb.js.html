@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.2.0</em>
+            <em>API Docs for: v8.2.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.2.0 - 2018-07-01 */
+/*! twobirds-core - v8.2.1 - 2018-07-01 */
 
 /**
  twoBirds V8 core functionality
@@ -3183,7 +3183,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                             }
                         );
                         setTimeout(function(){
-                            tb.assumeTb( pDomNode );
+                            tb.attach( pDomNode );      // UBEs
+                            tb.assumeTb( pDomNode );    // AACEs
                         },0);
                     }
                 );
@@ -3213,7 +3214,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                 }
 
                 setTimeout(function(){
-                    tb.assumeTb( pElement );
+                    tb.attach( pElement );      // UBEs
+                    tb.assumeTb( pElement );    // AACEs
                 },0);
 
                 return that;
@@ -3589,7 +3591,8 @@ if (typeof module === &#x27;undefined&#x27; ){
                 );
 
                 setTimeout(function(){
-                    tb.assumeTb( pTarget );
+                    tb.attach( pTarget );      // UBEs
+                    tb.assumeTb( pTarget );    // AACEs
                 },0);
 
                 return that;
@@ -3624,8 +3627,10 @@ if (typeof module === &#x27;undefined&#x27; ){
                     }
                 );
 
-                tb.dom( pTarget ).clean();
-                tb.assumeTb( pTarget );
+                setTimeout(function(){
+                    tb.attach( pTarget );      // UBEs
+                    tb.assumeTb( pTarget );    // AACEs
+                },0);
 
                 return that;
             }

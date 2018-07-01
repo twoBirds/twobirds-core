@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.2.0 - 2018-07-01 */
+/*! twobirds-core - v8.2.1 - 2018-07-01 */
 
 (function(){
 'use strict';var h=new function(){};var aa=new Set("annotation-xml color-profile font-face font-face-src font-face-uri font-face-format font-face-name missing-glyph".split(" "));function m(b){var a=aa.has(b);b=/^[a-z][.0-9_a-z]*-[\-.0-9_a-z]*$/.test(b);return!a&&b}function n(b){var a=b.isConnected;if(void 0!==a)return a;for(;b&&!(b.__CE_isImportDocument||b instanceof Document);)b=b.parentNode||(window.ShadowRoot&&b instanceof ShadowRoot?b.host:void 0);return!(!b||!(b.__CE_isImportDocument||b instanceof Document))}
@@ -42,7 +42,7 @@ var Z=window.customElements;if(!Z||Z.forcePolyfill||"function"!=typeof Z.define|
 //# sourceMappingURL=custom-elements.min.js.map
 
 
-/*! twobirds-core - v8.2.0 - 2018-07-01 */
+/*! twobirds-core - v8.2.1 - 2018-07-01 */
 
 /**
  twoBirds V8 core functionality
@@ -3138,7 +3138,8 @@ if (typeof module === 'undefined' ){
                             }
                         );
                         setTimeout(function(){
-                            tb.assumeTb( pDomNode );
+                            tb.attach( pDomNode );      // UBEs
+                            tb.assumeTb( pDomNode );    // AACEs
                         },0);
                     }
                 );
@@ -3168,7 +3169,8 @@ if (typeof module === 'undefined' ){
                 }
 
                 setTimeout(function(){
-                    tb.assumeTb( pElement );
+                    tb.attach( pElement );      // UBEs
+                    tb.assumeTb( pElement );    // AACEs
                 },0);
 
                 return that;
@@ -3544,7 +3546,8 @@ if (typeof module === 'undefined' ){
                 );
 
                 setTimeout(function(){
-                    tb.assumeTb( pTarget );
+                    tb.attach( pTarget );      // UBEs
+                    tb.assumeTb( pTarget );    // AACEs
                 },0);
 
                 return that;
@@ -3579,8 +3582,10 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
-                tb.dom( pTarget ).clean();
-                tb.assumeTb( pTarget );
+                setTimeout(function(){
+                    tb.attach( pTarget );      // UBEs
+                    tb.assumeTb( pTarget );    // AACEs
+                },0);
 
                 return that;
             }

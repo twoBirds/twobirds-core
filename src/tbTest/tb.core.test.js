@@ -174,8 +174,8 @@ describe("tb.core.js", function() {
 
         describe(".concat()", function() {
 
-            it("tb('body').concat( tb( 'div.test-parent' )[0] ).length === 2", function() {
-                var a = tb('body').concat( tb( 'div.test-parent' )[0] );
+            it("tb('body').concat( tb( '[data-tb~=\"test.Parent\"]' )[0] ).length === 2", function() {
+                var a = tb('body').concat( tb( '[data-tb~="test.Parent"]' )[0] );
                 expect( a.length === 2 ).toBe( true );
             });
 
@@ -187,35 +187,35 @@ describe("tb.core.js", function() {
                 expect( tb('body').descendants() instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants('div.test-parent,span,test-greatgrandchild').length === 505", function() {
-                expect( tb('body').descendants('div.test-parent,span,test-greatgrandchild').length === 505 ).toBe( true );
+            it("tb('body').descendants('[data-tb~=\"test.Parent\"],span,test-greatgrandchild').length === 505", function() {
+                expect( tb('body').descendants('[data-tb~="test.Parent"],span,test-greatgrandchild').length === 505 ).toBe( true );
             });
 
             it("tb('body').descendants('div') instanceof tb.Selector", function() {
                 expect( tb('body').descendants('div') instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants('div.test-parent').length === 5", function() {
-                expect( tb('body').descendants('.test-parent').length === 5 ).toBe( true );
+            it("tb('body').descendants('[data-tb~=\"test.Parent\"]').length === 5", function() {
+                expect( tb('body').descendants('[data-tb~="test.Parent"]').length === 5 ).toBe( true );
             });
 
             it("tb('body').descendants('span') instanceof tb.Selector", function() {
                 expect( tb('body').descendants('span') instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb('body').descendants('div.test-parent span,test-greatgrandchild').length === 500", function() {
-                expect( tb('body').descendants('div.test-parent span,test-greatgrandchild').length === 500 ).toBe( true );
+            it("tb('body').descendants('[data-tb~=\"test.Parent\"] span,test-greatgrandchild').length === 500", function() {
+                expect( tb('body').descendants('[data-tb~="test.Parent"] span,test-greatgrandchild').length === 500 ).toBe( true );
             });
 
         });
 
         describe(".every()", function() {
 
-            it("tb( 'div.test-parent' ).every()", function() {
+            it("tb( '[data-tb~=\"test.Parent\"]' ).every()", function() {
                 var f = function(e){
                         return e.namespace === 'test.Parent';
                     },
-                    a = tb( 'div.test-parent' ).every( f );
+                    a = tb( '[data-tb~="test.Parent"]' ).every( f );
                 expect( a ).toBe( true );
             });
 
@@ -255,8 +255,8 @@ describe("tb.core.js", function() {
 
         describe(".flush()", function() {
 
-            it("tb( 'div.test-parent' ).flush().length === 0", function() {
-                expect( tb( 'div.test-parent' ).flush().length === 0 ).toBe( true );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).flush().length === 0", function() {
+                expect( tb( '[data-tb~="test.Parent"]' ).flush().length === 0 ).toBe( true );
             });
 
         });
@@ -264,7 +264,7 @@ describe("tb.core.js", function() {
         describe(".forEach()", function() {
 
             it("forEach()", function() {
-                var a = tb( 'div.test-parent' );
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.forEach(function(e){
                     e.testProp = 'testForEach';
                 });
@@ -278,8 +278,8 @@ describe("tb.core.js", function() {
 
         describe(".indexOf()", function() {
 
-            it("tb( 'div.test-parent').indexOf( tb('div.test-parent')[0] ) === 0", function() {
-                expect( tb( 'div.test-parent').indexOf( tb( 'div.test-parent')[0] ) === 0 ).toBe( true );
+            it("tb( '[data-tb~=\"test.Parent\"]').indexOf( tb('[data-tb~=\"test.Parent\"]')[0] ) === 0", function() {
+                expect( tb( '[data-tb~="test.Parent"]').indexOf( tb( '[data-tb~="test.Parent"]')[0] ) === 0 ).toBe( true );
             });
 
         });
@@ -514,8 +514,8 @@ describe("tb.core.js", function() {
 
         describe(".pop()", function() {
 
-            it("tb( 'div.test-parent' ).pop() instanceof tb", function() {
-                var a = tb( 'div.test-parent' ),
+            it("tb( '[data-tb~=\"test.Parent\"]' ).pop() instanceof tb", function() {
+                var a = tb( '[data-tb~="test.Parent"]' ),
                     b = a.pop();
                 expect( b instanceof tb ).toBe( true );
             });
@@ -544,8 +544,8 @@ describe("tb.core.js", function() {
 
         describe(".push()", function() {
 
-            it("tb( 'div.test-parent' ).push( tb( document.body )[0] )", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).push( tb( document.body )[0] )", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.push( tb( document.body )[0] );
                 expect( a.length === 6 ).toBe( true );
             });
@@ -554,12 +554,12 @@ describe("tb.core.js", function() {
 
         describe(".reduce()", function() {
 
-            it("tb( 'div.test-parent' ).reduce(...)", function() {
+            it("tb( '[data-tb~=\"test.Parent\"]' ).reduce(...)", function() {
                 var x,
                     f = function( p ){
                         return p+1;
                     },
-                    a = tb( 'div.test-parent' );
+                    a = tb( '[data-tb~="test.Parent"]' );
 
                 x = a.reduce( f, 0 );
 
@@ -570,12 +570,12 @@ describe("tb.core.js", function() {
 
         describe(".reduceRight()", function() {
 
-            it("tb( 'div.test-parent' ).reduceRight(...)", function() {
+            it("tb( '[data-tb~=\"test.Parent\"]' ).reduceRight(...)", function() {
                 var x,
                     f = function( p ){
                         return p+2;
                     },
-                    a = tb( 'div.test-parent' );
+                    a = tb( '[data-tb~="test.Parent"]' );
 
                 x = a.reduceRight( f, 0 );
 
@@ -586,22 +586,22 @@ describe("tb.core.js", function() {
 
         describe(".reverse()", function() {
 
-            it("tb( 'div.test-parent' ).reverse()", function() {
-                expect( tb( 'div.test-parent' ).reverse()[0] === tb( 'div.test-parent' )[4] ).toBe( true );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).reverse()", function() {
+                expect( tb( '[data-tb~="test.Parent"]' ).reverse()[0] === tb( '[data-tb~="test.Parent"]' )[4] ).toBe( true );
             });
 
         });
 
         describe(".shift()", function() {
 
-            it("tb( 'div.test-parent' ).shift() instanceof tb", function() {
-                var a = tb( 'div.test-parent' ),
+            it("tb( '[data-tb~=\"test.Parent\"]' ).shift() instanceof tb", function() {
+                var a = tb( '[data-tb~="test.Parent"]' ),
                     b = a.shift();
                 expect( b instanceof tb ).toBe( true );
             });
 
-            it("tb( 'div.test-parent' ).shift() : selector has .length 4 afterwards", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).shift() : selector has .length 4 afterwards", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
 
                 a.shift();
 
@@ -612,23 +612,23 @@ describe("tb.core.js", function() {
 
         describe(".slice()", function() {
 
-            it("tb( 'div.test-parent' ).slice( 1, 3 )[0] === tb( 'div.test-parent' )[1]", function() {
-                expect( tb( 'div.test-parent' ).slice( 1, 3 )[0] === tb( 'div.test-parent' )[1] ).toBe( true );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).slice( 1, 3 )[0] === tb( '[data-tb~=\"test.Parent\"]' )[1]", function() {
+                expect( tb( '[data-tb~="test.Parent"]' ).slice( 1, 3 )[0] === tb( '[data-tb~="test.Parent"]' )[1] ).toBe( true );
             });
 
-            it("tb( 'div.test-parent' ).slice( 1, 3 )[1] === tb( 'div.test-parent' )[2]", function() {
-                expect( tb( 'div.test-parent' ).slice( 1, 3 )[1] === tb( 'div.test-parent' )[2] ).toBe( true );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).slice( 1, 3 )[1] === tb( '[data-tb~=\"test.Parent\"]' )[2]", function() {
+                expect( tb( '[data-tb~="test.Parent"]' ).slice( 1, 3 )[1] === tb( '[data-tb~="test.Parent"]' )[2] ).toBe( true );
             });
 
         });
 
         describe(".some()", function() {
 
-            it("tb( 'div.test-parent' ).some(...)", function() {
+            it("tb( '[data-tb~=\"test.Parent\"]' ).some(...)", function() {
                 var f = function(e, i){
                         return i === 3;
                     },
-                    a = tb( 'div.test-parent' ).some( f );
+                    a = tb( '[data-tb~="test.Parent"]' ).some( f );
                 expect( a ).toBe( true );
             });
 
@@ -636,26 +636,26 @@ describe("tb.core.js", function() {
 
         describe(".splice()", function() {
 
-            it("tb( 'div.test-parent' ).slice(...) instanceof tb.Selector", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).slice(...) instanceof tb.Selector", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.splice( 1, 1 , tb( document.body )[0]);
                 expect( a instanceof tb.Selector ).toBe( true );
             });
 
-            it("tb( 'div.test-parent' ).splice( 1, 1 , tb( document.body )[0] ) deleted element", function() {
-                var a = tb( 'div.test-parent' ),
+            it("tb( '[data-tb~=\"test.Parent\"]' ).splice( 1, 1 , tb( document.body )[0] ) deleted element", function() {
+                var a = tb( '[data-tb~="test.Parent"]' ),
                     b = a.splice( 1, 1 , tb( document.body )[0] )[0];
-                expect( b === tb( 'div.test-parent' )[1] ).toBe( true );
+                expect( b === tb( '[data-tb~="test.Parent"]' )[1] ).toBe( true );
             });
 
-            it("tb( 'div.test-parent' ).splice( 1, 1 , tb( document.body )[0] ).length === 5", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).splice( 1, 1 , tb( document.body )[0] ).length === 5", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.splice( 1, 1 , tb( document.body )[0]);
                 expect( a.length === 5 ).toBe( true );
             });
 
-            it("tb( 'div.test-parent' ).splice( 1, 1 , tb( document.body )[0] ) inserted element", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).splice( 1, 1 , tb( document.body )[0] ) inserted element", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.splice( 1, 1 , tb( document.body )[0]);
                 expect( a[1] === tb( document.body )[0] ).toBe( true );
             });
@@ -891,20 +891,20 @@ describe("tb.core.js", function() {
 
         describe(".unshift()", function() {
 
-            it("tb( 'div.test-parent' ).unshift( tb( document.body )[0], tb( test.Child )[0] )", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).unshift( tb( document.body )[0], tb( test.Child )[0] )", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.unshift( tb( document.body )[0], tb( test.Child )[0] );
                 expect( a.length === 7 ).toBe( true );
             });
 
-            it("tb( 'div.test-parent' ).unshift( tb( document.body )[0], tb( test.Child )[0] )[0]", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).unshift( tb( document.body )[0], tb( test.Child )[0] )[0]", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.unshift( tb( document.body )[0], tb( test.Child )[0] );
                 expect( a[0] === tb( document.body )[0] ).toBe( true );
             });
 
-            it("tb( 'div.test-parent' ).unshift(tb( document.body )[0], tb( test.Child )[0] )[1]", function() {
-                var a = tb( 'div.test-parent' );
+            it("tb( '[data-tb~=\"test.Parent\"]' ).unshift(tb( document.body )[0], tb( test.Child )[0] )[1]", function() {
+                var a = tb( '[data-tb~="test.Parent"]' );
                 a.unshift( tb( document.body )[0], tb( test.Child )[0] );
                 expect( a[1] === tb( test.Child )[0] ).toBe( true );
             });

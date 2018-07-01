@@ -23,11 +23,11 @@ describe("tb.dom() selector tests", function() {
             });
 
             it("tb.dom('div') is DOM node", function() {
-                expect( !!tb.dom('div.test-parent')[0].nodeType ).toBe( true );
+                expect( !!tb.dom('div')[0].nodeType ).toBe( true );
             });
 
-            it("tb.dom('div.test-parent') to have .length 5", function() {
-                expect( tb.dom('div.test-parent').length === 5 ).toBe( true );
+            it("tb.dom('[data-tb~=\"test.Parent\"]') to have .length 5", function() {
+                expect( tb.dom('[data-tb~="test.Parent"]').length === 5 ).toBe( true );
             });
 
         });
@@ -58,8 +58,8 @@ describe("tb.dom() selector tests", function() {
                 expect( !!tb.dom( tb.dom( 'div') )[0].nodeType ).toBe( true );
             });
 
-            it("tb.dom( tb.dom( 'div.test-parent' ) ) has .length 5", function() {
-                expect( tb.dom( tb.dom( 'div.test-parent') ).length === 5 ).toBe( true );
+            it("tb.dom( tb.dom( '[data-tb~=\"test.Parent\"]' ) ) has .length 5", function() {
+                expect( tb.dom( tb.dom( '[data-tb~="test.Parent"]') ).length === 5 ).toBe( true );
             });
 
         });
@@ -70,21 +70,21 @@ describe("tb.dom() selector tests", function() {
                 expect( tb.dom([ document.body ]).length === 1 ).toBe( true );
             });
 
-            it("tb.dom( [ document.body, 'div.test-parent' ] ) to have .length 6", function() {
-                expect( tb.dom([ document.body, 'div.test-parent' ]).length === 6 ).toBe( true );
+            it("tb.dom( [ document.body, '[data-tb~=\"test.Parent\"]' ] ) to have .length 6", function() {
+                expect( tb.dom([ document.body, '[data-tb~="test.Parent"]' ]).length === 6 ).toBe( true );
             });
 
-            it("tb.dom( [ document.body, 'div.test-parent', 'body' ] ) to have .length 6", function() {
+            it("tb.dom( [ document.body, '[data-tb~=\"test.Parent\"]', 'body' ] ) to have .length 6", function() {
                 // should be 6, not 7 due to uniqueness of result ( 'body' === document.body )
-                expect( tb.dom([ document.body, 'div.test-parent', 'body' ]).length === 6 ).toBe( true );
+                expect( tb.dom([ document.body, '[data-tb~="test.Parent"]', 'body' ]).length === 6 ).toBe( true );
             });
 
-            it("tb.dom( [ document.body, 'div.test-parent' ] )[0] to be document.body DOM node", function() {
-                expect( tb.dom([ document.body, 'div.test-parent' ])[0] === document.body ).toBe( true );
+            it("tb.dom( [ document.body, '[data-tb~=\"test.Parent\"]' ] )[0] to be document.body DOM node", function() {
+                expect( tb.dom([ document.body, '[data-tb~="test.Parent"]' ])[0] === document.body ).toBe( true );
             });
 
-            it("tb.dom( [ document.body, 'div.test-parent' ] )[1] is a div", function() {
-                expect( tb.dom([ document.body, 'div.test-parent' ])[1].tagName === 'DIV' ).toBe( true );
+            it("tb.dom( [ document.body, '[data-tb~=\"test.Parent\"]' ] )[1] is a div", function() {
+                expect( tb.dom([ document.body, '[data-tb~="test.Parent"]' ])[1].tagName === 'DIV' ).toBe( true );
             });
 
         });
@@ -103,12 +103,12 @@ describe("tb.dom() selector tests", function() {
 
         describe(".add()", function() {
 
-            it("tb.dom('body').add('div.test-parent').length === 6", function() {
-                expect( tb.dom('body').add('div.test-parent').length === 6 ).toBe( true );
+            it("tb.dom('body').add('[data-tb~=\"test.Parent\"]').length === 6", function() {
+                expect( tb.dom('body').add('[data-tb~="test.Parent"]').length === 6 ).toBe( true );
             });
 
-            it("tb.dom('body').add('span.test-grandchild, span.test-greatgrandchild, test-greatgrandchild').length === 451", function() {
-                expect( tb.dom('body').add('span.test-grandchild,span.test-greatgrandchild,test-greatgrandchild').length === 451 ).toBe( true );
+            it("tb.dom('body').add('[data-tb~=\"test.GrandChild\"],test-greatgrandchild').length === 451", function() {
+                expect( tb.dom('body').add('[data-tb~="test.GrandChild"],test-greatgrandchild').length === 451 ).toBe( true );
             });
 
         });
@@ -126,13 +126,13 @@ describe("tb.dom() selector tests", function() {
                 expect( tb.dom('body')[0].getAttribute('class').split(' ').indexOf( 'test3class' ) > -1 ).toBe( true );
             });
 
-            it("tb.dom('body') contains 4 classes now", function() {
-                expect( tb.dom('body')[0].getAttribute('class').split(' ').length === 4 ).toBe( true );
+            it("tb.dom('body') contains 3 classes now", function() {
+                expect( tb.dom('body')[0].getAttribute('class').split(' ').length === 3 ).toBe( true );
             });
 
             it("tb.dom('body') remove test classes", function() {
                 tb.dom('body').removeClass( 'test1class test2class test3class' );
-                expect( tb.dom('body')[0].getAttribute('class').split( ' ' ).length === 1 ).toBe( true );
+                expect( !tb.dom('body')[0].getAttribute('class') ).toBe( true );
             });
 
         });
@@ -214,8 +214,8 @@ describe("tb.dom() selector tests", function() {
                 expect( tb.dom('body').children().length === 8 ).toBe( true );
             });
 
-            it("tb.dom('body').children('div.test-parent').length === 5", function() {
-                expect( tb.dom('body').children('div.test-parent').length === 5 ).toBe( true );
+            it("tb.dom('body').children('[data-tb~=\"test.Parent\"]').length === 5", function() {
+                expect( tb.dom('body').children('[data-tb~="test.Parent"]').length === 5 ).toBe( true );
             });
 
             it("tb.dom('body').children('span').length === 0", function() {
@@ -226,8 +226,8 @@ describe("tb.dom() selector tests", function() {
 
         describe(".concat()", function() {
 
-            it("tb.dom('body').concat( tb.dom( 'div.test-parent' )[0] ).length === 2", function() {
-                var a = tb.dom('body').concat( tb.dom( 'div.test-parent' )[0] );
+            it("tb.dom('body').concat( tb.dom( '[data-tb~=\"test.Parent\"]' )[0] ).length === 2", function() {
+                var a = tb.dom('body').concat( tb.dom( '[data-tb~="test.Parent"]' )[0] );
                 expect( a.length === 2 ).toBe( true );
             });
 
@@ -235,23 +235,23 @@ describe("tb.dom() selector tests", function() {
 
         describe(".descendants()", function() {
 
-            it("tb.dom('div.test-parent').descendants().length === 500", function() {
-                expect( tb.dom('div.test-parent').descendants().length === 500 ).toBe( true );
+            it("tb.dom('[data-tb~=\"test.Parent\"]').descendants().length === 500", function() {
+                expect( tb.dom('[data-tb~="test.Parent"]').descendants().length === 500 ).toBe( true );
             });
 
-            it("tb.dom('div.test-parent').descendants('div').length === 0", function() {
-                expect( tb.dom('div.test-parent').descendants('div').length === 0 ).toBe( true );
+            it("tb.dom('[data-tb~=\"test.Parent\"]').descendants('div').length === 0", function() {
+                expect( tb.dom('[data-tb~="test.Parent"]').descendants('div').length === 0 ).toBe( true );
             });
 
-            it("tb.dom('div.test-parent').descendants('span,test-greatgrandchild').length === 500", function() {
-                expect( tb.dom('div.test-parent').descendants('span,test-greatgrandchild').length === 500 ).toBe( true );
+            it("tb.dom('[data-tb~=\"test.Parent\"]').descendants('span,test-greatgrandchild').length === 500", function() {
+                expect( tb.dom('[data-tb~="test.Parent"]').descendants('span,test-greatgrandchild').length === 500 ).toBe( true );
             });
 
         });
 
         describe(".empty()", function() {
 
-            it("tb.dom('body').concat( tb.dom( 'div.test-parent' ) ).length === 6", function() {
+            it("tb.dom('body').concat( tb.dom( '[data-tb~=\"test.Parent\"]' ) ).length === 6", function() {
                 tb.dom('body').append( '<div class="test1"><div class="test2"></div></div>' );
                 tb.dom('div.test1').empty();
                 expect( tb.dom('div.test2').length === 0 ).toBe( true );
@@ -262,11 +262,11 @@ describe("tb.dom() selector tests", function() {
 
         describe(".every()", function() {
 
-            it("tb.dom( 'div.test-parent' ).every()", function() {
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).every()", function() {
                 var f = function(e){
                         return e.tagName === 'DIV';
                     },
-                    a = tb.dom( 'div.test-parent' ).every( f );
+                    a = tb.dom( '[data-tb~="test.Parent"]' ).every( f );
                 expect( a ).toBe( true );
             });
 
@@ -274,21 +274,21 @@ describe("tb.dom() selector tests", function() {
 
         describe(".filter()", function() {
 
-            it("tb.dom( 'div.test-parent' ).filter( 'div' ) has .length 5", function() {
-                var a = tb.dom( 'div.test-parent' ).filter( 'div' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).filter( 'div' ) has .length 5", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ).filter( 'div' );
                 expect( a.length === 5 ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).filter( 'span' ) has .length 0", function() {
-                var a = tb.dom( 'div.test-parent' ).filter( 'span' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).filter( 'span' ) has .length 0", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ).filter( 'span' );
                 expect( a.length === 0 ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).filter( function )", function() {
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).filter( function )", function() {
                 var f = function(e){
                         return e.tagName === 'DIV';
                     },
-                    a = tb.dom( 'div.test-parent' ).filter( f );
+                    a = tb.dom( '[data-tb~="test.Parent"]' ).filter( f );
                 expect( a.length === 5 ).toBe( true );
             });
 
@@ -297,7 +297,7 @@ describe("tb.dom() selector tests", function() {
         describe(".forEach()", function() {
 
             it("forEach()", function() {
-                var a = tb.dom( 'div.test-parent' );
+                var a = tb.dom( '[data-tb~="test.Parent"]' );
                 a.forEach(function(e){
                     tb.dom(e).addClass('testForEach');
                 });
@@ -326,12 +326,12 @@ describe("tb.dom() selector tests", function() {
         describe(".hide() / .show()", function() {
 
             it("hide()", function() {
-                var a = tb.dom( 'div.test-parent' ).hide();
+                var a = tb.dom( '[data-tb~="test.Parent"]' ).hide();
                 expect( a[0].style.display === 'none' && a[4].style.display === 'none' ).toBe( true );
             });
 
             it("show()", function() {
-                var a = tb.dom( 'div.test-parent' ).show();
+                var a = tb.dom( '[data-tb~="test.Parent"]' ).show();
                 expect( a[0].style.display !== 'none' && a[4].style.display !== 'none' ).toBe( true );
             });
 
@@ -354,23 +354,23 @@ describe("tb.dom() selector tests", function() {
 
         describe(".indexOf()", function() {
 
-            it("tb.dom( 'div.test-parent').indexOf( tb.dom('div.test-parent')[0] ) === 0", function() {
-                expect( tb.dom( 'div.test-parent').indexOf( tb.dom( 'div.test-parent')[0] ) === 0 ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]').indexOf( tb.dom('[data-tb~=\"test.Parent\"]')[0] ) === 0", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]').indexOf( tb.dom( '[data-tb~="test.Parent"]')[0] ) === 0 ).toBe( true );
             });
 
         });
 
         describe(".insertAfter() / .insertBefore()", function() {
 
-            it("tb.dom( '<b></b>' ).insertBefore( tb.dom( 'div.test-parent' )[2] )", function() {
-                tb.dom( '<b></b>' ).insertBefore( tb.dom( 'div.test-parent' )[2] );
-                expect( tb.dom( 'b')[0].nextElementSibling === tb.dom( 'div.test-parent' )[2] ).toBe( true );
+            it("tb.dom( '<b></b>' ).insertBefore( tb.dom( '[data-tb~=\"test.Parent\"]' )[2] )", function() {
+                tb.dom( '<b></b>' ).insertBefore( tb.dom( '[data-tb~="test.Parent"]' )[2] );
+                expect( tb.dom( 'b')[0].nextElementSibling === tb.dom( '[data-tb~="test.Parent"]' )[2] ).toBe( true );
                 tb.dom( 'body > b' ).remove();
             });
 
-            it("tb.dom( '<b></b>' ).insertAfter( tb.dom( 'div.test-parent' )[2] )", function() {
-                tb.dom( '<b></b>' ).insertAfter( tb.dom( 'div.test-parent' )[2] );
-                expect( tb.dom( 'div.test-parent' )[2].nextElementSibling === tb.dom( 'b' )[0] ).toBe( true );
+            it("tb.dom( '<b></b>' ).insertAfter( tb.dom( '[data-tb~=\"test.Parent\"]' )[2] )", function() {
+                tb.dom( '<b></b>' ).insertAfter( tb.dom( '[data-tb~="test.Parent"]' )[2] );
+                expect( tb.dom( '[data-tb~="test.Parent"]' )[2].nextElementSibling === tb.dom( 'b' )[0] ).toBe( true );
                 tb.dom( 'body > b' ).remove();
             });
 
@@ -378,17 +378,17 @@ describe("tb.dom() selector tests", function() {
 
         describe(".map()", function() {
 
-            it("tb.dom( 'div.test-parent' ).map( function( e, i ){ s += i; return i; } )", function() {
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).map( function( e, i ){ s += i; return i; } )", function() {
                 var s = 0,
                     a;
-                a = tb.dom( 'div.test-parent' ).map( function( e, i ){ s += i; return i; } );
+                a = tb.dom( '[data-tb~="test.Parent"]' ).map( function( e, i ){ s += i; return i; } );
                 expect( a instanceof Array && s === 10 && a[0] === 0 ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).map( function( e, i ){ return e; } )", function() {
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).map( function( e, i ){ return e; } )", function() {
                 var s = 0,
                     a;
-                a = tb.dom( 'div.test-parent' ).map( function( e, i ){ return e; } );
+                a = tb.dom( '[data-tb~="test.Parent"]' ).map( function( e, i ){ return e; } );
                 expect( !( a instanceof Array ) && !!a['0'] && !!a['0']['nodeType'] ).toBe( true );
             });
 
@@ -396,13 +396,13 @@ describe("tb.dom() selector tests", function() {
 
         describe(".not()", function() {
 
-            it("tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4)' )", function() {
-                var a = tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4)' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).not( '[data-tb~=\"test.Parent\"]:nth-child(4)' )", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ).not( '[data-tb~="test.Parent"]:nth-child(4)' );
                 expect( a.length === 4 ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4), div.test-parent:nth-child(5)' )", function() {
-                var a = tb.dom( 'div.test-parent' ).not( 'div.test-parent:nth-child(4), div.test-parent:nth-child(5)' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).not( '[data-tb~=\"test.Parent\"]:nth-child(4), [data-tb~=\"test.Parent\"]:nth-child(5)' )", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ).not( '[data-tb~="test.Parent"]:nth-child(4), [data-tb~="test.Parent"]:nth-child(5)' );
                 expect( a.length === 3 ).toBe( true );
             });
 
@@ -410,47 +410,47 @@ describe("tb.dom() selector tests", function() {
 
         describe(".parent()", function() {
 
-            it("tb.dom( 'span.test-child' ).parent().length === 5", function() {
-                expect( tb.dom( 'span.test-child' ).parent().length === 5 ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Child\"]' ).parent().length === 5", function() {
+                expect( tb.dom( '[data-tb~="test.Child"]' ).parent().length === 5 ).toBe( true );
             });
 
-            it("tb.dom( 'span.test-child' ).parent('div').length === 5", function() {
-                expect( tb.dom( 'span.test-child' ).parent('div').length === 5 ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Child\"]' ).parent('div').length === 5", function() {
+                expect( tb.dom( '[data-tb~="test.Child"]' ).parent('div').length === 5 ).toBe( true );
             });
 
-            it("tb.dom( 'span.test-child' ).parent('span').length === 0", function() {
-                expect( tb.dom( 'span.test-child' ).parent('span').length === 0 ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Child\"]' ).parent('span').length === 0", function() {
+                expect( tb.dom( '[data-tb~="test.Child"]' ).parent('span').length === 0 ).toBe( true );
             });
 
         });
 
         describe(".parents()", function() {
 
-            it("tb.dom( 'span.test-child' ).parents().length === 6", function() {
-                expect( tb.dom( 'span.test-child' ).parents().length === 6 ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Child\"]' ).parents().length === 6", function() {
+                expect( tb.dom( '[data-tb~="test.Child"]' ).parents().length === 6 ).toBe( true );
             });
 
-            it("tb.dom( 'span.test-child' ).parents('div').length === 5", function() {
-                expect( tb.dom( 'span.test-child' ).parents('div').length === 5 ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Child\"]' ).parents('div').length === 5", function() {
+                expect( tb.dom( '[data-tb~="test.Child"]' ).parents('div').length === 5 ).toBe( true );
             });
 
-            it("tb.dom( 'span.test-child' ).parents('span').length === 0", function() {
-                expect( tb.dom( 'span.test-child' ).parents('span').length === 0 ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Child\"]' ).parents('span').length === 0", function() {
+                expect( tb.dom( '[data-tb~="test.Child"]' ).parents('span').length === 0 ).toBe( true );
             });
 
         });
 
         describe(".pop()", function() {
 
-            it("tb.dom( 'div.test-parent' ).pop() remainder has .length 4", function() {
-                var a = tb.dom( 'div.test-parent' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).pop() remainder has .length 4", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' );
                 a.pop();
                 
                 expect( a.length === 4 ).toBe( true );
             });
 
-            it("!!tb.dom( 'div.test-parent' ).pop()['nodeType']", function() {
-                var a = tb.dom( 'div.test-parent' ),
+            it("!!tb.dom( '[data-tb~=\"test.Parent\"]' ).pop()['nodeType']", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ),
                     b = a.pop();
                 expect( !!b['nodeType'] ).toBe( true );
             });
@@ -459,8 +459,8 @@ describe("tb.dom() selector tests", function() {
 
         describe(".push()", function() {
 
-            it("tb.dom( 'div.test-parent' ).push( document.body )", function() {
-                var a = tb.dom( 'div.test-parent' ).push( document.body );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).push( document.body )", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ).push( document.body );
                 expect( a.length === 6 ).toBe( true );
             });
 
@@ -468,14 +468,14 @@ describe("tb.dom() selector tests", function() {
 
         describe(".reduce()", function() {
 
-            it("tb.dom( 'div.test-parent' ).reduce(...)", function() {
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).reduce(...)", function() {
                 var x,
                     f = function( p, t, i ){
                         var y = p;
                         y += i;
                         return y;
                     },
-                    a = tb.dom( 'div.test-parent' );
+                    a = tb.dom( '[data-tb~="test.Parent"]' );
 
                 x = a.reduce( f, 0 );
 
@@ -486,14 +486,14 @@ describe("tb.dom() selector tests", function() {
 
         describe(".reduceRight()", function() {
 
-            it("tb.dom( 'div.test-parent' ).reduceRight(...)", function() {
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).reduceRight(...)", function() {
                 var x,
                     f = function( p, t, i ){
                         var y = p;
                         y += i*2;
                         return y;
                     },
-                    a = tb.dom( 'div.test-parent' );
+                    a = tb.dom( '[data-tb~="test.Parent"]' );
 
                 x = a.reduceRight( f, 0 );
 
@@ -504,49 +504,49 @@ describe("tb.dom() selector tests", function() {
 
         describe(".reverse()", function() {
 
-            it("tb.dom( 'div.test-parent' ).reverse()", function() {
-                expect( tb.dom( 'div.test-parent' ).reverse()[0] === tb.dom( 'div.test-parent' )[4] ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).reverse()", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]' ).reverse()[0] === tb.dom( '[data-tb~="test.Parent"]' )[4] ).toBe( true );
             });
 
         });
 
         describe(".shift()", function() {
 
-            it("tb.dom( 'div.test-parent' ).shift()['nodeType']", function() {
-                expect( !!tb.dom( 'div.test-parent' ).shift()['nodeType'] ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).shift()['nodeType']", function() {
+                expect( !!tb.dom( '[data-tb~="test.Parent"]' ).shift()['nodeType'] ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).shift()[0] === tb.dom( 'div.test-parent' )[1]", function() {
-                var a = tb.dom( 'div.test-parent' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).shift()[0] === tb.dom( '[data-tb~=\"test.Parent\"]' )[1]", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' );
                 a.shift();
-                expect( a[0] === tb.dom( 'div.test-parent' )[1] ).toBe( true );
+                expect( a[0] === tb.dom( '[data-tb~="test.Parent"]' )[1] ).toBe( true );
             });
 
         });
 
         describe(".slice()", function() {
 
-            it("tb.dom( 'div.test-parent' ).slice(...) instanceof tb", function() {
-                expect( tb.dom( 'div.test-parent' ).slice( 1, 3 )['__tbSelector__'] ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).slice(...) instanceof tb", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]' ).slice( 1, 3 )['__tbSelector__'] ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).slice( 1, 2 )[0] === tb.dom( 'div.test-parent' )[1]", function() {
-                expect( tb.dom( 'div.test-parent' ).slice( 1, 3 )[0] === tb.dom( 'div.test-parent' )[1] ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).slice( 1, 2 )[0] === tb.dom( '[data-tb~=\"test.Parent\"]' )[1]", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]' ).slice( 1, 3 )[0] === tb.dom( '[data-tb~="test.Parent"]' )[1] ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).slice( 1, 2 )[1] === tb.dom( 'div.test-parent' )[2]", function() {
-                expect( tb.dom( 'div.test-parent' ).slice( 1, 3 )[1] === tb.dom( 'div.test-parent' )[2] ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).slice( 1, 2 )[1] === tb.dom( '[data-tb~=\"test.Parent\"]' )[2]", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]' ).slice( 1, 3 )[1] === tb.dom( '[data-tb~="test.Parent"]' )[2] ).toBe( true );
             });
 
         });
 
         describe(".some()", function() {
 
-            it("tb.dom( 'div.test-parent' ).some(...)", function() {
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).some(...)", function() {
                 var f = function(e, i){
                         return i === 3;
                     },
-                    a = tb.dom( 'div.test-parent' ).some( f );
+                    a = tb.dom( '[data-tb~="test.Parent"]' ).some( f );
                 expect( a ).toBe( true );
             });
 
@@ -554,26 +554,26 @@ describe("tb.dom() selector tests", function() {
 
         describe(".splice()", function() {
 
-            it("tb.dom( 'div.test-parent' ).slice(...) instanceof tb.dom", function() {
-                var a = tb.dom( 'div.test-parent' ),
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).slice(...) instanceof tb.dom", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ),
                     b = a.splice( 1, 1 , document.body);
                 expect( a['__tbSelector__'] ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).splice( 1, 1 , document.body) deleted element", function() {
-                var a = tb.dom( 'div.test-parent' ),
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).splice( 1, 1 , document.body) deleted element", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ),
                     b = a.splice( 1, 1 , document.body)[0];
-                expect( b === tb.dom( 'div.test-parent' )[1] ).toBe( true );
+                expect( b === tb.dom( '[data-tb~="test.Parent"]' )[1] ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).splice( 1, 1 , document.body).length === 5", function() {
-                var a = tb.dom( 'div.test-parent' ),
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).splice( 1, 1 , document.body).length === 5", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ),
                     b = a.splice( 1, 1 , document.body);
                 expect( a.length === 5 ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).splice( 1, 1 , document.body) inserted element", function() {
-                var a = tb.dom( 'div.test-parent' ),
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).splice( 1, 1 , document.body) inserted element", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' ),
                     b = a.splice( 1, 1 , document.body);
                 expect( a[1] === document.body ).toBe( true );
             });
@@ -582,16 +582,16 @@ describe("tb.dom() selector tests", function() {
 
         describe(".toArray()", function() {
 
-            it("tb.dom( 'div.test-parent' ).toArray() instanceof Array", function() {
-                expect( tb.dom( 'div.test-parent' ).toArray() instanceof Array ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).toArray() instanceof Array", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]' ).toArray() instanceof Array ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).toArray().length === tb.dom( 'div.test-parent' ).length", function() {
-                expect( tb.dom( 'div.test-parent' ).toArray().length === tb.dom( 'div.test-parent' ).length ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).toArray().length === tb.dom( '[data-tb~=\"test.Parent\"]' ).length", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]' ).toArray().length === tb.dom( '[data-tb~="test.Parent"]' ).length ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).toArray()[0] === tb.dom( 'div.test-parent' )[0]", function() {
-                expect( tb.dom( 'div.test-parent' ).toArray()[0] === tb.dom( 'div.test-parent' )[0] ).toBe( true );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).toArray()[0] === tb.dom( '[data-tb~=\"test.Parent\"]' )[0]", function() {
+                expect( tb.dom( '[data-tb~="test.Parent"]' ).toArray()[0] === tb.dom( '[data-tb~="test.Parent"]' )[0] ).toBe( true );
             });
 
         });
@@ -631,7 +631,7 @@ describe("tb.dom() selector tests", function() {
 
             afterEach(function() {
                 // clear all handlers from all tb() instances
-                tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                tb.dom([ '[data-tb~="test.GrandParent"]', '[data-tb~="test.Child"]' ])
                     .off( 'triggerTest', handlers.GPtestHandler )
                     .off( 'triggerTest', handlers.CtestHandler );
             });
@@ -642,17 +642,17 @@ describe("tb.dom() selector tests", function() {
                 beforeEach(function() {
 
                     // set handlers for testing - capture = false
-                    tb.dom( '.test-grandparent' ).on( 'triggerTest', handlers.GPtestHandler );
-                    tb.dom( tb.dom( '.test-child')[0] ).on( 'triggerTest', handlers.CtestHandler );
+                    tb.dom( '[data-tb~="test.GrandParent"]' ).on( 'triggerTest', handlers.GPtestHandler );
+                    tb.dom( tb.dom( '[data-tb~="test.Child"]')[0] ).on( 'triggerTest', handlers.CtestHandler );
 
                     // trigger event
-                    tb.dom( tb.dom( '.test-child')[0] ).trigger( 'triggerTest', {}, true, true );
+                    tb.dom( tb.dom( '[data-tb~="test.Child"]')[0] ).trigger( 'triggerTest', {}, true, true );
 
                 });
 
                 afterEach(function() {
                     // clear all handlers from all tb() instances
-                    tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                    tb.dom([ '[data-tb~="test.GrandParent"]', '[data-tb~="test.Child"]' ])
                         .off( 'triggerTest', handlers.GPtestHandler )
                         .off( 'triggerTest', handlers.CtestHandler );
                 });
@@ -669,17 +669,17 @@ describe("tb.dom() selector tests", function() {
                 beforeEach(function() {
 
                     // set handlers for testing - capture = false
-                    tb.dom( '.test-grandparent' ).on( 'triggerTest', handlers.GPtestHandler, true );
-                    tb.dom( tb.dom( '.test-child')[0] ).on( 'triggerTest', handlers.CtestHandler );
+                    tb.dom( '[data-tb~="test.GrandParent"]' ).on( 'triggerTest', handlers.GPtestHandler, true );
+                    tb.dom( tb.dom( '[data-tb~="test.Child"]')[0] ).on( 'triggerTest', handlers.CtestHandler );
 
                     // trigger event
-                    tb.dom( tb.dom( '.test-child')[0] ).trigger( 'triggerTest', {}, true, true );
+                    tb.dom( tb.dom( '[data-tb~="test.Child"]')[0] ).trigger( 'triggerTest', {}, true, true );
 
                 });
 
                 afterEach(function() {
                     // clear all handlers from all tb() instances
-                    tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                    tb.dom([ '[data-tb~="test.GrandParent"]', '[data-tb~="test.Child"]' ])
                         .off( 'triggerTest', handlers.GPtestHandler, true )
                         .off( 'triggerTest', handlers.CtestHandler );
                 });
@@ -696,17 +696,17 @@ describe("tb.dom() selector tests", function() {
                 beforeEach(function() {
 
                     // set handlers for testing - capture = false
-                    tb.dom( '.test-grandparent' ).on( 'triggerTest', handlers.GPtestHandler );
-                    tb.dom( tb.dom( '.test-child')[0] ).on( 'triggerTest', handlers.CtestHandler );
+                    tb.dom( '[data-tb~="test.GrandParent"]' ).on( 'triggerTest', handlers.GPtestHandler );
+                    tb.dom( tb.dom( '[data-tb~="test.Child"]')[0] ).on( 'triggerTest', handlers.CtestHandler );
 
                     // trigger event
-                    tb.dom( tb.dom( '.test-child')[0] ).trigger( 'triggerTest', {}, false, true );
+                    tb.dom( tb.dom( '[data-tb~="test.Child"]')[0] ).trigger( 'triggerTest', {}, false, true );
 
                 });
 
                 afterEach(function() {
                     // clear all handlers from all tb() instances
-                    tb.dom([ 'body.test-grandparent', 'span.test-child' ])
+                    tb.dom([ '[data-tb~="test.GrandParent"]', '[data-tb~="test.Child"]' ])
                         .off( 'triggerTest', handlers.GPtestHandler )
                         .off( 'triggerTest', handlers.CtestHandler );
                 });
@@ -721,24 +721,24 @@ describe("tb.dom() selector tests", function() {
 
         describe(".unshift()", function() {
 
-            it("tb.dom( 'div.test-parent' ).unshift( document.body, tb.dom( test.Child )[0] )", function() {
-                var a = tb.dom( 'div.test-parent' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).unshift( document.body, tb.dom( test.Child )[0] )", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' );
 
                 a.unshift( document.body, tb.dom( test.Child )[0] );
 
                 expect( a.length === 7 ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).unshift( document.body, tb.dom( test.Child )[0] )[0]", function() {
-                var a = tb.dom( 'div.test-parent' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).unshift( document.body, tb.dom( test.Child )[0] )[0]", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' );
 
                 a.unshift( document.body, tb.dom( test.Child )[0] );
 
                 expect( a[0] === document.body ).toBe( true );
             });
 
-            it("tb.dom( 'div.test-parent' ).unshift( document.body, tb.dom( test.Child )[0] )[1]", function() {
-                var a = tb.dom( 'div.test-parent' );
+            it("tb.dom( '[data-tb~=\"test.Parent\"]' ).unshift( document.body, tb.dom( test.Child )[0] )[1]", function() {
+                var a = tb.dom( '[data-tb~="test.Parent"]' );
 
                 a.unshift( document.body, tb.dom( test.Child )[0] );
 

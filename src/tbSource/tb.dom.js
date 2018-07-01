@@ -445,7 +445,8 @@ if (typeof module === 'undefined' ){
                             }
                         );
                         setTimeout(function(){
-                            tb.assumeTb( pDomNode );
+                            tb.attach( pDomNode );      // UBEs
+                            tb.assumeTb( pDomNode );    // AACEs
                         },0);
                     }
                 );
@@ -475,7 +476,8 @@ if (typeof module === 'undefined' ){
                 }
 
                 setTimeout(function(){
-                    tb.assumeTb( pElement );
+                    tb.attach( pElement );      // UBEs
+                    tb.assumeTb( pElement );    // AACEs
                 },0);
 
                 return that;
@@ -851,7 +853,8 @@ if (typeof module === 'undefined' ){
                 );
 
                 setTimeout(function(){
-                    tb.assumeTb( pTarget );
+                    tb.attach( pTarget );      // UBEs
+                    tb.assumeTb( pTarget );    // AACEs
                 },0);
 
                 return that;
@@ -886,8 +889,10 @@ if (typeof module === 'undefined' ){
                     }
                 );
 
-                tb.dom( pTarget ).clean();
-                tb.assumeTb( pTarget );
+                setTimeout(function(){
+                    tb.attach( pTarget );      // UBEs
+                    tb.assumeTb( pTarget );    // AACEs
+                },0);
 
                 return that;
             }
