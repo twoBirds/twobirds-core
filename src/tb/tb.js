@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.2.2 - 2018-07-01 */
+/*! twobirds-core - v8.2.3 - 2018-07-15 */
 
 /**
  twoBirds V8 core functionality
@@ -779,6 +779,8 @@ tb = (function(){
 
                 that[Object.getOwnPropertySymbols(that)[0]].observe( pCallback, pOnce );
 
+                return that;
+                
             },
 
             bind: function( pDomNode ){
@@ -878,6 +880,8 @@ tb = (function(){
                 }
 
                 walk( pDomNode );
+
+                return that;
 
             }
 

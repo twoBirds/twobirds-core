@@ -7,8 +7,9 @@
 .jasmine_html-reporter {
   padding: 2px;
   margin: 2px;
-  border: 1px solid black;
   display: block;
+  border: 1px solid darkslategrey;
+  border-radius: 3px;
 }
 
 [data-tb*="Child"],

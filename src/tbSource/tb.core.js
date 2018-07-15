@@ -777,6 +777,8 @@ tb = (function(){
 
                 that[Object.getOwnPropertySymbols(that)[0]].observe( pCallback, pOnce );
 
+                return that;
+                
             },
 
             bind: function( pDomNode ){
@@ -876,6 +878,8 @@ tb = (function(){
                 }
 
                 walk( pDomNode );
+
+                return that;
 
             }
 
