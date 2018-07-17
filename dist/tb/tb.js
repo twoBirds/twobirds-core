@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.2.3 - 2018-07-15 */
+/*! twobirds-core - v8.2.4 - 2018-07-17 */
 
 (function(){
 'use strict';var h=new function(){};var aa=new Set("annotation-xml color-profile font-face font-face-src font-face-uri font-face-format font-face-name missing-glyph".split(" "));function m(b){var a=aa.has(b);b=/^[a-z][.0-9_a-z]*-[\-.0-9_a-z]*$/.test(b);return!a&&b}function n(b){var a=b.isConnected;if(void 0!==a)return a;for(;b&&!(b.__CE_isImportDocument||b instanceof Document);)b=b.parentNode||(window.ShadowRoot&&b instanceof ShadowRoot?b.host:void 0);return!(!b||!(b.__CE_isImportDocument||b instanceof Document))}
@@ -42,7 +42,7 @@ var Z=window.customElements;if(!Z||Z.forcePolyfill||"function"!=typeof Z.define|
 //# sourceMappingURL=custom-elements.min.js.map
 
 
-/*! twobirds-core - v8.2.3 - 2018-07-15 */
+/*! twobirds-core - v8.2.4 - 2018-07-17 */
 
 /**
  twoBirds V8 core functionality
@@ -3500,6 +3500,10 @@ if (typeof module === 'undefined' ){
                         that.forEach(
                             function (pNode) {
                                 pNode.innerHTML = pHtml;
+                                setTimeout(function(){
+                                    tb.attach( pNode );      // UBEs
+                                    tb.assumeTb( pNode );    // AACEs
+                                },0);
                             }
                         );
                     }

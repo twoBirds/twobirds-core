@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.2.3</em>
+            <em>API Docs for: v8.2.4</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.2.3 - 2018-07-15 */
+/*! twobirds-core - v8.2.4 - 2018-07-17 */
 
 /**
  twoBirds V8 core functionality
@@ -3545,6 +3545,10 @@ if (typeof module === &#x27;undefined&#x27; ){
                         that.forEach(
                             function (pNode) {
                                 pNode.innerHTML = pHtml;
+                                setTimeout(function(){
+                                    tb.attach( pNode );      // UBEs
+                                    tb.assumeTb( pNode );    // AACEs
+                                },0);
                             }
                         );
                     }

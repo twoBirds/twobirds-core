@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.2.3 - 2018-07-15 */
+/*! twobirds-core - v8.2.4 - 2018-07-17 */
 
 /**
  twoBirds V8 core functionality
@@ -3456,6 +3456,10 @@ if (typeof module === 'undefined' ){
                         that.forEach(
                             function (pNode) {
                                 pNode.innerHTML = pHtml;
+                                setTimeout(function(){
+                                    tb.attach( pNode );      // UBEs
+                                    tb.assumeTb( pNode );    // AACEs
+                                },0);
                             }
                         );
                     }

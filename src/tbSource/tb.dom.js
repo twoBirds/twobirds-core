@@ -803,6 +803,10 @@ if (typeof module === 'undefined' ){
                         that.forEach(
                             function (pNode) {
                                 pNode.innerHTML = pHtml;
+                                setTimeout(function(){
+                                    tb.attach( pNode );      // UBEs
+                                    tb.assumeTb( pNode );    // AACEs
+                                },0);
                             }
                         );
                     }
