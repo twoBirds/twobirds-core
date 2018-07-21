@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.2.4</em>
+            <em>API Docs for: v8.2.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.2.4 - 2018-07-17 */
+/*! twobirds-core - v8.2.5 - 2018-07-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2516,42 +2516,6 @@ tb = (function(){
 
 })();
 
-// make it a node module
-if (typeof module !== &#x27;undefined&#x27;) {
-    module.exports = tb;
-} else {
-    /**
-     * document.ready bootstrap
-     */
-    (function(){
-
-        function domReady () {
-            // find all tb head &amp; body nodes and add tb objects if not yet done
-            tb.attach( document.head );
-            tb.attach( document.body );
-        }
-
-        // Mozilla, Opera, Webkit
-        if ( document.addEventListener ) {
-            document.addEventListener( &quot;DOMContentLoaded&quot;, function(){
-                document.removeEventListener( &quot;DOMContentLoaded&quot;, arguments.callee, false);
-                domReady();
-            }, false );
-
-            // If IE event model is used
-        } else if ( document.attachEvent ) {
-            // ensure firing before onload
-            document.attachEvent(&quot;onreadystatechange&quot;, function(){
-                if ( document.readyState === &quot;complete&quot; ) {
-                    document.detachEvent( &quot;onreadystatechange&quot;, arguments.callee );
-                    domReady();
-                }
-            });
-        }
-
-    })();
-}
-
 /**
  @class tb.Event
  @constructor
@@ -2652,7 +2616,7 @@ tb.assumeTb = (function(pSetter){
 
                             //console.log(&#x27;define&#x27;, tagName);
                             // auto-define autonomous custom element
-                            customElements.define(
+                            window.customElements.define(
                                 tagName, 
                                 class extends HTMLElement{
 
@@ -2705,7 +2669,7 @@ tb.assumeTb = (function(pSetter){
                     };})( nameSpace, tagName, pElement );
 
                     if (isUndefinedACE){
-                        //console.log(&#x27;tagName&#x27;, tagName, &#x27;in&#x27;, pElement.parentNode );
+                        console.log(&#x27; undefined tagName&#x27;, tagName, &#x27;in&#x27;, pElement.parentNode );
                         if ( !hasTbClassCode ){
                             tb.require( fileName )
                                 .then( define );
@@ -2738,6 +2702,43 @@ tb.assumeTb = (function(pSetter){
         return isTb;
     };
 })(false); // dont assume custom tags to resolve to tB classes
+
+// make it a node module
+if (typeof module !== &#x27;undefined&#x27;) {
+    module.exports = tb;
+} else {
+    /**
+     * document.ready bootstrap
+     */
+    (function(){
+
+        function domReady () {
+            // find all tb head &amp; body nodes and add tb objects if not yet done
+            tb.attach( document.head );
+            tb.attach( document.body );
+            tb.assumeTb( document.body );
+        }
+
+        // Mozilla, Opera, Webkit
+        if ( document.addEventListener ) {
+            document.addEventListener( &quot;DOMContentLoaded&quot;, function(){
+                document.removeEventListener( &quot;DOMContentLoaded&quot;, arguments.callee, false);
+                domReady();
+            }, false );
+
+            // If IE event model is used
+        } else if ( document.attachEvent ) {
+            // ensure firing before onload
+            document.attachEvent(&quot;onreadystatechange&quot;, function(){
+                if ( document.readyState === &quot;complete&quot; ) {
+                    document.detachEvent( &quot;onreadystatechange&quot;, arguments.callee );
+                    domReady();
+                }
+            });
+        }
+
+    })();
+}
 
 
 if (typeof module === &#x27;undefined&#x27; ){
@@ -4823,7 +4824,9 @@ tb.attach = function( pRootNode ){
             namespaces.forEach(
                 function( pNamespace ){
                     pElement[&#x27;tb&#x27;] = pElement[&#x27;tb&#x27;] || {};
-                    if ( !pElement[&#x27;tb&#x27;][pNamespace] ){
+                    if ( pElement.tagName.indexOf(&#x27;-&#x27;) === -1 // not an ACE
+                        &amp;&amp; !pElement[&#x27;tb&#x27;][pNamespace] 
+                    ){
                         new tb(        // create tb object
                             pNamespace,
                             null,

@@ -164,7 +164,9 @@ tb.attach = function( pRootNode ){
             namespaces.forEach(
                 function( pNamespace ){
                     pElement['tb'] = pElement['tb'] || {};
-                    if ( !pElement['tb'][pNamespace] ){
+                    if ( pElement.tagName.indexOf('-') === -1 // not an ACE
+                        && !pElement['tb'][pNamespace] 
+                    ){
                         new tb(        // create tb object
                             pNamespace,
                             null,

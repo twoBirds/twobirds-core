@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.2.4 - 2018-07-17 */
+/*! twobirds-core - v8.2.5 - 2018-07-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2427,42 +2427,6 @@ tb = (function(){
 
 })();
 
-// make it a node module
-if (typeof module !== 'undefined') {
-    module.exports = tb;
-} else {
-    /**
-     * document.ready bootstrap
-     */
-    (function(){
-
-        function domReady () {
-            // find all tb head & body nodes and add tb objects if not yet done
-            tb.attach( document.head );
-            tb.attach( document.body );
-        }
-
-        // Mozilla, Opera, Webkit
-        if ( document.addEventListener ) {
-            document.addEventListener( "DOMContentLoaded", function(){
-                document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
-                domReady();
-            }, false );
-
-            // If IE event model is used
-        } else if ( document.attachEvent ) {
-            // ensure firing before onload
-            document.attachEvent("onreadystatechange", function(){
-                if ( document.readyState === "complete" ) {
-                    document.detachEvent( "onreadystatechange", arguments.callee );
-                    domReady();
-                }
-            });
-        }
-
-    })();
-}
-
 /**
  @class tb.Event
  @constructor
@@ -2563,7 +2527,7 @@ tb.assumeTb = (function(pSetter){
 
                             //console.log('define', tagName);
                             // auto-define autonomous custom element
-                            customElements.define(
+                            window.customElements.define(
                                 tagName, 
                                 class extends HTMLElement{
 
@@ -2616,7 +2580,7 @@ tb.assumeTb = (function(pSetter){
                     };})( nameSpace, tagName, pElement );
 
                     if (isUndefinedACE){
-                        //console.log('tagName', tagName, 'in', pElement.parentNode );
+                        console.log(' undefined tagName', tagName, 'in', pElement.parentNode );
                         if ( !hasTbClassCode ){
                             tb.require( fileName )
                                 .then( define );
@@ -2649,6 +2613,43 @@ tb.assumeTb = (function(pSetter){
         return isTb;
     };
 })(false); // dont assume custom tags to resolve to tB classes
+
+// make it a node module
+if (typeof module !== 'undefined') {
+    module.exports = tb;
+} else {
+    /**
+     * document.ready bootstrap
+     */
+    (function(){
+
+        function domReady () {
+            // find all tb head & body nodes and add tb objects if not yet done
+            tb.attach( document.head );
+            tb.attach( document.body );
+            tb.assumeTb( document.body );
+        }
+
+        // Mozilla, Opera, Webkit
+        if ( document.addEventListener ) {
+            document.addEventListener( "DOMContentLoaded", function(){
+                document.removeEventListener( "DOMContentLoaded", arguments.callee, false);
+                domReady();
+            }, false );
+
+            // If IE event model is used
+        } else if ( document.attachEvent ) {
+            // ensure firing before onload
+            document.attachEvent("onreadystatechange", function(){
+                if ( document.readyState === "complete" ) {
+                    document.detachEvent( "onreadystatechange", arguments.callee );
+                    domReady();
+                }
+            });
+        }
+
+    })();
+}
 
 
 if (typeof module === 'undefined' ){
@@ -4734,7 +4735,9 @@ tb.attach = function( pRootNode ){
             namespaces.forEach(
                 function( pNamespace ){
                     pElement['tb'] = pElement['tb'] || {};
-                    if ( !pElement['tb'][pNamespace] ){
+                    if ( pElement.tagName.indexOf('-') === -1 // not an ACE
+                        && !pElement['tb'][pNamespace] 
+                    ){
                         new tb(        // create tb object
                             pNamespace,
                             null,
