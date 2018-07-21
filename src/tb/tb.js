@@ -1,4 +1,4 @@
-/*! twobirds-core - v8.2.5 - 2018-07-21 */
+/*! twobirds-core - v8.2.6 - 2018-07-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2580,7 +2580,7 @@ tb.assumeTb = (function(pSetter){
                     };})( nameSpace, tagName, pElement );
 
                     if (isUndefinedACE){
-                        console.log(' undefined tagName', tagName, 'in', pElement.parentNode );
+                        //console.log(' undefined tagName', tagName, 'in', pElement.parentNode );
                         if ( !hasTbClassCode ){
                             tb.require( fileName )
                                 .then( define );

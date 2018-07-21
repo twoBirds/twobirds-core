@@ -2,7 +2,7 @@
     "project": {
         "name": "twoBirds",
         "description": "twoBirds WebComponent Framework",
-        "version": "v8.2.5",
+        "version": "v8.2.6",
         "url": "http://www.tb-core.org"
     },
     "files": {

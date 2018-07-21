@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="twoBirds" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: v8.2.5</em>
+            <em>API Docs for: v8.2.6</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -87,7 +87,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/*! twobirds-core - v8.2.5 - 2018-07-21 */
+/*! twobirds-core - v8.2.6 - 2018-07-21 */
 
 /**
  twoBirds V8 core functionality
@@ -2669,7 +2669,7 @@ tb.assumeTb = (function(pSetter){
                     };})( nameSpace, tagName, pElement );
 
                     if (isUndefinedACE){
-                        console.log(&#x27; undefined tagName&#x27;, tagName, &#x27;in&#x27;, pElement.parentNode );
+                        //console.log(&#x27; undefined tagName&#x27;, tagName, &#x27;in&#x27;, pElement.parentNode );
                         if ( !hasTbClassCode ){
                             tb.require( fileName )
                                 .then( define );
