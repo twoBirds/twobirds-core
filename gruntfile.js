@@ -47,7 +47,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: 'src/test',
-                        src: [ '**/*.css', '**/*.html', '**/*.json' ],
+                        src: [ '**/*.css', '**/*.css.map', '**/*.html', '**/*.json', 'TestForm.js' ],
                         dest: 'dist/test'
                     },
                     {

@@ -980,7 +980,7 @@ tb = (function(){
 
         tb.Store = Store;
         
-        function makeStore( pObj, pName, pConfig ){
+        function createStore( pObj, pName, pConfig ){
 
             var value = new Store( pConfig );
 
@@ -1007,9 +1007,9 @@ tb = (function(){
             return pObj[pName];
         }
 
-        makeStore.Store = Store;
+        createStore.Store = Store;
 
-        return makeStore;
+        return createStore;
 
     })();
 
@@ -2474,11 +2474,98 @@ tb.Event.prototype = {
 
 tb.debug = false; // todo: rethink / implement
 
+tb.createCustomElement = function( pTagName, pClass, pAttributes ){
+        
+    // create custon element
+    if( !window.customElements.get(pTagName) ){
+
+        //console.log( 'createCustomElement', pTagName, pClass, pAttributes );
+
+        // parameter sanitation
+        if ( !pTagName || typeof pTagName !== 'string' || pTagName.match(/-/).length !== 1 ){
+            throw('createCustomElement: pTagName must be a string containing exactly ONE dash ("-")');
+        }
+        pTagName = pTagName.toLowerCase();
+
+        if ( !pClass ){
+            throw('createCustomElement: pClass missing');
+        }
+        
+        if ( pAttributes ){
+            if( !(pAttributes instanceof Array) ){
+                throw('createCustomElement: pAttributes is not an array');
+            } else {
+                if ( pAttributes.some( (pAttribute) => typeof pAttribute !== 'string' ) ){
+                    console.warning('createCustomElement: one of pAttributes is not a string: '+pAttributes.join(','));
+                }
+            }
+        } 
+
+        var a = pTagName;
+
+        // create array
+        a = a.toLowerCase().split('-');
+        
+        // normalize namespace
+        a[1] = 
+            a[1].substr(0,1).toUpperCase() +
+            a[1].substr(1).toLowerCase();
+                
+        // add namespace
+        pClass.prototype.namespace = a.join('.');
+        //console.log('ns',pClass.prototype.namespace);
+
+        // auto-define autonomous custom element
+        window.customElements.define(
+            pTagName, 
+            class extends HTMLElement{
+
+                constructor(){
+                    super();
+                }
+
+                static get observedAttributes(){
+                    return pAttributes;
+                }
+
+                connectedCallback(){
+                    var instance;
+                    
+                    instance = new tb(
+                        pClass,
+                        {},
+                        this
+                    );
+
+                    instance.trigger('connected');
+                }
+
+                disconnectedCallback(){
+                    tb(this).trigger('disconnected');
+                }
+
+                adoptedCallback(){
+                    tb(this).trigger('adopted');
+                }
+
+                attributeChangedCallback( name, oldValue, newValue ){
+                    tb(this).trigger('attributeChanged', { name: name, oldValue: oldValue, newValue: newValue} );
+                }
+
+            }
+        );
+
+    }
+
+
+};
+
 tb.assumeTb = (function(pSetter){ 
     var isTb = pSetter;
     return function(pParam){
         if ( 
-            typeof pParam === 'object'
+            !!window
+            && typeof pParam === 'object'
             && !!pParam.nodeType
             && pParam.nodeType === 1    // html node
             && pParam !== document.head
@@ -2519,59 +2606,21 @@ tb.assumeTb = (function(pSetter){
                     hasTbClassCode = !!tb.namespace(nameSpace).get(); // jshint ignore:line
 
                     // create element definition callback
+                    // console.log( tagName, nameSpace, pElement );
+
                     var define = (function( nameSpace, tagName, element ){ return function define(){
 
                         if( !window.customElements.get(tagName) ){
 
-                            //console.log('define', tagName);
-                            // auto-define autonomous custom element
-                            window.customElements.define(
+                            tb.createCustomElement( 
                                 tagName, 
-                                class extends HTMLElement{
-
-                                    constructor(){
-                                        super();
-                                    }
-
-                                    static get observedAttributes(){
-                                        return Array
-                                            .from( element.attributes )
-                                            .map( function(pAttribute){ 
-                                                return pAttribute.name; 
-                                            });
-                                    }
-
-                                    connectedCallback(){
-                                        var c = tb.namespace(nameSpace).get() 
-                                                || class extends Tb{ // jshint ignore:line
-                                                    constructor(){ super(); }
-                                                },
-                                            e;
-                                        
-                                        c.prototype.namespace = nameSpace;
-
-                                        e = new tb(
-                                            c,
-                                            {},
-                                            this
-                                        );
-                                        e.trigger('connected');
-                                    }
-
-                                    disconnectedCallback(){
-                                        tb(this).trigger('disconnected');
-                                    }
-
-                                    adoptedCallback(){
-                                        tb(this).trigger('adopted');
-                                    }
-
-                                    attributeChangedCallback( name, oldValue, newValue ){
-                                        tb(this).trigger('attributeChanged', { name: name, oldValue: oldValue, newValue: newValue} );
-                                    }
-
-                                }
-                            );
+                                tb.namespace( nameSpace, window || process || {} ).get(),
+                                Array
+                                    .from( element.attributes )
+                                    .map( function(pAttribute){ 
+                                        return pAttribute.name; 
+                                    })
+                            );                            
 
                         }
 

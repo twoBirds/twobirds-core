@@ -1,73 +1,80 @@
-test.Greatgrandchild = class extends Tb{
+tb.createCustomElement(
 
-    constructor(){
-        super();
+    'test-greatgrandchild',
+    
+    class extends Tb{
 
-        var that = this;
+        constructor(){
+            super();
 
-        that.handlers = {
-            init: that.init,
-            connected: that.connected,
-            disconnected: that.disconnected,
-            attributeChanged: that.attributeChanged,
-            adopted: that.adopted
-        };
+            var that = this;
 
-    }
+            that.handlers = {
+                init: that.init,
+                connected: that.connected,
+                disconnected: that.disconnected,
+                attributeChanged: that.attributeChanged,
+                adopted: that.adopted
+            };
 
-    // methods
-    init(){
-
-        var that = this;
-
-        that.updateStyle();
-
-        //that.trigger( 'test', that, 'u' );
-    }
-
-    updateStyle(){
-
-        var that = this;
-
-        function random(min,max) {
-            var random = Math.floor(Math.random()*(max-min+1)+min);
-            return random;
         }
 
-        function randomBorderColor(){
-            return 'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) + ')';
+        // methods
+        init(){
+
+            var that = this;
+
+            that.updateStyle();
+
+            //that.trigger( 'test', that, 'u' );
         }
 
-        $(that.target).attr('style', 'border-color:'+randomBorderColor() );
+        updateStyle(){
 
-    }
+            var that = this;
 
-    connected(){
+            function random(min,max) {
+                var random = Math.floor(Math.random()*(max-min+1)+min);
+                return random;
+            }
 
-        var that = this;
+            function randomBorderColor(){
+                return 'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) + ')';
+            }
 
-        //console.log('connected', that.target);
-    }
+            $(that.target).attr('style', 'border-color:'+randomBorderColor() );
 
-    disconnected(){
+        }
 
-        var that = this;
+        connected(){
 
-        //console.log('disconnected', that.target);
-    }
+            var that = this;
 
-    attributeChanged(ev){
+            //console.log('connected', that.target);
+        }
 
-        var that = this;
+        disconnected(){
 
-        console.log('attributeChanged', ev.data);
-    }
+            var that = this;
 
-    adopted(){
+            //console.log('disconnected', that.target);
+        }
 
-        var that = this;
+        attributeChanged(ev){
 
-        //console.log('adopted', that.target);
-    }
+            var that = this;
 
-};
+            console.log('attributeChanged', ev.data);
+        }
+
+        adopted(){
+
+            var that = this;
+
+            //console.log('adopted', that.target);
+        }
+
+    },
+
+    [ 'a', 'b', 'c'] // watched attributes
+);

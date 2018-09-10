@@ -719,7 +719,7 @@ describe("tb.core.js", function() {
                 beforeEach(function(done) {
 
                     // set handlers for testing
-                    tb( test.Greatgrandchild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( 'test-greatgrandchild' )[0].on( 'triggerTest', handlers.GGCtestHandler );
                     tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
                     tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
 
@@ -748,7 +748,7 @@ describe("tb.core.js", function() {
                 beforeEach(function(done) {
 
                     // set handlers for testing
-                    tb( test.Greatgrandchild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( 'test-greatgrandchild' )[0].on( 'triggerTest', handlers.GGCtestHandler );
                     tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
                     tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
 
@@ -777,7 +777,7 @@ describe("tb.core.js", function() {
                 beforeEach(function(done) {
 
                     // set handlers for testing
-                    tb( test.Greatgrandchild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( 'test-greatgrandchild' )[0].on( 'triggerTest', handlers.GGCtestHandler );
                     tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
                     tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
 
@@ -806,7 +806,7 @@ describe("tb.core.js", function() {
                 beforeEach(function(done) {
 
                     // set handlers for testing
-                    tb( test.Greatgrandchild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( 'test-greatgrandchild' )[0].on( 'triggerTest', handlers.GGCtestHandler );
                     tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
                     tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
 
@@ -835,7 +835,7 @@ describe("tb.core.js", function() {
                 beforeEach(function(done) {
 
                     // set handlers for testing
-                    tb( test.Greatgrandchild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( 'test-greatgrandchild' )[0].on( 'triggerTest', handlers.GGCtestHandler );
                     tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
                     tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
 
@@ -864,7 +864,7 @@ describe("tb.core.js", function() {
                 beforeEach(function(done) {
 
                     // set handlers for testing
-                    tb( test.Greatgrandchild )[0].on( 'triggerTest', handlers.GGCtestHandler );
+                    tb( 'test-greatgrandchild' )[0].on( 'triggerTest', handlers.GGCtestHandler );
                     tb( test.Child )[0].on( 'triggerTest', handlers.CtestHandler );
                     tb( test.GrandParent )[0].on( 'triggerTest', handlers.GPtestHandler );
 

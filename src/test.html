@@ -6,6 +6,9 @@
         <link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
 
         <script type="text/javascript" src="tb/tb.js"></script>
+        <script src="test/global.js"></script>
+        
+        <link rel="stylesheet" href="test/GrandParent.css"></link>
 
         <style>
 
@@ -56,22 +59,63 @@
         </style>
 
         <script>
-
-            // jasmine testing
             tb.idle(
+
                 function(){
-                    tb.Require([
-                        'tbTest.js'
-                    ]);
+
+                    setTimeout(function(){
+
+                        // run tests
+                        tb.Require([
+                            'tbTest.js'
+                        ]);
+
+                    },5000);
+
                 }
             );
 
+            // svg favicon
+            setTimeout(function(){
+                // make svg favicon
+                var $ = tb.dom,
+                    $c = $('<canvas>'),
+                    i = new Image();
+                
+                function loaded(){
+                            
+                    //set canvas to image size
+                    $c.attr({
+                        height: i.height,
+                        width: i.width
+                    });
+
+                    // get context
+                    var ctx = $c[0].getContext('2d');
+                    ctx.globalCompositeOperation = 'copy';
+                    ctx.drawImage(i, 0, 0, $c.attr('width'), $c.attr('height'));
+
+                    // copy context content to link node
+                    $('<link rel="icon">')
+                        .attr(
+                            'href', 
+                            $c[0].toDataURL()
+                        )
+                        .appendTo(
+                            document.head
+                        );
+                }
+
+                i.addEventListener('load', loaded)
+                i.src = '/twoBirds.svg';
+            }, 1000);
         </script>
 
     </head>
 
     <body data-tb="test.GrandParent">
-        <form name="existingForm">
+        <img style="position:fixed;top:10px;right:10px;z-index:-1" src="/twoBirds.svg"/>
+        <form name="existingForm" data-tb="test.TestForm">
             <!-- sample form to start with -->
             <fieldset>
                 <legend>Inputs</legend>

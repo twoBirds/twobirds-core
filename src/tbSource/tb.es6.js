@@ -1,8 +1,8 @@
 class Tb extends tb{
 
-    constructor( pConfig, pTarget ){
+    constructor(){
 
-        super( pConfig, pTarget );
+        super();
 
         var that = this,
             observable = Symbol('observable'),

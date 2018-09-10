@@ -15,7 +15,7 @@ test.GrandChild = ( class GrandChild extends Tb{
         var that = this;
 
         for ( var x=0; x < 2; x++ ) {
-            $(that.target).append('<test-greatgrandchild a b c>');
+            $(that.target).append('<test-greatgrandchild>');
         }
     }
 });
